@@ -1,5 +1,5 @@
 export default {
-    requestDispenser: `
+  requestDispenser: `
 import T from 0xT
 transaction(dispenser_id: UInt32) {
     prepare(signer: AuthAccount) {
@@ -13,9 +13,9 @@ transaction(dispenser_id: UInt32) {
     execute {
         log("ticket dispenser is requested.")
     }
-}    
-    `,
-    dispenseDispenser: `
+}
+  `,
+  dispenseDispenser: `
 import T from 0xT
 transaction(addr: Address) {
     prepare(signer: AuthAccount) {
@@ -30,9 +30,9 @@ transaction(addr: Address) {
     execute {
         log("dispenser is dispensed.")
     }
-}    
-    `,
-    addTicketInfo: `
+}
+  `,
+  addTicketInfo: `
 import T from 0xT
 transaction(dispenser_id: UInt32, ticket_name: String, where_to_use: String, ticket_quantity: UInt8) {
     prepare(signer: AuthAccount) {
@@ -44,9 +44,9 @@ transaction(dispenser_id: UInt32, ticket_name: String, where_to_use: String, tic
     execute {
         log("ticket info is registered.")
     }
-}    
-    `,
-    requestUserTicket: `
+}
+  `,
+  requestUserTicket: `
 import T from 0xT
 transaction(dispenser_id: UInt32, user_id: UInt32) {
     prepare(signer: AuthAccount) {
@@ -58,9 +58,9 @@ transaction(dispenser_id: UInt32, user_id: UInt32) {
     execute {
         log("Setting up user ticket vault is complete.")
     }
-}    
-    `,
-    requestUserTicket2: `
+}
+  `,
+  requestUserTicket2: `
 import T from 0xT
 transaction(dispenser_id: UInt32, user_id: UInt32) {
     prepare(signer: AuthAccount) {
@@ -70,9 +70,9 @@ transaction(dispenser_id: UInt32, user_id: UInt32) {
     execute {
         log("Setting up user ticket vault is complete.")
     }
-}    
-    `,
-     dispenseTicket: `
+}
+  `,
+  dispenseTicket: `
 import T from 0xT
 transaction(ticket_name: String, quantity: UInt8, addrList: [Address]) {
     prepare(signer: AuthAccount) {
@@ -90,9 +90,9 @@ transaction(ticket_name: String, quantity: UInt8, addrList: [Address]) {
     execute {
         log("ticket is dispensed.")
     }
-}    
-    `,
-     useTicket: `
+}
+  `,
+  useTicket: `
 import T from 0xT
 transaction(dispenser_id: UInt32, user_id: UInt32) {
     prepare(signer: AuthAccount) {
@@ -104,6 +104,6 @@ transaction(dispenser_id: UInt32, user_id: UInt32) {
     execute {
         log("ticket is used.")
     }
-}    
-    `
+}
+  `
 }
