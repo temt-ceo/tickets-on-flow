@@ -1,13 +1,13 @@
 export default {
   requestDispenser: `
-import T from 0xT
-transaction(dispenser_id: UInt32) {
+import Tv10 from 0xT
+transaction(domain: String, email: String, paid: UFix64) {
     prepare(signer: AuthAccount) {
-        signer.save<@T.DispenserVault>(<- T.createDispenser(addr: signer.address, dispenser_id: dispenser_id), to: /storage/TicketDispenserContainer)
+        signer.save<@Tv10.DispenserVault>(<- Tv10.createDispenserVault(addr: signer.address, domain: domain, email: email, paid: paid), to: /storage/TicketDispenserContainer)
         // public path
-        signer.link<&T.DispenserVault{T.IDispenserPublic}>(T.DispenserVaultPublicPath, target: /storage/TicketDispenserContainer)
+        signer.link<&Tv10.DispenserVault{Tv10.IDispenserPublic}>(Tv10.DispenserVaultPublicPath, target: /storage/TicketDispenserContainer)
         // private path
-        signer.link<&T.DispenserVault>(T.DispenserVaultPrivatePath, target: /storage/TicketDispenserContainer)
+        signer.link<&Tv10.DispenserVault>(Tv10.DispenserVaultPrivatePath, target: /storage/TicketDispenserContainer)
     }
 
     execute {

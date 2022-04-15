@@ -1,25 +1,34 @@
 export default {
   isAdmin: `
-import T from 0xT
-pub fun main(addr: Address): &T.AdminPublic? {
+import Tv10 from 0xT
+pub fun main(addr: Address): &Tv10.AdminPublic? {
     let account = getAccount(addr)
-    return account.getCapability<&T.AdminPublic>(T.AdminPublicPath).borrow()
+    return account.getCapability<&Tv10.AdminPublic>(Tv10.AdminPublicPath).borrow()
 }
   `,
-  hasDispencerResource: `
-import T from 0xT
-pub fun main(addr: Address): &T.DispenserVault{T.IDispencerPublic}? {
+  hasDispenserVault: `
+import Tv10 from 0xT
+pub fun main(addr: Address): &Tv10.DispenserVault{Tv10.IDispenserPublic}? {
     let account = getAccount(addr)
-    return account.getCapability<&T.DispenserVault{T.IDispencerPublic}>(T.DispenserVaultPublicPath).borrow()
+    return account.getCapability<&Tv10.DispenserVault{Tv10.IDispenserPublic}>(Tv10.DispenserVaultPublicPath).borrow()
 }
   `,
-  hasDispencer: `
+  hasDispenser: `
 import T from 0xT
 pub fun main(addr: Address): Bool {
     let account = getAccount(addr)
     let dispenserVault = account.getCapability<&T.DispenserVault{T.IDispencerPublic}>(T.DispenserVaultPublicPath).borrow()
         ?? panic("Could not borrow DispenserVault capability.")
-    return dispenserVault.getId()
+    return dispenserVault.hasDispenser()
+}
+  `,
+  getRequestedDispensers: `
+import Tv10 from 0xT
+pub fun main(addr: Address): [{Address: Tv10.DispenserStruct}] {
+    let account = getAccount(addr)
+    let dispenserVault = account.getCapability<&Tv10.AdminPublic>(Tv10.AdminPublicPath).borrow()
+        ?? panic("Could not borrow Administrator capability.")
+    return dispenserVault.getDispenserRequesters()
 }
   `,
   getTicketInfo: `

@@ -92,7 +92,7 @@ export default {
     async dispenseDispenser () {
       const addr = prompt('チケット付与機能を付与する場合は、以下のテキストボックスに該当する人物のウォレットアドレスを入力して下さい')
       if (addr) {
-        const dispenserId = await this.getDispenserIDFromAddress(addr)
+        const dispenserId = await this.getRequestedDispensers()
         if (!dispenserId) {
           this.noticeTitle = `dispenserIdが取得できませんでした。`
           return
@@ -121,13 +121,13 @@ export default {
         }
       }
     },
-    async getDispenserIDFromAddress () {
+    async getRequestedDispensers () {
       try {
         const dispenserId = await this.$fcl.send(
           [
-            this.$fcl.script(FlowScripts.getDispenserID),
+            this.$fcl.script(FlowScripts.getRequestedDispensers),
             this.$fcl.args([
-              this.$fcl.arg(addr, this.$fclArgType.Address)
+              this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
             ])
           ]
         ).then(this.$fcl.decode)
