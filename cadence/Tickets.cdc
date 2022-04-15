@@ -1,8 +1,8 @@
 pub contract Tv10 {
   // Events
   pub event DispenserRequested(dispenser_id: UInt32, address: Address)
-  pub event TicketRequested(dispenser_id: UInt32, nft_id: UInt32, address: Address)
-  pub event TicketUsed(dispenser_id: UInt32, nft_id: UInt32, token_id: UInt32, quantity: UInt8, address: Address)
+  pub event TicketRequested(dispenser_id: UInt32, user_id: UInt32, address: Address)
+  pub event TicketUsed(dispenser_id: UInt32, user_id: UInt32, token_id: UInt64, quantity: UInt8, address: Address)
 
   // Paths
   pub let AdminPublicPath: PublicPath
@@ -19,24 +19,11 @@ pub contract Tv10 {
   // Objects
   priv let dispenserOwners: {Address: DispenserStruct}
   priv let dispenserReceivers: [Address]
-  priv let ticketRequesters: {UInt32: {UInt32: [TokenIdAndAddress]}}
+  priv let ticketRequesters: {UInt32: [RequestStruct]}
   priv let ticketInfo: {UInt32: TicketStruct}
 
   /*
-  // [Struct] TokenIdAndAddress (tokenIdとaddressを保持する)
-  */
-  pub struct TokenIdAndAddress {
-    access(contract) let tokenId: UInt32
-    priv let address: Address
-
-    init(token_id: UInt32, address: Address) {
-      self.tokenId = token_id
-      self.address = address
-    }
-  }
-
-  /*
-  // [Struct]DispenserStruct
+  ** [Struct]DispenserStruct
   */
   pub struct DispenserStruct {
     access(contract) let dispenser_id: UInt32
@@ -53,7 +40,7 @@ pub contract Tv10 {
   }
 
   /*
-  // [Struct]　TicketStruct
+  ** [Struct]　TicketStruct
   */
   pub struct TicketStruct {
     priv let dispenser_id: UInt32
@@ -72,6 +59,36 @@ pub contract Tv10 {
       self.quantity = quantity
     }
   } 
+
+  /*
+  ** [Struct] RequestStruct
+  */
+  pub struct RequestStruct {
+    access(contract) let time: UFix64 // Time
+    access(contract) let user_id: UInt32
+    access(contract) let address: Address
+
+    init(time: UFix64, user_id: UInt32, address: Address) {
+      self.time = time
+      self.user_id = user_id
+      self.address = address
+    }
+  }
+
+  /*
+  ** [Struct] ReceiverStruct
+  */
+  pub struct ReceiverStruct {
+    access(contract) let token_id: UInt64
+    access(contract) let user_id: UInt32
+    access(contract) let address: Address
+
+    init(token_id: UInt64, user_id: UInt32, address: Address) {
+      self.token_id = token_id
+      self.user_id = user_id
+      self.address = address
+    }
+  }
 
   /*
   ** [Resource] Admin
@@ -113,11 +130,11 @@ pub contract Tv10 {
   }
 
   /*
-  // [リソース] Dispenser (チケットをMintするリソース)
+  ** [Resource] Dispenser
   */
   pub resource Dispenser {
     // state
-    access(contract) let ticketReceivers: {UInt32: [Address]}
+    access(contract) let ticketReceivers: {UInt32: [ReceiverStruct]}
 
     pub fun mintNFT(ticketName: String, quantity: UInt8): @Ticket {
       return <- create Ticket(ticketName: ticketName, quantity: quantity)
@@ -128,20 +145,22 @@ pub contract Tv10 {
       Tv10.ticketInfo[dispenser_id] = ticket
     }
 
-    pub fun getTicketRequesters(dispenser_id: UInt32): {UInt32: [TokenIdAndAddress]}? {
+    pub fun getTicketRequesters(dispenser_id: UInt32): [RequestStruct]? {
       return Tv10.ticketRequesters[dispenser_id]
     }
 
-    pub fun addTicketReceiver(right_nft_id: UInt32, addr: Address) {
-      if(self.ticketReceivers.containsKey(right_nft_id)) {
-        self.ticketReceivers[right_nft_id]!.append(addr)
-      } else {
-        self.ticketReceivers[right_nft_id] = [addr]
-      }
+    pub fun getTicketReceivers(dispenser_id: UInt32): [ReceiverStruct]? {
+      return self.ticketReceivers[dispenser_id]
     }
 
-    pub fun getTicketReceivers(right_nft_id: UInt32): [Address]? {
-      return self.ticketReceivers[right_nft_id]
+    pub fun addTicketReceiver(dispenser_id: UInt32, user_id: UInt32, address: Address, token_id: UInt64) {
+      let requestStruct = ReceiverStruct(token_id: token_id, user_id: user_id, address: address)
+      if(self.ticketReceivers.containsKey(dispenser_id)) {
+        self.ticketReceivers[dispenser_id]!.append(requestStruct)
+
+      } else {
+        self.ticketReceivers[dispenser_id] = [requestStruct]
+      }
     }
 
     init() {
@@ -156,7 +175,7 @@ pub contract Tv10 {
     pub var ownedDispenser: @Dispenser?
     pub var dispenser_id: UInt32
     pub fun addTicketInfos(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8)
-    pub fun addTicketReceiver(right_nft_id: UInt32, addr: Address)
+    pub fun addTicketReceiver(dispenser_id: UInt32, user_id: UInt32, address: Address, token_id: UInt64)
   }
 
   /*
@@ -166,8 +185,8 @@ pub contract Tv10 {
     pub fun deposit(minter: @Dispenser)
     pub fun hasDispenser(): Bool
     pub fun getId(): UInt32
-    pub fun getTicketRequesters(dispenser_id: UInt32): {UInt32: [TokenIdAndAddress]}??
-    pub fun getTicketReceivers(right_nft_id: UInt32): [Address]??
+    pub fun getTicketRequesters(dispenser_id: UInt32): [RequestStruct]??
+    pub fun getTicketReceivers(dispenser_id: UInt32): [ReceiverStruct]??
   }
 
   /*
@@ -184,7 +203,7 @@ pub contract Tv10 {
     // [public access]
     pub fun deposit(minter: @Dispenser) {
       if (self.ownedDispenser == nil) {
-        self.ownedDispenser <-! minter // <-!は、もしリソースがすでにあればエラーになります。その為、== nilの時のみの条件を一つ上でしています。
+        self.ownedDispenser <-! minter
       } else {
         destroy minter
       }
@@ -205,13 +224,13 @@ pub contract Tv10 {
     }
 
     // [public access]
-    pub fun getTicketRequesters(dispenser_id: UInt32): {UInt32: [TokenIdAndAddress]}?? {
+    pub fun getTicketRequesters(dispenser_id: UInt32): [RequestStruct]?? {
       return self.ownedDispenser?.getTicketRequesters(dispenser_id: dispenser_id)
     }
 
     // [public access]
-    pub fun getTicketReceivers(right_nft_id: UInt32): [Address]?? {
-      return self.ownedDispenser?.getTicketReceivers(right_nft_id: right_nft_id)
+    pub fun getTicketReceivers(dispenser_id: UInt32): [ReceiverStruct]?? {
+      return self.ownedDispenser?.getTicketReceivers(dispenser_id: dispenser_id)
     }
 
     // [private access]
@@ -220,8 +239,8 @@ pub contract Tv10 {
     }
 
     // [private access]
-    pub fun addTicketReceiver(right_nft_id: UInt32, addr: Address) {
-      self.ownedDispenser?.addTicketReceiver(right_nft_id: right_nft_id, addr: addr)
+    pub fun addTicketReceiver(dispenser_id: UInt32, user_id: UInt32, address: Address, token_id: UInt64) {
+      self.ownedDispenser?.addTicketReceiver(dispenser_id: dispenser_id, user_id: user_id, address: address, token_id: token_id)
     }
 
     // [private access]
@@ -253,12 +272,16 @@ pub contract Tv10 {
   }
 
   /*
-  // [Resource] Ticket
+  ** [Resource] Ticket
   */
   pub resource Ticket {
     priv var token_id: UInt64
     priv var ticketName: String
     priv var quantity: UInt8
+
+    pub fun getId(): UInt64 {
+      return self.token_id
+    }
 
     pub fun getQuantity(): UInt8 {
       return self.quantity
@@ -283,76 +306,67 @@ pub contract Tv10 {
   }
 
   /*
-  // [インターフェース] ITicketPrivate (Dispencerリソースのインターフェース)
+  ** [Interface] ITicketPrivate
   */
   pub resource interface ITicketPrivate {
-    access(contract) var ownedTicket: @{UInt32: Ticket}
-    pub fun useTicket(dispenser_id: UInt32, right_nft_id: UInt32, token_id: UInt32, address: Address)
+    access(contract) var ownedTicket: @{UInt64: Ticket}
+    pub fun useTicket(dispenser_id: UInt32, user_id: UInt32, token_id: UInt64, address: Address)
+    pub fun addTicketRequester(dispenser_id: UInt32, user_id: UInt32, address: Address)
   }
 
   /*
-  // [インターフェース] ITicketPublic (Dispencerリソースのインターフェース)
+  ** [Interface] ITicketPublic
   */
   pub resource interface ITicketPublic {
-    pub fun deposit(right_nft_id: UInt32, token: @Ticket)
-    pub fun hasTicket(right_nft_id: UInt32): Bool
-    pub fun getTicketQuantity(right_nft_id: UInt32): UInt8?
+    pub fun deposit(token: @Ticket)
+    pub fun hasTicket(token_id: UInt64): Bool
+    pub fun getTicketQuantity(token_id: UInt64): UInt8?
   }
 
   /*
-  // [リソース] TicketVault (チケット入れのリソース)
+  ** [Ticket Vault] TicketVault
   */
   pub resource TicketVault: ITicketPrivate, ITicketPublic {
 
     priv var user_id: UInt32
-    access(contract) var ownedTicket: @{UInt32: Ticket}
+    access(contract) var ownedTicket: @{UInt64: Ticket}
 
     // [public access]
-    pub fun deposit(right_nft_id: UInt32, token: @Ticket) {
-      if (self.ownedTicket[right_nft_id] == nil) {
-        self.ownedTicket[right_nft_id] <-! token
-      } else {
-        destroy token
+    pub fun deposit(token: @Ticket) {
+      pre {
+        self.ownedTicket[token.getId()] == nil : "You have same ticket."
       }
+      self.ownedTicket[token.getId()] <-! token
     }
 
     // [public access]
-    pub fun hasTicket(right_nft_id: UInt32): Bool {
-      if (self.ownedTicket[right_nft_id] != nil) {
-        return true
-      } else {
-        return false
-      }
+    pub fun hasTicket(token_id: UInt64): Bool {
+      return self.ownedTicket[token_id] != nil
     }
 
     // [public access]
-    pub fun getTicketQuantity(right_nft_id: UInt32): UInt8? {
-      return self.ownedTicket[right_nft_id]?.getQuantity()
+    pub fun getTicketQuantity(token_id: UInt64): UInt8? {
+      return self.ownedTicket[token_id]?.getQuantity()
     }
 
     // [private access]
-    pub fun addTicketRequester(dispenser_id: UInt32, right_nft_id: UInt32, token_id: UInt32, addr: Address) {
-      let taStruct = TokenIdAndAddress(token_id: token_id, address: addr)
+    pub fun addTicketRequester(dispenser_id: UInt32, user_id: UInt32, address: Address) {
+      let time = getCurrentBlock().timestamp
+      let requestStruct = RequestStruct(time: time, user_id: user_id, address: address)
 
       if(Tv10.ticketRequesters.containsKey(dispenser_id)) {
-        if(Tv10.ticketRequesters[dispenser_id]!.containsKey(right_nft_id)) {
-          Tv10.ticketRequesters[dispenser_id]![right_nft_id]!.append(taStruct)
-        } else {
-          var dict: {UInt32: [TokenIdAndAddress]} = Tv10.ticketRequesters[dispenser_id]!
-          dict[right_nft_id] = [taStruct]
-          Tv10.ticketRequesters[dispenser_id] = dict
-        }
+        Tv10.ticketRequesters[dispenser_id]!.append(requestStruct)
       } else {
-        Tv10.ticketRequesters[dispenser_id] = {right_nft_id: [taStruct]}
+        Tv10.ticketRequesters[dispenser_id] = [requestStruct]
       }
     }
 
     // [private access]
-    pub fun useTicket(dispenser_id: UInt32, right_nft_id: UInt32, token_id: UInt32, address: Address) {
-      if (self.ownedTicket[right_nft_id] != nil) {
-        self.ownedTicket[right_nft_id]?.useTicket()
-        let quantity = self.ownedTicket[right_nft_id]?.getQuantity()!
-        emit TicketUsed(dispenser_id: dispenser_id, nft_id: right_nft_id, token_id: token_id, quantity: quantity, address: address)
+    pub fun useTicket(dispenser_id: UInt32, user_id: UInt32, token_id: UInt64, address: Address) {
+      if (self.ownedTicket[token_id] != nil) {
+        self.ownedTicket[token_id]?.useTicket()
+        let quantity = self.ownedTicket[token_id]?.getQuantity()!
+        emit TicketUsed(dispenser_id: dispenser_id, user_id: user_id, token_id: token_id, quantity: quantity, address: address)
       } else {
         panic("You need to get tickets.")
       }
@@ -362,27 +376,27 @@ pub contract Tv10 {
       destroy self.ownedTicket
     }
 
-    init(_ dispenser_id: UInt32, _ right_nft_id: UInt32, _ token_id: UInt32, _ addr: Address) {
+    init(_ dispenser_id: UInt32, _ address: Address) {
       // TotalSupply
       self.user_id = Tv10.totalTicketVaultSupply + 1
       Tv10.totalTicketVaultSupply = Tv10.totalTicketVaultSupply + 1
 
       // Event, Data
-      emit TicketRequested(dispenser_id: dispenser_id, nft_id: right_nft_id, address: addr)
+      emit TicketRequested(dispenser_id: dispenser_id, user_id: self.user_id, address: address)
       self.ownedTicket <- {}
-      self.addTicketRequester(dispenser_id: dispenser_id, right_nft_id: right_nft_id, token_id: token_id, addr: addr)
+      self.addTicketRequester(dispenser_id: dispenser_id, user_id: self.user_id, address: address)
     }
   }
 
   /*
   // [create vault] createTicketVault
   */
-  pub fun createTicketVault(dispenser_id: UInt32, right_nft_id: UInt32, token_id: UInt32, addr: Address): @TicketVault {
-    return <- create TicketVault(dispenser_id, right_nft_id, token_id, addr)
+  pub fun createTicketVault(dispenser_id: UInt32, address: Address): @TicketVault {
+    return <- create TicketVault(dispenser_id, address)
   }
 
   /*
-  ** getDispenserIdWithDomain
+  ** [Public Function] getDispenserIdWithDomain
   */
   pub fun getDispenserIdWithDomain(domain: String): UInt32? {
     for addr in Tv10.dispenserOwners.keys {
@@ -396,19 +410,21 @@ pub contract Tv10 {
   }
 
   /*
-  ** getTicketInfos
+  ** [Public Function] getTicketInfos
   */
   pub fun getTicketInfos(dispenser_id: UInt32): TicketStruct? {
     return Tv10.ticketInfo[dispenser_id]
   }
 
-  // [public access]
-  pub fun alreadyRequested(dispenser_id: UInt32, right_nft_id: UInt32, token_id: UInt32): Bool {
+  /*
+  ** [Public Function] alreadyRequested
+  */
+  pub fun alreadyRequested(dispenser_id: UInt32, user_id: UInt32): Bool {
     if (Tv10.ticketRequesters[dispenser_id] != nil) {
-      if (Tv10.ticketRequesters[dispenser_id]![right_nft_id] != nil) {
-        let arr = Tv10.ticketRequesters[dispenser_id]![right_nft_id]!     
+      if (Tv10.ticketRequesters[dispenser_id] != nil) {
+        let arr = Tv10.ticketRequesters[dispenser_id]!
         for element in arr {
-          if (element.tokenId == token_id) {
+          if (element.user_id == user_id) {
               return true
           }
         }
@@ -418,10 +434,9 @@ pub contract Tv10 {
   }
 
   /*
-  // init
+  ** init
   */
   init() {
-    // 初期化
     self.AdminPublicPath = /public/Tv10AdminPublic
     self.DispenserVaultPublicPath = /public/Tv10DispenserVault
     self.TicketVaultPublicPath = /public/Tv10Vault
@@ -435,9 +450,8 @@ pub contract Tv10 {
     self.ticketRequesters = {}
     self.ticketInfo = {}
 
-    // コントラクトの持ち主のみが保持する権限を付与する
+    // grant admin rights
     self.account.save<@Tv10.Admin>( <- create Admin(), to:/storage/Tv10Admin)
-    // ウォレットがAdminかどうかの判定に使う
     self.account.save<@Tv10.AdminPublic>(<- create AdminPublic(), to: /storage/Tv10AdminPublic)
     self.account.link<&Tv10.AdminPublic>(Tv10.AdminPublicPath, target:/storage/Tv10AdminPublic)
   }

@@ -27,7 +27,7 @@
       </b-button>
       <b-button
         v-if="bloctoWalletUser.addr && status === 1"
-        @click="requestUserTicket"
+        @click="requestTicket"
       >
         申請する
       </b-button>
@@ -206,13 +206,15 @@ export default {
         console.log(e)
       }
     },
-    async requestUserTicket () {
+    async requestTicket () {
       const ret = await this.isTicketContainerReady()
       let transactionCode = ''
+      const argsArr = [this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)]
       if (ret) {
-        transactionCode = FlowTransactions.requestUserTicket2
+        transactionCode = FlowTransactions.requestMoreTicket
+        argsArr.push(this.$fcl.arg(this.user_id, this.$fclArgType.UInt32))
       } else {
-        transactionCode = FlowTransactions.requestUserTicket
+        transactionCode = FlowTransactions.requestTicket
       }
       alert('チケットを申請される方は、次のウォレットのポップアップ画面で「承認」を押してください')
       try {
@@ -220,8 +222,7 @@ export default {
           [
             this.$fcl.transaction(transactionCode),
             this.$fcl.args([
-              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
-              this.$fcl.arg(this.user_id, this.$fclArgType.UInt32)
+              argsArr
             ]),
             this.$fcl.payer(this.$fcl.authz),
             this.$fcl.proposer(this.$fcl.authz),

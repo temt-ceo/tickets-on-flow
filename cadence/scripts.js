@@ -38,16 +38,16 @@ pub fun main(domain: String): UInt32? {
 }
   `,
   getTicketInfo: `
-import T from 0xT
-pub fun main(dispenser_id: UInt32): {UInt32: [T.TicketStruct]}? {
-    return T.getTicketInfos(dispenser_id: dispenser_id)
-}    
+  import Tv10 from 0xT
+  pub fun main(dispenser_id: UInt32): Tv10.TicketStruct? {
+      return Tv10.getTicketInfos(dispenser_id: dispenser_id)
+  }
   `,
   getTicketRequesters: `
-import T from 0xT
-pub fun main(addr: Address, dispenser_id: UInt32): {UInt32: [T.UserIdAndAddress]}?? {
+import Tv10 from 0xT
+pub fun main(addr: Address, dispenser_id: UInt32): [Tv10.RequestStruct]?? {
     let account = getAccount(addr)
-    let dispenserVault = account.getCapability<&T.DispenserVault{T.IDispencerPublic}>(T.DispenserVaultPublicPath).borrow()
+    let dispenserVault = account.getCapability<&Tv10.DispenserVault{Tv10.IDispenserPublic}>(Tv10.DispenserVaultPublicPath).borrow()
         ?? panic("Could not borrow DispenserVault capability.")
     return dispenserVault.getTicketRequesters(dispenser_id: dispenser_id)
 }

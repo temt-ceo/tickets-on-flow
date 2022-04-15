@@ -45,29 +45,30 @@ transaction(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: Strin
         log("ticket info is registered.")
     }
 }  `,
-  requestUserTicket: `
-import T from 0xT
-transaction(dispenser_id: UInt32, user_id: UInt32) {
+  requestTicket: `
+import Tv10 from 0xT
+transaction(dispenser_id: UInt32) {
     prepare(signer: AuthAccount) {
-        signer.save<@T.TicketVault>(<- T.createTicketVault(dispenser_id: dispenser_id, addr: signer.address), to: /storage/TicketPublic)
+        signer.save<@Tv10.TicketVault>(<- Tv10.createTicketVault(dispenser_id: dispenser_id, address: signer.address), to: /storage/Tv10TicketVault)
         // public path
-        signer.link<&T.TicketVault{T.ITicketVaultPublic}>(T.TicketVaultPublicPath, target: /storage/TicketPublic)
+        signer.link<&Tv10.TicketVault{Tv10.ITicketPublic}>(Tv10.TicketVaultPublicPath, target: /storage/Tv10TicketVault)
     }
 
     execute {
         log("Setting up user ticket vault is complete.")
     }
-}
-  `,
-  requestUserTicket2: `
-import T from 0xT
+}  `,
+  requestMoreTicket: `
+import Tv10 from 0xT
 transaction(dispenser_id: UInt32, user_id: UInt32) {
     prepare(signer: AuthAccount) {
-        // TODO 買い増し
+        let ticketVault = signer.borrow<&Tv10.TicketVault>(from: /storage/Tv10TicketVault)
+            ?? panic("Could not borrow reference to the Owner's DispenserVault.")
+        ticketVault.addTicketRequester(dispenser_id: dispenser_id, user_id: user_id, address: signer.address)
     }
 
     execute {
-        log("Setting up user ticket vault is complete.")
+        log("ticket info is registered.")
     }
 }
   `,
