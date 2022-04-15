@@ -3,11 +3,11 @@ export default {
 import Tv10 from 0xT
 transaction(domain: String, email: String, paid: UFix64) {
     prepare(signer: AuthAccount) {
-        signer.save<@Tv10.DispenserVault>(<- Tv10.createDispenserVault(addr: signer.address, domain: domain, email: email, paid: paid), to: /storage/TicketDispenserContainer)
+        signer.save<@Tv10.DispenserVault>(<- Tv10.createDispenserVault(addr: signer.address, domain: domain, email: email, paid: paid), to: /storage/Tv10DispenserVault)
         // public path
-        signer.link<&Tv10.DispenserVault{Tv10.IDispenserPublic}>(Tv10.DispenserVaultPublicPath, target: /storage/TicketDispenserContainer)
+        signer.link<&Tv10.DispenserVault{Tv10.IDispenserPublic}>(Tv10.DispenserVaultPublicPath, target: /storage/Tv10DispenserVault)
         // private path
-        signer.link<&Tv10.DispenserVault>(Tv10.DispenserVaultPrivatePath, target: /storage/TicketDispenserContainer)
+        signer.link<&Tv10.DispenserVault>(Tv10.DispenserVaultPrivatePath, target: /storage/Tv10DispenserVault)
     }
 
     execute {
@@ -16,13 +16,14 @@ transaction(domain: String, email: String, paid: UFix64) {
 }
   `,
   dispenseDispenser: `
-import T from 0xT
+import Tv10 from 0x01
 transaction(addr: Address) {
     prepare(signer: AuthAccount) {
-        let admin = signer.borrow<@T.Admin>(from: /storage/TicketAdmin)
+        let admin = signer.borrow<&Tv10.Admin>(from: /storage/Tv10Admin)
             ?? panic("Could not borrow reference to the Administrator Resource.")
+
         let account = getAccount(addr)
-        let dispenserVault = account.getCapability<&T.DispenserVault{T.IDispenserPublic}>(T.DispenserVaultPublicPath).borrow()
+        let dispenserVault = account.getCapability<&Tv10.DispenserVault{Tv10.IDispenserPublic}>(Tv10.DispenserVaultPublicPath).borrow()
             ?? panic("Could not borrow DispenserVault Capability.")
         dispenserVault.deposit(minter: <- admin.mintDispenser(addr: addr))
     }
@@ -30,22 +31,20 @@ transaction(addr: Address) {
     execute {
         log("dispenser is dispensed.")
     }
-}
-  `,
+}  `,
   addTicketInfo: `
-import T from 0xT
-transaction(dispenser_id: UInt32, ticket_name: String, where_to_use: String, ticket_quantity: UInt8) {
+import Tv10 from 0xT
+transaction(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8) {
     prepare(signer: AuthAccount) {
-        let dispenserVault = signer.borrow<&T.DispenserVault>(from: /storage/TicketDispenserVault)
+        let dispenserVault = signer.borrow<&Tv10.DispenserVault>(from: /storage/Tv10DispenserVault)
             ?? panic("Could not borrow reference to the Owner's DispenserVault.")
-        dispenserVault.addTicketInfos(dispenser_id: dispenser_id, ticket_name: ticket_name, where_to_use: where_to_use, ticket_quantity: ticket_quantity)
+        dispenserVault.addTicketInfos(dispenser_id: dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, quantity: quantity)
     }
 
     execute {
         log("ticket info is registered.")
     }
-}
-  `,
+}  `,
   requestUserTicket: `
 import T from 0xT
 transaction(dispenser_id: UInt32, user_id: UInt32) {

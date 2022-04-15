@@ -14,10 +14,10 @@ pub fun main(addr: Address): &Tv10.DispenserVault{Tv10.IDispenserPublic}? {
 }
   `,
   hasDispenser: `
-import T from 0xT
+import Tv10 from 0xT
 pub fun main(addr: Address): Bool {
     let account = getAccount(addr)
-    let dispenserVault = account.getCapability<&T.DispenserVault{T.IDispencerPublic}>(T.DispenserVaultPublicPath).borrow()
+    let dispenserVault = account.getCapability<&Tv10.DispenserVault{Tv10.IDispenserPublic}>(Tv10.DispenserVaultPublicPath).borrow()
         ?? panic("Could not borrow DispenserVault capability.")
     return dispenserVault.hasDispenser()
 }
@@ -29,6 +29,12 @@ pub fun main(addr: Address): [{Address: Tv10.DispenserStruct}] {
     let dispenserVault = account.getCapability<&Tv10.AdminPublic>(Tv10.AdminPublicPath).borrow()
         ?? panic("Could not borrow Administrator capability.")
     return dispenserVault.getDispenserRequesters()
+}
+  `,
+  getDispenserIdWithDomain: `
+import Tv10 from 0xT
+pub fun main(domain: String): UInt32? {
+    return Tv10.getDispenserIdWithDomain(domain: domain)
 }
   `,
   getTicketInfo: `

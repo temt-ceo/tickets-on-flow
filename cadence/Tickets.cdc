@@ -20,7 +20,7 @@ pub contract Tv10 {
   priv let dispenserOwners: {Address: DispenserStruct}
   priv let dispenserReceivers: [Address]
   priv let ticketRequesters: {UInt32: {UInt32: [TokenIdAndAddress]}}
-  priv let ticketInfo: {UInt32: {UInt32: [TicketStruct]}}
+  priv let ticketInfo: {UInt32: TicketStruct}
 
   /*
   // [Struct] TokenIdAndAddress (tokenIdとaddressを保持する)
@@ -39,8 +39,8 @@ pub contract Tv10 {
   // [Struct]DispenserStruct
   */
   pub struct DispenserStruct {
-    priv let dispenser_id: UInt32
-    priv let domain: String
+    access(contract) let dispenser_id: UInt32
+    access(contract) let domain: String
     priv let email: String
     priv let paid: UFix64
 
@@ -56,13 +56,19 @@ pub contract Tv10 {
   // [Struct]　TicketStruct
   */
   pub struct TicketStruct {
+    priv let dispenser_id: UInt32
+    priv let type: UInt8
     priv let name: String
-    priv let where_to_use:String
+    priv let where_to_use: String
+    priv let when_to_use: String
     priv let quantity: UInt8
 
-    init(name: String, where_to_use: String, quantity: UInt8) {
+    init(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8) {
+      self.dispenser_id = dispenser_id
+      self.type = type
       self.name = name
       self.where_to_use = where_to_use
+      self.when_to_use = when_to_use
       self.quantity = quantity
     }
   } 
@@ -91,7 +97,6 @@ pub contract Tv10 {
     pub fun getDispenserRequesters(): [{Address: DispenserStruct}] {
       var dispenserArr: [{Address: DispenserStruct}] = []
       for addr in Tv10.dispenserOwners.keys {
-        log(addr)
         // if Dispenser resource is not Dispensed then it will be returned
         if (Tv10.dispenserReceivers.contains(addr) == false) {
           if let data = Tv10.dispenserOwners[addr] {
@@ -118,20 +123,9 @@ pub contract Tv10 {
       return <- create Ticket(ticketName: ticketName, quantity: quantity)
     }
 
-    pub fun addTicketInfos(dispenser_id: UInt32, right_nft_id: UInt32, ticket_name: String, where_to_use: String, ticket_quantity: UInt8) {
-      let ticket = TicketStruct(name: ticket_name, where_to_use: where_to_use, quantity: ticket_quantity)
-
-      if(Tv10.ticketInfo.containsKey(dispenser_id)) {
-        if(Tv10.ticketInfo[dispenser_id]!.containsKey(right_nft_id)) {
-          Tv10.ticketInfo[dispenser_id]![right_nft_id]!.append(ticket)
-        } else {
-          var dict: {UInt32: [TicketStruct]} = Tv10.ticketInfo[dispenser_id]!
-          dict[right_nft_id] = [ticket]
-          Tv10.ticketInfo[dispenser_id] = dict
-        }
-      } else {
-        Tv10.ticketInfo[dispenser_id] = {right_nft_id: [ticket]}
-      }
+    pub fun addTicketInfos(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8) {
+      let ticket = TicketStruct(dispenser_id: dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, quantity: quantity)
+      Tv10.ticketInfo[dispenser_id] = ticket
     }
 
     pub fun getTicketRequesters(dispenser_id: UInt32): {UInt32: [TokenIdAndAddress]}? {
@@ -161,7 +155,7 @@ pub contract Tv10 {
   pub resource interface IDispenserPrivate {
     pub var ownedDispenser: @Dispenser?
     pub var dispenser_id: UInt32
-    pub fun addTicketInfos(dispenser_id: UInt32, right_nft_id: UInt32, ticket_name: String, where_to_use: String, ticket_quantity: UInt8)
+    pub fun addTicketInfos(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8)
     pub fun addTicketReceiver(right_nft_id: UInt32, addr: Address)
   }
 
@@ -170,7 +164,7 @@ pub contract Tv10 {
   */
   pub resource interface IDispenserPublic {
     pub fun deposit(minter: @Dispenser)
-    pub fun hasDisponser(): Bool
+    pub fun hasDispenser(): Bool
     pub fun getId(): UInt32
     pub fun getTicketRequesters(dispenser_id: UInt32): {UInt32: [TokenIdAndAddress]}??
     pub fun getTicketReceivers(right_nft_id: UInt32): [Address]??
@@ -197,7 +191,7 @@ pub contract Tv10 {
     }
 
     // [public access]
-    pub fun hasDisponser(): Bool {
+    pub fun hasDispenser(): Bool {
       if (self.ownedDispenser != nil) {
         return true
       } else {
@@ -221,8 +215,8 @@ pub contract Tv10 {
     }
 
     // [private access]
-    pub fun addTicketInfos(dispenser_id: UInt32, right_nft_id: UInt32, ticket_name: String, where_to_use: String, ticket_quantity: UInt8) {
-      self.ownedDispenser?.addTicketInfos(dispenser_id: dispenser_id, right_nft_id: right_nft_id, ticket_name: ticket_name, where_to_use: where_to_use, ticket_quantity: ticket_quantity)
+    pub fun addTicketInfos(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8) {
+      self.ownedDispenser?.addTicketInfos(dispenser_id: dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, quantity: quantity)
     }
 
     // [private access]
@@ -388,9 +382,23 @@ pub contract Tv10 {
   }
 
   /*
-  // getTicketInfos
+  ** getDispenserIdWithDomain
   */
-  pub fun getTicketInfos(dispenser_id: UInt32): {UInt32: [TicketStruct]}? {
+  pub fun getDispenserIdWithDomain(domain: String): UInt32? {
+    for addr in Tv10.dispenserOwners.keys {
+      if let data = Tv10.dispenserOwners[addr] {
+        if (data.domain == domain) {
+          return data.dispenser_id
+        }
+      }
+    }
+    return nil
+  }
+
+  /*
+  ** getTicketInfos
+  */
+  pub fun getTicketInfos(dispenser_id: UInt32): TicketStruct? {
     return Tv10.ticketInfo[dispenser_id]
   }
 

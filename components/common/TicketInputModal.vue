@@ -251,8 +251,10 @@ export default {
             this.$fcl.transaction(FlowTransactions.addTicketInfo),
             this.$fcl.args([
               this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
+              this.$fcl.arg(this.ticketInfo.type, this.$fclArgType.UInt8),
               this.$fcl.arg(this.ticketInfo.name, this.$fclArgType.String),
               this.$fcl.arg(this.ticketInfo.where_to_use, this.$fclArgType.String),
+              this.$fcl.arg(this.ticketInfo.when_to_use, this.$fclArgType.String),
               this.$fcl.arg(ticketQuantity, this.$fclArgType.UInt8),
             ]),
             this.$fcl.payer(this.$fcl.authz),
