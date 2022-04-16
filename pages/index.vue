@@ -1,64 +1,29 @@
 <template>
   <section class="section">
-      <!--<card
-        title="Free"
-        icon="github"
-      >
-        Open source on <a href="https://github.com/buefy/buefy">
-          GitHub
-        </a>
-      </card>
-
-      <card
-        title="Responsive"
-        icon="cellphone-link"
-      >
-        <b class="has-text-grey">
-          Every
-        </b> component is responsive
-      </card>
-
-      <card
-        title="Modern"
-        icon="alert-decagram"
-      >
-        Built with <a href="https://vuejs.org/">
-          Vue.js
-        </a> and <a href="http://bulma.io/">
-          Bulma
-        </a>
-      </card>
-
-      <card
-        title="Lightweight"
-        icon="arrange-bring-to-front"
-      >
-        No other internal dependency
-      </card>-->
-    <div class="phone">
+    <div class="ticket-list">
       <div class="header">
         <div>
           <i class="fa-solid fa-magnifying-glass"></i>
         </div>
         <div>
-          <label id="contactCount">Contacts</label>
+          <label>Tickets</label>
         </div>
         <div>
           <i class="fa-solid fa-bars"></i>
         </div>
       </div>
       <div class="seachbar">
-        <input type="text" name="searchcontact" id="searchcontact" placeholder="search..."/>
+        <input type="text" name="searchcontact" placeholder="search..."/>
       </div>
-      <div id="content" class="content">
+      <div class="content">
         <div
           v-for="(ticket, index) in tickets"
           :key="index"
           class="c-contact"
         >
-          <div class="identity_block">
+          <div class="identity_block fa-3x">
             <label>{{ ticket.label }}</label>
-            <i class="fa-solid fa-phone"></i>
+            <i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s;"></i>
             <span>{{ ticket.description }}</span>
           </div>
           <div
@@ -83,7 +48,52 @@ export default {
   // },
   data () {
     return {
-      tickets: []
+      tickets: [],
+      colors: { Finance: 'color1', Music: 'color3', Other: 'color7' },
+      labels: [
+        {
+          label: 'Dealing Business AI Assistance',
+          description: 'on this website',
+          style: 'color1',
+          type: 'Finance'
+        },
+        // {
+        //   label: 'testLeanne Graham',
+        //   description: '1-770-736-8031 x56442',
+        //   style: 'color2',
+        //   type: 'L'
+        // },
+        // {
+        //   label: 'testLeanne Graham',
+        //   description: '1-770-736-8031 x56442',
+        //   style: 'color3',
+        //   type: 'L'
+        // },
+        // {
+        //   label: 'testLeanne Graham',
+        //   description: '1-770-736-8031 x56442',
+        //   style: 'color4',
+        //   type: 'L'
+        // },
+        // {
+        //   label: 'testLeanne Graham',
+        //   description: '1-770-736-8031 x56442',
+        //   style: 'color5',
+        //   type: 'L'
+        // },
+        {
+          label: 'Test Drink Ticket',
+          description: 'at charch',
+          style: 'color3',
+          type: 'Music'
+        },
+        {
+          label: 'Test Ticket2',
+          description: 'on livestreaming',
+          style: 'color7',
+          type: 'Other'
+        }
+      ]
     }
   },
   mounted () {
@@ -91,17 +101,17 @@ export default {
   },
   methods: {
     setContentsData () {
-      for (let i = 1; i < 8; i++) {
+      for (let i = 0; i < this.labels.length; i++) {
         setTimeout(() => {
           this.tickets.push(
             {
-              label: 'testLeanne Graham',
-              description: '1-770-736-8031 x56442',
-              style: 'color' + i,
-              type: 'L'
+              label: this.labels[i].label,
+              description: `${this.labels[i].type} ,You can use this ${this.labels[i].description}`,
+              style: this.labels[i].style,
+              type: this.labels[i].type
             }
           )
-        }, 50 * i)
+        }, 60 * i + 60)
       }
     }
   }
@@ -117,7 +127,7 @@ export default {
   height: 95vh;
   background-image: linear-gradient(to bottom right, #973999, #f8598b, #f7bf00);
 
-  .phone {
+  .ticket-list {
     width: 100%;
     max-width: 450px;
     height: 100%;
@@ -127,23 +137,12 @@ export default {
     border: 5px solid rgba(1, 1, 1, .2);
     position: relative;
     overflow: hidden;
-
-    &::before {
-      content: '';
-      position: absolute;
-      left: 25%;
-      top: 0;
-      width: 50%;
-      height: 3%;
-      background: rgba(1, 1, 1, .2);
-      border-bottom-left-radius: 15px;
-      border-bottom-right-radius: 15px;
-    }
   }
 
   .header {
     color: white;
     display: flex;
+    display: none;
     justify-content: space-between;
     align-items: center;
     height: 80px;
@@ -164,7 +163,7 @@ export default {
   }
   .seachbar {
     width: 100%;
-    transform: translateY(-16px);
+    transform: translateY(23px);
     position: relative;
     z-index: 99999;
 
@@ -178,8 +177,8 @@ export default {
       border-radius: 40px;
       margin: auto;
       display: block;
-      -webkit-box-shadow: 0px 5px 15px -3px #cccccc;
-      box-shadow: 0px 5px 15px -3px #cccccc;
+      -webkit-box-shadow: 0px 3px 10px -2px #cccccc;
+      box-shadow: 0px 3px 10px -2px #cccccc;
     }
   }
 
@@ -188,7 +187,7 @@ export default {
     left: 0;
     right: 0;
     overflow: auto;
-    top: 80px;
+    top: 75px;
     padding-top: 20px;
     background-color: white;
     bottom: 0;
@@ -228,18 +227,33 @@ export default {
 
     .identity_block {
       flex: 2;
-    }
+      color: black;
+      font-size: 14px;
+      font-family: 'Roboto', sans-serif;
+      font-style: italic;
 
-    .identity_block > label {
-      text-align: left;
-      display: block;
+      & > span{
+        color: gray;
+        font-size: 10px;
+      }
+
+      & > i {
+        color: gray;
+        font-size: 8px;
+        margin-right: 5px;
+      }
+
+      & > label {
+        text-align: left;
+        display: block;
+      }
     }
 
     .icon_block {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 30px;
+      width: 40px;
       border-radius: 50%;
 
       &.color1 {
@@ -268,23 +282,6 @@ export default {
 
       &.color7 {
         background-color: rgb(130, 111, 102);
-      }
-    }
-
-    .identity_block {
-      color: black;
-      font-size: 12px;
-      font-family: 'Roboto', sans-serif;
-
-      & > span{
-        color: gray;
-        font-size: 10px;
-      }
-
-      & > i {
-        color: gray;
-        font-size: 8px;
-        margin-right: 5px;
       }
     }
 

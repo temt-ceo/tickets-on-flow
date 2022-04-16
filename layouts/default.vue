@@ -11,8 +11,8 @@
           href="/"
         >
           <img
-            src="~assets/buefy.png"
-            alt="Buefy"
+            src="~assets/tickets.png"
+            alt="Tickets"
             height="28"
           >
         </a>
@@ -34,7 +34,26 @@ export default {
   name: 'DefaultLayout',
   data () {
     return {
+      items: [
+        {
+          title: 'Home',
+          icon: 'home',
+          to: { name: 'index' }
+        },
+        {
+          title: 'Inspire',
+          icon: 'lightbulb',
+          to: { name: 'inspire' }
+        }
+      ]
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+.navbar-item img {
+    max-height: 2.5rem;
+}
+</style>
