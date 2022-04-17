@@ -81,16 +81,16 @@ export default {
         //   style: 'color5',
         //   type: 'L'
         // },
+        // {
+        //   label: 'Test Drink Ticket',
+        //   description: 'at charch',
+        //   style: 'color7',
+        //   type: 'Music'
+        // },
         {
-          label: 'Test Drink Ticket',
-          description: 'at charch',
-          style: 'color3',
-          type: 'Music'
-        },
-        {
-          label: 'Test Ticket2',
+          label: 'Test Ticket',
           description: 'on livestreaming',
-          style: 'color7',
+          style: 'color3',
           type: 'Other'
         }
       ]
@@ -108,7 +108,7 @@ export default {
               label: this.labels[i].label,
               description: `${this.labels[i].type} ,You can use this ${this.labels[i].description}`,
               style: this.labels[i].style,
-              type: this.labels[i].type
+              type: 'Rank' + (i + 1)
             }
           )
         }, 60 * i + 60)
@@ -124,13 +124,14 @@ export default {
 }
 
 .section {
-  height: 95vh;
+  height: 91vh;
   background-image: linear-gradient(to bottom right, #973999, #f8598b, #f7bf00);
+  padding: 1.1rem 1.5rem 0;
 
   .ticket-list {
     width: 100%;
     max-width: 450px;
-    height: 100%;
+    height: 85vh;
     margin: 0 auto;
     background: #596470;
     border-radius: 30px;
@@ -165,7 +166,7 @@ export default {
     width: 100%;
     transform: translateY(23px);
     position: relative;
-    z-index: 99999;
+    z-index: 2;
 
     input {
       width: 90%;
@@ -228,7 +229,7 @@ export default {
     .identity_block {
       flex: 2;
       color: black;
-      font-size: 14px;
+      font-size: 15px;
       font-family: 'Roboto', sans-serif;
       font-style: italic;
 
