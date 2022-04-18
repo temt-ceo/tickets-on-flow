@@ -6,13 +6,13 @@
     <hr class="separator">
     <div class="content">
       <p v-if="bloctoWalletUser.addr" class="description">
-        (ウォレットのアドレス: {{ bloctoWalletUser.addr }})
+        (Wallet Address: {{ bloctoWalletUser.addr }})
       </p>
       <h1 class="notice">
         {{ noticeTitle}}
       </h1>
       <p v-if="transactionScanUrl !== ''" class="check-transaction">
-        <a :href="transactionScanUrl" target="_blank">トランザクションを確認</a>
+        <a :href="transactionScanUrl" target="_blank">Confirm Transaction</a>
       </p>
       <b-button
         :disabled="!bloctoWalletUser.addr || !currentTicketQuantity"
@@ -24,7 +24,7 @@
         :disabled="!bloctoWalletUser.addr"
         @click="flowWalletLogout"
       >
-        ウォレットからログアウト
+        Log out from Wallet
       </b-button>
     </div>
   </section>
@@ -178,7 +178,7 @@ export default {
         this.status = 2
         return transactionId
       } catch (e) {
-        return
+        console.log(e)
       }
     }
   }

@@ -17,7 +17,7 @@
         v-if="transactionScanUrl !== ''"
         class="check-transaction"
       >
-        <a :href="transactionScanUrl" target="_blank">トランザクションを確認</a>
+        <a :href="transactionScanUrl" target="_blank">Confirm Transaction</a>
       </p>
       <b-button
         v-if="ticketName !== '' && !bloctoWalletUser.addr"
@@ -41,7 +41,7 @@
         v-if="bloctoWalletUser.addr"
         @click="flowWalletLogout"
       >
-        ウォレットからログアウト
+        Log out from Wallet
       </b-button>
     </div>
   </section>
@@ -160,7 +160,7 @@ export default {
     },
     async isAlreadyRequested () {
       try {
-        const ticketVault = await this.$fcl.send(
+        const result = await this.$fcl.send(
           [
             this.$fcl.script(FlowScripts.isAlreadyRequested),
             this.$fcl.args([
@@ -235,7 +235,7 @@ export default {
         this.status = 2
         return transactionId
       } catch (e) {
-        return
+        console.log(e)
       }
     },
     async flowWalletLogout () {

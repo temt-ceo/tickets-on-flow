@@ -16,7 +16,7 @@ transaction(domain: String, email: String, paid: UFix64) {
 }
   `,
   dispenseDispenser: `
-import Tv11 from 0x01
+import Tv11 from 0xT
 transaction(addr: Address) {
     prepare(signer: AuthAccount) {
         let admin = signer.borrow<&Tv11.Admin>(from: /storage/Tv11Admin)

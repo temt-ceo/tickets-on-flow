@@ -2,12 +2,11 @@
   <div class="modal-card">
     <section class="modal-card-body">
       <div class="text-wrap">
-        チケット利用状況を確認して下さい
+        Ticket Usage List
       </div>
       <div class="contents">
         <div v-if="ticketUsedList.length > 0" class="text-wrap">
           <div class="nft-list-container">
-            <p>直近の利用者は以下です。</p>
             <p class="content-information">
               <span class="col1">トークンID</span>
               <span class="col2">ウォレット</span>
@@ -51,18 +50,17 @@
       </div>
       <div v-if="ticketUsedList.length === 0" class="text-wrap">
         <p class="no-payer">
-          まだチケットの利用者はいません。
+          No one has used tickets yet.
         </p>
       </div>
       <div class="text-wrap">
-        ブラウザの履歴を消去しますと利用状況は消去されます。
+        *Usage data will be deleted when you clear your browser history.
       </div>
     </section>
   </div>
 </template>
 
 <script>
-import FlowScripts from '~/cadence/scripts'
 
 export default {
   name: 'TicketConfirmPayModal',
@@ -87,7 +85,7 @@ export default {
     }
   },
   computed: {
-    ticketUsedTokenList() {
+    ticketUsedTokenList () {
       return this.$store.state.ticketUsedTokenList
     }
   },
@@ -193,7 +191,7 @@ export default {
 
           .address {
             color: #0089c7;
-            
+
             &:visited {
               color: #A766ff;
             }

@@ -61,7 +61,7 @@
             </template>
             <nuxt-link to="/dispencer/" >
               <b-dropdown-item aria-role="listitem">
-                チケットを作成
+                Ticket Creation
               </b-dropdown-item>
             </nuxt-link>
             <b-dropdown-item aria-role="listitem">

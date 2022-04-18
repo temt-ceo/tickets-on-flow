@@ -2,14 +2,13 @@
   <div class="modal-card">
     <section class="modal-card-body">
       <div class="text-wrap">
-        チケット申請状況を確認して下さい
+        List of ticket applicants
       </div>
       <div
         v-if="ticketRequesters && !isCompleteRegister"
         class="text-wrap"
       >
         <div class="nft-list-container">
-          <p>チケットの申請者は以下です。</p>
           <p class="content-information">
             <span class="col1">トークンID</span>
             <span class="col2">ウォレットアドレス</span>
@@ -49,7 +48,7 @@
       </div>
       <div v-if="!ticketRequesters" class="text-wrap">
         <p class="no-requester">
-          まだチケットの申請者はいません。
+          No one has applied for a ticket yet.
         </p>
       </div>
     </section>
@@ -84,11 +83,7 @@ export default {
     }
   },
   async mounted () {
-    await this.getTicketInfo()
-    await this.$fcl.currentUser.subscribe(this.setupUserInitialInfo)
-    if (this.bloctoWalletUser.addr) {
-      await this.checkCurrentStatus()
-    }
+    await this.confirmRequesters()
   },
   methods: {
     async confirmRequesters () {
@@ -209,7 +204,7 @@ export default {
 
           .address {
             color: #0089c7;
-            
+
             &:visited {
               color: #A766ff;
             }

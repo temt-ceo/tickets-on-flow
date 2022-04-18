@@ -12,31 +12,31 @@
             {{ ticketUsedMessage }}
           </b-notification>
           <h1 class="page-title">
-            チケット配布管理画面
+            Ticket Distribution Management
           </h1>
           <div class="content">
             <p v-if="bloctoWalletUser.addr" class="description">
-              (ウォレットのアドレス: {{ bloctoWalletUser.addr }})
+              (Wallet Address: {{ bloctoWalletUser.addr }})
             </p>
             <h1 class="notice">
               {{ noticeTitle}}
             </h1>
             <p v-if="transactionScanUrl !== ''" class="check-transaction">
-              <a :href="transactionScanUrl" target="_blank">トランザクションを確認</a>
+              <a :href="transactionScanUrl" target="_blank">Confirm Transaction</a>
             </p>
             <b-button
               :disabled="!bloctoWalletUser.addr || !hasDispenserVault || !hasDispenser"
               @click="showInputModal = true"
               type="is-link is-light"
             >
-              チケットを配布する
+              Distribute tickets
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
               @click="showConfirmModal = true"
               type="is-link is-light"
             >
-              チケットリクエスト状況を確認
+              Check Ticket Request Status
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && !hasDispenser"
@@ -45,28 +45,28 @@
               type="is-link is-light"
               class="request-btn"
             >
-              チケット配布機能の申請
-            </b-button>
-            <b-button
-              v-if="!bloctoWalletUser.addr"
-              @click="flowWalletLogin"
-              type="is-link is-light"
-            >
-              管理しているウォレットに接続
-            </b-button>
-            <b-button
-              v-if="bloctoWalletUser.addr"
-              @click="flowWalletLogout"
-              type="is-danger is-light"
-            >
-              ウォレットからログアウト
+              Application for ticket distribution function
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
               @click="showConfirmPayModal = true"
               type="is-link is-light"
             >
-              チケット利用状況を確認
+              Check Ticket Usage Status
+            </b-button>
+            <b-button
+              v-if="!bloctoWalletUser.addr"
+              @click="flowWalletLogin"
+              type="is-link is-light"
+            >
+              Connect to a wallet you manage
+            </b-button>
+            <b-button
+              v-if="bloctoWalletUser.addr"
+              @click="flowWalletLogout"
+              type="is-danger is-light"
+            >
+              Log out from Wallet
             </b-button>
             <b-button
               tag="nuxt-link"
@@ -74,7 +74,7 @@
               type="is-warning is-light"
               class="to-top"
             >
-              トップに戻る
+              Return to TOP
             </b-button>
           </div>
         </div>
@@ -161,10 +161,11 @@ export default {
         this.hasDispenserVault = await this.hasTicketDispenserVault()
 
         if (this.hasDispenserVault) {
+          await this.getDispenserId()
           this.hasDispenser = await this.hasTicketDispenser()
 
           if (this.hasDispenser) {
-            this.noticeTitle = 'チケット配布が可能です'
+            this.noticeTitle = 'Now you can distribute tickets!'
           } else {
             this.noticeTitle = '現在、チケット配布機能の申請中です'
           }
@@ -193,6 +194,21 @@ export default {
       } catch (e) {
         console.log(e)
         return false
+      }
+    },
+    async getDispenserId () {
+      try {
+        const dispenserId = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getDispenserId),
+            this.$fcl.args([
+              this.$fcl.arg(this.address, this.$fclArgType.Address)
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        this.dispenserId = dispenserId
+      } catch (e) {
+        console.log(e)
       }
     },
     async hasTicketDispenser () {
@@ -361,17 +377,17 @@ export default {
     }
 
     .description {
-      font-size: 14px;
+      font-size: 16px;
     }
 
     .notice {
-      font-size: 14px;
+      font-size: 16px;
       color: rebeccapurple;
     }
 
     .check-transaction a {
       color: purple;
-      font-size: 14px;
+      font-size: 16px;
       text-decoration: underline;
     }
 

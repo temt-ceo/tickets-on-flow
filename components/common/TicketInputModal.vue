@@ -2,7 +2,7 @@
   <div class="modal-card">
     <section class="modal-card-body">
       <div class="text-wrap">
-        チケットを配布します
+        Ticket Distribution Management
       </div>
       <div class="contents">
         <div class="nft-list-container">
@@ -10,7 +10,7 @@
             v-if="transactionScanUrl !== ''"
             class="check-transaction"
           >
-            <a :href="transactionScanUrl" target="_blank">トランザクションを確認</a>
+            <a :href="transactionScanUrl" target="_blank">Confirm Transaction</a>
           </p>
           <div
             v-if="showFlag && !ticketInfo && !isCompleteRegister"
@@ -211,6 +211,9 @@ export default {
       showFlag: false
     }
   },
+  async mounted () {
+    await this.getTicketInfo()
+  },
   methods: {
     async getTicketInfo () {
       this.showFlag = false
@@ -255,7 +258,7 @@ export default {
               this.$fcl.arg(this.ticketInfo.name, this.$fclArgType.String),
               this.$fcl.arg(this.ticketInfo.where_to_use, this.$fclArgType.String),
               this.$fcl.arg(this.ticketInfo.when_to_use, this.$fclArgType.String),
-              this.$fcl.arg(ticketQuantity, this.$fclArgType.UInt8),
+              this.$fcl.arg(ticketQuantity, this.$fclArgType.UInt8)
             ]),
             this.$fcl.payer(this.$fcl.authz),
             this.$fcl.proposer(this.$fcl.authz),
@@ -267,7 +270,7 @@ export default {
         this.isCompleteRegister = true
         return transactionId
       } catch (e) {
-        return
+        console.log(e)
       }
     },
     async confirmRequesters () {
@@ -292,12 +295,14 @@ export default {
       }
     },
     async confirmReceivers () {
+      console.log(33333, this.ticketRequesters)
       try {
         const ticketReceivers = await this.$fcl.send(
           [
             this.$fcl.script(FlowScripts.getTicketReceivers),
             this.$fcl.args([
-              this.$fcl.arg(this.address, this.$fclArgType.Address)
+              this.$fcl.arg(this.address, this.$fclArgType.Address),
+              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
             ])
           ]
         ).then(this.$fcl.decode)
@@ -305,6 +310,7 @@ export default {
           obj.done = ticketReceivers == null ? false : ticketReceivers.includes(obj.address)
         })
         this.requestList = this.ticketRequesters.filter((obj) => { return !obj.done })
+        console.log(44444, this.requestList, ticketReceivers)
         this.showFlag = true
       } catch (e) {
         console.log(e)
@@ -332,7 +338,7 @@ export default {
         this.isCompleteDispense = true
         return transactionId
       } catch (e) {
-        return
+        console.log(e)
       }
     }
   }

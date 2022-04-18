@@ -320,6 +320,7 @@ pub contract Tv11 {
   pub resource interface ITicketPublic {
     pub fun deposit(token: @Ticket)
     pub fun hasTicket(token_id: UInt64): Bool
+    pub fun getId(): UInt32
     pub fun getTicketQuantity(token_id: UInt64): UInt8?
   }
 
@@ -345,13 +346,18 @@ pub contract Tv11 {
     }
 
     // [public access]
+    pub fun getId(): UInt32 {
+        return self.user_id
+    }
+
+    // [public access]
     pub fun getTicketQuantity(token_id: UInt64): UInt8? {
       return self.ownedTicket[token_id]?.getQuantity()
     }
 
     // [private access]
     pub fun addTicketRequester(dispenser_id: UInt32, user_id: UInt32, address: Address) {
-      let time = getCurrentBlock().timestamp
+      let time = 99999999.99999//getCurrentBlock().timestamp
       let requestStruct = RequestStruct(time: time, user_id: user_id, address: address)
 
       if(Tv11.ticketRequesters.containsKey(dispenser_id)) {
@@ -393,6 +399,16 @@ pub contract Tv11 {
   */
   pub fun createTicketVault(dispenser_id: UInt32, address: Address): @TicketVault {
     return <- create TicketVault(dispenser_id, address)
+  }
+
+  /*
+  ** [Public Function] getDispenserId
+  */
+  pub fun getDispenserId(addr: Address): UInt32? {
+    if let data = Tv11.dispenserOwners[addr] {
+      return data.dispenser_id
+    }
+    return nil
   }
 
   /*
