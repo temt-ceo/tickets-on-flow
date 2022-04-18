@@ -42,22 +42,22 @@
           type="is-warning"
         >
         </b-icon>
-        <b-icon
-          class="navbar-item"
-          pack="fa-brands"
-          icon="discord"
-          size="medium"
-          type="is-success"
-        >
-        </b-icon>
+        <a :href="url.discord" target="_blank">
+          <b-icon
+            class="navbar-item"
+            pack="fa-brands"
+            icon="discord"
+            size="medium"
+            type="is-success"
+          >
+          </b-icon>
+        </a>
         <div class="navbar-burger">
           <b-dropdown aria-role="list">
             <template #trigger>
-              <div>
-                <span />
-                <span />
-                <span />
-              </div>
+              <span />
+              <span />
+              <span />
             </template>
             <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
             <b-dropdown-item aria-role="listitem">
@@ -68,7 +68,11 @@
               >
               </b-icon>
             </b-dropdown-item>
-            <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item>
+            <nuxt-link to="/dispencer/" >
+              <b-dropdown-item aria-role="listitem">
+                チケットを作成
+              </b-dropdown-item>
+            </nuxt-link>
         </b-dropdown>
         </div>
       </div>
@@ -85,6 +89,7 @@ export default {
     return {
       url: {
         twitter: 'https://mobile.twitter.com/_official_asp',
+        discord: 'https://discord.com/channels/965133581238296636/965133581238296640',
         github: 'https://github.com/temt-ceo/tickets-on-flow/tree/develop'
       },
       isActive: false,
@@ -128,11 +133,16 @@ export default {
     margin: 25px;
   }
 
-  .dropdown-item {
-    .icon {
-      top: calc(50% - 13px);
-      left: 25px;
-      height: 0;
+  .dropdown-menu {
+    left: auto;
+    right: 20%;
+
+    .dropdown-item {
+      .icon {
+        top: calc(50% - 13px);
+        left: 25px;
+        height: 0;
+      }
     }
   }
 }

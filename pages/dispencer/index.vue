@@ -1,72 +1,79 @@
 <template>
   <section class="section">
-    <b-notification
-      v-model="ticketUsedNow"
-      type="is-success is-light"
-      aria-close-label="Close notification"
-      @click="showConfirmPayModal = true"
-    >
-      {{ ticketUsedMessage }}
-    </b-notification>
-    <h1 class="page-title">
-      チケット配布管理画面
-    </h1>
-    <hr class="separator">
-    <div class="content">
-      <p v-if="bloctoWalletUser.addr" class="description">
-        (ウォレットのアドレス: {{ bloctoWalletUser.addr }})
-      </p>
-      <h1 class="notice">
-        {{ noticeTitle}}
-      </h1>
-      <p v-if="transactionScanUrl !== ''" class="check-transaction">
-        <a :href="transactionScanUrl" target="_blank">トランザクションを確認</a>
-      </p>
-      <b-button
-        :disabled="!bloctoWalletUser.addr || !hasDispenserVault || !hasDispenser"
-        @click="showInputModal = true"
-      >
-        チケットを配布する
-      </b-button>
-      <b-button
-        v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
-        @click="showConfirmModal = true"
-      >
-        チケットリクエスト状況を確認
-      </b-button>
-      <b-button
-        v-if="bloctoWalletUser.addr && !hasDispenser"
-        :disabled="hasDispenserVault"
-        @click="requestDispenser"
-      >
-        チケット配布機能の申請
-      </b-button>
-      <b-button
-        v-if="!bloctoWalletUser.addr"
-        @click="flowWalletLogin"
-      >
-        管理しているウォレットに接続
-      </b-button>
-      <b-button
-        v-if="bloctoWalletUser.addr"
-        @click="flowWalletLogout"
-      >
-        ウォレットからログアウト
-      </b-button>
-      <b-button
-        v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
-        @click="showConfirmPayModal = true"
-      >
-        チケット利用状況を確認
-      </b-button>
+    <div class="hero">
+      <div class="hero--overlay">
+        <div class="hero--content">
+          <b-notification
+            v-model="ticketUsedNow"
+            type="is-success is-light"
+            aria-close-label="Close notification"
+            @click="showConfirmPayModal = true"
+          >
+            {{ ticketUsedMessage }}
+          </b-notification>
+          <h1 class="page-title">
+            チケット配布管理画面
+          </h1>
+          <div class="content">
+            <p v-if="bloctoWalletUser.addr" class="description">
+              (ウォレットのアドレス: {{ bloctoWalletUser.addr }})
+            </p>
+            <h1 class="notice">
+              {{ noticeTitle}}
+            </h1>
+            <p v-if="transactionScanUrl !== ''" class="check-transaction">
+              <a :href="transactionScanUrl" target="_blank">トランザクションを確認</a>
+            </p>
+            <b-button
+              :disabled="!bloctoWalletUser.addr || !hasDispenserVault || !hasDispenser"
+              @click="showInputModal = true"
+            >
+              チケットを配布する
+            </b-button>
+            <b-button
+              v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
+              @click="showConfirmModal = true"
+            >
+              チケットリクエスト状況を確認
+            </b-button>
+            <b-button
+              v-if="bloctoWalletUser.addr && !hasDispenser"
+              :disabled="hasDispenserVault"
+              @click="requestDispenser"
+              type="is-link is-light"
+            >
+              チケット配布機能の申請
+            </b-button>
+            <b-button
+              v-if="!bloctoWalletUser.addr"
+              @click="flowWalletLogin"
+              type="is-link is-light"
+            >
+              管理しているウォレットに接続
+            </b-button>
+            <b-button
+              v-if="bloctoWalletUser.addr"
+              @click="flowWalletLogout"
+            >
+              ウォレットからログアウト
+            </b-button>
+            <b-button
+              v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
+              @click="showConfirmPayModal = true"
+            >
+              チケット利用状況を確認
+            </b-button>
+            <b-button
+              tag="nuxt-link"
+              to="/"
+            >
+              トップに戻る
+            </b-button>
+          </div>
+        </div>
+      </div>
+      <section class="hero--bottom"></section>
     </div>
-    <b-button
-      class="return-top-button"
-      tag="nuxt-link"
-      to="/"
-    >
-      トップに戻る
-    </b-button>
     <b-modal v-model="showInputModal">
       <ticket-input-modal
         :address="address"
@@ -126,7 +133,7 @@ export default {
       return this.$store.state.ticketUsedTokenList
     }
   },
-  async mounted() {
+  async mounted () {
     await this.$fcl.currentUser.subscribe(this.setupWalletInfo)
     setInterval(() => {
       this.callReiterateEvents()
@@ -143,7 +150,7 @@ export default {
       this.bloctoWalletUser = user
 
       if (this.bloctoWalletUser?.addr) {
-        this.address =this.bloctoWalletUser?.addr
+        this.address = this.bloctoWalletUser?.addr
         this.hasDispenserVault = await this.hasTicketDispenserVault()
 
         if (this.hasDispenserVault) {
@@ -156,7 +163,7 @@ export default {
           }
         } else {
           this.noticeTitle = 'チケット配布機能の申請が必要です。配布機能の申請を押して下さい'
-        }          
+        }
       } else {
         this.noticeTitle = 'チケット配布を行う方のウォレットにログインして下さい'
       }
@@ -214,9 +221,9 @@ export default {
         ).then(this.$fcl.decode)
         this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
         this.hasDispenser = await this.hasTicketDispenser()
-        this.noticeTitle = `チケット配布機能の申請を完了しました。この画面のスクリーンショットを保管しておくことをお勧めします。`
+        this.noticeTitle = 'チケット配布機能の申請を完了しました。この画面のスクリーンショットを保管しておくことをお勧めします。'
       } catch (e) {
-        this.noticeTitle = `Address: ${addr}, Error: ${e}`
+        this.noticeTitle = `Address: ${this.bloctoWalletUser?.addr}, Error: ${e}`
       }
     },
     async callReiterateEvents () {
@@ -226,18 +233,18 @@ export default {
       const eventName = 'TicketUsed'
       const identifier = `A.${contractAddress}.${contractName}.${eventName}`
       const latestBlock = await this.$fcl.send(
-          [
-            this.$fcl.getBlock(true)
-          ]
-        ).then(this.$fcl.decode)
+        [
+          this.$fcl.getBlock(true)
+        ]
+      ).then(this.$fcl.decode)
       const height = latestBlock.height
       const response = await this.$fcl.send(
         [
-          this.$fcl.getEventsAndBlockHeightRange(identifier, height - range, height)
+          this.$fcl.getEventsAtBlockHeightRange(identifier, height - range, height)
         ]
       ).then(this.$fcl.decode)
       const { events } = response
-      if (events.length > 0) {
+      if (events && events.length > 0) {
         const data = {}
         const newEvents = []
         let newPayers = ''
@@ -256,7 +263,7 @@ export default {
               data[obj.name] = parseInt(obj.value.value)
             }
           })
-          if (parseInt(data.dispenser_id) === this.dispenserId && blockHeight > lastBlockid) {
+          if (parseInt(data.dispenser_id) === this.dispenserId && blockHeight > lastBlockId) {
             newEvents.push({
               dispenser_id: data.dispenser_id,
               token_id: data.token_id,
@@ -267,7 +274,7 @@ export default {
             newPayers = newPayers + `#${data.token_id}さん, `
           }
         })
-        if (newPayers != '') {
+        if (newPayers !== '') {
           this.ticketUsedMessage = `トークン${newPayers}がチケットを使いました。`
           this.ticketUsedNow = true
         }
@@ -282,11 +289,10 @@ export default {
 <style lang="scss" scoped>
 
 .section {
-  text-align: left;
   padding-bottom: 32px;
 
   .page-title {
-    margin-top: 40px;
+    margin-top: 100px;
     text-align: center;
   }
 
@@ -307,13 +313,47 @@ export default {
     }
   }
 
-  .return-top-button {
-    margin: 0 auto 24px;
-    display: flex;
+  .button {
+    width: 90%;
+    border-radius: 20px;
+    margin: 25px 0;
+    max-width: 400px;
+  }
 
-    &:first-of-type {
-      margin-top: 32px;
-    }
-  }  
+  .hero--video {
+    min-width: 100%;
+    // min-height: 100vh;
+    z-index: 1;
+  }
+
+  .hero--overlay {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: linear-gradient(180deg, rgba(0,0,0,1), #1b1c50);
+    background-size: cover;
+    z-index: 2;
+  }
+
+  .hero--content {
+    width: 100%;
+    height: 100vh;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    color: #dadff4;
+  }
+
+  .hero--bottom {
+    width: 100%;
+    height: 50vh;
+    background-color: #1c1c1c;
+    background-image: linear-gradient(0deg, rgba(0,0,0,.3), #1b1c50);
+  }
 }
 </style>
