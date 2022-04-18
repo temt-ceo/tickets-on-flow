@@ -59,7 +59,11 @@
               <span />
               <span />
             </template>
-            <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
+            <nuxt-link to="/dispencer/" >
+              <b-dropdown-item aria-role="listitem">
+                チケットを作成
+              </b-dropdown-item>
+            </nuxt-link>
             <b-dropdown-item aria-role="listitem">
               <b-icon
                 pack="fa-solid"
@@ -68,12 +72,8 @@
               >
               </b-icon>
             </b-dropdown-item>
-            <nuxt-link to="/dispencer/" >
-              <b-dropdown-item aria-role="listitem">
-                チケットを作成
-              </b-dropdown-item>
-            </nuxt-link>
-        </b-dropdown>
+            <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
+          </b-dropdown>
         </div>
       </div>
     </nav>
@@ -151,6 +151,12 @@ export default {
   .navbar,
   .navbar-burger {
     display: block;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .modal .animation-content {
+      width: 90% !important;
   }
 }
 

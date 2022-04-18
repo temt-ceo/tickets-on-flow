@@ -27,12 +27,14 @@
             <b-button
               :disabled="!bloctoWalletUser.addr || !hasDispenserVault || !hasDispenser"
               @click="showInputModal = true"
+              type="is-link is-light"
             >
               チケットを配布する
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
               @click="showConfirmModal = true"
+              type="is-link is-light"
             >
               チケットリクエスト状況を確認
             </b-button>
@@ -41,6 +43,7 @@
               :disabled="hasDispenserVault"
               @click="requestDispenser"
               type="is-link is-light"
+              class="request-btn"
             >
               チケット配布機能の申請
             </b-button>
@@ -54,18 +57,22 @@
             <b-button
               v-if="bloctoWalletUser.addr"
               @click="flowWalletLogout"
+              type="is-danger is-light"
             >
               ウォレットからログアウト
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
               @click="showConfirmPayModal = true"
+              type="is-link is-light"
             >
               チケット利用状況を確認
             </b-button>
             <b-button
               tag="nuxt-link"
               to="/"
+              type="is-warning is-light"
+              class="to-top"
             >
               トップに戻る
             </b-button>
@@ -204,24 +211,71 @@ export default {
         return false
       }
     },
-    async requestDispenser () {
-      alert('チケット付与機能を申請される方は、次のウォレットのポップアップ画面で「承認」を押して下さい')
+    requestDispenser () {
+      let toast1 = null
+      let toast2 = null
       try {
-        const transactionId = await this.$fcl.send(
-          [
-            this.$fcl.transaction(FlowTransactions.requestDispenser),
-            this.$fcl.args([
-              this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
-            ]),
-            this.$fcl.payer(this.$fcl.authz),
-            this.$fcl.proposer(this.$fcl.authz),
-            this.$fcl.authorizations([this.$fcl.authz]),
-            this.$fcl.limit(9999)
-          ]
-        ).then(this.$fcl.decode)
-        this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-        this.hasDispenser = await this.hasTicketDispenser()
-        this.noticeTitle = 'チケット配布機能の申請を完了しました。この画面のスクリーンショットを保管しておくことをお勧めします。'
+        let domain = null
+        this.$buefy.dialog.prompt({
+          message: 'What path would you like for your page? (https://tickets-on-flow.web.app/XXXXX)',
+          inputAttrs: {
+            type: 'text',
+            placeholder: 'e.g. cool-ticket-page',
+            maxlength: 20
+          },
+          confirmText: 'Next',
+          trapFocus: true,
+          onConfirm: (value) => {
+            domain = value
+            toast1 = this.$buefy.toast.open({
+              indefinite: true,
+              message: `Your path will become: https://tickets-on-flow.web.app/${domain}`
+            })
+            this.$buefy.dialog.prompt({
+              message: 'Enter your email address (please enter a submail as it will be stored in the blockchain)',
+              inputAttrs: {
+                type: 'text',
+                placeholder: 'yourname@example.com',
+                value: '',
+                maxlength: 40
+              },
+              confirmText: 'Request',
+              trapFocus: true,
+              closeOnConfirm: false,
+              onConfirm: async (email, { close }) => {
+                this.$buefy.dialog.alert('This process requires 0.5$FLOW. Press approve on the next dialog that appears.')
+                const transactionId = await this.$fcl.send(
+                  [
+                    this.$fcl.transaction(FlowTransactions.requestDispenser),
+                    this.$fcl.args([
+                      this.$fcl.arg(domain, this.$fclArgType.String),
+                      this.$fcl.arg(email, this.$fclArgType.String),
+                      this.$fcl.arg(0.5, this.$fclArgType.UFix64)
+                    ]),
+                    this.$fcl.payer(this.$fcl.authz),
+                    this.$fcl.proposer(this.$fcl.authz),
+                    this.$fcl.authorizations([this.$fcl.authz]),
+                    this.$fcl.limit(9999)
+                  ]
+                ).then(this.$fcl.decode)
+                toast2 = this.$buefy.toast.open({
+                  indefinite: true,
+                  message: 'Success. Your request has been sent and you will receive an email within 24 hours that your request has been processed.'
+                })
+                this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+                // this.hasDispenser = await this.hasTicketDispenser()
+                this.noticeTitle = 'チケット配布機能の申請を完了しました。この画面のスクリーンショットを保管しておくことをお勧めします。'
+                close()
+                setTimeout(() => {
+                  toast2.close()
+                }, 2000)
+              },
+              onCancel: () => {
+                toast1?.close()
+              }
+            })
+          }
+        })
       } catch (e) {
         this.noticeTitle = `Address: ${this.bloctoWalletUser?.addr}, Error: ${e}`
       }
@@ -292,18 +346,27 @@ export default {
   padding-bottom: 32px;
 
   .page-title {
-    margin-top: 100px;
+    margin-top: 80px;
+    font-size: 18px;
     text-align: center;
   }
 
   .content {
-    margin: 24px 0 40px;
+    margin: 10px 0 20px;
     padding: 16px;
     text-align: center;
 
+    h1 {
+      margin: 20px 0 16px;
+    }
+
+    .description {
+      font-size: 14px;
+    }
+
     .notice {
       font-size: 14px;
-      color: green;
+      color: rebeccapurple;
     }
 
     .check-transaction a {
@@ -311,18 +374,26 @@ export default {
       font-size: 14px;
       text-decoration: underline;
     }
-  }
 
-  .button {
-    width: 90%;
-    border-radius: 20px;
-    margin: 25px 0;
-    max-width: 400px;
+    .request-btn {
+      font-weight: bold;
+    }
+
+    .to-top {
+      margin-top: 24px;
+    }
+
+    .button {
+      width: 90%;
+      border-radius: 20px;
+      margin: 18px 0;
+      max-width: 400px;
+    }
   }
 
   .hero--video {
     min-width: 100%;
-    // min-height: 100vh;
+    min-height: 100vh;
     z-index: 1;
   }
 

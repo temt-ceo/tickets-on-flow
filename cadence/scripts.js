@@ -1,53 +1,53 @@
 export default {
   isAdmin: `
-import Tv10 from 0xT
-pub fun main(addr: Address): &Tv10.AdminPublic? {
+import Tv11 from 0xT
+pub fun main(addr: Address): &Tv11.AdminPublic? {
     let account = getAccount(addr)
-    return account.getCapability<&Tv10.AdminPublic>(Tv10.AdminPublicPath).borrow()
+    return account.getCapability<&Tv11.AdminPublic>(Tv11.AdminPublicPath).borrow()
 }
   `,
   hasDispenserVault: `
-import Tv10 from 0xT
-pub fun main(addr: Address): &Tv10.DispenserVault{Tv10.IDispenserPublic}? {
+import Tv11 from 0x39899237382f2a8a
+pub fun main(addr: Address): &Tv11.DispenserVault{Tv11.IDispenserPublic}? {
     let account = getAccount(addr)
-    return account.getCapability<&Tv10.DispenserVault{Tv10.IDispenserPublic}>(Tv10.DispenserVaultPublicPath).borrow()
+    return account.getCapability<&Tv11.DispenserVault{Tv11.IDispenserPublic}>(Tv11.DispenserVaultPublicPath).borrow()
 }
   `,
   hasDispenser: `
-import Tv10 from 0xT
+import Tv11 from 0xT
 pub fun main(addr: Address): Bool {
     let account = getAccount(addr)
-    let dispenserVault = account.getCapability<&Tv10.DispenserVault{Tv10.IDispenserPublic}>(Tv10.DispenserVaultPublicPath).borrow()
+    let dispenserVault = account.getCapability<&Tv11.DispenserVault{Tv11.IDispenserPublic}>(Tv11.DispenserVaultPublicPath).borrow()
         ?? panic("Could not borrow DispenserVault capability.")
     return dispenserVault.hasDispenser()
 }
   `,
   getRequestedDispensers: `
-import Tv10 from 0xT
-pub fun main(addr: Address): [{Address: Tv10.DispenserStruct}] {
+import Tv11 from 0xT
+pub fun main(addr: Address): [{Address: Tv11.DispenserStruct}] {
     let account = getAccount(addr)
-    let dispenserVault = account.getCapability<&Tv10.AdminPublic>(Tv10.AdminPublicPath).borrow()
+    let dispenserVault = account.getCapability<&Tv11.AdminPublic>(Tv11.AdminPublicPath).borrow()
         ?? panic("Could not borrow Administrator capability.")
     return dispenserVault.getDispenserRequesters()
 }
   `,
   getDispenserIdWithDomain: `
-import Tv10 from 0xT
+import Tv11 from 0xT
 pub fun main(domain: String): UInt32? {
-    return Tv10.getDispenserIdWithDomain(domain: domain)
+    return Tv11.getDispenserIdWithDomain(domain: domain)
 }
   `,
   getTicketInfo: `
-  import Tv10 from 0xT
-  pub fun main(dispenser_id: UInt32): Tv10.TicketStruct? {
-      return Tv10.getTicketInfos(dispenser_id: dispenser_id)
+  import Tv11 from 0xT
+  pub fun main(dispenser_id: UInt32): Tv11.TicketStruct? {
+      return Tv11.getTicketInfos(dispenser_id: dispenser_id)
   }
   `,
   getTicketRequesters: `
-import Tv10 from 0xT
-pub fun main(addr: Address, dispenser_id: UInt32): [Tv10.RequestStruct]?? {
+import Tv11 from 0xT
+pub fun main(addr: Address, dispenser_id: UInt32): [Tv11.RequestStruct]?? {
     let account = getAccount(addr)
-    let dispenserVault = account.getCapability<&Tv10.DispenserVault{Tv10.IDispenserPublic}>(Tv10.DispenserVaultPublicPath).borrow()
+    let dispenserVault = account.getCapability<&Tv11.DispenserVault{Tv11.IDispenserPublic}>(Tv11.DispenserVaultPublicPath).borrow()
         ?? panic("Could not borrow DispenserVault capability.")
     return dispenserVault.getTicketRequesters(dispenser_id: dispenser_id)
 }

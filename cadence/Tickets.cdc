@@ -1,4 +1,4 @@
-pub contract Tv10 {
+pub contract Tv11 {
   // Events
   pub event DispenserRequested(dispenser_id: UInt32, address: Address)
   pub event TicketRequested(dispenser_id: UInt32, user_id: UInt32, address: Address)
@@ -96,10 +96,10 @@ pub contract Tv10 {
   pub resource Admin {
     pub fun mintDispenser(addr: Address): @Dispenser {
       pre {
-        Tv10.dispenserOwners[addr] != nil : "Requested address is not in previously requested list."
-        Tv10.dispenserReceivers.contains(addr) == false : "Requested address is already minted."
+        Tv11.dispenserOwners[addr] != nil : "Requested address is not in previously requested list."
+        Tv11.dispenserReceivers.contains(addr) == false : "Requested address is already minted."
       }
-      Tv10.dispenserReceivers.append(addr)
+      Tv11.dispenserReceivers.append(addr)
       return <- create Dispenser()
     }
 
@@ -113,10 +113,10 @@ pub contract Tv10 {
   pub resource AdminPublic {
     pub fun getDispenserRequesters(): [{Address: DispenserStruct}] {
       var dispenserArr: [{Address: DispenserStruct}] = []
-      for addr in Tv10.dispenserOwners.keys {
+      for addr in Tv11.dispenserOwners.keys {
         // if Dispenser resource is not Dispensed then it will be returned
-        if (Tv10.dispenserReceivers.contains(addr) == false) {
-          if let data = Tv10.dispenserOwners[addr] {
+        if (Tv11.dispenserReceivers.contains(addr) == false) {
+          if let data = Tv11.dispenserOwners[addr] {
             dispenserArr.append({addr: data})
           }
         }
@@ -142,11 +142,11 @@ pub contract Tv10 {
 
     pub fun addTicketInfos(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8) {
       let ticket = TicketStruct(dispenser_id: dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, quantity: quantity)
-      Tv10.ticketInfo[dispenser_id] = ticket
+      Tv11.ticketInfo[dispenser_id] = ticket
     }
 
     pub fun getTicketRequesters(dispenser_id: UInt32): [RequestStruct]? {
-      return Tv10.ticketRequesters[dispenser_id]
+      return Tv11.ticketRequesters[dispenser_id]
     }
 
     pub fun getTicketReceivers(dispenser_id: UInt32): [ReceiverStruct]? {
@@ -254,13 +254,13 @@ pub contract Tv10 {
 
     init(_ addr: Address, _ domain: String, _ email: String, _ paid: UFix64) {
       // TotalSupply
-      self.dispenser_id = Tv10.totalDispenserVaultSupply + 1
-      Tv10.totalDispenserVaultSupply = Tv10.totalDispenserVaultSupply + 1
+      self.dispenser_id = Tv11.totalDispenserVaultSupply + 1
+      Tv11.totalDispenserVaultSupply = Tv11.totalDispenserVaultSupply + 1
 
       // Event, Data
       emit DispenserRequested(dispenser_id: self.dispenser_id, address: addr)
       self.ownedDispenser <- nil
-      Tv10.dispenserOwners[addr] = DispenserStruct(dispenser_id: self.dispenser_id, domain: domain, email: email, paid: paid)
+      Tv11.dispenserOwners[addr] = DispenserStruct(dispenser_id: self.dispenser_id, domain: domain, email: email, paid: paid)
     }
   }
 
@@ -296,8 +296,8 @@ pub contract Tv10 {
 
     init(ticketName: String, quantity: UInt8) {
       // TotalSupply
-      self.token_id = Tv10.totalTicketSupply + 1
-      Tv10.totalTicketSupply = Tv10.totalTicketSupply + 1
+      self.token_id = Tv11.totalTicketSupply + 1
+      Tv11.totalTicketSupply = Tv11.totalTicketSupply + 1
 
       // Event, Data
       self.ticketName = ticketName // チケット名称
@@ -354,10 +354,10 @@ pub contract Tv10 {
       let time = getCurrentBlock().timestamp
       let requestStruct = RequestStruct(time: time, user_id: user_id, address: address)
 
-      if(Tv10.ticketRequesters.containsKey(dispenser_id)) {
-        Tv10.ticketRequesters[dispenser_id]!.append(requestStruct)
+      if(Tv11.ticketRequesters.containsKey(dispenser_id)) {
+        Tv11.ticketRequesters[dispenser_id]!.append(requestStruct)
       } else {
-        Tv10.ticketRequesters[dispenser_id] = [requestStruct]
+        Tv11.ticketRequesters[dispenser_id] = [requestStruct]
       }
     }
 
@@ -378,8 +378,8 @@ pub contract Tv10 {
 
     init(_ dispenser_id: UInt32, _ address: Address) {
       // TotalSupply
-      self.user_id = Tv10.totalTicketVaultSupply + 1
-      Tv10.totalTicketVaultSupply = Tv10.totalTicketVaultSupply + 1
+      self.user_id = Tv11.totalTicketVaultSupply + 1
+      Tv11.totalTicketVaultSupply = Tv11.totalTicketVaultSupply + 1
 
       // Event, Data
       emit TicketRequested(dispenser_id: dispenser_id, user_id: self.user_id, address: address)
@@ -399,8 +399,8 @@ pub contract Tv10 {
   ** [Public Function] getDispenserIdWithDomain
   */
   pub fun getDispenserIdWithDomain(domain: String): UInt32? {
-    for addr in Tv10.dispenserOwners.keys {
-      if let data = Tv10.dispenserOwners[addr] {
+    for addr in Tv11.dispenserOwners.keys {
+      if let data = Tv11.dispenserOwners[addr] {
         if (data.domain == domain) {
           return data.dispenser_id
         }
@@ -413,16 +413,16 @@ pub contract Tv10 {
   ** [Public Function] getTicketInfos
   */
   pub fun getTicketInfos(dispenser_id: UInt32): TicketStruct? {
-    return Tv10.ticketInfo[dispenser_id]
+    return Tv11.ticketInfo[dispenser_id]
   }
 
   /*
   ** [Public Function] alreadyRequested
   */
   pub fun alreadyRequested(dispenser_id: UInt32, user_id: UInt32): Bool {
-    if (Tv10.ticketRequesters[dispenser_id] != nil) {
-      if (Tv10.ticketRequesters[dispenser_id] != nil) {
-        let arr = Tv10.ticketRequesters[dispenser_id]!
+    if (Tv11.ticketRequesters[dispenser_id] != nil) {
+      if (Tv11.ticketRequesters[dispenser_id] != nil) {
+        let arr = Tv11.ticketRequesters[dispenser_id]!
         for element in arr {
           if (element.user_id == user_id) {
               return true
@@ -437,11 +437,11 @@ pub contract Tv10 {
   ** init
   */
   init() {
-    self.AdminPublicPath = /public/Tv10AdminPublic
-    self.DispenserVaultPublicPath = /public/Tv10DispenserVault
-    self.TicketVaultPublicPath = /public/Tv10Vault
-    self.DispenserVaultPrivatePath = /private/Tv10DispenserVault
-    self.TicketVaultPrivatePath = /private/Tv10Vault
+    self.AdminPublicPath = /public/Tv11AdminPublic
+    self.DispenserVaultPublicPath = /public/Tv11DispenserVault
+    self.TicketVaultPublicPath = /public/Tv11Vault
+    self.DispenserVaultPrivatePath = /private/Tv11DispenserVault
+    self.TicketVaultPrivatePath = /private/Tv11Vault
     self.totalDispenserVaultSupply = 0
     self.totalTicketSupply = 0
     self.totalTicketVaultSupply = 0
@@ -451,8 +451,8 @@ pub contract Tv10 {
     self.ticketInfo = {}
 
     // grant admin rights
-    self.account.save<@Tv10.Admin>( <- create Admin(), to:/storage/Tv10Admin)
-    self.account.save<@Tv10.AdminPublic>(<- create AdminPublic(), to: /storage/Tv10AdminPublic)
-    self.account.link<&Tv10.AdminPublic>(Tv10.AdminPublicPath, target:/storage/Tv10AdminPublic)
+    self.account.save<@Tv11.Admin>( <- create Admin(), to:/storage/Tv11Admin)
+    self.account.save<@Tv11.AdminPublic>(<- create AdminPublic(), to: /storage/Tv11AdminPublic)
+    self.account.link<&Tv11.AdminPublic>(Tv11.AdminPublicPath, target:/storage/Tv11AdminPublic)
   }
 }
