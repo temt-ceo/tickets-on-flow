@@ -433,23 +433,6 @@ pub contract Tv11 {
   }
 
   /*
-  ** [Public Function] alreadyRequested
-  */
-  pub fun alreadyRequested(dispenser_id: UInt32, user_id: UInt32): Bool {
-    if (Tv11.ticketRequesters[dispenser_id] != nil) {
-      if (Tv11.ticketRequesters[dispenser_id] != nil) {
-        let arr = Tv11.ticketRequesters[dispenser_id]!
-        for element in arr {
-          if (element.user_id == user_id) {
-              return true
-          }
-        }
-      }
-    }
-    return false
-  }
-
-  /*
   ** init
   */
   init() {

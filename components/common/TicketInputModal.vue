@@ -17,69 +17,95 @@
             class="text-wrap"
           >
             <b-field
-              label="チケットの名称を入力してください"
-              :message="ticketInfo.name === '' ? '入力してください': ''"
-              :type="{ 'is-success': ticketInfo.name != '', 'is-danger': ticketInfo.name === ''}"
+              label="Name of Ticket"
+              :message="refisterName === '' ? 'Please enter a value': ''"
+              :type="{ 'is-success': refisterName != '', 'is-danger': refisterName === ''}"
             >
               <b-input
-                v-model="ticketInfo.name"
-                placeholder="ドリンクチケット, 会話権, 握手券"
+                v-model="refisterName"
+                placeholder="e.g. Conversation Rights"
               />
             </b-field>
             <b-field
-              label="使用する場所を入力してください"
-              :message="ticketInfo.where_to_use === '' ? '入力してください': ''"
-              :type="{ 'is-success': ticketInfo.where_to_use != '', 'is-danger': ticketInfo.where_to_use === ''}"
+              label="Enter the location to be used"
+              :message="refisterWhere === '' ? 'Please enter a value': ''"
+              :type="{ 'is-success': refisterWhere != '', 'is-danger': refisterWhere === ''}"
             >
               <b-input
-                v-model="ticketInfo.where_to_use"
-                placeholder="ライブストリーミング, ホームページ, 路上ライブ"
+                v-model="refisterWhere"
+                placeholder="e.g. on this website, on Live Streaming"
               />
             </b-field>
             <b-field
-              label="(一人当たり使用できる)回数を選択して下さい">
+              label="How many times can it be used per capita?">
               <b-select
-                v-model="ticketInfo.quantity"
-                placeholder="回数を選択"
+                v-model="refisterQuantity"
+                placeholder="Please select"
               >
                 <option value="1">
-                  1回
+                  1 times
                 </option>
-                <option value="1">
-                  2回
+                <option value="2">
+                  2 times
                 </option>
-                <option value="1">
-                  3回
+                <option value="3">
+                  3 times
                 </option>
-                <option value="1">
-                  4回
+                <option value="4">
+                  4 times
                 </option>
-                <option value="1">
-                  5回
+                <option value="5">
+                  5 times
                 </option>
+                <option value="10">
+                  10 times
+                </option>
+              </b-select>
+            </b-field>
+            <b-field
+              label="How many times can it be used per capita?">
+              <b-select
+                v-model="refisterType"
+                placeholder="Please select"
+              >
                 <option value="1">
-                  10回
+                  1 times
+                </option>
+                <option value="2">
+                  2 times
+                </option>
+                <option value="3">
+                  3 times
+                </option>
+                <option value="4">
+                  4 times
+                </option>
+                <option value="5">
+                  5 times
+                </option>
+                <option value="10">
+                  10 times
                 </option>
               </b-select>
             </b-field>
             <div class="button-wrap">
               <b-button @click="$emit('closeModal')">
-                とじる
+                Close
               </b-button>
               <b-button
-                :disabled="ticketInfo.name === '' || ticketInfo.where_to_use === '' || ticketInfo.quantity === null"
+                :disabled="refisterName === '' || refisterWhere === '' || refisterWhen === '' || refisterQuantity === null || refisterType === null"
                 @click="registerTicketInfo"
               >
-                登録
+                Register
               </b-button>
             </div>
           </div>
           <div v-if="isCompleteRegister" class="text-wrap">
             <p class="complete-register">
-              チケットの登録を行いました。<br>
-              登録完了までに約10秒、時間がかかります<br>
-              「トランザクションを確認」をクリックして表示された画面でSEALEDと表示された後、<br>
-              登録した名前のチケット申請ボタンが表示されます。
+              Tickets registered.<br>
+              It takes about 10 seconds to complete registration.<br>
+              After clicking "Confirm Transaction" and seeing the word SEALED on the screen,<br>
+              the ticket application button will appear on the ticket application page.
             </p>
           </div>
           <div v-if="showFlag && ticketInfo && !isCompleteRegister && ticketRequesters.length === 0" class="text-wrap">
@@ -91,60 +117,60 @@
               </span>
             </p>
             <b-field
-              label="チケット名"
-              :message="ticketInfo.name === '' ? '入力してください': ''"
+              label="Name of Ticket"
+              :message="ticketInfo.name === '' ? 'Please enter a value': ''"
               :type="{ 'is-success': ticketInfo.name != ''}"
             >
               <b-input
                 v-model="ticketInfo.name"
-                placeholder="ドリンクチケット, 会話権, 握手券"
+                placeholder="e.g. Conversation Rights"
               />
             </b-field>
             <b-field
-              label="使用する場所を入力してください"
-              :message="ticketInfo.where_to_use === '' ? '入力してください': ''"
+              label="Enter the location to be used"
+              :message="ticketInfo.where_to_use === '' ? 'Please enter a value': ''"
               :type="{ 'is-success': ticketInfo.where_to_use != '', 'is-danger': ticketInfo.where_to_use === ''}"
             >
               <b-input
                 v-model="ticketInfo.where_to_use"
-                placeholder="ライブストリーミング, ホームページ, 路上ライブ"
+                placeholder="e.g. on this website, on Live Streaming"
               />
             </b-field>
             <b-field
-              label="(一人当たり使用できる)回数を選択して下さい">
+              label="How many times can it be used per capita?">
               <b-select
                 v-model="ticketInfo.quantity"
-                placeholder="回数を選択"
+                placeholder="Please select"
               >
                 <option value="1">
-                  1回
+                  1 times
                 </option>
                 <option value="1">
-                  2回
+                  2 times
                 </option>
                 <option value="1">
-                  3回
+                  3 times
                 </option>
                 <option value="1">
-                  4回
+                  4 times
                 </option>
                 <option value="1">
-                  5回
+                  5 times
                 </option>
                 <option value="1">
-                  10回
+                  10 times
                 </option>
               </b-select>
             </b-field>
             <div class="button-wrap">
               <b-button @click="$emit('closeModal')">
-                とじる
+                Close
               </b-button>
               <b-button
-                :disabled="ticketInfo.where_to_use === '' || ticketInfo.quantity === null"
+                :disabled="ticketInfo.where_to_use === '' || ticketInfo.when_to_use === '' || ticketInfo.quantity === null || ticketInfo.type === null"
                 @click="registerTicketInfo"
               >
-                更新
+                Update
               </b-button>
             </div>
           </div>
@@ -202,7 +228,12 @@ export default {
   },
   data () {
     return {
-      ticketInfo: {},
+      ticketInfo: null,
+      refisterName: '',
+      refisterWhere: '',
+      refisterWhen: '',
+      refisterType: null,
+      refisterQuantity: null,
       transactionScanUrl: '',
       isCompleteRegister: false,
       isCompleteDispense: false,
@@ -232,33 +263,40 @@ export default {
           if (ticketInfo) {
             this.isCompleteRegister = true
           }
+          await this.confirmRequesters()
         } catch (e) {
           console.log(e)
         }
+      } else {
+        await this.confirmRequesters()
       }
-      await this.confirmRequesters()
     },
     async registerTicketInfo () {
       if (this.isCompleteRegister) {
+        this.refisterName = this.ticketInfo.name
+        this.refisterType = this.ticketInfo.type
+        this.refisterWhere = this.ticketInfo.where_to_use
+        this.refisterWhen = this.ticketInfo.when_to_use
+        this.refisterQuantity = parseInt(this.ticketInfo.quantity)
         window.alert('この後表示されるポップアップで承認を押して下さい。')
       } else {
+        this.refisterQuantity = parseInt(this.refisterQuantity)
         const ret = window.confirm('登録を行いますと、チケット申請ボタンが表示されます。表示してよろしければこの後表示されるポップアップで承認を押して下さい。')
         if (!ret) {
           return
         }
       }
       try {
-        const ticketQuantity = parseInt(this.ticketInfo.quantity)
         const transactionId = await this.$fcl.send(
           [
             this.$fcl.transaction(FlowTransactions.addTicketInfo),
             this.$fcl.args([
               this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
-              this.$fcl.arg(this.ticketInfo.type, this.$fclArgType.UInt8),
-              this.$fcl.arg(this.ticketInfo.name, this.$fclArgType.String),
-              this.$fcl.arg(this.ticketInfo.where_to_use, this.$fclArgType.String),
-              this.$fcl.arg(this.ticketInfo.when_to_use, this.$fclArgType.String),
-              this.$fcl.arg(ticketQuantity, this.$fclArgType.UInt8)
+              this.$fcl.arg(this.refisterType, this.$fclArgType.UInt8),
+              this.$fcl.arg(this.refisterName, this.$fclArgType.String),
+              this.$fcl.arg(this.refisterWhere, this.$fclArgType.String),
+              this.$fcl.arg(this.refisterWhen, this.$fclArgType.String),
+              this.$fcl.arg(this.refisterQuantity, this.$fclArgType.UInt8)
             ]),
             this.$fcl.payer(this.$fcl.authz),
             this.$fcl.proposer(this.$fcl.authz),
@@ -295,7 +333,6 @@ export default {
       }
     },
     async confirmReceivers () {
-      console.log(33333, this.ticketRequesters)
       try {
         const ticketReceivers = await this.$fcl.send(
           [
@@ -310,8 +347,8 @@ export default {
           obj.done = ticketReceivers == null ? false : ticketReceivers.includes(obj.address)
         })
         this.requestList = this.ticketRequesters.filter((obj) => { return !obj.done })
-        console.log(44444, this.requestList, ticketReceivers)
         this.showFlag = true
+        console.log(this.ticketInfo, this.isCompleteRegister, 8888)
       } catch (e) {
         console.log(e)
       }

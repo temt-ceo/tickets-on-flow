@@ -19,19 +19,22 @@
         <div
           v-for="(ticket, index) in tickets"
           :key="index"
-          class="c-contact"
         >
-          <div class="identity_block fa-3x">
-            <label>{{ ticket.label }}</label>
-            <i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s;"></i>
-            <span>{{ ticket.description }}</span>
-          </div>
-          <div
-            :class="ticket.style"
-            class="icon_block"
-          >
-            <label>{{ ticket.type }}</label>
-          </div>
+          <nuxt-link :to="'/' + ticket.path + '/'" >
+            <div class="c-contact">
+              <div class="identity_block fa-3x">
+                <label>{{ ticket.label }}</label>
+                <i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s;"></i>
+                <span>{{ ticket.description }}</span>
+              </div>
+              <div
+                :class="ticket.style"
+                class="icon_block"
+              >
+                <label>{{ ticket.type }}</label>
+              </div>
+            </div>
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -48,6 +51,7 @@ export default {
       colors: { Finance: 'color1', Music: 'color3', Other: 'color7' },
       labels: [
         {
+          path: 'dealing-business-ai-assistance',
           label: 'Dealing Business AI Assistance',
           description: 'on this website',
           style: 'color1',
@@ -84,6 +88,7 @@ export default {
         //   type: 'Music'
         // },
         {
+          path: 'test-ticket',
           label: 'Test Ticket',
           description: 'on livestreaming',
           style: 'color3',
@@ -101,10 +106,11 @@ export default {
         setTimeout(() => {
           this.tickets.push(
             {
+              path: this.labels[i].path,
               label: this.labels[i].label,
               description: `${this.labels[i].type} ,You can use this ${this.labels[i].description}`,
               style: this.labels[i].style,
-              type: 'Rank' + (i + 1)
+              type: 'Rank: ' + (i + 1)
             }
           )
         }, 60 * i + 60)
@@ -250,8 +256,8 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 40px;
-      border-radius: 50%;
+      width: 60px;
+      border-radius: 40%;
 
       &.color1 {
         background-color: rgb(135, 67, 86);

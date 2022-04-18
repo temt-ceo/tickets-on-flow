@@ -1,48 +1,69 @@
 <template>
   <section class="section">
-    <div v-if="ticketName && ticketName.length > 0" class="container">
-      <h1
-        v-if="ticketName !== '' && noticeTitle"
-        class="dispenser-notice"
-      >
-        {{ noticeTitle }}
-      </h1>
-      <p
-        v-if="bloctoWalletUser.addr && status > 2"
-        class="notice"
-      >
-        現在の{{ ticketName }}の枚数 : {{ currentTicketQuantity }}枚
-      </p>
-      <p
-        v-if="transactionScanUrl !== ''"
-        class="check-transaction"
-      >
-        <a :href="transactionScanUrl" target="_blank">Confirm Transaction</a>
-      </p>
-      <b-button
-        v-if="ticketName !== '' && !bloctoWalletUser.addr"
-        @click="walletLogin"
-      >
-        {{ ticketName }}の内容を確認する
-      </b-button>
-      <b-button
-        v-if="bloctoWalletUser.addr && status === 1"
-        @click="requestTicket"
-      >
-        申請する
-      </b-button>
-      <b-button
-        v-if="bloctoWalletUser.addr && status === 2"
-        @click="getUserTicketQuantity"
-      >
-        申請状況を確認する
-      </b-button>
-      <b-button
-        v-if="bloctoWalletUser.addr"
-        @click="flowWalletLogout"
-      >
-        Log out from Wallet
-      </b-button>
+    <div class="hero">
+      <div class="hero--overlay">
+        <div class="hero--content content">
+          <h1 class="page-title">
+            {{ ticketname ? ticketname : 'Ticket Application' }}
+          </h1>
+          <h1 class="notice">
+            {{ noticeTitle }}
+          </h1>
+          <div v-if="ticketName && ticketName.length > 0" class="container">
+            <h1
+              v-if="ticketName !== '' && noticeTitle"
+              class="dispenser-notice"
+            >
+              {{ noticeTitle }}
+            </h1>
+            <p
+              v-if="bloctoWalletUser.addr && status > 2"
+              class="notice"
+            >
+              現在の{{ ticketName }}の枚数 : {{ currentTicketQuantity }}枚
+            </p>
+            <p
+              v-if="transactionScanUrl !== ''"
+              class="check-transaction"
+            >
+              <a :href="transactionScanUrl" target="_blank">Confirm Transaction</a>
+            </p>
+            <b-button
+              v-if="ticketName !== '' && !bloctoWalletUser.addr"
+              @click="walletLogin"
+            >
+              {{ ticketName }}の内容を確認する
+            </b-button>
+            <b-button
+              v-if="bloctoWalletUser.addr && status === 1"
+              @click="requestTicket"
+            >
+              申請する
+            </b-button>
+            <b-button
+              v-if="bloctoWalletUser.addr && status === 2"
+              @click="getUserTicketQuantity"
+            >
+              申請状況を確認する
+            </b-button>
+            <b-button
+              v-if="bloctoWalletUser.addr"
+              @click="flowWalletLogout"
+            >
+              Log out from Wallet
+            </b-button>
+          </div>
+          <b-button
+            tag="nuxt-link"
+            to="/"
+            type="is-warning is-light"
+            class="to-top"
+          >
+            Back to Home
+          </b-button>
+        </div>
+      </div>
+      <section class="hero--bottom"></section>
     </div>
   </section>
 </template>
@@ -52,12 +73,12 @@ import FlowScripts from '~/cadence/scripts'
 import FlowTransactions from '~/cadence/transactions'
 
 export default {
-  name: 'TicketPage',
+  name: 'DealingBusinessAIAssistance',
   data () {
     return {
       bloctoWalletUser: {},
       dispenser: location.href.split('3000/')[1].split('/')[0],
-      user_id: null,
+      userId: null,
       ticketInfo: {},
       ticketName: '',
       ticketWhere: '',
@@ -77,6 +98,9 @@ export default {
   },
   methods: {
     async getTicketInfo () {
+      // =======DEBUG=======
+      this.dispenser = 1
+
       if (!this.ticketInfo[this.dispenser]) {
         try {
           const ticketInfo = await this.$fcl.send(
@@ -127,15 +151,11 @@ export default {
       const ret = await this.isTicketVaultReady()
       if (ret) {
         await this.getUserTicketQuantity()
+      } else if (this.ticketname) {
+        this.status = 1
+        this.noticeTitle = `${this.ticketname}を申請可能です。以下から申請ボタンを押してください。`
       } else {
-        const result = await this.isAlreadyRequested()
-        if (result) {
-          this.noticeTitle = `既に他のウォレットで${this.ticketName}を申請されています。ログアウトして再度ご確認ください。`
-          this.status = 0
-        } else {
-          this.status = 1
-          this.noticeTitle = `${this.ticketname}を申請可能です。以下から申請ボタンを押してください。`
-        }
+        this.noticeTitle = 'Ticket has not been created yet.'
       }
     },
     async isTicketVaultReady () {
@@ -153,24 +173,6 @@ export default {
         } else {
           return false
         }
-      } catch (e) {
-        console.log(e)
-        return false
-      }
-    },
-    async isAlreadyRequested () {
-      try {
-        const result = await this.$fcl.send(
-          [
-            this.$fcl.script(FlowScripts.isAlreadyRequested),
-            this.$fcl.args([
-              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
-              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
-              this.$fcl.arg(this.user_id, this.$fclArgType.UInt32)
-            ])
-          ]
-        ).then(this.$fcl.decode)
-        return result
       } catch (e) {
         console.log(e)
         return false
@@ -212,7 +214,7 @@ export default {
       const argsArr = [this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)]
       if (ret) {
         transactionCode = FlowTransactions.requestMoreTicket
-        argsArr.push(this.$fcl.arg(this.user_id, this.$fclArgType.UInt32))
+        argsArr.push(this.$fcl.arg(this.userId, this.$fclArgType.UInt32))
       } else {
         transactionCode = FlowTransactions.requestTicket
       }
@@ -251,40 +253,89 @@ export default {
 <style lang="scss" scoped>
 
 .section {
-  // text-align: center;
-  padding-bottom: 24px;
+  padding-bottom: 32px;
 
-  .container {
+  .page-title {
+    margin-top: 80px;
+    font-size: 18px;
+    color: white;
+    text-align: center;
+  }
+
+  .content {
+    margin: 10px 0 20px;
     padding: 16px;
     text-align: center;
 
-    .dispenser-notice {
+    h1 {
+      margin: 20px 0 16px;
+    }
+
+    .description {
       font-size: 16px;
     }
 
     .notice {
-      font-size: 14px;
-      margin-top: 16px;
+      font-size: 16px;
+      color: rebeccapurple;
     }
 
     .check-transaction a {
       color: purple;
-      font-size: 14px;
+      font-size: 16px;
       text-decoration: underline;
     }
 
-    button {
-      margin-top: 24px;
-      width: 95%;
-
-      .font-small span {
-        font-size: 12px;
-      }
-
-      .font-xsmall span {
-        font-size: 10px;
-      }
+    .request-btn {
+      font-weight: bold;
     }
+
+    .to-top {
+      margin-top: 24px;
+    }
+
+    .button {
+      width: 90%;
+      border-radius: 20px;
+      margin: 18px 0;
+      max-width: 400px;
+    }
+  }
+
+  .hero--video {
+    min-width: 100%;
+    min-height: 100vh;
+    z-index: 1;
+  }
+
+  .hero--overlay {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: linear-gradient(180deg, rgba(0,0,0,1), #1b1c50);
+    background-size: cover;
+    z-index: 2;
+  }
+
+  .hero--content {
+    width: 100%;
+    height: 100vh;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    color: #dadff4;
+  }
+
+  .hero--bottom {
+    width: 100%;
+    height: 50vh;
+    background-color: #1c1c1c;
+    background-image: linear-gradient(0deg, rgba(0,0,0,.3), #1b1c50);
   }
 }
 </style>

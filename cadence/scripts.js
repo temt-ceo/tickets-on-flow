@@ -69,15 +69,9 @@ pub fun main(addr: Address, dispenser_id: UInt32): [Tv11.ReceiverStruct]?? {
   `,
   hasTicketResource: `
 import Tv11 from 0xT
-pub fun main(addr: Address): &Tv11.TicketVault{T.ITicketPublic}? {
+pub fun main(addr: Address): &Tv11.TicketVault{Tv11.ITicketPublic}? {
     let account = getAccount(addr)
     return account.getCapability<&Tv11.TicketVault{Tv11.ITicketPublic}>(Tv11.TicketVaultPublicPath).borrow()
-}
-  `,
-  isAlreadyRequested: `
-import Tv11 from 0xT
-pub fun main(dispenser_id: UInt32, user_id: UInt32): Bool {
-    return Tv11.alreadyRequested(dispenser_id: dispenser_id, user_id: user_id)
 }
   `,
   getUserTicketQuantity: `
