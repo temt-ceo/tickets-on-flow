@@ -201,12 +201,53 @@
                 </option>
               </b-select>
             </b-field>
+            <b-field
+              label="7. Price per ticket ($FLOW)">
+              <b-select
+                v-model="registerPrice"
+                placeholder="Please select"
+              >
+                <option value="1">
+                  1 FLOW
+                </option>
+                <option value="0.9">
+                  0.9 FLOW
+                </option>
+                <option value="0.8">
+                  0.8 FLOW
+                </option>
+                <option value="0.7">
+                  0.7 FLOW
+                </option>
+                <option value="0.6">
+                  0.6 FLOW
+                </option>
+                <option value="0.5">
+                  0.5 FLOW
+                </option>
+                <option value="0.4">
+                  0.4 FLOW
+                </option>
+                <option value="0.3">
+                  0.3 FLOW
+                </option>
+                <option value="0.2">
+                  0.2 FLOW
+                </option>
+                <option value="0.1">
+                  0.1 FLOW
+                </option>
+                <option value="0.05">
+                  0.05 FLOW
+                </option>
+              </b-select>
+            </b-field>
             <div class="button-wrap">
               <b-button @click="$emit('closeModal')">
                 Close
               </b-button>
               <b-button
-                :disabled="!registerName || !registerWhere || !registerWhereType || !registerWhen || !registerWhenTime || !registerWhenTZ || !registerQuantity"
+                :disabled="!registerName || !registerWhere || !registerWhereType || !registerWhen || !registerWhenTime || !registerWhenTZ || !registerQuantity || !registerPrice"
                 @click="registerTicketInfo"
               >
                 Register
@@ -230,50 +271,238 @@
               </span>
             </p>
             <b-field
-              label="Name of Ticket"
-              :message="ticketInfo.name === '' ? 'Please enter a value': ''"
-              :type="{ 'is-success': ticketInfo.name != ''}"
+              label="1. Name of Ticket"
+              :message="registerName === '' ? 'Please enter a value': ''"
+              :type="{ 'is-success': registerName != '', 'is-danger': registerName === ''}"
             >
               <b-input
-                v-model="ticketInfo.name"
+                v-model="registerName"
                 placeholder="e.g. Conversation Rights"
               />
             </b-field>
             <b-field
-              label="Enter the location to be used"
-              :message="ticketInfo.where_to_use === '' ? 'Please enter a value': ''"
-              :type="{ 'is-success': ticketInfo.where_to_use != '', 'is-danger': ticketInfo.where_to_use === ''}"
+              label="2. Where tickets are used?">
+              <b-select
+                v-model="registerWhereType"
+                placeholder="Please select"
+              >
+                <option value="1">
+                  Zoom
+                </option>
+                <option value="2">
+                  Discord
+                </option>
+                <option value="3">
+                  Teams
+                </option>
+                <option value="4">
+                  YouTube
+                </option>
+                <option value="5">
+                  In this webpage
+                </option>
+                <option value="6">
+                  Real Location
+                </option>
+                <option value="7">
+                  None of them
+                </option>
+              </b-select>
+            </b-field>
+            <b-field
+              label="3. Detailed description of location"
+              :message="registerWhere === '' ? 'Please enter': ''"
+              :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
             >
               <b-input
-                v-model="ticketInfo.where_to_use"
+                v-model="registerWhere"
                 placeholder="e.g. Send invitation code to this webpage."
               />
             </b-field>
             <b-field
-              label="How many times can it be used per capita?">
+              label="4. When will the tickets be used?">
+              <b-datepicker v-model="registerWhen"
+                :first-day-of-week="1"
+                :unselectable-dates="unselectableDates"
+                placeholder="Click to select...">
+
+                <b-button
+                  label="Today"
+                  type="is-primary"
+                  icon-left="calendar-today"
+                  @click="date = new Date()" />
+
+                <b-button
+                  label="Clear"
+                  type="is-danger"
+                  icon-left="close"
+                  outlined
+                  @click="date = null" />
+              </b-datepicker>
+              <b-timepicker
+                v-model="registerWhenTime"
+                rounded
+                placeholder="Select..."
+              >
+              </b-timepicker>
+            </b-field>
+            <b-field
+              label="5. Where is your time zone?">
               <b-select
-                v-model="ticketInfo.quantity"
+                v-model="registerWhenTZ"
+                placeholder="Please select"
+              >
+                <option value="0">
+                  London(+0)
+                </option>
+                <option value="1">
+                  Berlin(+1)
+                </option>
+                <option value="2">
+                  Johannesburg(+2)
+                </option>
+                <option value="3">
+                  Baghdad(+3)
+                </option>
+                <option value="4">
+                  Dubai(+4)
+                </option>
+                <option value="5">
+                  Karachi(+5)
+                </option>
+                <option value="6">
+                  Kolkata(+5.5)
+                </option>
+                <option value="7">
+                  Dhaka(+6)
+                </option>
+                <option value="8">
+                  Jakarta(+7)
+                </option>
+                <option value="9">
+                  Shanghai(+8)
+                </option>
+                <option value="10">
+                  Tokyo(+9)
+                </option>
+                <option value="11">
+                  Sydney(+10)
+                </option>
+                <option value="12">
+                  Noumea(+11)
+                </option>
+                <option value="13">
+                  Auckland(+12)
+                </option>
+                <option value="14">
+                  Pago Pago(-11)
+                </option>
+                <option value="15">
+                  Honolulu(-10)
+                </option>
+                <option value="16">
+                  Anchorage(-9)
+                </option>
+                <option value="17">
+                  Los Angeles(-8)
+                </option>
+                <option value="18">
+                  Denver(-7)
+                </option>
+                <option value="19">
+                  Chicago(-6)
+                </option>
+                <option value="20">
+                  New York(-5)
+                </option>
+                <option value="21">
+                  Santiago(-4)
+                </option>
+                <option value="22">
+                  Buenos Aires(-3)
+                </option>
+                <option value="23">
+                  Noronha(-2)
+                </option>
+                <option value="24">
+                  Azores(-1)
+                </option>
+              </b-select>
+            </b-field>
+            <b-field
+              label="6. How many times can it be used per capita?">
+              <b-select
+                v-model="registerQuantity"
                 placeholder="Please select"
               >
                 <option value="1">
                   1 times
                 </option>
-                <option value="1">
+                <option value="2">
                   2 times
                 </option>
-                <option value="1">
+                <option value="3">
                   3 times
                 </option>
-                <option value="1">
+                <option value="4">
                   4 times
                 </option>
-                <option value="1">
+                <option value="5">
                   5 times
                 </option>
-                <option value="1">
+                <option value="10">
                   10 times
                 </option>
               </b-select>
+            </b-field>
+            <b-field
+              label="7. Price per ticket ($FLOW)">
+              <b-select
+                v-model="registerPrice"
+                placeholder="Please select"
+              >
+                <option value="1">
+                  1 FLOW
+                </option>
+                <option value="0.9">
+                  0.9 FLOW
+                </option>
+                <option value="0.8">
+                  0.8 FLOW
+                </option>
+                <option value="0.7">
+                  0.7 FLOW
+                </option>
+                <option value="0.6">
+                  0.6 FLOW
+                </option>
+                <option value="0.5">
+                  0.5 FLOW
+                </option>
+                <option value="0.4">
+                  0.4 FLOW
+                </option>
+                <option value="0.3">
+                  0.3 FLOW
+                </option>
+                <option value="0.2">
+                  0.2 FLOW
+                </option>
+                <option value="0.1">
+                  0.1 FLOW
+                </option>
+                <option value="0.05">
+                  0.05 FLOW
+                </option>
+              </b-select>
+            </b-field>
+            <b-field
+              label="8. Want to change your Twitter account name?">
+              <b-checkbox v-model="registerTwitterEdit"
+                  true-value="Yes"
+                  false-value="No">
+                  {{ registerTwitterEdit }}
+              </b-checkbox>
             </b-field>
             <div class="button-wrap">
               <b-button @click="$emit('closeModal')">
@@ -350,6 +579,9 @@ export default {
       registerWhenTZ: null,
       registerType: null, // Reserves for the future
       registerQuantity: null,
+      registerPrice: null,
+      registerTwitter: '',
+      registerTwitterEdit: 'No',
       transactionScanUrl: '',
       isCompleteRegister: false,
       isCompleteDispense: false,
@@ -378,6 +610,37 @@ export default {
           this.ticketInfo = ticketInfo
           if (ticketInfo) {
             this.isCompleteRegister = true
+            const name = ticketInfo.where_to_use.split('||@')
+            if (name.length === 2) {
+              this.registerName = name[0]
+              this.registerTwitter = name[1]
+            } else if (name.length > 2) {
+              this.registerName = name[0]
+              this.registerTwitter = ''
+              for (let i = 1; i < name.length; i++) {
+                this.registerTwitter = this.registerTwitter + (i === 1 ? '' : '||@') + name[i]
+              }
+              this.registerTwitter = name[1]
+            }
+            const where = ticketInfo.where_to_use.split('||')
+            if (where.length === 2) {
+              this.registerWhereType = where[0]
+              this.registerWhere = where[1]
+            } else if (where.length > 2) {
+              this.registerWhereType = where[0]
+              this.registerWhere = ''
+              for (let i = 1; i < where.length; i++) {
+                this.registerWhere = this.registerWhere + (i === 1 ? '' : '||') + where[i]
+              }
+            }
+            const when = ticketInfo.when_to_use.split('||')
+            if (when.length === 3) {
+              this.registerWhenTZ = when[0]
+              this.registerWhen = when[1]
+              this.registerWhenTime = when[2]
+            }
+            this.registerQuantity = this.ticketInfo.quantity
+            this.registerType = this.ticketInfo.type
           }
           await this.confirmRequesters()
         } catch (e) {
@@ -387,25 +650,34 @@ export default {
         await this.confirmRequesters()
       }
     },
-    async registerTicketInfo () {
+    registerTicketInfo () {
       this.registerType = 0 // Reserves for the future
-      if (this.isCompleteRegister) {
-        this.registerName = this.ticketInfo.name
-        this.registerWhere = this.ticketInfo.where_to_use
-        this.registerWhen = this.ticketInfo.when_to_use
-        this.registerQuantity = parseInt(this.ticketInfo.quantity)
-        this.$buefy.dialog.confirm({
-          message: 'Once registered, a ticket application button will appear on your registered page path. If you are sure, please press "Approve" on the pop-up that will appear after this.',
-          onConfirm: addTicketInfo
+      this.registerWhere = this.registerWhereType + '||' + this.registerWhere
+      this.registerWhen = this.registerWhenTZ + '||' + this.registerWhen + '||' + this.registerWhenTime
+      this.registerQuantity = parseInt(this.registerQuantity)
+      if (this.isCompleteRegister === false || this.registerTwitterEdit === 'Yes') {
+        this.$buefy.dialog.prompt({
+          message: 'Enter your Twitter account detailing your ticket use.',
+          inputAttrs: {
+            type: 'text',
+            placeholder: 'e.g. @official_ticket',
+            maxlength: 40
+          },
+          confirmText: 'Next',
+          trapFocus: true,
+          onConfirm: (value) => {
+            if (value.indexOf('@') === 0) {
+              value = value.substr(1)
+            }
+            this.registerName = this.registerName + '||@' + value
+            this.$buefy.dialog.confirm({
+              message: 'Once registered, a ticket application button will appear on your registered page path. If you are sure, please press "Approve" on the pop-up that will appear after this.',
+              onConfirm: this.addTicketInfo
+            })
+          }
         })
       } else {
-        this.registerWhere = this.registerWhereType + '|' + this.registerWhere
-        this.registerWhen = this.registerWhenTZ + '|' + this.registerWhen + '|' + registerWhenTime
-        this.registerQuantity = parseInt(this.registerQuantity)
-        this.$buefy.dialog.confirm({
-          message: 'Once registered, a ticket application button will appear on your registered page path. If you are sure, please press "Approve" on the pop-up that will appear after this.',
-          onConfirm: addTicketInfo
-        })
+        this.addTicketInfo()
       }
     },
     async addTicketInfo () {

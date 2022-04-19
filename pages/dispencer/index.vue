@@ -237,12 +237,18 @@ export default {
           message: 'What path would you like for your page? (https://tickets-on-flow.web.app/XXXXX)',
           inputAttrs: {
             type: 'text',
-            placeholder: 'e.g. cool-ticket-page',
+            placeholder: 'e.g. hello-ticket',
             maxlength: 20
           },
           confirmText: 'Next',
           trapFocus: true,
           onConfirm: (value) => {
+            const re = /^[a-zA-Z0-9-_]*$/
+            if (value.replace(re, '') !== '') {
+              this.$buefy.dialog.alert('Contains unavailable characters.')
+              return
+            }
+
             domain = value
             toast1 = this.$buefy.toast.open({
               indefinite: true,
@@ -259,33 +265,36 @@ export default {
               confirmText: 'Request',
               trapFocus: true,
               closeOnConfirm: false,
-              onConfirm: async (email, { close }) => {
-                this.$buefy.dialog.alert('This process requires 0.5$FLOW. Press approve on the next dialog that appears.')
-                const transactionId = await this.$fcl.send(
-                  [
-                    this.$fcl.transaction(FlowTransactions.requestDispenser),
-                    this.$fcl.args([
-                      this.$fcl.arg(domain, this.$fclArgType.String),
-                      this.$fcl.arg(email, this.$fclArgType.String),
-                      this.$fcl.arg(0.5, this.$fclArgType.UFix64)
-                    ]),
-                    this.$fcl.payer(this.$fcl.authz),
-                    this.$fcl.proposer(this.$fcl.authz),
-                    this.$fcl.authorizations([this.$fcl.authz]),
-                    this.$fcl.limit(9999)
-                  ]
-                ).then(this.$fcl.decode)
-                toast2 = this.$buefy.toast.open({
-                  indefinite: true,
-                  message: 'Success. Your request has been sent and you will receive an email within 24 hours that your request has been processed.'
+              onConfirm: (email, { close }) => {
+                this.$buefy.dialog.confirm({
+                  message: 'This process requires 0.5$FLOW. Press approve on the next dialog that appears.',
+                  onConfirm: async () => {
+                    const transactionId = await this.$fcl.send(
+                      [
+                        this.$fcl.transaction(FlowTransactions.requestDispenser),
+                        this.$fcl.args([
+                          this.$fcl.arg(domain, this.$fclArgType.String),
+                          this.$fcl.arg(email, this.$fclArgType.String),
+                          this.$fcl.arg(0.5, this.$fclArgType.UFix64)
+                        ]),
+                        this.$fcl.payer(this.$fcl.authz),
+                        this.$fcl.proposer(this.$fcl.authz),
+                        this.$fcl.authorizations([this.$fcl.authz]),
+                        this.$fcl.limit(9999)
+                      ]
+                    ).then(this.$fcl.decode)
+                    toast2 = this.$buefy.toast.open({
+                      indefinite: true,
+                      message: 'Success. Your request has been sent and you will receive an email within 24 hours that your request has been processed.'
+                    })
+                    this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+                    this.noticeTitle = 'Your application for the ticket distribution function has been completed. Please wait until you receive an email to confirm that the feature has been distributed.'
+                    close()
+                    setTimeout(() => {
+                      toast2.close()
+                    }, 2000)
+                  }
                 })
-                this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-                // this.hasDispenser = await this.hasTicketDispenser()
-                this.noticeTitle = 'チケット配布機能の申請を完了しました。この画面のスクリーンショットを保管しておくことをお勧めします。'
-                close()
-                setTimeout(() => {
-                  toast2.close()
-                }, 2000)
               },
               onCancel: () => {
                 toast1?.close()
@@ -370,7 +379,7 @@ export default {
   }
 
   .content {
-    margin: 10px 0 20px;
+    margin-bottom: 25px;
     padding: 16px;
     text-align: center;
 
