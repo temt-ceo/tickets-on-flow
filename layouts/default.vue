@@ -55,13 +55,15 @@
         <div class="navbar-burger">
           <b-dropdown aria-role="list">
             <template #trigger>
-              <span />
-              <span />
-              <span />
+              <div class="hamburger">
+                <span />
+                <span />
+                <span />
+              </div>
             </template>
             <nuxt-link to="/dispencer/" >
               <b-dropdown-item aria-role="listitem">
-                Ticket Creation
+                Create your original ticket
               </b-dropdown-item>
             </nuxt-link>
             <b-dropdown-item aria-role="listitem">
@@ -72,7 +74,6 @@
               >
               </b-icon>
             </b-dropdown-item>
-            <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
           </b-dropdown>
         </div>
       </div>
@@ -125,25 +126,36 @@ export default {
   .navbar-item img {
       max-height: 3.25rem;
   }
-  .navbar-burger {
-    margin-top: 4px;
-  }
 
-  .dropdown-trigger {
-    margin: 25px;
+  .navbar-burger {
+    margin-top: 5px;
   }
 
   .dropdown-menu {
     left: auto;
     right: 20%;
 
-    .dropdown-item {
-      .icon {
-        top: calc(50% - 13px);
-        left: 25px;
-        height: 0;
+    .dropdown-content {
+      padding: 14px 0 20px;
+
+      .dropdown-item {
+        font-size: 17px;
+        font-weight: bold;
+        font-style: italic;
+        color: darkgreen;
+
+        .icon {
+          top: calc(50% - 13px);
+          left: 15px;
+          height: 0;
+        }
       }
     }
+  }
+
+  .hamburger {
+    min-width: 50px;
+    min-height: 50px;
   }
 }
 

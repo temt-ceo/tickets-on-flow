@@ -2,7 +2,7 @@
   <div class="modal-card">
     <section class="modal-card-body">
       <div class="text-wrap">
-        Ticket Distribution Management
+        Ticket Setting
       </div>
       <div class="contents">
         <div class="nft-list-container">
@@ -18,54 +18,83 @@
           >
             <b-field
               label="Name of Ticket"
-              :message="refisterName === '' ? 'Please enter a value': ''"
-              :type="{ 'is-success': refisterName != '', 'is-danger': refisterName === ''}"
+              :message="registerName === '' ? 'Please enter a value': ''"
+              :type="{ 'is-success': registerName != '', 'is-danger': registerName === ''}"
             >
               <b-input
-                v-model="refisterName"
+                v-model="registerName"
                 placeholder="e.g. Conversation Rights"
               />
             </b-field>
             <b-field
-              label="Enter the location to be used"
-              :message="refisterWhere === '' ? 'Please enter a value': ''"
-              :type="{ 'is-success': refisterWhere != '', 'is-danger': refisterWhere === ''}"
-            >
-              <b-input
-                v-model="refisterWhere"
-                placeholder="e.g. on this website, on Live Streaming"
-              />
-            </b-field>
-            <b-field
-              label="How many times can it be used per capita?">
+              label="Where tickets are used?">
               <b-select
-                v-model="refisterQuantity"
+                v-model="registerWhereType"
                 placeholder="Please select"
               >
                 <option value="1">
-                  1 times
+                  Zoom
                 </option>
                 <option value="2">
-                  2 times
+                  Discord
                 </option>
                 <option value="3">
-                  3 times
+                  Teams
                 </option>
                 <option value="4">
-                  4 times
+                  YouTube
                 </option>
                 <option value="5">
-                  5 times
+                  In this webpage
                 </option>
-                <option value="10">
-                  10 times
+                <option value="6">
+                  Real Location
+                </option>
+                <option value="7">
+                  None of them
                 </option>
               </b-select>
             </b-field>
             <b-field
+              label="Detailed description of location"
+              :message="registerWhere === '' ? 'Please enter': ''"
+              :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
+            >
+              <b-input
+                v-model="registerWhere"
+                placeholder="e.g. on this website, on Live Streaming"
+              />
+            </b-field>
+            <b-field
+              label="When will the tickets be used?">
+              <b-datepicker v-model="registerWhen"
+                :first-day-of-week="1"
+                :unselectable-dates="unselectableDates"
+                placeholder="Click to select...">
+
+                <b-button
+                  label="Today"
+                  type="is-primary"
+                  icon-left="calendar-today"
+                  @click="date = new Date()" />
+
+                <b-button
+                  label="Clear"
+                  type="is-danger"
+                  icon-left="close"
+                  outlined
+                  @click="date = null" />
+              </b-datepicker>
+              <b-timepicker
+                rounded
+                placeholder="Select..."
+              >
+              </b-timepicker>
+            </b-field>
+            <b-field
               label="How many times can it be used per capita?">
               <b-select
-                v-model="refisterType"
+                v-model="registerQuantity"
                 placeholder="Please select"
               >
                 <option value="1">
@@ -93,7 +122,7 @@
                 Close
               </b-button>
               <b-button
-                :disabled="refisterName === '' || refisterWhere === '' || refisterWhen === '' || refisterQuantity === null || refisterType === null"
+                :disabled="!registerName || !registerWhere || !registerWhen || !registerWhereType || !registerWhenTZ || !registerQuantity"
                 @click="registerTicketInfo"
               >
                 Register
@@ -229,11 +258,13 @@ export default {
   data () {
     return {
       ticketInfo: null,
-      refisterName: '',
-      refisterWhere: '',
-      refisterWhen: '',
-      refisterType: null,
-      refisterQuantity: null,
+      registerName: '',
+      registerWhereType: null,
+      registerWhere: '',
+      registerWhenTZ: null,
+      registerWhen: new Date(),
+      registerType: null, // Reserves for the future
+      registerQuantity: null,
       transactionScanUrl: '',
       isCompleteRegister: false,
       isCompleteDispense: false,
@@ -272,15 +303,17 @@ export default {
       }
     },
     async registerTicketInfo () {
+      this.registerType = 0 // Reserves for the future
       if (this.isCompleteRegister) {
-        this.refisterName = this.ticketInfo.name
-        this.refisterType = this.ticketInfo.type
-        this.refisterWhere = this.ticketInfo.where_to_use
-        this.refisterWhen = this.ticketInfo.when_to_use
-        this.refisterQuantity = parseInt(this.ticketInfo.quantity)
+        this.registerName = this.ticketInfo.name
+        this.registerWhere = this.ticketInfo.where_to_use
+        this.registerWhen = this.ticketInfo.when_to_use
+        this.registerQuantity = parseInt(this.ticketInfo.quantity)
         window.alert('この後表示されるポップアップで承認を押して下さい。')
       } else {
-        this.refisterQuantity = parseInt(this.refisterQuantity)
+        this.registerWhere = this.registerWhereType + '|' + this.registerWhere
+        this.registerWhen = this.registerWhenTZ + '|' + this.registerWhen
+        this.registerQuantity = parseInt(this.registerQuantity)
         const ret = window.confirm('登録を行いますと、チケット申請ボタンが表示されます。表示してよろしければこの後表示されるポップアップで承認を押して下さい。')
         if (!ret) {
           return
@@ -292,11 +325,11 @@ export default {
             this.$fcl.transaction(FlowTransactions.addTicketInfo),
             this.$fcl.args([
               this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
-              this.$fcl.arg(this.refisterType, this.$fclArgType.UInt8),
-              this.$fcl.arg(this.refisterName, this.$fclArgType.String),
-              this.$fcl.arg(this.refisterWhere, this.$fclArgType.String),
-              this.$fcl.arg(this.refisterWhen, this.$fclArgType.String),
-              this.$fcl.arg(this.refisterQuantity, this.$fclArgType.UInt8)
+              this.$fcl.arg(this.registerType, this.$fclArgType.UInt8),
+              this.$fcl.arg(this.registerName, this.$fclArgType.String),
+              this.$fcl.arg(this.registerWhere, this.$fclArgType.String),
+              this.$fcl.arg(this.registerWhen, this.$fclArgType.String),
+              this.$fcl.arg(this.registerQuantity, this.$fclArgType.UInt8)
             ]),
             this.$fcl.payer(this.$fcl.authz),
             this.$fcl.proposer(this.$fcl.authz),
@@ -390,7 +423,7 @@ export default {
   .modal-card-body {
 
     .text-wrap {
-      margin: 16px;
+      margin: 4px;
 
       p {
         color: #222;

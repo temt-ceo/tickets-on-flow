@@ -12,7 +12,7 @@
             {{ ticketUsedMessage }}
           </b-notification>
           <h1 class="page-title">
-            Ticket Distribution Management
+            Ticket Distribution
           </h1>
           <div class="content">
             <p v-if="bloctoWalletUser.addr" class="description">
@@ -29,7 +29,7 @@
               @click="showInputModal = true"
               type="is-link is-light"
             >
-              Distribute tickets
+              Distribute original tickets
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
@@ -45,7 +45,7 @@
               type="is-link is-light"
               class="request-btn"
             >
-              Application for ticket distribution function
+              Apply for ticket distribution function
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
@@ -69,6 +69,7 @@
               Log out from Wallet
             </b-button>
             <b-button
+              v-if="!bloctoWalletUser.addr"
               tag="nuxt-link"
               to="/"
               type="is-warning is-light"
@@ -165,15 +166,15 @@ export default {
           this.hasDispenser = await this.hasTicketDispenser()
 
           if (this.hasDispenser) {
-            this.noticeTitle = 'Now you can distribute tickets!'
+            this.noticeTitle = 'Now you can distribute your original tickets!'
           } else {
-            this.noticeTitle = '現在、チケット配布機能の申請中です'
+            this.noticeTitle = 'Currently applying for ticket distribution functionality.'
           }
         } else {
-          this.noticeTitle = 'チケット配布機能の申請が必要です。配布機能の申請を押して下さい'
+          this.noticeTitle = 'You need to apply for the ticket distribution function. Please press Apply for distribution function.'
         }
       } else {
-        this.noticeTitle = 'チケット配布を行う方のウォレットにログインして下さい'
+        this.noticeTitle = 'Please log in to the wallet of the person who will distribute the tickets.'
       }
     },
     async hasTicketDispenserVault () {
@@ -362,8 +363,9 @@ export default {
   padding-bottom: 32px;
 
   .page-title {
-    margin-top: 80px;
-    font-size: 18px;
+    margin-top: 70px;
+    font-size: 24px;
+    color: mediumspringgreen;
     text-align: center;
   }
 
@@ -395,15 +397,15 @@ export default {
       font-weight: bold;
     }
 
-    .to-top {
-      margin-top: 24px;
-    }
-
     .button {
       width: 90%;
       border-radius: 20px;
       margin: 18px 0;
       max-width: 400px;
+
+      &.to-top {
+        margin-top: 34px;
+      }
     }
   }
 
