@@ -17,7 +17,7 @@
             class="text-wrap"
           >
             <b-field
-              label="Name of Ticket"
+              label="1. Name of Ticket"
               :message="registerName === '' ? 'Please enter a value': ''"
               :type="{ 'is-success': registerName != '', 'is-danger': registerName === ''}"
             >
@@ -27,7 +27,7 @@
               />
             </b-field>
             <b-field
-              label="Where tickets are used?">
+              label="2. Where tickets are used?">
               <b-select
                 v-model="registerWhereType"
                 placeholder="Please select"
@@ -56,17 +56,17 @@
               </b-select>
             </b-field>
             <b-field
-              label="Detailed description of location"
+              label="3. Detailed description of location"
               :message="registerWhere === '' ? 'Please enter': ''"
               :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
             >
               <b-input
                 v-model="registerWhere"
-                placeholder="e.g. on this website, on Live Streaming"
+                placeholder="e.g. Send invitation code to this webpage."
               />
             </b-field>
             <b-field
-              label="When will the tickets be used?">
+              label="4. When will the tickets be used?">
               <b-datepicker v-model="registerWhen"
                 :first-day-of-week="1"
                 :unselectable-dates="unselectableDates"
@@ -86,13 +86,97 @@
                   @click="date = null" />
               </b-datepicker>
               <b-timepicker
+                v-model="registerWhenTime"
                 rounded
                 placeholder="Select..."
               >
               </b-timepicker>
             </b-field>
             <b-field
-              label="How many times can it be used per capita?">
+              label="5. Where is your time zone?">
+              <b-select
+                v-model="registerWhenTZ"
+                placeholder="Please select"
+              >
+                <option value="0">
+                  London(+0)
+                </option>
+                <option value="1">
+                  Berlin(+1)
+                </option>
+                <option value="2">
+                  Johannesburg(+2)
+                </option>
+                <option value="3">
+                  Baghdad(+3)
+                </option>
+                <option value="4">
+                  Dubai(+4)
+                </option>
+                <option value="5">
+                  Karachi(+5)
+                </option>
+                <option value="6">
+                  Kolkata(+5.5)
+                </option>
+                <option value="7">
+                  Dhaka(+6)
+                </option>
+                <option value="8">
+                  Jakarta(+7)
+                </option>
+                <option value="9">
+                  Shanghai(+8)
+                </option>
+                <option value="10">
+                  Tokyo(+9)
+                </option>
+                <option value="11">
+                  Sydney(+10)
+                </option>
+                <option value="12">
+                  Noumea(+11)
+                </option>
+                <option value="13">
+                  Auckland(+12)
+                </option>
+                <option value="14">
+                  Pago Pago(-11)
+                </option>
+                <option value="15">
+                  Honolulu(-10)
+                </option>
+                <option value="16">
+                  Anchorage(-9)
+                </option>
+                <option value="17">
+                  Los Angeles(-8)
+                </option>
+                <option value="18">
+                  Denver(-7)
+                </option>
+                <option value="19">
+                  Chicago(-6)
+                </option>
+                <option value="20">
+                  New York(-5)
+                </option>
+                <option value="21">
+                  Santiago(-4)
+                </option>
+                <option value="22">
+                  Buenos Aires(-3)
+                </option>
+                <option value="23">
+                  Noronha(-2)
+                </option>
+                <option value="24">
+                  Azores(-1)
+                </option>
+              </b-select>
+            </b-field>
+            <b-field
+              label="6. How many times can it be used per capita?">
               <b-select
                 v-model="registerQuantity"
                 placeholder="Please select"
@@ -122,7 +206,7 @@
                 Close
               </b-button>
               <b-button
-                :disabled="!registerName || !registerWhere || !registerWhen || !registerWhereType || !registerWhenTZ || !registerQuantity"
+                :disabled="!registerName || !registerWhere || !registerWhereType || !registerWhen || !registerWhenTime || !registerWhenTZ || !registerQuantity"
                 @click="registerTicketInfo"
               >
                 Register
@@ -162,7 +246,7 @@
             >
               <b-input
                 v-model="ticketInfo.where_to_use"
-                placeholder="e.g. on this website, on Live Streaming"
+                placeholder="e.g. Send invitation code to this webpage."
               />
             </b-field>
             <b-field
@@ -261,8 +345,9 @@ export default {
       registerName: '',
       registerWhereType: null,
       registerWhere: '',
-      registerWhenTZ: null,
       registerWhen: new Date(),
+      registerWhenTime: null,
+      registerWhenTZ: null,
       registerType: null, // Reserves for the future
       registerQuantity: null,
       transactionScanUrl: '',
@@ -309,16 +394,21 @@ export default {
         this.registerWhere = this.ticketInfo.where_to_use
         this.registerWhen = this.ticketInfo.when_to_use
         this.registerQuantity = parseInt(this.ticketInfo.quantity)
-        window.alert('この後表示されるポップアップで承認を押して下さい。')
+        this.$buefy.dialog.confirm({
+          message: 'Once registered, a ticket application button will appear on your registered page path. If you are sure, please press "Approve" on the pop-up that will appear after this.',
+          onConfirm: addTicketInfo
+        })
       } else {
         this.registerWhere = this.registerWhereType + '|' + this.registerWhere
-        this.registerWhen = this.registerWhenTZ + '|' + this.registerWhen
+        this.registerWhen = this.registerWhenTZ + '|' + this.registerWhen + '|' + registerWhenTime
         this.registerQuantity = parseInt(this.registerQuantity)
-        const ret = window.confirm('登録を行いますと、チケット申請ボタンが表示されます。表示してよろしければこの後表示されるポップアップで承認を押して下さい。')
-        if (!ret) {
-          return
-        }
+        this.$buefy.dialog.confirm({
+          message: 'Once registered, a ticket application button will appear on your registered page path. If you are sure, please press "Approve" on the pop-up that will appear after this.',
+          onConfirm: addTicketInfo
+        })
       }
+    },
+    async addTicketInfo () {
       try {
         const transactionId = await this.$fcl.send(
           [
@@ -456,6 +546,11 @@ export default {
       .button-wrap {
         margin-top: 15px;
         text-align: center;
+
+        & .button {
+          border-radius: 30px;
+          border-color: revert;
+        }
       }
 
       .important {
