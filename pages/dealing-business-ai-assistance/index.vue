@@ -4,18 +4,18 @@
       <div class="hero--overlay">
         <div class="hero--content content">
           <h1 class="page-title">
-            {{ ticketname ? ticketname : 'Ticket Application' }}
+            {{ ticketName ? ticketName : 'Ticket Application' }}
           </h1>
           <h1 class="notice">
-            {{ noticeTitle }}
+            Event Name: {{ ticketName }}
           </h1>
-          <div v-if="ticketName && ticketName.length > 0" class="container">
-            <h1
-              v-if="ticketName !== '' && noticeTitle"
-              class="dispenser-notice"
-            >
-              {{ noticeTitle }}
-            </h1>
+          <h1 class="notice">
+            Detail: {{ ticketWhere }}
+          </h1>
+          <h1 class="notice">
+            More Information: <a :href="twitter" target="_blank">please click here</a>
+          </h1>
+          <div v-if="ticketName && ticketName.length > 0">
             <p
               v-if="bloctoWalletUser.addr && status > 2"
               class="notice"
@@ -30,40 +30,53 @@
             </p>
             <b-button
               v-if="ticketName !== '' && !bloctoWalletUser.addr"
+              type="is-link is-light"
               @click="walletLogin"
             >
-              {{ ticketName }}の内容を確認する
+              Sign up for {{ ticketName }}
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && status === 1"
+              type="is-link is-light"
               @click="requestTicket"
             >
-              申請する
+              Apply for Ticket
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && status === 2"
+              type="is-danger is-light"
               @click="getUserTicketQuantity"
             >
               申請状況を確認する
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr"
+              type="is-link is-light"
               @click="flowWalletLogout"
             >
               Log out from Wallet
             </b-button>
+            <b-button
+              tag="nuxt-link"
+              to="/"
+              type="is-warning is-light"
+              class="to-top"
+            >
+              Return to TOP
+            </b-button>
           </div>
-          <b-button
-            tag="nuxt-link"
-            to="/"
-            type="is-warning is-light"
-            class="to-top"
-          >
-            Back to Home
-          </b-button>
+          <div v-if="!ticketName">
+            <b-button
+              tag="nuxt-link"
+              to="/"
+              type="is-warning is-light"
+              class="to-top"
+            >
+              Return to TOP
+            </b-button>
+          </div>
         </div>
       </div>
-      <section class="hero--bottom"></section>
     </div>
   </section>
 </template>
@@ -83,6 +96,7 @@ export default {
       ticketName: '',
       ticketWhere: '',
       ticketQuantity: 0,
+      twitter: '',
       currentTicketQuantity: 0,
       status: 0,
       transactionScanUrl: '',
@@ -116,23 +130,43 @@ export default {
             this.ticketName = ''
           } else {
             this.ticketInfo = ticketInfo
-            this.ticketName = this.ticketInfo[0].name
-            this.ticketWhere = this.ticketInfo[0].where_to_use
-            this.ticketQuantity = this.ticketInfo[0].quantity
+            const ticketName = this.ticketInfo.name.split('||')
+            this.ticketName = ticketName[0]
+            this.twitter = 'https://twitter.com/' + ticketName[1]
+            const where = this.ticketInfo.where_to_use.split('||')
+            if (where.length === 2) {
+              this.ticketWhere = where[1]
+            } else if (where.length > 2) {
+              this.ticketWhere = ''
+              for (let i = 1; i < where.length; i++) {
+                this.ticketWhere = this.ticketWhere + (i === 1 ? '' : '||') + where[i]
+              }
+            }
+            this.ticketQuantity = this.ticketInfo.quantity
           }
         } catch (e) {
           console.log(e)
         }
       } else {
-        this.ticketName = this.ticketInfo[0].name
-        this.ticketWhere = this.ticketInfo[0].where_to_use
-        this.ticketQuantity = this.ticketInfo[0].quantity
+        const ticketName = this.ticketInfo.name.split('||@')
+        this.ticketName = ticketName[0]
+        this.twitter = ticketName[1]
+        const where = this.ticketInfo.where_to_use.split('||')
+        if (where.length === 2) {
+          this.ticketWhere = where[1]
+        } else if (where.length > 2) {
+          this.ticketWhere = ''
+          for (let i = 1; i < where.length; i++) {
+            this.ticketWhere = this.ticketWhere + (i === 1 ? '' : '||') + where[i]
+          }
+        }
+        this.ticketQuantity = this.ticketInfo.quantity
       }
       if (this.ticketInfo.name !== '') {
-        this.noticeTitle = `${this.ticketWhere}で使える${this.ticketName}が${this.dispenser}によって提供されています。`
+        this.noticeTitle = `${this.ticketName}が${this.twitter}によって提供されています。`
       }
     },
-    async flowWalletLogin () {
+    async walletLogin () {
       if (!this.bloctoWalletUser.addr) {
         alert('チケットを管理するウォレットに接続します。まだ作成していない場合は新規での作成をお願いします。')
         await this.$fcl.authenticate()
@@ -151,9 +185,9 @@ export default {
       const ret = await this.isTicketVaultReady()
       if (ret) {
         await this.getUserTicketQuantity()
-      } else if (this.ticketname) {
+      } else if (this.ticketName) {
         this.status = 1
-        this.noticeTitle = `${this.ticketname}を申請可能です。以下から申請ボタンを押してください。`
+        this.noticeTitle = `${this.ticketName}を申請可能です。以下から申請ボタンを押してください。`
       } else {
         this.noticeTitle = 'Ticket has not been created yet.'
       }
@@ -266,6 +300,7 @@ export default {
     margin: 10px 0 20px;
     padding: 16px;
     text-align: center;
+    max-width: 800px;
 
     h1 {
       margin: 20px 0 16px;
@@ -290,15 +325,14 @@ export default {
       font-weight: bold;
     }
 
-    .to-top {
-      margin-top: 24px;
-    }
-
     .button {
       width: 90%;
       border-radius: 20px;
       margin: 18px 0;
       max-width: 400px;
+      &.to-top {
+        margin-top: 34px;
+      }
     }
   }
 

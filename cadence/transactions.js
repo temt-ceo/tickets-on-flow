@@ -34,11 +34,11 @@ transaction(addr: Address) {
 }  `,
   addTicketInfo: `
 import Tv12 from 0xT
-transaction(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8) {
+transaction(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8, price: UFix64) {
     prepare(signer: AuthAccount) {
         let dispenserVault = signer.borrow<&Tv12.DispenserVault>(from: /storage/Tv12DispenserVault)
             ?? panic("Could not borrow reference to the Owner's DispenserVault.")
-        dispenserVault.addTicketInfos(dispenser_id: dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, quantity: quantity)
+        dispenserVault.addTicketInfos(dispenser_id: dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, quantity: quantity, price: price)
     }
 
     execute {

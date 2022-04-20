@@ -29,7 +29,7 @@
               @click="showInputModal = true"
               type="is-link is-light"
             >
-              Distribute original tickets
+              Distribute your original tickets
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
@@ -40,7 +40,7 @@
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && !hasDispenser"
-              :disabled="hasDispenserVault"
+              :disabled="hasDispenserVault || isApplied"
               @click="requestDispenser"
               type="is-link is-light"
               class="request-btn"
@@ -133,7 +133,8 @@ export default {
       ticketUsedMessage: '',
       showInputModal: false,
       showConfirmModal: false,
-      showConfirmPayModal: false
+      showConfirmPayModal: false,
+      isApplied: false
     }
   },
   computed: {
@@ -234,11 +235,11 @@ export default {
       try {
         let domain = null
         this.$buefy.dialog.prompt({
-          message: 'What path would you like for your page? (https://tickets-on-flow.web.app/XXXXX)',
+          message: 'What path would you like for your page? (https://tickets-on-flow.web.app/XXXXX) (max:30 length)',
           inputAttrs: {
             type: 'text',
             placeholder: 'e.g. hello-ticket',
-            maxlength: 20
+            maxlength: 30
           },
           confirmText: 'Next',
           trapFocus: true,
@@ -255,20 +256,23 @@ export default {
               message: `Your path will become: https://tickets-on-flow.web.app/${domain}`
             })
             this.$buefy.dialog.prompt({
-              message: 'Enter your email address (please enter a submail as it will be stored in the blockchain)',
+              message: 'Enter your email address (please enter a sub email as it will be stored in the blockchain)',
               inputAttrs: {
                 type: 'text',
                 placeholder: 'yourname@example.com',
                 value: '',
                 maxlength: 40
               },
-              confirmText: 'Request',
+              confirmText: 'Next',
               trapFocus: true,
               closeOnConfirm: false,
               onConfirm: (email, { close }) => {
+                toast1?.close()
                 this.$buefy.dialog.confirm({
-                  message: 'This process requires 0.5$FLOW. Press approve on the next dialog that appears.',
+                  message: 'This process requires 0.5$FLOW. <br>Please press "Approve" on the pop-up that will appear after this.',
+                  confirmText: 'Agree',
                   onConfirm: async () => {
+                    close()
                     const transactionId = await this.$fcl.send(
                       [
                         this.$fcl.transaction(FlowTransactions.requestDispenser),
@@ -288,11 +292,12 @@ export default {
                       message: 'Success. Your request has been sent and you will receive an email within 24 hours that your request has been processed.'
                     })
                     this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-                    this.noticeTitle = 'Your application for the ticket distribution function has been completed. Please wait until you receive an email to confirm that the feature has been distributed.'
+                    this.noticeTitle = 'Your application for the ticket distribution function has been completed. Please wait until you receive an email that tells the feature has been distributed.'
+                    this.isApplied = true
                     close()
                     setTimeout(() => {
                       toast2.close()
-                    }, 2000)
+                    }, 6000)
                   }
                 })
               },
@@ -382,6 +387,7 @@ export default {
     margin-bottom: 25px;
     padding: 16px;
     text-align: center;
+    max-width: 800px;
 
     h1 {
       margin: 20px 0 16px;

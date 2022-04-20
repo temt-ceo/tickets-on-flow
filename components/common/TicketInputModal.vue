@@ -1,28 +1,29 @@
 <template>
   <div class="modal-card">
     <section class="modal-card-body">
-      <div class="text-wrap">
-        Ticket Setting
-      </div>
       <div class="contents">
+        <div class="text-wrap title">
+          Setting
+        </div>
         <div class="nft-list-container">
           <p
             v-if="transactionScanUrl !== ''"
             class="check-transaction"
           >
-            <a :href="transactionScanUrl" target="_blank">Confirm Transaction</a>
+            <a :href="transactionScanUrl" target="_blank" class="scanlink">Confirm Transaction</a>
           </p>
           <div
             v-if="showFlag && !ticketInfo && !isCompleteRegister"
             class="text-wrap"
           >
             <b-field
-              label="1. Name of Ticket"
+              label="1. Ticket Name"
               :message="registerName === '' ? 'Please enter a value': ''"
               :type="{ 'is-success': registerName != '', 'is-danger': registerName === ''}"
             >
               <b-input
                 v-model="registerName"
+                maxlength="40"
                 placeholder="e.g. Conversation Rights"
               />
             </b-field>
@@ -30,7 +31,7 @@
               label="2. Where tickets are used?">
               <b-select
                 v-model="registerWhereType"
-                placeholder="Please select"
+                placeholder="Select..."
               >
                 <option value="1">
                   Zoom
@@ -62,6 +63,7 @@
             >
               <b-input
                 v-model="registerWhere"
+                maxlength="40"
                 placeholder="e.g. Send invitation code to this webpage."
               />
             </b-field>
@@ -69,7 +71,6 @@
               label="4. When will the tickets be used?">
               <b-datepicker v-model="registerWhen"
                 :first-day-of-week="1"
-                :unselectable-dates="unselectableDates"
                 placeholder="Click to select...">
 
                 <b-button
@@ -86,7 +87,7 @@
                   @click="date = null" />
               </b-datepicker>
               <b-timepicker
-                v-model="registerWhenTime"
+                v-model="registerWhen"
                 rounded
                 placeholder="Select..."
               >
@@ -96,7 +97,7 @@
               label="5. Where is your time zone?">
               <b-select
                 v-model="registerWhenTZ"
-                placeholder="Please select"
+                placeholder="Select..."
               >
                 <option value="0">
                   London(+0)
@@ -179,7 +180,7 @@
               label="6. How many times can it be used per capita?">
               <b-select
                 v-model="registerQuantity"
-                placeholder="Please select"
+                placeholder="Select..."
               >
                 <option value="1">
                   1 times
@@ -205,7 +206,7 @@
               label="7. Price per ticket ($FLOW)">
               <b-select
                 v-model="registerPrice"
-                placeholder="Please select"
+                placeholder="Select..."
               >
                 <option value="1">
                   1 FLOW
@@ -247,7 +248,7 @@
                 Close
               </b-button>
               <b-button
-                :disabled="!registerName || !registerWhere || !registerWhereType || !registerWhen || !registerWhenTime || !registerWhenTZ || !registerQuantity || !registerPrice"
+                :disabled="!registerName || !registerWhere || !registerWhereType || !registerWhen || !registerWhenTZ || !registerQuantity || !registerPrice"
                 @click="registerTicketInfo"
               >
                 Register
@@ -259,7 +260,7 @@
               Tickets registered.<br>
               It takes about 10 seconds to complete registration.<br>
               After clicking "Confirm Transaction" and seeing the word SEALED on the screen,<br>
-              the ticket application button will appear on the ticket application page.
+              the ticket application button will appear on the ticket page.
             </p>
           </div>
           <div v-if="showFlag && ticketInfo && !isCompleteRegister && ticketRequesters.length === 0" class="text-wrap">
@@ -271,12 +272,13 @@
               </span>
             </p>
             <b-field
-              label="1. Name of Ticket"
+              label="1. Ticket Name"
               :message="registerName === '' ? 'Please enter a value': ''"
               :type="{ 'is-success': registerName != '', 'is-danger': registerName === ''}"
             >
               <b-input
                 v-model="registerName"
+                maxlength="40"
                 placeholder="e.g. Conversation Rights"
               />
             </b-field>
@@ -284,7 +286,7 @@
               label="2. Where tickets are used?">
               <b-select
                 v-model="registerWhereType"
-                placeholder="Please select"
+                placeholder="Select..."
               >
                 <option value="1">
                   Zoom
@@ -316,6 +318,7 @@
             >
               <b-input
                 v-model="registerWhere"
+                maxlength="40"
                 placeholder="e.g. Send invitation code to this webpage."
               />
             </b-field>
@@ -323,7 +326,6 @@
               label="4. When will the tickets be used?">
               <b-datepicker v-model="registerWhen"
                 :first-day-of-week="1"
-                :unselectable-dates="unselectableDates"
                 placeholder="Click to select...">
 
                 <b-button
@@ -340,7 +342,7 @@
                   @click="date = null" />
               </b-datepicker>
               <b-timepicker
-                v-model="registerWhenTime"
+                v-model="registerWhen"
                 rounded
                 placeholder="Select..."
               >
@@ -350,7 +352,7 @@
               label="5. Where is your time zone?">
               <b-select
                 v-model="registerWhenTZ"
-                placeholder="Please select"
+                placeholder="Select..."
               >
                 <option value="0">
                   London(+0)
@@ -433,7 +435,7 @@
               label="6. How many times can it be used per capita?">
               <b-select
                 v-model="registerQuantity"
-                placeholder="Please select"
+                placeholder="Select..."
               >
                 <option value="1">
                   1 times
@@ -459,7 +461,7 @@
               label="7. Price per ticket ($FLOW)">
               <b-select
                 v-model="registerPrice"
-                placeholder="Please select"
+                placeholder="Select..."
               >
                 <option value="1">
                   1 FLOW
@@ -509,7 +511,7 @@
                 Close
               </b-button>
               <b-button
-                :disabled="ticketInfo.where_to_use === '' || ticketInfo.when_to_use === '' || ticketInfo.quantity === null || ticketInfo.type === null"
+                :disabled="!registerWhere || !registerWhereType || !registerWhen || !registerWhenTZ || !registerQuantity || !registerPrice"
                 @click="registerTicketInfo"
               >
                 Update
@@ -575,7 +577,6 @@ export default {
       registerWhereType: null,
       registerWhere: '',
       registerWhen: new Date(),
-      registerWhenTime: null,
       registerWhenTZ: null,
       registerType: null, // Reserves for the future
       registerQuantity: null,
@@ -634,10 +635,9 @@ export default {
               }
             }
             const when = ticketInfo.when_to_use.split('||')
-            if (when.length === 3) {
+            if (when.length === 2) {
               this.registerWhenTZ = when[0]
               this.registerWhen = when[1]
-              this.registerWhenTime = when[2]
             }
             this.registerQuantity = this.ticketInfo.quantity
             this.registerType = this.ticketInfo.type
@@ -651,10 +651,6 @@ export default {
       }
     },
     registerTicketInfo () {
-      this.registerType = 0 // Reserves for the future
-      this.registerWhere = this.registerWhereType + '||' + this.registerWhere
-      this.registerWhen = this.registerWhenTZ + '||' + this.registerWhen + '||' + this.registerWhenTime
-      this.registerQuantity = parseInt(this.registerQuantity)
       if (this.isCompleteRegister === false || this.registerTwitterEdit === 'Yes') {
         this.$buefy.dialog.prompt({
           message: 'Enter your Twitter account detailing your ticket use.',
@@ -669,7 +665,7 @@ export default {
             if (value.indexOf('@') === 0) {
               value = value.substr(1)
             }
-            this.registerName = this.registerName + '||@' + value
+            this.registerTwitter = value
             this.$buefy.dialog.confirm({
               message: 'Once registered, a ticket application button will appear on your registered page path. If you are sure, please press "Approve" on the pop-up that will appear after this.',
               onConfirm: this.addTicketInfo
@@ -681,17 +677,22 @@ export default {
       }
     },
     async addTicketInfo () {
+      const registerType = 0 // Reserves for the future
+      const registerName = this.registerName + '||@' + this.registerTwitter
+      const registerWhere = this.registerWhereType + '||' + this.registerWhere
+      const registerWhen = this.registerWhenTZ + '||' + this.registerWhen
       try {
         const transactionId = await this.$fcl.send(
           [
             this.$fcl.transaction(FlowTransactions.addTicketInfo),
             this.$fcl.args([
               this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
-              this.$fcl.arg(this.registerType, this.$fclArgType.UInt8),
-              this.$fcl.arg(this.registerName, this.$fclArgType.String),
-              this.$fcl.arg(this.registerWhere, this.$fclArgType.String),
-              this.$fcl.arg(this.registerWhen, this.$fclArgType.String),
-              this.$fcl.arg(this.registerQuantity, this.$fclArgType.UInt8)
+              this.$fcl.arg(registerType, this.$fclArgType.UInt8),
+              this.$fcl.arg(registerName, this.$fclArgType.String),
+              this.$fcl.arg(registerWhere, this.$fclArgType.String),
+              this.$fcl.arg(registerWhen, this.$fclArgType.String),
+              this.$fcl.arg(parseInt(this.registerQuantity), this.$fclArgType.UInt8),
+              this.$fcl.arg(Number(this.registerPrice), this.$fclArgType.UFix64)
             ]),
             this.$fcl.payer(this.$fcl.authz),
             this.$fcl.proposer(this.$fcl.authz),
@@ -783,6 +784,12 @@ export default {
   width: auto;
 
   .modal-card-body {
+    max-width: 600px;
+    margin: 0 auto;
+
+    .scanlink {
+      text-decoration: underline;
+    }
 
     .text-wrap {
       margin: 4px;

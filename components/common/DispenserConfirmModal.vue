@@ -29,7 +29,7 @@
                 {{ obj.domain }}
               </div>
               <div class="payed-block">
-                {{ obj.paid }}
+                {{ obj.paid.toString().substr(0, 3) }} $FLOW
               </div>
             </li>
           </ul>
@@ -102,15 +102,15 @@ export default {
         }
 
         .col2 {
-          margin-left: 10%;
+          margin-left: 5%;
         }
 
         .col3 {
-          margin-left: 25%;
+          margin-left: 30%;
         }
 
         .col4 {
-          margin-right: 2%;
+          margin-right: 1%;
           display: block;
           float: right;
         }
@@ -139,17 +139,13 @@ export default {
           }
 
           .dispenser-id {
-            width: 18%;
+            width: 10%;
             border-right: none;
           }
 
           .requester-address {
-            width: 36%;
+            width: 40%;
             border-right: none;
-          }
-
-          .requester-address-long {
-            font-size: 12px;
           }
 
           .address {
@@ -161,12 +157,12 @@ export default {
           }
 
           .requester-domain {
-            width: 10%;
+            width: 36%;
             border-right: none;
           }
 
           .payed-block {
-            width: 36%;
+            width: 14%;
             text-align: right;
           }
 

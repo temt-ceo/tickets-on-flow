@@ -159,6 +159,10 @@ export default {
   }
 }
 
+.field {
+  margin-top: 0.5rem;
+  margin-bottom: 2rem !important;
+}
 @media screen and (min-width: 1024px) {
   .navbar,
   .navbar-burger {

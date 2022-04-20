@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <h1 class="page-title">
-      Ticket Mint Function Management
+      Ticket Mint Functionality Management
     </h1>
     <hr class="separator">
     <div class="content">
@@ -26,13 +26,13 @@
         @click="dispenseDispenser"
         type="is-link is-light"
       >
-        チケットMint機能を付与
+        Grant Ticket Mint functionality
       </b-button>
       <b-button
         v-if="!bloctoWalletUser.addr"
         @click="flowWalletLogin"
       >
-        Connect to a wallet you manage
+        Connect to a wallet
       </b-button>
       <b-button
         v-if="bloctoWalletUser.addr"
@@ -118,7 +118,7 @@ export default {
     },
     dispenseDispenser () {
       this.$buefy.dialog.prompt({
-        message: 'To grant the ticket granting function, enter the dispenser_id of the appropriate person in the text box below',
+        message: 'Enter the dispenser_id in the text box below',
         inputAttrs: {
           type: 'text',
           placeholder: 'e.g. 100',
@@ -138,7 +138,8 @@ export default {
             return
           }
           this.$buefy.dialog.confirm({
-            message: `Grant ticket distribution functionality to #${dispenserId}.<br> If you like, please click OK.`,
+            message: `Grant ticket mint functionality to #${dispenserId}. Please press Grant button.`,
+            confirmText: 'Grant',
             onConfirm: async () => {
               try {
                 const transactionId = await this.$fcl.send(
@@ -154,7 +155,13 @@ export default {
                   ]
                 ).then(this.$fcl.decode)
                 this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-                this.$buefy.toast.open(`Ticket distribution functionality has been added to ${addr}.`)
+                const toast = this.$buefy.toast.open({
+                  indefinite: true,
+                  message: `Ticket distribution functionality has been added to ${addr}.`
+                })
+                setTimeout(() => {
+                  toast.close()
+                }, 6000)
                 this.noticeTitle = `Ticket distribution functionality has been added to ${addr}.`
                 return transactionId
               } catch (e) {
@@ -203,9 +210,10 @@ export default {
   }
 
   .content {
-    margin: 10px 0 20px;
+    margin: 10px auto 20px;
     padding: 16px;
     text-align: center;
+    max-width: 800px;
 
     h1 {
       margin: 20px 0 16px;
