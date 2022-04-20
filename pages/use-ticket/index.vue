@@ -9,7 +9,7 @@
         (Wallet Address: {{ bloctoWalletUser.addr }})
       </p>
       <h1 class="notice">
-        {{ noticeTitle}}
+        {{ noticeTitle }}
       </h1>
       <p v-if="transactionScanUrl !== ''" class="check-transaction">
         <a :href="transactionScanUrl" target="_blank">Confirm Transaction</a>
@@ -54,7 +54,7 @@ export default {
   },
   async mounted () {
     await this.$fcl.currentUser.subscribe(this.setupWalletInfo)
-    await this.getTicketInfo()
+    await this.getTickets()
   },
   methods: {
     async flowWalletLogin () {
@@ -81,12 +81,12 @@ export default {
         this.noticeTitle = 'ウォレットにログインして下さい。'
       }
     },
-    async getTicketInfo () {
+    async getTickets () {
       if (!this.ticketInfo[this.dispenser]) {
         try {
           const ticketInfo = await this.$fcl.send(
             [
-              this.$fcl.script(FlowScripts.getTicketInfo),
+              this.$fcl.script(FlowScripts.getTickets),
               this.$fcl.args([
                 this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
               ])
@@ -102,7 +102,6 @@ export default {
             this.ticketQuantity = this.ticketInfo[0].quantity
           }
         } catch (e) {
-          console.log(e)
         }
       } else {
         this.ticketName = this.ticketInfo[0].name
@@ -130,7 +129,6 @@ export default {
           return false
         }
       } catch (e) {
-        console.log(e)
       }
     },
     async getUserTicketQuantity () {
@@ -154,7 +152,6 @@ export default {
           this.noticeTitle = `現在${this.ticketName}を申請中です。配布が完了するまでお待ち下さい。`
         }
       } catch (e) {
-        console.log(e)
       }
     },
     async useTicket () {
@@ -178,7 +175,6 @@ export default {
         this.status = 2
         return transactionId
       } catch (e) {
-        console.log(e)
       }
     }
   }

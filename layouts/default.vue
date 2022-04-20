@@ -22,8 +22,7 @@
             icon="github"
             size="medium"
             type="is-danger"
-          >
-          </b-icon>
+          />
         </a>
         <a :href="url.twitter" target="_blank">
           <b-icon
@@ -31,8 +30,7 @@
             icon="twitter"
             size="medium"
             type="is-info"
-          >
-          </b-icon>
+          />
         </a>
         <b-icon
           class="navbar-item"
@@ -40,8 +38,7 @@
           icon="youtube"
           size="medium"
           type="is-warning"
-        >
-        </b-icon>
+        />
         <a :href="url.discord" target="_blank">
           <b-icon
             class="navbar-item"
@@ -49,8 +46,7 @@
             icon="discord"
             size="medium"
             type="is-success"
-          >
-          </b-icon>
+          />
         </a>
         <div class="navbar-burger">
           <b-dropdown aria-role="list">
@@ -61,7 +57,7 @@
                 <span />
               </div>
             </template>
-            <nuxt-link to="/dispencer/" >
+            <nuxt-link to="/dispenser/">
               <b-dropdown-item aria-role="listitem">
                 Create your original ticket
               </b-dropdown-item>
@@ -71,8 +67,7 @@
                 pack="fa-solid"
                 icon="language"
                 size="is-large"
-              >
-              </b-icon>
+              />
             </b-dropdown-item>
           </b-dropdown>
         </div>

@@ -3,19 +3,19 @@
     <div class="hero">
       <div class="hero--overlay">
         <div class="hero--content content">
-          <h1 class="page-title">
-            {{ ticketName ? ticketName : 'Ticket Application' }}
-          </h1>
-          <h1 class="notice">
-            Event Name: {{ ticketName }}
-          </h1>
-          <h1 class="notice">
-            Detail: {{ ticketWhere }}
-          </h1>
-          <h1 class="notice">
-            More Information: <a :href="twitter" target="_blank">please click here</a>
-          </h1>
           <div v-if="ticketName && ticketName.length > 0">
+            <h1 class="page-title">
+              {{ ticketName ? ticketName : 'Ticket Application' }}
+            </h1>
+            <h1 class="notice">
+              Event Name: {{ ticketName }}
+            </h1>
+            <h1 class="notice">
+              Detail: {{ ticketWhere }}
+            </h1>
+            <h1 class="notice">
+              More Information: <a :href="twitter" target="_blank">please click here</a>
+            </h1>
             <p
               v-if="bloctoWalletUser.addr && status > 2"
               class="notice"
@@ -90,7 +90,7 @@ export default {
   data () {
     return {
       bloctoWalletUser: {},
-      dispenser: location.href.split('3000/')[1].split('/')[0],
+      dispenser: null,
       userId: null,
       ticketInfo: {},
       ticketName: '',
@@ -104,14 +104,14 @@ export default {
     }
   },
   async mounted () {
-    await this.getTicketInfo()
+    await this.getTickets()
     await this.$fcl.currentUser.subscribe(this.setupUserInitialInfo)
     if (this.bloctoWalletUser.addr) {
       await this.checkCurrentStatus()
     }
   },
   methods: {
-    async getTicketInfo () {
+    async getTickets () {
       // =======DEBUG=======
       this.dispenser = 1
 
@@ -119,7 +119,7 @@ export default {
         try {
           const ticketInfo = await this.$fcl.send(
             [
-              this.$fcl.script(FlowScripts.getTicketInfo),
+              this.$fcl.script(FlowScripts.getTickets),
               this.$fcl.args([
                 this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
               ])
@@ -130,7 +130,7 @@ export default {
             this.ticketName = ''
           } else {
             this.ticketInfo = ticketInfo
-            const ticketName = this.ticketInfo.name.split('||')
+            const ticketName = this.ticketInfo.name.split('||@')
             this.ticketName = ticketName[0]
             this.twitter = 'https://twitter.com/' + ticketName[1]
             const where = this.ticketInfo.where_to_use.split('||')
@@ -145,7 +145,6 @@ export default {
             this.ticketQuantity = this.ticketInfo.quantity
           }
         } catch (e) {
-          console.log(e)
         }
       } else {
         const ticketName = this.ticketInfo.name.split('||@')
@@ -208,7 +207,6 @@ export default {
           return false
         }
       } catch (e) {
-        console.log(e)
         return false
       }
     },
@@ -239,7 +237,6 @@ export default {
           this.noticeTitle = `現在${this.ticketName}を申請中です。配布が完了するまでお待ち下さい。`
         }
       } catch (e) {
-        console.log(e)
       }
     },
     async requestTicket () {
@@ -271,7 +268,6 @@ export default {
         this.status = 2
         return transactionId
       } catch (e) {
-        console.log(e)
       }
     },
     async flowWalletLogout () {

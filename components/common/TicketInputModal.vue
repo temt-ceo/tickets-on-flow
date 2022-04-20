@@ -27,8 +27,7 @@
                 placeholder="e.g. Conversation Rights"
               />
             </b-field>
-            <b-field
-              label="2. Where tickets are used?">
+            <b-field label="2. Where tickets are used?">
               <b-select
                 v-model="registerWhereType"
                 placeholder="Select..."
@@ -67,34 +66,33 @@
                 placeholder="e.g. Send invitation code to this webpage."
               />
             </b-field>
-            <b-field
-              label="4. When will the tickets be used?">
-              <b-datepicker v-model="registerWhen"
+            <b-field label="4. When will the tickets be used?">
+              <b-datepicker
+                v-model="registerWhen"
                 :first-day-of-week="1"
-                placeholder="Click to select...">
-
+                placeholder="Click to select..."
+              >
                 <b-button
                   label="Today"
                   type="is-primary"
                   icon-left="calendar-today"
-                  @click="date = new Date()" />
-
+                  @click="registerWhen = new Date()"
+                />
                 <b-button
                   label="Clear"
                   type="is-danger"
                   icon-left="close"
                   outlined
-                  @click="date = null" />
+                  @click="registerWhen = null"
+                />
               </b-datepicker>
               <b-timepicker
                 v-model="registerWhen"
                 rounded
                 placeholder="Select..."
-              >
-              </b-timepicker>
+              />
             </b-field>
-            <b-field
-              label="5. Where is your time zone?">
+            <b-field label="5. Where is your time zone?">
               <b-select
                 v-model="registerWhenTZ"
                 placeholder="Select..."
@@ -176,8 +174,7 @@
                 </option>
               </b-select>
             </b-field>
-            <b-field
-              label="6. How many times can it be used per capita?">
+            <b-field label="6. How many times can it be used per capita?">
               <b-select
                 v-model="registerQuantity"
                 placeholder="Select..."
@@ -202,8 +199,7 @@
                 </option>
               </b-select>
             </b-field>
-            <b-field
-              label="7. Price per ticket ($FLOW)">
+            <b-field label="7. Price per ticket ($FLOW)">
               <b-select
                 v-model="registerPrice"
                 placeholder="Select..."
@@ -282,8 +278,7 @@
                 placeholder="e.g. Conversation Rights"
               />
             </b-field>
-            <b-field
-              label="2. Where tickets are used?">
+            <b-field label="2. Where tickets are used?">
               <b-select
                 v-model="registerWhereType"
                 placeholder="Select..."
@@ -322,34 +317,33 @@
                 placeholder="e.g. Send invitation code to this webpage."
               />
             </b-field>
-            <b-field
-              label="4. When will the tickets be used?">
-              <b-datepicker v-model="registerWhen"
+            <b-field label="4. When will the tickets be used?">
+              <b-datepicker
+                v-model="registerWhen"
                 :first-day-of-week="1"
-                placeholder="Click to select...">
-
+                placeholder="Click to select..."
+              >
                 <b-button
                   label="Today"
                   type="is-primary"
                   icon-left="calendar-today"
-                  @click="date = new Date()" />
-
+                  @click="registerWhen = new Date()"
+                />
                 <b-button
                   label="Clear"
                   type="is-danger"
                   icon-left="close"
                   outlined
-                  @click="date = null" />
+                  @click="registerWhen = null"
+                />
               </b-datepicker>
               <b-timepicker
                 v-model="registerWhen"
                 rounded
                 placeholder="Select..."
-              >
-              </b-timepicker>
+              />
             </b-field>
-            <b-field
-              label="5. Where is your time zone?">
+            <b-field label="5. Where is your time zone?">
               <b-select
                 v-model="registerWhenTZ"
                 placeholder="Select..."
@@ -431,8 +425,7 @@
                 </option>
               </b-select>
             </b-field>
-            <b-field
-              label="6. How many times can it be used per capita?">
+            <b-field label="6. How many times can it be used per capita?">
               <b-select
                 v-model="registerQuantity"
                 placeholder="Select..."
@@ -457,8 +450,7 @@
                 </option>
               </b-select>
             </b-field>
-            <b-field
-              label="7. Price per ticket ($FLOW)">
+            <b-field label="7. Price per ticket ($FLOW)">
               <b-select
                 v-model="registerPrice"
                 placeholder="Select..."
@@ -498,12 +490,13 @@
                 </option>
               </b-select>
             </b-field>
-            <b-field
-              label="8. Want to change your Twitter account name?">
-              <b-checkbox v-model="registerTwitterEdit"
-                  true-value="Yes"
-                  false-value="No">
-                  {{ registerTwitterEdit }}
+            <b-field label="8. Want to change your Twitter account name?">
+              <b-checkbox
+                v-model="registerTwitterEdit"
+                true-value="Yes"
+                false-value="No"
+              >
+                {{ registerTwitterEdit }}
               </b-checkbox>
             </b-field>
             <div class="button-wrap">
@@ -531,7 +524,7 @@
                 とじる
               </b-button>
               <b-button
-              :disabled="requestList.length === 0"
+                :disabled="requestList.length === 0"
                 @click="dispenseTicket"
               >
                 配布
@@ -592,17 +585,17 @@ export default {
     }
   },
   async mounted () {
-    await this.getTicketInfo()
+    await this.getTickets()
   },
   methods: {
-    async getTicketInfo () {
+    async getTickets () {
       this.showFlag = false
       this.isCompleteRegister = false
       if (!this.ticketInfo) {
         try {
           const ticketInfo = await this.$fcl.send(
             [
-              this.$fcl.script(FlowScripts.getTicketInfo),
+              this.$fcl.script(FlowScripts.getTickets),
               this.$fcl.args([
                 this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
               ])
@@ -644,7 +637,6 @@ export default {
           }
           await this.confirmRequesters()
         } catch (e) {
-          console.log(e)
         }
       } else {
         await this.confirmRequesters()
@@ -704,7 +696,6 @@ export default {
         this.isCompleteRegister = true
         return transactionId
       } catch (e) {
-        console.log(e)
       }
     },
     async confirmRequesters () {
@@ -725,7 +716,6 @@ export default {
         }
         await this.confirmReceivers()
       } catch (e) {
-        console.log(e)
       }
     },
     async confirmReceivers () {
@@ -744,9 +734,7 @@ export default {
         })
         this.requestList = this.ticketRequesters.filter((obj) => { return !obj.done })
         this.showFlag = true
-        console.log(this.ticketInfo, this.isCompleteRegister, 8888)
       } catch (e) {
-        console.log(e)
       }
     },
     async dispenseTicket () {
@@ -771,7 +759,6 @@ export default {
         this.isCompleteDispense = true
         return transactionId
       } catch (e) {
-        console.log(e)
       }
     }
   }
