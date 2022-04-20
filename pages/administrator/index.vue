@@ -9,22 +9,22 @@
         (Wallet Address: {{ bloctoWalletUser.addr }})
       </p>
       <h1 class="notice">
-        {{ noticeTitle}}
+        {{ noticeTitle }}
       </h1>
       <p v-if="transactionScanUrl !== ''" class="check-transaction">
         <a :href="transactionScanUrl" target="_blank">Confirm Transaction</a>
       </p>
       <b-button
         v-if="bloctoWalletUser.addr"
-        @click="showConfirmModal = true"
         type="is-link is-light"
+        @click="showConfirmModal = true"
       >
-        Check status of ticket function requests
+        Check status of requests
       </b-button>
       <b-button
         :disabled="!isAdmin"
-        @click="dispenseDispenser"
         type="is-link is-light"
+        @click="dispenseDispenser"
       >
         Grant Ticket Mint functionality
       </b-button>
@@ -36,8 +36,8 @@
       </b-button>
       <b-button
         v-if="bloctoWalletUser.addr"
-        @click="flowWalletLogout"
         type="is-danger is-light"
+        @click="flowWalletLogout"
       >
         Log out from Wallet
       </b-button>
@@ -64,7 +64,6 @@ export default {
   data () {
     return {
       dispenserRequesters: [],
-      addressList: [],
       showConfirmModal: false,
       bloctoWalletUser: {},
       isAdmin: false,
@@ -113,7 +112,6 @@ export default {
           return false
         }
       } catch (e) {
-        console.log(e)
       }
     },
     dispenseDispenser () {
@@ -127,7 +125,7 @@ export default {
         trapFocus: true,
         onConfirm: (dispenserId) => {
           let addr = null
-          this.addressList.forEach((obj) => {
+          this.dispenserRequesters.forEach((obj) => {
             if (obj.dispenser_id === parseInt(dispenserId)) {
               addr = obj.address
             }
@@ -161,7 +159,7 @@ export default {
                 })
                 setTimeout(() => {
                   toast.close()
-                }, 6000)
+                }, 10000)
                 this.noticeTitle = `Ticket distribution functionality has been added to ${addr}.`
                 return transactionId
               } catch (e) {
@@ -183,15 +181,7 @@ export default {
           ]
         ).then(this.$fcl.decode)
         this.dispenserRequesters = dispenserRequesters
-        this.dispenserRequesters.forEach((obj) => {
-          const addr = Object.keys(obj)[0]
-          this.addressList.push({
-            dispenser_id: obj[addr].dispenser_id,
-            address: addr
-          })
-        })
       } catch (e) {
-        console.log(e)
       }
     }
   }

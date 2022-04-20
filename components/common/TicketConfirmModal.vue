@@ -92,15 +92,13 @@ export default {
           [
             this.$fcl.script(FlowScripts.getTicketRequesters),
             this.$fcl.args([
-              this.$fcl.arg(this.address, this.$fclArgType.Address),
-              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
+              this.$fcl.arg(this.address, this.$fclArgType.Address)
             ])
           ]
         ).then(this.$fcl.decode)
         this.ticketRequesters = ticketRequesters
         await this.confirmReceivers()
       } catch (e) {
-        console.log(e)
       }
     },
     async confirmReceivers () {
@@ -118,7 +116,6 @@ export default {
         })
         this.$forceUpdate()
       } catch (e) {
-        console.log(e)
       }
     }
   }

@@ -13,7 +13,7 @@ pub fun main(address: Address): &Tv13.DispenserVault{Tv13.IDispenserPublic}? {
     return account.getCapability<&Tv13.DispenserVault{Tv13.IDispenserPublic}>(Tv13.DispenserVaultPublicPath).borrow()
 }
   `,
-  hasDispenser: `
+  getRequestedDispensers: `
 import Tv13 from 0xT
 pub fun main(address: Address): [Tv13.DispenserStruct] {
     let account = getAccount(address)
@@ -22,7 +22,7 @@ pub fun main(address: Address): [Tv13.DispenserStruct] {
     return dispenserVault.getDispenserRequesters()
 }
   `,
-  getRequestedDispensers: `
+  hasDispenser: `
 import Tv13 from 0xT
 pub fun main(address: Address): Bool {
     let account = getAccount(address)

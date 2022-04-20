@@ -581,6 +581,7 @@ export default {
       isCompleteDispense: false,
       ticketRequesters: [],
       requestList: [],
+      receivedList: [],
       showFlag: false
     }
   },
@@ -593,7 +594,7 @@ export default {
       this.isCompleteRegister = false
       if (!this.ticketInfo) {
         try {
-          const ticketInfo = await this.$fcl.send(
+          const tickets = await this.$fcl.send(
             [
               this.$fcl.script(FlowScripts.getTickets),
               this.$fcl.args([
@@ -601,10 +602,11 @@ export default {
               ])
             ]
           ).then(this.$fcl.decode)
-          this.ticketInfo = ticketInfo
-          if (ticketInfo) {
+          this.ticketInfo = tickets ? tickets.find(ticket => ticket.dispenser_id === this.dispenser) : null
+          console.log(3, this.ticketInfo)
+          if (this.ticketInfo) {
             this.isCompleteRegister = true
-            const name = ticketInfo.where_to_use.split('||@')
+            const name = this.ticketInfo.where_to_use.split('||@')
             if (name.length === 2) {
               this.registerName = name[0]
               this.registerTwitter = name[1]
@@ -616,7 +618,7 @@ export default {
               }
               this.registerTwitter = name[1]
             }
-            const where = ticketInfo.where_to_use.split('||')
+            const where = this.ticketInfo.where_to_use.split('||')
             if (where.length === 2) {
               this.registerWhereType = where[0]
               this.registerWhere = where[1]
@@ -627,7 +629,7 @@ export default {
                 this.registerWhere = this.registerWhere + (i === 1 ? '' : '||') + where[i]
               }
             }
-            const when = ticketInfo.when_to_use.split('||')
+            const when = this.ticketInfo.when_to_use.split('||')
             if (when.length === 2) {
               this.registerWhenTZ = when[0]
               this.registerWhen = when[1]
@@ -637,6 +639,7 @@ export default {
           }
           await this.confirmRequesters()
         } catch (e) {
+          console.log(4, e)
         }
       } else {
         await this.confirmRequesters()
@@ -704,8 +707,7 @@ export default {
           [
             this.$fcl.script(FlowScripts.getTicketRequesters),
             this.$fcl.args([
-              this.$fcl.arg(this.address, this.$fclArgType.Address),
-              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
+              this.$fcl.arg(this.address, this.$fclArgType.Address)
             ])
           ]
         ).then(this.$fcl.decode)
@@ -714,7 +716,7 @@ export default {
         } else {
           this.ticketRequesters = ticketRequesters
         }
-        await this.confirmReceivers()
+        this.showFlag = true
       } catch (e) {
       }
     },
@@ -732,13 +734,13 @@ export default {
         this.ticketRequesters.forEach((obj) => {
           obj.done = ticketReceivers == null ? false : ticketReceivers.includes(obj.address)
         })
-        this.requestList = this.ticketRequesters.filter((obj) => { return !obj.done })
+        this.requestList = this.ticketRequesters.filter(obj => !obj.grant)
+        this.receivedList = this.ticketRequesters.filter(obj => obj.grant)
         this.showFlag = true
       } catch (e) {
       }
     },
     async dispenseTicket () {
-      const addrList = this.requestList.map(obj => obj.address)
       try {
         const ticketQuantity = parseInt(this.ticketInfo.quantity)
         const transactionId = await this.$fcl.send(
@@ -746,8 +748,7 @@ export default {
             this.$fcl.transaction(FlowTransactions.dispenseTicket),
             this.$fcl.args([
               this.$fcl.arg(this.ticketInfo.name, this.$fclArgType.String),
-              this.$fcl.arg(ticketQuantity, this.$fclArgType.UInt8),
-              this.$fcl.arg(addrList, this.$fclArgType.Array(this.$fclArgType.Address))
+              this.$fcl.arg(ticketQuantity, this.$fclArgType.UInt8)
             ]),
             this.$fcl.payer(this.$fcl.authz),
             this.$fcl.proposer(this.$fcl.authz),

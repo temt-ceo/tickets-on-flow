@@ -242,10 +242,8 @@ export default {
     async requestTicket () {
       const ret = await this.isTicketContainerReady()
       let transactionCode = ''
-      const argsArr = [this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)]
       if (ret) {
         transactionCode = FlowTransactions.requestMoreTicket
-        argsArr.push(this.$fcl.arg(this.userId, this.$fclArgType.UInt32))
       } else {
         transactionCode = FlowTransactions.requestTicket
       }
@@ -255,7 +253,7 @@ export default {
           [
             this.$fcl.transaction(transactionCode),
             this.$fcl.args([
-              argsArr
+              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
             ]),
             this.$fcl.payer(this.$fcl.authz),
             this.$fcl.proposer(this.$fcl.authz),

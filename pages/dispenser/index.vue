@@ -19,52 +19,52 @@
               (Wallet Address: {{ bloctoWalletUser.addr }})
             </p>
             <h1 class="notice">
-              {{ noticeTitle}}
+              {{ noticeTitle }}
             </h1>
             <p v-if="transactionScanUrl !== ''" class="check-transaction">
               <a :href="transactionScanUrl" target="_blank">Confirm Transaction</a>
             </p>
             <b-button
               :disabled="!bloctoWalletUser.addr || !hasDispenserVault || !hasDispenser"
-              @click="showInputModal = true"
               type="is-link is-light"
+              @click="showInputModal = true"
             >
               Distribute your original tickets
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
-              @click="showConfirmModal = true"
               type="is-link is-light"
+              @click="showConfirmModal = true"
             >
               Check Ticket Request Status
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && !hasDispenser"
               :disabled="hasDispenserVault || isApplied"
-              @click="requestDispenser"
               type="is-link is-light"
               class="request-btn"
+              @click="requestDispenser"
             >
               Apply for ticket distribution function
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
-              @click="showConfirmPayModal = true"
               type="is-link is-light"
+              @click="showConfirmPayModal = true"
             >
               Check Ticket Usage Status
             </b-button>
             <b-button
               v-if="!bloctoWalletUser.addr"
-              @click="flowWalletLogin"
               type="is-link is-light"
+              @click="flowWalletLogin"
             >
               Connect to a wallet you manage
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr"
-              @click="flowWalletLogout"
               type="is-danger is-light"
+              @click="flowWalletLogout"
             >
               Log out from Wallet
             </b-button>
@@ -80,28 +80,27 @@
           </div>
         </div>
       </div>
-      <section class="hero--bottom"></section>
     </div>
     <b-modal v-model="showInputModal">
       <ticket-input-modal
         :address="address"
         :dispenser="dispenserId"
         @closeModal="showInputModal=false"
-        />
+      />
     </b-modal>
     <b-modal v-model="showConfirmModal">
       <ticket-confirm-modal
         :address="address"
         :dispenser="dispenserId"
         @closeModal="showConfirmModal=false"
-        />
+      />
     </b-modal>
     <b-modal v-model="showConfirmPayModal">
       <ticket-confirm-pay-modal
         :address="address"
         :dispenser="dispenserId"
         @closeModal="showConfirmPayModal=false"
-        />
+      />
     </b-modal>
   </section>
 </template>
@@ -194,7 +193,6 @@ export default {
           return false
         }
       } catch (e) {
-        console.log(e)
         return false
       }
     },
@@ -210,7 +208,6 @@ export default {
         ).then(this.$fcl.decode)
         this.dispenserId = dispenserId
       } catch (e) {
-        console.log(e)
       }
     },
     async hasTicketDispenser () {
@@ -225,7 +222,6 @@ export default {
         ).then(this.$fcl.decode)
         return hasDispenser
       } catch (e) {
-        console.log(e)
         return false
       }
     },
@@ -253,7 +249,7 @@ export default {
             domain = value
             toast1 = this.$buefy.toast.open({
               indefinite: true,
-              message: `Your path will become: https://tickets-on-flow.web.app/${domain}`
+              message: `Your web site path will look like this: https://tickets-on-flow.web.app/${domain}`
             })
             this.$buefy.dialog.prompt({
               message: 'Enter your email address (please enter a sub email as it will be stored in the blockchain)',
@@ -297,7 +293,7 @@ export default {
                     close()
                     setTimeout(() => {
                       toast2.close()
-                    }, 6000)
+                    }, 10000)
                   }
                 })
               },

@@ -14,7 +14,7 @@
           </p>
           <ul class="requester-list">
             <li
-              v-for="(obj, index) in data"
+              v-for="(obj, index) in requesters"
               :key="index"
             >
               <div class="dispenser-id">
@@ -53,19 +53,6 @@ export default {
       type: Array,
       required: true
     }
-  },
-  data () {
-    return {
-      addressList: [],
-      data: []
-    }
-  },
-  mounted () {
-    this.requesters.forEach((obj) => {
-      const addr = Object.keys(obj)[0]
-      this.addressList.push(addr)
-      this.data.push(obj[addr])
-    })
   }
 }
 </script>
