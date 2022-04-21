@@ -47,7 +47,7 @@ pub contract Tv13 {
   ** [Struct]　TicketStruct
   */
   pub struct TicketStruct {
-    priv let dispenser_id: UInt32
+    access(contract) let dispenser_id: UInt32
     priv let domain: String
     priv let type: UInt8
     priv let name: String
@@ -141,6 +141,17 @@ pub contract Tv13 {
       Tv13.ticketInfo.append(ticket)
     }
 
+    pub fun updateTicketInfo(index: UInt32, dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8, price: UFix64) {
+      let domain = Tv13.dispenserOwners[dispenser_id]!.domain
+      let ticket = TicketStruct(dispenser_id: dispenser_id, domain: domain, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, quantity: quantity, price: price)
+      let existTicket = Tv13.ticketInfo.remove(at: index)
+      if (existTicket.dispenser_id == dispenser_id) {
+        Tv13.ticketInfo.insert(at: index, ticket)
+      } else {
+        panic("Something went wrong.")
+      }
+    }
+
     pub fun getTicketRequesters(dispenser_id: UInt32): [RequestStruct]? {
       return Tv13.ticketRequesters[dispenser_id]
     }
@@ -168,6 +179,7 @@ pub contract Tv13 {
     pub var ownedDispenser: @Dispenser?
     pub var dispenser_id: UInt32
     pub fun addTicketInfo(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8, price: UFix64)
+    pub fun updateTicketInfo(index: UInt32, dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8, price: UFix64)
     pub fun grantTicket(dispenser_id: UInt32, user_id: UInt32, address: Address, token_id: UInt64)
   }
 
@@ -223,6 +235,11 @@ pub contract Tv13 {
     // [private access]
     pub fun addTicketInfo(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8, price: UFix64) {
       self.ownedDispenser?.addTicketInfo(dispenser_id: dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, quantity: quantity, price: price)
+    }
+
+    // [private access]
+    pub fun updateTicketInfo(index: UInt32, dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8, price: UFix64) {
+      self.ownedDispenser?.updateTicketInfo(index: index, dispenser_id: dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, quantity: quantity, price: price)
     }
 
     // [private access]
@@ -338,7 +355,7 @@ pub contract Tv13 {
 
     // [private access]
     pub fun addTicketRequester(dispenser_id: UInt32, user_id: UInt32, address: Address) {
-      let time = getCurrentBlock().timestamp
+      let time = 99999999.99999//getCurrentBlock().timestamp
       let requestStruct = RequestStruct(time: time, user_id: user_id, address: address, grant: false)
 
       if(Tv13.ticketRequesters.containsKey(dispenser_id)) {

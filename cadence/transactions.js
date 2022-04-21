@@ -47,6 +47,20 @@ transaction(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: Strin
     }
 }
   `,
+  updateTicketInfo: `
+import Tv13 from 0xT
+transaction(index: UInt32, dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, quantity: UInt8, price: UFix64) {
+    prepare(signer: AuthAccount) {
+        let dispenserVault = signer.borrow<&Tv13.DispenserVault>(from: /storage/Tv13DispenserVault)
+            ?? panic("Could not borrow reference to the Owner's DispenserVault.")
+        dispenserVault.updateTicketInfo(index: index, dispenser_id: dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, quantity: quantity, price: price)
+    }
+
+    execute {
+        log("ticket info is updated.")
+    }
+}
+  `,
   requestTicket: `
 import Tv13 from 0xT
 transaction(dispenser_id: UInt32) {

@@ -262,18 +262,17 @@
               the ticket application button will appear on the ticket page.
             </p>
           </div>
-          <div v-if="showFlag && ticketInfo && !isCompleteRegister && ticketRequesters.length === 0" class="text-wrap">
+          <div v-if="showFlag && ticketInfo && !isCompleteRegister" class="text-wrap">
             <p class="complete-register">
-              チケットを登録済みです。編集/中断される場合は以下を入力して更新ボタンを押して下さい。<br>
+              You have already registered a ticket. If you wish to edit/suspend your ticket, please enter the following and press the Update button.<br>
               <span class="red">
-                (中断はチケット名を空にして下さい)<br>
-                (ユーザーがチケットを申請した後は、編集/中断は出来ませんのでご注意下さい)
+                (Empty the ticket name if you want to suspend. Once a user has applied for a ticket, it cannot be suspended.)
               </span>
             </p>
             <b-field
               label="1. Ticket Name"
               :message="registerName === '' ? 'Please enter a value': ''"
-              :type="{ 'is-success': registerName != '', 'is-danger': registerName === ''}"
+              :type="{ 'is-success': registerName != ''}"
             >
               <b-input
                 v-model="registerName"
@@ -588,7 +587,8 @@ export default {
       ticketRequesters: [],
       requestList: [],
       receivedList: [],
-      showFlag: false
+      showFlag: false,
+      indexOfTicket: null
     }
   },
   async mounted () {
@@ -607,10 +607,15 @@ export default {
               ])
             ]
           ).then(this.$fcl.decode)
-          this.ticketInfo = tickets ? tickets.find(ticket => ticket.dispenser_id === this.dispenser) : null
+          this.ticketInfo = tickets.find((ticket, index) => {
+            const match = ticket.dispenser_id === this.dispenser
+            if (match) {
+              this.indexOfTicket = index
+            }
+            return match
+          })
           if (this.ticketInfo) {
-            this.isCompleteRegister = true
-            const name = this.ticketInfo.where_to_use.split('||@')
+            const name = this.ticketInfo.name.split('||@')
             if (name.length === 2) {
               this.registerName = name[0]
               this.registerTwitter = name[1]
@@ -636,10 +641,13 @@ export default {
             const when = this.ticketInfo.when_to_use.split('||')
             if (when.length === 2) {
               this.registerWhenTZ = when[0]
-              this.registerWhen = when[1]
+              this.registerWhen = new Date(when[1])
             }
             this.registerQuantity = this.ticketInfo.quantity
+            this.registerPrice = this.ticketInfo.price.replace(/0+$/, '')
             this.registerType = this.ticketInfo.type
+          } else {
+            this.ticketInfo = null
           }
           await this.confirmRequesters()
         } catch (e) {
@@ -649,7 +657,7 @@ export default {
       }
     },
     registerTicketInfo () {
-      if (this.isCompleteRegister === false || this.registerTwitterEdit === 'Yes') {
+      if (!this.ticketInfo || this.registerTwitterEdit === 'Yes') {
         this.$buefy.dialog.prompt({
           message: 'Enter your Twitter account detailing your ticket use.',
           inputAttrs: {
@@ -664,14 +672,18 @@ export default {
               value = value.substr(1)
             }
             this.registerTwitter = value
+            const explanation = !this.ticketInfo ? 'Once registered, a ticket application button will appear on your registered page path. ' : ''
             this.$buefy.dialog.confirm({
-              message: 'Once registered, a ticket application button will appear on your registered page path. If you are sure, please press "Approve" on the pop-up that will appear after this.',
-              onConfirm: this.addTicketInfo
+              message: `${explanation}If you are sure, please press "Approve" on the pop-up that will appear after this.`,
+              onConfirm: this.ticketInfo ? this.updateTicketInfo : this.addTicketInfo
             })
           }
         })
       } else {
-        this.addTicketInfo()
+        this.$buefy.dialog.confirm({
+          message: 'If you are sure, please press "Approve" on the pop-up that will appear after this.',
+          onConfirm: this.updateTicketInfo
+        })
       }
     },
     async addTicketInfo () {
@@ -684,6 +696,37 @@ export default {
           [
             this.$fcl.transaction(FlowTransactions.addTicketInfo),
             this.$fcl.args([
+              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
+              this.$fcl.arg(registerType, this.$fclArgType.UInt8),
+              this.$fcl.arg(registerName, this.$fclArgType.String),
+              this.$fcl.arg(registerWhere, this.$fclArgType.String),
+              this.$fcl.arg(registerWhen, this.$fclArgType.String),
+              this.$fcl.arg(parseInt(this.registerQuantity), this.$fclArgType.UInt8),
+              this.$fcl.arg(Number(this.registerPrice), this.$fclArgType.UFix64)
+            ]),
+            this.$fcl.payer(this.$fcl.authz),
+            this.$fcl.proposer(this.$fcl.authz),
+            this.$fcl.authorizations([this.$fcl.authz]),
+            this.$fcl.limit(9999)
+          ]
+        ).then(this.$fcl.decode)
+        this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+        this.isCompleteRegister = true
+        return transactionId
+      } catch (e) {
+      }
+    },
+    async updateTicketInfo () {
+      const registerType = 0 // Reserves for the future
+      const registerName = this.registerName + '||@' + this.registerTwitter
+      const registerWhere = this.registerWhereType + '||' + this.registerWhere
+      const registerWhen = this.registerWhenTZ + '||' + this.registerWhen
+      try {
+        const transactionId = await this.$fcl.send(
+          [
+            this.$fcl.transaction(FlowTransactions.updateTicketInfo),
+            this.$fcl.args([
+              this.$fcl.arg(this.indexOfTicket, this.$fclArgType.UInt32),
               this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
               this.$fcl.arg(registerType, this.$fclArgType.UInt8),
               this.$fcl.arg(registerName, this.$fclArgType.String),

@@ -118,8 +118,7 @@ export default {
   },
   methods: {
     getTicketInfo (pathname) {
-      const regEx = /\//g
-      const ticketInfo = this.tickets.find(obj => obj.domain === pathname.replace(regEx, ''))
+      const ticketInfo = this.tickets.find(obj => obj.domain === pathname.replace(/\//g, ''))
       console.log(ticketInfo)
 
       this.dispenser = ticketInfo.dispenser_id
