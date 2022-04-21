@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import FlowScripts from '~/cadence/scripts'
 
 export default {
   name: 'IndexPage',
@@ -97,23 +98,47 @@ export default {
       ]
     }
   },
-  mounted () {
-    this.setContentsData()
+  async mounted () {
+    await this.getTickets()
   },
   methods: {
-    setContentsData () {
-      for (let i = 0; i < this.labels.length; i++) {
-        setTimeout(() => {
-          this.tickets.push(
-            {
-              path: this.labels[i].path,
-              label: this.labels[i].label,
-              description: `${this.labels[i].type} ,You can use this ${this.labels[i].description}`,
-              style: this.labels[i].style,
-              type: 'Rank: ' + (i + 1)
+    async getTickets () {
+      try {
+        const tickets = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getTickets),
+            this.$fcl.args([
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        this.$store.commit('updateTickets', tickets) // save tickets
+        for (let i = 0; i < tickets.length; i++) {
+          const ticket = tickets[i]
+          if (ticket.name && ticket.name.length > 0) {
+            const detailArr = ticket.where_to_use.split('||')
+            let detail = ''
+            if (detailArr.length === 2) {
+              detail = detailArr[1]
+            } else if (detailArr.length > 2) {
+              detail = ''
+              for (let i = 1; i < detailArr.length; i++) {
+                detail = detail + (i === 1 ? '' : '||') + detailArr[i]
+              }
             }
-          )
-        }, 60 * i + 60)
+            setTimeout(() => {
+              this.tickets.push(
+                {
+                  path: ticket.domain,
+                  label: ticket.name.split('||@')[0],
+                  description: detail,
+                  style: 'color3',
+                  type: 'Rank: ' + (i + 1)
+                }
+              )
+            }, 60 * i + 60)
+          }
+        }
+      } catch (e) {
       }
     }
   }

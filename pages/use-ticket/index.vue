@@ -88,7 +88,6 @@ export default {
             [
               this.$fcl.script(FlowScripts.getTickets),
               this.$fcl.args([
-                this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
               ])
             ]
           ).then(this.$fcl.decode)

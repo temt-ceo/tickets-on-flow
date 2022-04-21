@@ -27,7 +27,7 @@
                 placeholder="e.g. Conversation Rights"
               />
             </b-field>
-            <b-field label="2. Where tickets are used?">
+            <b-field label="2. Which tool do you use?">
               <b-select
                 v-model="registerWhereType"
                 placeholder="Select..."
@@ -42,16 +42,19 @@
                   Teams
                 </option>
                 <option value="4">
-                  YouTube
+                  Google Meet
                 </option>
                 <option value="5">
-                  In this webpage
+                  YouTube
                 </option>
                 <option value="6">
-                  Real Location
+                  On this webpage
                 </option>
                 <option value="7">
-                  None of them
+                  (None)On-site
+                </option>
+                <option value="8">
+                  Other tools
                 </option>
               </b-select>
             </b-field>
@@ -63,7 +66,7 @@
               <b-input
                 v-model="registerWhere"
                 maxlength="40"
-                placeholder="e.g. Send invitation code to this webpage."
+                placeholder="e.g. Send invitation code on this webpage."
               />
             </b-field>
             <b-field label="4. When will the tickets be used?">
@@ -278,7 +281,7 @@
                 placeholder="e.g. Conversation Rights"
               />
             </b-field>
-            <b-field label="2. Where tickets are used?">
+            <b-field label="2. Which tool do you use?">
               <b-select
                 v-model="registerWhereType"
                 placeholder="Select..."
@@ -293,16 +296,19 @@
                   Teams
                 </option>
                 <option value="4">
-                  YouTube
+                  Google Meet
                 </option>
                 <option value="5">
-                  In this webpage
+                  YouTube
                 </option>
                 <option value="6">
-                  Real Location
+                  On this webpage
                 </option>
                 <option value="7">
-                  None of them
+                  (None)On-site
+                </option>
+                <option value="8">
+                  Other tools
                 </option>
               </b-select>
             </b-field>
@@ -314,7 +320,7 @@
               <b-input
                 v-model="registerWhere"
                 maxlength="40"
-                placeholder="e.g. Send invitation code to this webpage."
+                placeholder="e.g. Send invitation code on this webpage."
               />
             </b-field>
             <b-field label="4. When will the tickets be used?">
@@ -598,12 +604,10 @@ export default {
             [
               this.$fcl.script(FlowScripts.getTickets),
               this.$fcl.args([
-                this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
               ])
             ]
           ).then(this.$fcl.decode)
           this.ticketInfo = tickets ? tickets.find(ticket => ticket.dispenser_id === this.dispenser) : null
-          console.log(3, this.ticketInfo)
           if (this.ticketInfo) {
             this.isCompleteRegister = true
             const name = this.ticketInfo.where_to_use.split('||@')
@@ -639,7 +643,6 @@ export default {
           }
           await this.confirmRequesters()
         } catch (e) {
-          console.log(4, e)
         }
       } else {
         await this.confirmRequesters()

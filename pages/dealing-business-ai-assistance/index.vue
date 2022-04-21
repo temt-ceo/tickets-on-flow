@@ -92,7 +92,6 @@ export default {
       bloctoWalletUser: {},
       dispenser: null,
       userId: null,
-      ticketInfo: {},
       ticketName: '',
       ticketWhere: '',
       ticketQuantity: 0,
@@ -103,67 +102,40 @@ export default {
       noticeTitle: ''
     }
   },
+  computed: {
+    tickets: {
+      get () {
+        return this.$store.state.tickets
+      }
+    }
+  },
   async mounted () {
-    await this.getTickets()
+    this.getTicketInfo(location.pathname)
     await this.$fcl.currentUser.subscribe(this.setupUserInitialInfo)
     if (this.bloctoWalletUser.addr) {
       await this.checkCurrentStatus()
     }
   },
   methods: {
-    async getTickets () {
-      // =======DEBUG=======
-      this.dispenser = 1
+    getTicketInfo (pathname) {
+      const regEx = /\//g
+      const ticketInfo = this.tickets.find(obj => obj.domain === pathname.replace(regEx, ''))
+      console.log(ticketInfo)
 
-      if (!this.ticketInfo[this.dispenser]) {
-        try {
-          const ticketInfo = await this.$fcl.send(
-            [
-              this.$fcl.script(FlowScripts.getTickets),
-              this.$fcl.args([
-                this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
-              ])
-            ]
-          ).then(this.$fcl.decode)
-          if (ticketInfo == null) {
-            this.ticketInfo = {}
-            this.ticketName = ''
-          } else {
-            this.ticketInfo = ticketInfo
-            const ticketName = this.ticketInfo.name.split('||@')
-            this.ticketName = ticketName[0]
-            this.twitter = 'https://twitter.com/' + ticketName[1]
-            const where = this.ticketInfo.where_to_use.split('||')
-            if (where.length === 2) {
-              this.ticketWhere = where[1]
-            } else if (where.length > 2) {
-              this.ticketWhere = ''
-              for (let i = 1; i < where.length; i++) {
-                this.ticketWhere = this.ticketWhere + (i === 1 ? '' : '||') + where[i]
-              }
-            }
-            this.ticketQuantity = this.ticketInfo.quantity
-          }
-        } catch (e) {
+      this.dispenser = ticketInfo.dispenser_id
+      const ticketName = ticketInfo.name.split('||@')
+      this.ticketName = ticketName[0]
+      this.twitter = 'https://twitter.com/' + ticketName[1]
+      const where = ticketInfo.where_to_use.split('||')
+      if (where.length === 2) {
+        this.ticketWhere = where[1]
+      } else if (where.length > 2) {
+        this.ticketWhere = ''
+        for (let i = 1; i < where.length; i++) {
+          this.ticketWhere = this.ticketWhere + (i === 1 ? '' : '||') + where[i]
         }
-      } else {
-        const ticketName = this.ticketInfo.name.split('||@')
-        this.ticketName = ticketName[0]
-        this.twitter = ticketName[1]
-        const where = this.ticketInfo.where_to_use.split('||')
-        if (where.length === 2) {
-          this.ticketWhere = where[1]
-        } else if (where.length > 2) {
-          this.ticketWhere = ''
-          for (let i = 1; i < where.length; i++) {
-            this.ticketWhere = this.ticketWhere + (i === 1 ? '' : '||') + where[i]
-          }
-        }
-        this.ticketQuantity = this.ticketInfo.quantity
       }
-      if (this.ticketInfo.name !== '') {
-        this.noticeTitle = `${this.ticketName}が${this.twitter}によって提供されています。`
-      }
+      this.ticketQuantity = ticketInfo.quantity
     },
     async walletLogin () {
       if (!this.bloctoWalletUser.addr) {
