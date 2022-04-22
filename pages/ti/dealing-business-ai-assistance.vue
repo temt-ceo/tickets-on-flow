@@ -238,7 +238,7 @@ export default {
         transactionCode = FlowTransactions.requestTicket
       }
       this.$buefy.dialog.confirm({
-        message: 'If you are applying for a ticket, please press "Approve" on the next wallet pop-up screen. This is free of charge. Money is charged when you use it.',
+        message: 'Please press "Approve" on the next wallet pop-up. This is free of charge.',
         onConfirm: async () => {
           try {
             const transactionId = await this.$fcl.send(

@@ -10,17 +10,18 @@
       >
         <div class="nft-list-container">
           <p class="content-information">
-            <span class="col1">トークンID</span>
-            <span class="col2">ウォレットアドレス</span>
-            <span class="col3">配布</span>
+            <span class="col1">user ID</span>
+            <span class="col2">Address</span>
+            <span class="col3">Number of uses</span>
           </p>
+          {{ new Date().getTime() }}
           <ul class="requester-list">
             <li
               v-for="(requester, index) in ticketRequesters"
               :key="index"
             >
               <div class="token-id">
-                #{{ requester.token_id }}
+                #{{ requester.user_id }}
               </div>
               <div
                 class="requester-address"
@@ -39,8 +40,7 @@
                 </a>
               </div>
               <div class="is-done">
-                <span v-if="requester.done" class="purple">済み</span>
-                <span v-if="!requester.done">未</span>
+                <span>{{ requester.count }}</span>
               </div>
             </li>
           </ul>
@@ -95,23 +95,10 @@ export default {
             ])
           ]
         ).then(this.$fcl.decode)
+        console.log(ticketRequesters, 88888)
         this.ticketRequesters = ticketRequesters
-        await this.confirmReceivers()
-      } catch (e) {
-      }
-    },
-    async confirmReceivers () {
-      try {
-        const ticketReceivers = await this.$fcl.send(
-          [
-            this.$fcl.script(FlowScripts.getTicketReceivers),
-            this.$fcl.args([
-              this.$fcl.arg(this.address, this.$fclArgType.UInt32)
-            ])
-          ]
-        ).then(this.$fcl.decode)
         this.ticketRequesters.forEach((obj) => {
-          obj.done = ticketReceivers == null ? false : ticketReceivers.includes(obj.address)
+          obj.done = false
         })
         this.$forceUpdate()
       } catch (e) {

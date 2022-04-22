@@ -59,7 +59,7 @@
               </b-select>
             </b-field>
             <b-field
-              label="3. How do you connect to the tool? or Detailed description of location"
+              label="3. How do you connect to the tool? or Detail the description of location"
               :message="registerWhere === '' ? 'Please enter': ''"
               :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
             >
@@ -287,7 +287,7 @@
               </b-select>
             </b-field>
             <b-field
-              label="3. How do you connect to the tool? or Detailed description of location"
+              label="3. How do you connect to the tool? or Detail the description of location"
               :message="registerWhere === '' ? 'Please enter': ''"
               :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
             >
@@ -620,7 +620,7 @@ export default {
               value = value.substr(1)
             }
             this.registerTwitter = value
-            const explanation = !this.ticketInfo ? 'Once registered, a ticket application button will appear on your registered page path. ' : ''
+            const explanation = !this.ticketInfo ? 'Once registered, a ticket application button will appear on your ticket webpage. ' : ''
             this.$buefy.dialog.confirm({
               message: `${explanation}If you are sure, please press "Approve" on the pop-up that will appear after this.`,
               onConfirm: this.ticketInfo ? this.updateTicketInfo : this.addTicketInfo
