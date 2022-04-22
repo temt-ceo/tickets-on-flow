@@ -15,12 +15,6 @@
         <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
       </p>
       <b-button
-        :disabled="!bloctoWalletUser.addr || !currentTicketQuantity"
-        @click="useTicket"
-      >
-        チケットを使う
-      </b-button>
-      <b-button
         :disabled="!bloctoWalletUser.addr"
         @click="flowWalletLogout"
       >
@@ -32,7 +26,6 @@
 
 <script>
 import FlowScripts from '~/cadence/scripts'
-import FlowTransactions from '~/cadence/transactions'
 
 export default {
   name: 'UseTicketPage',
@@ -150,29 +143,6 @@ export default {
         } else if (!quantity) {
           this.noticeTitle = `現在${this.ticketName}を申請中です。配布が完了するまでお待ち下さい。`
         }
-      } catch (e) {
-      }
-    },
-    async useTicket () {
-      alert('チケットを申請される方は、次のウォレットのポップアップ画面で「承認」を押してください')
-      try {
-        const transactionId = await this.$fcl.send(
-          [
-            this.$fcl.transaction(FlowTransactions.useTicket),
-            this.$fcl.args([
-              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
-              this.$fcl.arg(this.user_id, this.$fclArgType.UInt32)
-            ]),
-            this.$fcl.payer(this.$fcl.authz),
-            this.$fcl.proposer(this.$fcl.authz),
-            this.$fcl.authorizations([this.$fcl.authz]),
-            this.$fcl.limit(9999)
-          ]
-        ).then(this.$fcl.decode)
-        this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-        this.noticeTitle = `${this.ticketName}を使用しました。チケット配布者にお知らせください。`
-        this.status = 2
-        return transactionId
       } catch (e) {
       }
     }

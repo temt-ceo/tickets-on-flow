@@ -76,7 +76,6 @@ export default {
     return {
       ticketRequesters: {},
       ticketName: '',
-      ticketQuantity: null,
       transactionScanUrl: '',
       isCompleteRegister: false,
       flowscanLink: 'https://testnet.flowscan.org/transaction'

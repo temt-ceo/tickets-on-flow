@@ -349,7 +349,6 @@ export default {
             newEvents.push({
               dispenser_id: data.dispenser_id,
               token_id: data.token_id,
-              quantity: data.quantity,
               address: data.address,
               block_id: blockHeight
             })

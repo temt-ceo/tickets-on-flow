@@ -177,32 +177,7 @@
                 </option>
               </b-select>
             </b-field>
-            <b-field label="6. How many times can it be used per capita?">
-              <b-select
-                v-model="registerQuantity"
-                placeholder="Select..."
-              >
-                <option value="1">
-                  1 times
-                </option>
-                <option value="2">
-                  2 times
-                </option>
-                <option value="3">
-                  3 times
-                </option>
-                <option value="4">
-                  4 times
-                </option>
-                <option value="5">
-                  5 times
-                </option>
-                <option value="10">
-                  10 times
-                </option>
-              </b-select>
-            </b-field>
-            <b-field label="7. Price per ticket ($FLOW)">
+            <b-field label="6. Price($FLOW)">
               <b-select
                 v-model="registerPrice"
                 placeholder="Select..."
@@ -247,7 +222,7 @@
                 Close
               </b-button>
               <b-button
-                :disabled="!registerName || !registerWhere || !registerWhereType || !registerWhen || !registerWhenTZ || !registerQuantity || !registerPrice"
+                :disabled="!registerName || !registerWhere || !registerWhereType || !registerWhen || !registerWhenTZ || !registerPrice"
                 @click="registerTicketInfo"
               >
                 Register
@@ -430,32 +405,7 @@
                 </option>
               </b-select>
             </b-field>
-            <b-field label="6. How many times can it be used per capita?">
-              <b-select
-                v-model="registerQuantity"
-                placeholder="Select..."
-              >
-                <option value="1">
-                  1 times
-                </option>
-                <option value="2">
-                  2 times
-                </option>
-                <option value="3">
-                  3 times
-                </option>
-                <option value="4">
-                  4 times
-                </option>
-                <option value="5">
-                  5 times
-                </option>
-                <option value="10">
-                  10 times
-                </option>
-              </b-select>
-            </b-field>
-            <b-field label="7. Price per ticket ($FLOW)">
+            <b-field label="6. Price($FLOW)">
               <b-select
                 v-model="registerPrice"
                 placeholder="Select..."
@@ -495,7 +445,7 @@
                 </option>
               </b-select>
             </b-field>
-            <b-field label="8. Want to change your Twitter account name?">
+            <b-field label="7. Want to change your Twitter account name?">
               <b-checkbox
                 v-model="registerTwitterEdit"
                 true-value="Yes"
@@ -509,7 +459,7 @@
                 Close
               </b-button>
               <b-button
-                :disabled="!registerWhere || !registerWhereType || !registerWhen || !registerWhenTZ || !registerQuantity || !registerPrice"
+                :disabled="!registerWhere || !registerWhereType || !registerWhen || !registerWhenTZ || !registerPrice"
                 @click="registerTicketInfo"
               >
                 Update
@@ -577,7 +527,6 @@ export default {
       registerWhen: new Date(),
       registerWhenTZ: null,
       registerType: null, // Reserves for the future
-      registerQuantity: null,
       registerPrice: null,
       registerTwitter: '',
       registerTwitterEdit: 'No',
@@ -643,7 +592,6 @@ export default {
               this.registerWhenTZ = when[0]
               this.registerWhen = new Date(when[1])
             }
-            this.registerQuantity = this.ticketInfo.quantity
             this.registerPrice = this.ticketInfo.price.replace(/0+$/, '')
             this.registerType = this.ticketInfo.type
           } else {
@@ -701,7 +649,6 @@ export default {
               this.$fcl.arg(registerName, this.$fclArgType.String),
               this.$fcl.arg(registerWhere, this.$fclArgType.String),
               this.$fcl.arg(registerWhen, this.$fclArgType.String),
-              this.$fcl.arg(parseInt(this.registerQuantity), this.$fclArgType.UInt8),
               this.$fcl.arg(Number(this.registerPrice), this.$fclArgType.UFix64)
             ]),
             this.$fcl.payer(this.$fcl.authz),
@@ -732,7 +679,6 @@ export default {
               this.$fcl.arg(registerName, this.$fclArgType.String),
               this.$fcl.arg(registerWhere, this.$fclArgType.String),
               this.$fcl.arg(registerWhen, this.$fclArgType.String),
-              this.$fcl.arg(parseInt(this.registerQuantity), this.$fclArgType.UInt8),
               this.$fcl.arg(Number(this.registerPrice), this.$fclArgType.UFix64)
             ]),
             this.$fcl.payer(this.$fcl.authz),
@@ -764,6 +710,7 @@ export default {
         }
         this.showFlag = true
       } catch (e) {
+        console.log(e)
       }
     },
     async confirmReceivers () {
@@ -788,13 +735,11 @@ export default {
     },
     async dispenseTicket () {
       try {
-        const ticketQuantity = parseInt(this.ticketInfo.quantity)
         const transactionId = await this.$fcl.send(
           [
             this.$fcl.transaction(FlowTransactions.dispenseTicket),
             this.$fcl.args([
-              this.$fcl.arg(this.ticketInfo.name, this.$fclArgType.String),
-              this.$fcl.arg(ticketQuantity, this.$fclArgType.UInt8)
+              this.$fcl.arg(this.ticketInfo.name, this.$fclArgType.String)
             ]),
             this.$fcl.payer(this.$fcl.authz),
             this.$fcl.proposer(this.$fcl.authz),

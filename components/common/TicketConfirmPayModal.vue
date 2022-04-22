@@ -10,7 +10,7 @@
             <p class="content-information">
               <span class="col1">トークンID</span>
               <span class="col2">ウォレット</span>
-              <span class="col3">残チケット数</span>
+              <span class="col3">支払額</span>
               <span class="col4">ブロック</span>
             </p>
             <ul class="payer-list">
@@ -37,8 +37,8 @@
                     }}
                   </a>
                 </div>
-                <div class="payed-quantity">
-                  {{ payer.quantity }}
+                <div class="payed-paid">
+                  {{ payer.paid }}
                 </div>
                 <div class="payed-block">
                   {{ latestBlockHeight - payer.block_id }} ago
@@ -197,7 +197,7 @@ export default {
             }
           }
 
-          .payed-quantity {
+          .payed-paid {
             width: 10%;
             border-right: none;
           }

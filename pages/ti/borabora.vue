@@ -3,7 +3,7 @@
     <div class="hero">
       <div class="hero--overlay">
         <div class="hero--content content">
-          <div class="text-wrap" v-if="ticketName && ticketName.length > 0">
+          <div v-if="ticketName && ticketName.length > 0" class="text-wrap">
             <h1
               :class="ticketName.length > 30 ? 'long' : ''"
               class="page-title"
@@ -18,17 +18,11 @@
               Detail: <a :href="twitter" target="_blank">please click here</a>
             </h1>
             <h1 class="notice">
-              Steps to meet with us: {{ ticketWhere }}
+              Usage: {{ ticketWhere }}
             </h1>
             <h1 class="notice">
               {{ ticketWhenDate }} {{ ticketWhenHour }} Start
             </h1>
-            <p
-              v-if="bloctoWalletUser.addr && status > 2"
-              class="notice"
-            >
-              現在の{{ ticketName }}の枚数 : {{ currentTicketQuantity }}枚
-            </p>
             <p
               v-if="transactionScanUrl !== ''"
               class="check-transaction"
@@ -44,22 +38,28 @@
               Sign up / Log in
             </b-button>
             <b-button
+              :disabled="status !== 3"
+              @click="useTicket"
+            >
+              Use a Ticket
+            </b-button>
+            <b-button
               v-if="bloctoWalletUser.addr && status === 1"
               type="is-link is-light"
               @click="requestTicket"
             >
-              Apply for Ticket
+              Request a Ticket
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && status === 2"
-              type="is-danger is-light"
-              @click="getUserTicketQuantity"
+              type="is-link is-light"
+              @click="getRequestStatus"
             >
-              申請状況を確認する
+              Check Request Status
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr"
-              type="is-link is-light"
+              type="is-danger is-light"
               @click="flowWalletLogout"
             >
               Log out from Wallet
@@ -94,7 +94,7 @@ import FlowScripts from '~/cadence/scripts'
 import FlowTransactions from '~/cadence/transactions'
 
 export default {
-  name: 'ticket-dispenser-3',
+  name: 'TicketDispenser2',
   data () {
     return {
       bloctoWalletUser: {},
@@ -105,10 +105,8 @@ export default {
       ticketWhenDate: '',
       ticketWhenHour: '',
       ticketWhenTZ: 0,
-      ticketQuantity: 0,
       twitter: '',
       price: null,
-      currentTicketQuantity: 0,
       status: 0,
       transactionScanUrl: '',
       noticeTitle: ''
@@ -130,8 +128,7 @@ export default {
   },
   methods: {
     getTicketInfo (pathname) {
-      const ticketInfo = this.tickets.find(obj => obj.domain === pathname.replace(/\/ti\//g, ''))
-      console.log(ticketInfo)
+      const ticketInfo = this.tickets.find(obj => obj.domain === pathname.replace(/\/ti\//, '').replace(/\//g, ''))
       this.dispenser = ticketInfo.dispenser_id
       const ticketName = ticketInfo.name.split('||@')
       this.ticketName = ticketName[0]
@@ -157,13 +154,25 @@ export default {
           this.ticketWhere = this.ticketWhere + (i === 1 ? '' : '||') + where[i]
         }
       }
-      this.ticketQuantity = ticketInfo.quantity
     },
-    async walletLogin () {
+    walletLogin () {
       if (!this.bloctoWalletUser.addr) {
-        alert('チケットを管理するウォレットに接続します。まだ作成していない場合は新規での作成をお願いします。')
-        await this.$fcl.authenticate()
+        this.$buefy.dialog.confirm({
+          message: 'Connect to the wallet where you will manage your tickets. Please create a new one if you have not.',
+          onConfirm: async () => {
+            await this.$fcl.authenticate()
+          }
+        })
       }
+    },
+    callToast () {
+      const toast = this.$buefy.toast.open({
+        indefinite: true,
+        message: this.noticeTitle
+      })
+      setTimeout(() => {
+        toast.close()
+      }, 10000)
     },
     async setupUserInitialInfo (user) {
       this.bloctoWalletUser = user
@@ -175,15 +184,16 @@ export default {
       }
     },
     async checkCurrentStatus () {
-      const ret = await this.isTicketVaultReady()
-      if (ret) {
-        await this.getUserTicketQuantity()
-      } else if (this.ticketName) {
-        this.status = 1
-        this.noticeTitle = `${this.ticketName}を申請可能です。以下から申請ボタンを押してください。`
-      } else {
-        this.noticeTitle = 'Ticket has not been created yet.'
-      }
+      await this.isTicketVaultReady()
+      // if (ret) {
+      //   await this.getRequestStatus()
+      // } else if (this.ticketName) {
+      this.status = 1
+      //   this.noticeTitle = `${this.ticketName}を申請可能です。以下から申請ボタンを押してください。`
+      // } else {
+      //   this.noticeTitle = 'Ticket has not been created yet.'
+      //   this.callToast()
+      // }
     },
     async isTicketVaultReady () {
       try {
@@ -204,50 +214,63 @@ export default {
         return false
       }
     },
-    async getUserTicketQuantity () {
+    async getRequestStatus () {
       try {
         this.noticeTitle = ''
-        const quantity = await this.$fcl.send(
+        await this.$fcl.send(
           [
-            this.$fcl.script(FlowScripts.getUserTicketQuantity),
+            this.$fcl.script(FlowScripts.getRequestStatus),
             this.$fcl.args([
               this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
               this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
             ])
           ]
         ).then(this.$fcl.decode)
-        this.currentTicketQuantity = quantity
-        if (quantity === 0) {
-          this.noticeTitle = `${this.ticketName}を全て消費済みです。`
-          this.status = 5
-        } else if (quantity > 0 && quantity < this.ticketQuantity) {
-          this.noticeTitle = `${this.ticketName}は現在、残り${quantity}枚です。`
-          this.status = 4
-        } else if (quantity > 0 && quantity === this.ticketQuantity) {
-          this.noticeTitle = `${this.ticketWhere}で使える${this.ticketName}が配布されました！次回使ってみましょう！`
-          this.status = 3
-        } else if (!quantity) {
-          this.status = 2
-          this.noticeTitle = `現在${this.ticketName}を申請中です。配布が完了するまでお待ち下さい。`
-        }
       } catch (e) {
       }
     },
     async requestTicket () {
-      const ret = await this.isTicketContainerReady()
+      const ret = await this.isTicketVaultReady()
       let transactionCode = ''
       if (ret) {
         transactionCode = FlowTransactions.requestMoreTicket
       } else {
         transactionCode = FlowTransactions.requestTicket
       }
+      this.$buefy.dialog.confirm({
+        message: 'If you are applying for a ticket, please press "Approve" on the next wallet pop-up screen. This is free of charge. Money is charged when you use it.',
+        onConfirm: async () => {
+          try {
+            const transactionId = await this.$fcl.send(
+              [
+                this.$fcl.transaction(transactionCode),
+                this.$fcl.args([
+                  this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
+                ]),
+                this.$fcl.payer(this.$fcl.authz),
+                this.$fcl.proposer(this.$fcl.authz),
+                this.$fcl.authorizations([this.$fcl.authz]),
+                this.$fcl.limit(9999)
+              ]
+            ).then(this.$fcl.decode)
+            this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+            this.noticeTitle = `${this.ticketName}の申請を行いました。`
+            this.status = 2
+            return transactionId
+          } catch (e) {
+          }
+        }
+      })
+    },
+    async useTicket () {
       alert('チケットを申請される方は、次のウォレットのポップアップ画面で「承認」を押してください')
       try {
         const transactionId = await this.$fcl.send(
           [
-            this.$fcl.transaction(transactionCode),
+            this.$fcl.transaction(FlowTransactions.useTicket),
             this.$fcl.args([
-              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
+              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
+              this.$fcl.arg(this.user_id, this.$fclArgType.UInt32)
             ]),
             this.$fcl.payer(this.$fcl.authz),
             this.$fcl.proposer(this.$fcl.authz),
@@ -256,7 +279,7 @@ export default {
           ]
         ).then(this.$fcl.decode)
         this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-        this.noticeTitle = `${this.ticketName}の申請を行いました。`
+        this.noticeTitle = `${this.ticketName}を使用しました。チケット配布者にお知らせください。`
         this.status = 2
         return transactionId
       } catch (e) {
@@ -317,7 +340,7 @@ export default {
       }
 
       .check-transaction a {
-        color: purple;
+        color: tomato;
         font-size: 16px;
         text-decoration: underline;
       }
@@ -329,11 +352,8 @@ export default {
       .button {
         width: 90%;
         border-radius: 20px;
-        margin: 18px 0;
+        margin: 14px 0;
         max-width: 400px;
-        &.to-top {
-          margin-top: 34px;
-        }
       }
     }
   }
