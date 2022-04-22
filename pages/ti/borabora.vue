@@ -3,18 +3,25 @@
     <div class="hero">
       <div class="hero--overlay">
         <div class="hero--content content">
-          <div v-if="ticketName && ticketName.length > 0">
-            <h1 class="page-title">
-              {{ ticketName ? ticketName : 'Ticket Application' }}
+          <div class="text-wrap" v-if="ticketName && ticketName.length > 0">
+            <h1
+              :class="ticketName.length > 30 ? 'long' : ''"
+              class="page-title"
+            >
+              {{ ticketName }}
+            </h1>
+            <hr>
+            <h1 class="notice">
+              Price: {{ price }} $FLOW
             </h1>
             <h1 class="notice">
-              Event Name: {{ ticketName }}
+              Detail: <a :href="twitter" target="_blank">please click here</a>
             </h1>
             <h1 class="notice">
-              Detail: {{ ticketWhere }}
+              Steps to meet with us: {{ ticketWhere }}
             </h1>
             <h1 class="notice">
-              More Information: <a :href="twitter" target="_blank">please click here</a>
+              {{ ticketWhenDate }} {{ ticketWhenHour }} Start
             </h1>
             <p
               v-if="bloctoWalletUser.addr && status > 2"
@@ -26,14 +33,15 @@
               v-if="transactionScanUrl !== ''"
               class="check-transaction"
             >
-              <a :href="transactionScanUrl" target="_blank">Confirm Transaction</a>
+              <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
             </p>
+            <hr>
             <b-button
               v-if="ticketName !== '' && !bloctoWalletUser.addr"
               type="is-link is-light"
               @click="walletLogin"
             >
-              Sign up for {{ ticketName }}
+              Sign up / Log in
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && status === 1"
@@ -86,7 +94,7 @@ import FlowScripts from '~/cadence/scripts'
 import FlowTransactions from '~/cadence/transactions'
 
 export default {
-  name: 'DealingBusinessAIAssistance',
+  name: 'ticket-dispenser-3',
   data () {
     return {
       bloctoWalletUser: {},
@@ -94,8 +102,12 @@ export default {
       userId: null,
       ticketName: '',
       ticketWhere: '',
+      ticketWhenDate: '',
+      ticketWhenHour: '',
+      ticketWhenTZ: 0,
       ticketQuantity: 0,
       twitter: '',
+      price: null,
       currentTicketQuantity: 0,
       status: 0,
       transactionScanUrl: '',
@@ -118,13 +130,24 @@ export default {
   },
   methods: {
     getTicketInfo (pathname) {
-      const ticketInfo = this.tickets.find(obj => obj.domain === pathname.replace(/\//g, ''))
+      const ticketInfo = this.tickets.find(obj => obj.domain === pathname.replace(/\/ti\//g, ''))
       console.log(ticketInfo)
-
       this.dispenser = ticketInfo.dispenser_id
       const ticketName = ticketInfo.name.split('||@')
       this.ticketName = ticketName[0]
       this.twitter = 'https://twitter.com/' + ticketName[1]
+      this.price = ticketInfo.price.replace(/0+$/, '')
+      const when = ticketInfo.when_to_use.split('||')
+      if (when.length === 2) {
+        this.ticketWhenTZ = parseInt(when[0])
+        const ticketWhen = new Date(when[1])
+        const mo = ticketWhen.getMonth().toString()
+        const d = ticketWhen.getDate().toString()
+        this.ticketWhenDate = `${ticketWhen.getFullYear()}/${mo.length > 1 ? mo : '0' + mo}/${d.length > 1 ? d : '0' + d}`
+        const h = ticketWhen.getHours().toString()
+        const m = ticketWhen.getMinutes().toString()
+        this.ticketWhenHour = `${h.length > 1 ? h : '0' + h}: ${m.length > 1 ? m : '0' + m}`
+      }
       const where = ticketInfo.where_to_use.split('||')
       if (where.length === 2) {
         this.ticketWhere = where[1]
@@ -254,50 +277,83 @@ export default {
 .section {
   padding-bottom: 32px;
 
-  .page-title {
-    margin-top: 80px;
-    font-size: 18px;
-    color: white;
-    text-align: center;
-  }
-
   .content {
     margin: 10px 0 20px;
     padding: 16px;
     text-align: center;
     max-width: 800px;
 
-    h1 {
-      margin: 20px 0 16px;
-    }
+    .text-wrap {
+      margin: 0 20px;
 
-    .description {
-      font-size: 16px;
-    }
-
-    .notice {
-      font-size: 16px;
-      color: rebeccapurple;
-    }
-
-    .check-transaction a {
-      color: purple;
-      font-size: 16px;
-      text-decoration: underline;
-    }
-
-    .request-btn {
-      font-weight: bold;
-    }
-
-    .button {
-      width: 90%;
-      border-radius: 20px;
-      margin: 18px 0;
-      max-width: 400px;
-      &.to-top {
-        margin-top: 34px;
+      .page-title {
+        margin: 80px auto 0;
+        font-size: 18px;
+        color: mediumspringgreen;
+        text-align: center;
+        --typing-steps: 14;
+        overflow: hidden;
+        white-space: nowrap;
+        letter-spacing: 3px;
+        border-right: 1px solid #9778d7;
+        animation: typing 2s steps(var(--typing-steps)),
+          blinking 0.7s steps(1) infinite;
+        &.long {
+          font-size: 9px;
+        }
       }
+
+      h1 {
+        margin: 20px 0 16px;
+      }
+
+      .description {
+        font-size: 16px;
+      }
+
+      .notice {
+        font-size: 16px;
+        color: lightsteelblue;
+      }
+
+      .check-transaction a {
+        color: purple;
+        font-size: 16px;
+        text-decoration: underline;
+      }
+
+      .request-btn {
+        font-weight: bold;
+      }
+
+      .button {
+        width: 90%;
+        border-radius: 20px;
+        margin: 18px 0;
+        max-width: 400px;
+        &.to-top {
+          margin-top: 34px;
+        }
+      }
+    }
+  }
+
+  @keyframes typing {
+    0% {
+      width: 0px;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+
+  @keyframes blinking {
+    0%,
+    100% {
+      border-color: transparent;
+    }
+    50% {
+      border-color: #9778d7;
     }
   }
 

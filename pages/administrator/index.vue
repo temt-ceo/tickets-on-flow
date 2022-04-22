@@ -12,7 +12,7 @@
         {{ noticeTitle }}
       </h1>
       <p v-if="transactionScanUrl !== ''" class="check-transaction">
-        <a :href="transactionScanUrl" target="_blank">Confirm Transaction</a>
+        <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
       </p>
       <b-button
         v-if="bloctoWalletUser.addr"

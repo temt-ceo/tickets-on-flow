@@ -20,7 +20,7 @@
           v-for="(ticket, index) in tickets"
           :key="index"
         >
-          <nuxt-link :to="'/' + ticket.path + '/'" >
+          <nuxt-link :to="'/ti/' + ticket.path" >
             <div class="c-contact">
               <div class="identity_block fa-3x">
                 <label>{{ ticket.label }}</label>

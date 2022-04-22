@@ -10,7 +10,7 @@
             v-if="transactionScanUrl !== ''"
             class="check-transaction"
           >
-            <a :href="transactionScanUrl" target="_blank" class="scanlink">Confirm Transaction</a>
+            <a :href="transactionScanUrl" target="_blank" class="scanlink">Confirm the transaction</a>
           </p>
           <div
             v-if="showFlag && !ticketInfo && !isCompleteRegister"
@@ -59,7 +59,7 @@
               </b-select>
             </b-field>
             <b-field
-              label="3. Detailed description of location"
+              label="3. How do you connect to the tool? or Detailed description of location"
               :message="registerWhere === '' ? 'Please enter': ''"
               :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
             >
@@ -258,7 +258,7 @@
             <p class="complete-register">
               Tickets registered.<br>
               It takes about 10 seconds to complete registration.<br>
-              After clicking "Confirm Transaction" and seeing the word SEALED on the screen,<br>
+              After clicking "Confirm the transaction" and seeing the word SEALED on the screen,<br>
               the ticket application button will appear on the ticket page.
             </p>
           </div>
@@ -312,7 +312,7 @@
               </b-select>
             </b-field>
             <b-field
-              label="3. Detailed description of location"
+              label="3. How do you connect to the tool? or Detailed description of location"
               :message="registerWhere === '' ? 'Please enter': ''"
               :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
             >

@@ -32,13 +32,15 @@
             type="is-info"
           />
         </a>
-        <b-icon
-          class="navbar-item"
-          pack="fa-brands"
-          icon="youtube"
-          size="medium"
-          type="is-warning"
-        />
+        <a :href="url.youtube" target="_blank">
+          <b-icon
+            class="navbar-item"
+            pack="fa-brands"
+            icon="youtube"
+            size="medium"
+            type="is-warning"
+          />
+        </a>
         <a :href="url.discord" target="_blank">
           <b-icon
             class="navbar-item"
@@ -86,7 +88,8 @@ export default {
       url: {
         twitter: 'https://mobile.twitter.com/_official_asp',
         discord: 'https://discord.com/channels/965133581238296636/965133581238296640',
-        github: 'https://github.com/temt-ceo/tickets-on-flow/tree/develop'
+        github: 'https://github.com/temt-ceo/tickets-on-flow/tree/develop',
+        youtube: 'https://youtu.be/-kqmTFCrPtE'
       },
       isActive: false,
       items: [

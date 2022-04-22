@@ -22,7 +22,7 @@
               {{ noticeTitle }}
             </h1>
             <p v-if="transactionScanUrl !== ''" class="check-transaction">
-              <a :href="transactionScanUrl" target="_blank">Confirm Transaction</a>
+              <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
             </p>
             <b-button
               :disabled="!bloctoWalletUser.addr || !hasDispenserVault || !hasDispenser"
@@ -56,7 +56,7 @@
             </b-button>
             <b-button
               v-if="!bloctoWalletUser.addr"
-              type="is-link is-light"
+              type="is-success is-light"
               @click="flowWalletLogin"
             >
               Connect to a wallet you manage
@@ -207,6 +207,7 @@ export default {
           ]
         ).then(this.$fcl.decode)
         this.dispenserId = dispenserId
+        console.log(999, dispenserId)
       } catch (e) {
       }
     },
@@ -231,7 +232,7 @@ export default {
       try {
         let domain = null
         this.$buefy.dialog.prompt({
-          message: 'What path would you like for your page? (https://tickets-on-flow.web.app/XXXXX) (max:30 length)',
+          message: 'What path would you like for your page? (https://tickets-on-flow.web.app/ti/XXXXX) (max:30 length)',
           inputAttrs: {
             type: 'text',
             placeholder: 'e.g. hello-ticket',
@@ -249,7 +250,7 @@ export default {
             domain = value
             toast1 = this.$buefy.toast.open({
               indefinite: true,
-              message: `Your web site path will look like this: https://tickets-on-flow.web.app/${domain}`
+              message: `Your web site path will look like this: https://tickets-on-flow.web.app/ti/${domain}`
             })
             this.$buefy.dialog.prompt({
               message: 'Enter your email address (please enter a sub email as it will be stored in the blockchain)',
