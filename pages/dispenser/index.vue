@@ -85,6 +85,7 @@
       <ticket-input-modal
         :address="address"
         :dispenser="dispenserId"
+        :ticket-page="dispenserTicketPage"
         @closeModal="showInputModal=false"
       />
     </b-modal>
@@ -124,6 +125,7 @@ export default {
       bloctoWalletUser: {},
       address: null,
       dispenserId: null,
+      dispenserTicketPage: '',
       hasDispenserVault: false,
       hasDispenser: false,
       noticeTitle: '',
@@ -162,7 +164,7 @@ export default {
         this.hasDispenserVault = await this.hasTicketDispenserVault()
 
         if (this.hasDispenserVault) {
-          await this.getDispenserId()
+          await this.getDispenserInfo()
           this.hasDispenser = await this.hasTicketDispenser()
 
           if (this.hasDispenser) {
@@ -196,19 +198,24 @@ export default {
         return false
       }
     },
-    async getDispenserId () {
+    async getDispenserInfo () {
       try {
-        const dispenserId = await this.$fcl.send(
+        const dispenserInfo = await this.$fcl.send(
           [
-            this.$fcl.script(FlowScripts.getDispenserId),
+            this.$fcl.script(FlowScripts.getDispenserInfo),
             this.$fcl.args([
               this.$fcl.arg(this.address, this.$fclArgType.Address)
             ])
           ]
         ).then(this.$fcl.decode)
-        this.dispenserId = dispenserId
-        console.log(999, dispenserId)
+        if (dispenserInfo) {
+          this.dispenserId = parseInt(Object.keys(dispenserInfo)[0])
+          this.dispenserTicketPage = 'https://tickets-on-flow.web.app/ti/' + dispenserInfo[this.dispenserId]
+        } else {
+          this.dispenserTicketPage = ''
+        }
       } catch (e) {
+        console.log(e)
       }
     },
     async hasTicketDispenser () {
@@ -253,10 +260,10 @@ export default {
               message: `Your web site path will look like this: https://tickets-on-flow.web.app/ti/${domain}`
             })
             this.$buefy.dialog.prompt({
-              message: 'Enter your email address (please enter a sub email as it will be stored in the blockchain)',
+              message: 'Enter your email address. (please enter a sub email as it will be stored in the blockchain) This is used to notify you when a page is created.',
               inputAttrs: {
                 type: 'text',
-                placeholder: 'yourname@example.com',
+                placeholder: 'e.g. yourname@example.com',
                 value: '',
                 maxlength: 40
               },

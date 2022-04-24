@@ -31,10 +31,10 @@ pub fun main(address: Address): Bool {
     return dispenserVault.hasDispenser()
 }
   `,
-  getDispenserId: `
+  getDispenserInfo: `
 import Tv15 from 0xT
-pub fun main(address: Address): UInt32? {
-    return Tv15.getDispenserId(address: address)
+pub fun main(address: Address): {UInt32: String}? {
+    return Tv15.getDispenserInfo(address: address)
 }
   `,
   getTickets: `
@@ -58,6 +58,17 @@ import Tv15 from 0xT
 pub fun main(addr: Address): &Tv15.TicketVault{Tv15.ITicketPublic}? {
     let account = getAccount(addr)
     return account.getCapability<&Tv15.TicketVault{Tv15.ITicketPublic}>(Tv15.TicketVaultPublicPath).borrow()
+}
+  `,
+  getTicketRequestStatus: `
+import Tv15 from 0xT
+pub fun main(addr: Address, dispenser_id: UInt32): Tv15.RequestStruct? {
+  let account = getAccount(addr)
+  let ticketVault = account.getCapability<&Tv15.TicketVault{Tv15.ITicketPublic}>(Tv15.TicketVaultPublicPath).borrow()
+      ?? panic("Could not borrow TicketVault capability.")
+  let user_id = ticketVault.getId()
+  return Tv15.getTicketRequestStatus(dispenser_id: dispenser_id, user_id: user_id)
+
 }
   `
 }

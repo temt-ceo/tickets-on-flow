@@ -327,7 +327,6 @@ pub contract Tv15 {
   */
   pub resource interface ITicketPublic {
     pub fun deposit(token: @Ticket)
-    pub fun hasTicket(token_id: UInt64): Bool
     pub fun getId(): UInt32
   }
 
@@ -345,11 +344,6 @@ pub contract Tv15 {
         self.ownedTicket[token.getId()] == nil : "You have same ticket."
       }
       self.ownedTicket[token.getId()] <-! token
-    }
-
-    // [public access]
-    pub fun hasTicket(token_id: UInt64): Bool {
-      return self.ownedTicket[token_id] != nil
     }
 
     // [public access]
@@ -418,13 +412,13 @@ pub contract Tv15 {
   }
 
   /*
-  ** [Public Function] getDispenserId
+  ** [Public Function] getDispenserInfo
   */
-  pub fun getDispenserId(address: Address): UInt32? {
+  pub fun getDispenserInfo(address: Address): {UInt32: String}? {
     var dispenserArr: [DispenserStruct] = []
     for data in Tv15.dispenserOwners.values {
       if (data.address == address) {
-        return data.dispenser_id
+        return {data.dispenser_id: data.domain}
       }
     }
     return nil
@@ -435,6 +429,13 @@ pub contract Tv15 {
   */
   pub fun getTickets(): [TicketStruct] {
     return Tv15.ticketInfo
+  }
+
+  /*
+  ** [Public Function] getTicketRequestStatus
+  */
+  pub fun getTicketRequestStatus(dispenser_id: UInt32, user_id: UInt32): RequestStruct? {
+    return Tv15.ticketRequesters[dispenser_id]![user_id]
   }
 
   /*

@@ -234,7 +234,7 @@
               Tickets registered.<br>
               It takes about 10 seconds to complete registration.<br>
               After clicking "Confirm the transaction" and seeing the word SEALED on the screen,<br>
-              the ticket application button will appear on the ticket page.
+              the ticket request button will appear on <a :href="ticketPage">{{ ticketPage }}</a>.
             </p>
           </div>
           <div v-if="showFlag && ticketInfo && !isCompleteRegister" class="text-wrap">
@@ -510,12 +510,17 @@ export default {
     address: {
       type: String,
       required: true,
-      default: null
+      default: ''
     },
     dispenser: {
       type: Number,
       required: true,
       default: null
+    },
+    ticketPage: {
+      type: String,
+      required: true,
+      default: ''
     }
   },
   data () {
@@ -620,7 +625,7 @@ export default {
               value = value.substr(1)
             }
             this.registerTwitter = value
-            const explanation = !this.ticketInfo ? 'Once registered, a ticket application button will appear on your ticket webpage. ' : ''
+            const explanation = !this.ticketInfo ? `Once registered, a ticket request button will appear on your ticket webpage. (${this.ticketPage})<br>` : ''
             this.$buefy.dialog.confirm({
               message: `${explanation}If you are sure, please press "Approve" on the pop-up that will appear after this.`,
               onConfirm: this.ticketInfo ? this.updateTicketInfo : this.addTicketInfo

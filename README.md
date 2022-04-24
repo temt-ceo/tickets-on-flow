@@ -1,5 +1,38 @@
 # tickets-on-flow
 
+## Install Rust
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+source $HOME/.cargo/env
+
+rustup --version
+
+cargo --version
+```
+
+## Install wasm-pack
+
+```bash
+cargo install wasm-pack
+```
+
+## Setting up and build a package using wasm-pack for Rust project
+
+```bash
+# Setting up a package
+mkdir rust
+cd rust
+cargo new --lib encrypt-phrase
+
+# Build a package
+wasm-pack build --target web
+
+# When executed, the following is displayed
+> Your wasm pkg is ready to publish at /Users/taharatakashi/AI/tickets-on-flow/rust/encrypt-phrase/pkg.
+```
+
 ## Build Setup
 
 ```bash

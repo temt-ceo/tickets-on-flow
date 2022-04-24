@@ -64,7 +64,7 @@ export default {
     address: {
       type: String,
       required: true,
-      default: null
+      default: ''
     },
     dispenser: {
       type: Number,
