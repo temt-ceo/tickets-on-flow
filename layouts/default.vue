@@ -64,7 +64,7 @@
                 Create your original ticket
               </b-dropdown-item>
             </nuxt-link>
-            <b-dropdown-item aria-role="listitem">
+            <b-dropdown-item aria-role="listitem" class="i18n">
               <b-icon
                 pack="fa-solid"
                 icon="language"
@@ -78,6 +78,33 @@
         </div>
       </div>
     </nav>
+
+    <b-carousel
+      v-if="showCarousel"
+      :arrow="carouselArrow"
+      :arrow-hover="carouselArrowHover"
+      :autoplay="carouselAutoPlay"
+      :repeat="carouselRepeat"
+      :interval="carouselInterval"
+      :indicator="carouselIndicator"
+      :indicator-inside="carouselInside"
+      :indicator-style="carouselIndicatorStyle"
+      @change="carouselChange($event)"
+      style="z-index: 100;"
+    >
+      <b-carousel-item v-for="(carousel, i) in carousels" :key="i">
+        <section :class="`hero is-medium is-${carousel.color}`">
+          <div class="hero-body has-text-centered">
+            <h1 class="title">{{carousel.text}}</h1>
+            <img
+              :src="carousel.image"
+              alt="Tickets Manual"
+              style="max-height: 400px;"
+            />
+          </div>
+        </section>
+      </b-carousel-item>
+    </b-carousel>
 
     <Nuxt />
 
@@ -96,13 +123,17 @@
         />
         <b-menu>
           <b-menu-list label="Help">
-            <b-menu-item icon="information-outline" label="Info"></b-menu-item>
-            <b-menu-item icon="settings">
+            <b-menu-item icon="information-outline" label="Info">
+              <b-menu-item @click="helpBasicData1" label="Basic data"></b-menu-item>
+              <b-menu-item @click="helpBasicData2" label="Basic data 2"></b-menu-item>
+              <b-menu-item @click="helpHowToUse" label="How to use"></b-menu-item>
+            </b-menu-item>
+            <b-menu-item icon="marker">
               <template #label="props">
                 Organizer
                 <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'"></b-icon>
               </template>
-              <b-menu-item @click="clickBtn1" icon="account" label="Users"></b-menu-item>
+              <b-menu-item @click="helpCustomers" icon="account" label="Customers"></b-menu-item>
               <b-menu-item icon="cellphone-link">
                 <template #label>
                   Businesses
@@ -116,18 +147,15 @@
                   </b-dropdown>
                 </template>
               </b-menu-item>
-              <b-menu-item icon="cash-multiple" label="Payments" disabled></b-menu-item>
+              <b-menu-item @click="helpPayments" icon="cash-multiple" label="Payments"></b-menu-item>
             </b-menu-item>
             <b-menu-item icon="account" label="Flow Account">
               <b-menu-item @click="helpAccount" label="Account data"></b-menu-item>
               <b-menu-item @click="helpWallet" label="Wallet Address"></b-menu-item>
             </b-menu-item>
           </b-menu-list>
-          <b-menu-list>
-            <b-menu-item label="Expo" icon="link" tag="router-link" target="_blank" to="/expo"></b-menu-item>
-          </b-menu-list>
           <b-menu-list label="Actions">
-            <b-menu-item label="Logout"></b-menu-item>
+            <b-menu-item @click="walletLogin" :label="helpLogin"></b-menu-item>
           </b-menu-list>
         </b-menu>
       </div>
@@ -146,25 +174,134 @@ export default {
         github: 'https://github.com/temt-ceo/tickets-on-flow/tree/develop',
         youtube: 'https://youtu.be/-kqmTFCrPtE'
       },
+      helpLogin: null,
       sidebarOpen: false,
       sidebarOverlay: true,
       sidebarFullheight: false,
-      sidebarFullwidth: true,
-      sidebarRight: true
+      sidebarFullwidth: false,
+      sidebarRight: true,
+      bloctoWalletUser: {},
+      showCarousel: false,
+      carouselArrow: true,
+      carouselArrowHover: false,
+      carouselAutoPlay: true,
+      carouselRepeat: false,
+      carouselInterval: 4000,
+      carouselIndicator: true,
+      carouselInside: true,
+      carouselIndicatorStyle: 'is-lines',
+      carousels: [
+        { text: 'Step 1. Click Login', image: '/help_slide_1.png', color: 'primary' },
+        { text: 'Step 2. Select Blocto', image: '/help_slide_2.png', color: 'info' },
+        { text: 'Step 2. Select Create Your Original Ticket', image: '/help_slide_3.png', color: 'success' },
+        { text: 'Step 4. Press Apply button', image: '/help_slide_4.png', color: 'warning' },
+        { text: 'Step 5. Enter the ticket page path', image: '/help_slide_5.png', color: 'danger' },
+        { text: 'Step 6. Enter your e-mail address', image: '/help_slide_6.png', color: 'primary' },
+        { text: 'Step 7. Wait up to 24 hours', image: '/help_slide_7.png', color: 'info' },
+        { text: 'Step 8. Press Distribute button', image: '/help_slide_8.png', color: 'success' },
+        { text: 'Step 9. Enter ticket information', image: '/help_slide_9.png', color: 'warning' },
+        { text: 'Step 10. Share the URL of the ticket at the bottom of the screen', image: '/help_slide_10.png', color: 'danger' }
+      ]
     }
   },
+  async mounted () {
+    this.helpLogin = 'Logout'
+    await this.$fcl.currentUser.subscribe(this.setupWalletInfo)
+  },
   methods: {
+    async walletLogin () {
+      if (this.helpLogin === 'Logout') {
+        await this.$fcl.unauthenticate()
+        this.$buefy.toast.open({
+          message: 'Logged out.',
+          queue: false
+        })
+      } else {
+        this.$buefy.snackbar.open({
+          duration: 10000,
+          message: 'The login screen will appear.<br>Please login or Sign in.<br>If you are new to FlowBlockchain, we recommend the Blocto wallet.',
+          type: 'is-danger',
+          position: 'is-bottom-left',
+          actionText: 'Got it',
+          queue: false,
+          onAction: () => {
+          }
+        })
+        await this.$fcl.authenticate()
+      }
+    },
+    setupWalletInfo (user) {
+      this.bloctoWalletUser = user
+
+      if (this.bloctoWalletUser?.addr) {
+        this.helpLogin = 'Logout'
+      } else {
+        this.helpLogin = 'Login'
+      }
+    },
+    helpBasicData1 () {
+      this.$buefy.snackbar.open({
+        duration: 5000,
+        message: 'Everyone in the world will pay for your ability.<br>Use your strengths to earn money for your ministry!',
+        type: 'is-danger',
+        position: 'is-bottom-left',
+        actionText: 'Got it',
+        queue: false,
+        onAction: () => {
+          this.$buefy.toast.open({
+            message: 'Come on, Let\'s do it!',
+            queue: false
+          })
+        }
+      })
+    },
+    helpBasicData2 () {
+      this.$buefy.snackbar.open({
+        duration: 10000,
+        message: 'Why Blockchain? All international transactions are instantaneous and commission-free.<br>Your expertise is instantly recognized and paid for by people all over the world!',
+        type: 'is-danger',
+        position: 'is-bottom-left',
+        actionText: 'Got it',
+        queue: false,
+        onAction: () => {
+          this.$buefy.toast.open({
+            message: 'Come on, Let\'s do it!',
+            queue: false
+          })
+        }
+      })
+    },
+    helpHowToUse () {
+      this.showCarousel = true
+      this.sidebarOpen = false
+    },
+    helpCustomers () {
+      this.$buefy.snackbar.open({
+        duration: 10000,
+        message: 'Everyone in the world will pay for your ability.<br>Use your strengths to earn money for your ministry!',
+        type: 'is-danger',
+        position: 'is-bottom-left',
+        actionText: 'Got it',
+        queue: false,
+        onAction: () => {
+          this.$buefy.toast.open({
+            message: 'Come on, Let\'s do it!',
+            queue: false
+          })
+        }
+      })
+    },
     helpBusiness1 () {
       this.$buefy.snackbar.open({
         duration: 10000,
         message: 'You can get crypto assets for a price by providing information primarily online.<br>You can also have a dedicated page.',
         type: 'is-danger',
         position: 'is-bottom-left',
-        actionText: 'Undo',
+        actionText: 'Got it',
         queue: false,
         onAction: () => {
           this.$buefy.toast.open({
-            message: 'Action pressed',
+            message: 'Come on, Let\'s do it!',
             queue: false
           })
         }
@@ -176,11 +313,11 @@ export default {
         message: 'When you want to give someone money, you can easily do so.<br>You can also have a dedicated page.',
         type: 'is-danger',
         position: 'is-bottom-left',
-        actionText: 'Undo',
+        actionText: 'Got it',
         queue: false,
         onAction: () => {
           this.$buefy.toast.open({
-            message: 'Action pressed',
+            message: 'Come on, Let\'s do it!',
             queue: false
           })
         }
@@ -189,14 +326,30 @@ export default {
     helpBusiness3 () {
       this.$buefy.snackbar.open({
         duration: 10000,
-        message: 'You can easily ask people to donate to support your project.<br>Note: <em>0.05$FLOW~1FLOW is possible</em>.',
+        message: 'You can easily ask people to donate to support your project.<br>Everything is done user-to-user on the blockchain.',
         type: 'is-danger',
         position: 'is-bottom-left',
-        actionText: 'Undo',
+        actionText: 'Got it',
         queue: false,
         onAction: () => {
           this.$buefy.toast.open({
-            message: 'Action pressed',
+            message: 'Come on, Let\'s do it!',
+            queue: false
+          })
+        }
+      })
+    },
+    helpPayments () {
+      this.$buefy.snackbar.open({
+        duration: 10000,
+        message: 'You will need your own page to create tickets. Its cost is only 0.5$Flow.<br>That\'s all you need to make money for life.',
+        type: 'is-danger',
+        position: 'is-bottom-left',
+        actionText: 'Got it',
+        queue: false,
+        onAction: () => {
+          this.$buefy.toast.open({
+            message: 'Come on, Let\'s do it!',
             queue: false
           })
         }
@@ -205,14 +358,14 @@ export default {
     helpAccount () {
       this.$buefy.snackbar.open({
         duration: 5000,
-        message: 'Log in to see your wallet address.<br>Note: <em>The blockchain uses FlowBlockchain</em>.',
+        message: 'This service uses Flow Blockchain.<br>All transactions are done via the blockchain.',
         type: 'is-danger',
         position: 'is-bottom-left',
-        actionText: 'Login',
+        actionText: 'Got it',
         queue: false,
         onAction: () => {
           this.$buefy.toast.open({
-            message: 'Action pressed',
+            message: 'Come on, Let\'s do it!',
             queue: false
           })
         }
@@ -221,18 +374,25 @@ export default {
     helpWallet () {
       this.$buefy.snackbar.open({
         duration: 5000,
-        message: 'Log in to see your wallet address.<br>Note: <em>The blockchain uses FlowBlockchain</em>.',
+        message: this.bloctoWalletUser?.addr ? this.bloctoWalletUser?.addr : 'Log in to see your wallet address.<br>Note: <em>The blockchain uses FlowBlockchain</em>.',
         type: 'is-danger',
         position: 'is-bottom-left',
-        actionText: 'Login',
+        actionText: 'Got it',
         queue: false,
         onAction: () => {
           this.$buefy.toast.open({
-            message: 'Action pressed',
+            message: 'Come on, Let\'s do it!',
             queue: false
           })
         }
       })
+    },
+    carouselChange (value) {
+      console.log(value)
+      if (value >= 10) {
+        this.showCarousel = false
+        this.sidebarOpen = true
+      }
     }
   }
 }
@@ -277,6 +437,11 @@ export default {
           height: 0;
         }
 
+        &.i18n {
+          margin: 7px 0;
+          min-height: 20px;
+        }
+
         &.menu-help {
           padding-left: 0.7em;
         }
@@ -288,6 +453,10 @@ export default {
     min-width: 50px;
     min-height: 50px;
   }
+}
+
+.carousel {
+  z-index: 2;
 }
 
 .field {

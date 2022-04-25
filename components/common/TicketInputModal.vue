@@ -234,7 +234,7 @@
               Tickets registered.<br>
               It takes about 10 seconds to complete registration.<br>
               After clicking "Confirm the transaction" and seeing the word SEALED on the screen,<br>
-              the ticket request button will appear on <a :href="ticketPage">{{ ticketPage }}</a>.
+              the ticket request button will appear on <a :href="ticketPage">{{ ticketPage }}</a>
             </p>
           </div>
           <div v-if="showFlag && ticketInfo && !isCompleteRegister" class="text-wrap">
