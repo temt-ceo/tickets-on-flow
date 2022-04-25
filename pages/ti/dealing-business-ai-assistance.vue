@@ -264,6 +264,12 @@ export default {
         message: 'Please press "Approve" on the next wallet pop-up. The ticket registrar will put the ticket in your wallet. <br>This is free of charge.',
         onConfirm: async () => {
           try {
+            // loading
+            const loadingComponent = this.$buefy.loading.open({
+              container: null
+            })
+            setTimeout(() => loadingComponent.close(), 3 * 1000)
+
             const transactionId = await this.$fcl.send(
               [
                 this.$fcl.transaction(transactionCode),
@@ -288,6 +294,12 @@ export default {
     async useTicket () {
       alert('チケットを申請される方は、次のウォレットのポップアップ画面で「承認」を押してください')
       try {
+        // loading
+        const loadingComponent = this.$buefy.loading.open({
+          container: null
+        })
+        setTimeout(() => loadingComponent.close(), 3 * 1000)
+
         const transactionId = await this.$fcl.send(
           [
             this.$fcl.transaction(FlowTransactions.useTicket),
@@ -398,12 +410,6 @@ export default {
     50% {
       border-color: #9778d7;
     }
-  }
-
-  .hero--video {
-    min-width: 100%;
-    min-height: 100vh;
-    z-index: 1;
   }
 
   .hero--overlay {

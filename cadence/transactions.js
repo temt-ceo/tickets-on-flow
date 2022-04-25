@@ -92,16 +92,15 @@ transaction(dispenser_id: UInt32) {
   `,
   dispenseTicket: `
 import T from 0xT
-transaction(ticket_name: String, addrList: [Address]) {
+transaction(secret_code: String, dispenser_id: UInt32, addrList: [AnyStruct]) {
     prepare(signer: AuthAccount) {
         let dispenserVault = signer.borrow<&T.DispenserVault>(from: /storage/TicketDispenserVault)
             ?? panic("Could not borrow reference to the Owner's DispenserVault.")
-        for addr in addrList {
-            let account = getAccount(addr)
+        for obj in addrList {
+            let account = getAccount(obj.address)
             let ticketVault = account.getCapability<&T.TicketVault{T.ITicketPublic}>(T.TicketVaultPublicPath).borrow()
                 ?? panic("Could not borrow TicketVault capability.")
-            ticketVault.deposit(token: dispenserVault.mintTicket(ticket_name: ticket_name)!)
-            dispenserVault.addTicketReceiver(addr: addr)
+            ticketVault.deposit(token: dispenserVault.mintTicket(secret_code: secret_code, dispenser_id: dispenser_id, user_id: obj.user_id)!)
         }
     }
 

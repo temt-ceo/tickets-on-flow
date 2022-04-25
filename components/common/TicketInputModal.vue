@@ -480,7 +480,6 @@
               </b-button>
               <b-button
                 :disabled="requestList.length === 0"
-                @click="dispenseTicket"
               >
                 配布
               </b-button>
@@ -645,6 +644,12 @@ export default {
       const registerWhere = this.registerWhereType + '||' + this.registerWhere
       const registerWhen = this.registerWhenTZ + '||' + this.registerWhen
       try {
+        // loading
+        const loadingComponent = this.$buefy.loading.open({
+          container: null
+        })
+        setTimeout(() => loadingComponent.close(), 3 * 1000)
+
         const transactionId = await this.$fcl.send(
           [
             this.$fcl.transaction(FlowTransactions.addTicketInfo),
@@ -674,6 +679,12 @@ export default {
       const registerWhere = this.registerWhereType + '||' + this.registerWhere
       const registerWhen = this.registerWhenTZ + '||' + this.registerWhen
       try {
+        // loading
+        const loadingComponent = this.$buefy.loading.open({
+          container: null
+        })
+        setTimeout(() => loadingComponent.close(), 3 * 1000)
+
         const transactionId = await this.$fcl.send(
           [
             this.$fcl.transaction(FlowTransactions.updateTicketInfo),
@@ -735,26 +746,6 @@ export default {
         this.requestList = this.ticketRequesters.filter(obj => !obj.grant)
         this.receivedList = this.ticketRequesters.filter(obj => obj.grant)
         this.showFlag = true
-      } catch (e) {
-      }
-    },
-    async dispenseTicket () {
-      try {
-        const transactionId = await this.$fcl.send(
-          [
-            this.$fcl.transaction(FlowTransactions.dispenseTicket),
-            this.$fcl.args([
-              this.$fcl.arg(this.ticketInfo.name, this.$fclArgType.String)
-            ]),
-            this.$fcl.payer(this.$fcl.authz),
-            this.$fcl.proposer(this.$fcl.authz),
-            this.$fcl.authorizations([this.$fcl.authz]),
-            this.$fcl.limit(9999)
-          ]
-        ).then(this.$fcl.decode)
-        this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-        this.isCompleteDispense = true
-        return transactionId
       } catch (e) {
       }
     }

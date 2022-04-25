@@ -1,46 +1,52 @@
 <template>
   <section class="section">
-    <h1 class="page-title">
-      Ticket Mint Functionality Management
-    </h1>
-    <hr class="separator">
-    <div class="content">
-      <p v-if="bloctoWalletUser.addr" class="description">
-        (Wallet Address: {{ bloctoWalletUser.addr }})
-      </p>
-      <h1 class="notice">
-        {{ noticeTitle }}
-      </h1>
-      <p v-if="transactionScanUrl !== ''" class="check-transaction">
-        <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
-      </p>
-      <b-button
-        v-if="bloctoWalletUser.addr"
-        type="is-link is-light"
-        @click="showConfirmModal = true"
-      >
-        Check status of requests
-      </b-button>
-      <b-button
-        :disabled="!isAdmin"
-        type="is-link is-light"
-        @click="dispenseDispenser"
-      >
-        Grant Ticket Mint functionality
-      </b-button>
-      <b-button
-        v-if="!bloctoWalletUser.addr"
-        @click="flowWalletLogin"
-      >
-        Connect to a wallet
-      </b-button>
-      <b-button
-        v-if="bloctoWalletUser.addr"
-        type="is-danger is-light"
-        @click="flowWalletLogout"
-      >
-        Log out from Wallet
-      </b-button>
+    <div class="hero">
+      <div class="hero--overlay">
+        <div class="hero--content">
+          <h1 class="page-title">
+            Ticket Mint Functionality Management
+          </h1>
+          <hr class="separator">
+          <div class="content">
+            <p v-if="bloctoWalletUser.addr" class="description">
+              (Wallet Address: {{ bloctoWalletUser.addr }})
+            </p>
+            <h1 class="notice">
+              {{ noticeTitle }}
+            </h1>
+            <p v-if="transactionScanUrl !== ''" class="check-transaction">
+              <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
+            </p>
+            <b-button
+              v-if="bloctoWalletUser.addr"
+              type="is-link is-light"
+              @click="showConfirmModal = true"
+            >
+              Check status of requests
+            </b-button>
+            <b-button
+              :disabled="!isAdmin"
+              type="is-link is-light"
+              @click="dispenseDispenser"
+            >
+              Grant Ticket Mint functionality
+            </b-button>
+            <b-button
+              v-if="!bloctoWalletUser.addr"
+              @click="flowWalletLogin"
+            >
+              Connect to a wallet
+            </b-button>
+            <b-button
+              v-if="bloctoWalletUser.addr"
+              type="is-danger is-light"
+              @click="flowWalletLogout"
+            >
+              Log out from Wallet
+            </b-button>
+          </div>
+        </div>
+      </div>
     </div>
     <b-modal v-model="showConfirmModal">
       <dispenser-confirm-modal
@@ -140,6 +146,12 @@ export default {
             confirmText: 'Grant',
             onConfirm: async () => {
               try {
+                // loading
+                const loadingComponent = this.$buefy.loading.open({
+                  container: null
+                })
+                setTimeout(() => loadingComponent.close(), 3 * 1000)
+
                 const transactionId = await this.$fcl.send(
                   [
                     this.$fcl.transaction(FlowTransactions.dispenseDispenser),
@@ -233,6 +245,36 @@ export default {
       margin: 18px 0;
       max-width: 400px;
     }
+  }
+
+  .hero--overlay {
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: linear-gradient(180deg, rgba(0,0,0,1), #1b1c50);
+    background-size: cover;
+    z-index: 2;
+  }
+
+  .hero--content {
+    width: 100%;
+    height: 100vh;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    color: #dadff4;
+  }
+
+  .hero--bottom {
+    width: 100%;
+    height: 50vh;
+    background-color: #1c1c1c;
+    background-image: linear-gradient(0deg, rgba(0,0,0,.3), #1b1c50);
   }
 }
 </style>

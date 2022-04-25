@@ -1,62 +1,103 @@
 <template>
   <div class="modal-card">
     <section class="modal-card-body">
-      <div class="text-wrap">
-        List of ticket applicants
-      </div>
-      <div
-        v-if="ticketRequesters && !isCompleteRegister"
-        class="text-wrap"
-      >
-        <div class="nft-list-container">
-          <p class="content-information">
-            <span class="col1">user ID</span>
-            <span class="col2">Address</span>
-            <span class="col3">Number of uses</span>
-          </p>
-          {{ new Date().getTime() }}
-          <ul class="requester-list">
-            <li
-              v-for="(requester, index) in ticketRequesters"
-              :key="index"
-            >
-              <div class="token-id">
-                #{{ requester.user_id }}
-              </div>
-              <div
-                class="requester-address"
-                :class="{ 'requester-address-long': requester.address.length >= 30}"
-              >
-                <a
-                  :href="flowscanLink + requester.address"
-                  class="address"
-                  target="_blank"
-                >
-                  {{
-                    requester.address.length >= 30 ? (
-                      isPC ? requester.address.substr(0, 36) + '...' : requester.address.substr(0, 27) + '...'
-                    ) : requester.address
-                  }}
-                </a>
-              </div>
-              <div class="is-done">
-                <span>{{ requester.count }}</span>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div v-if="!ticketRequesters" class="text-wrap">
-        <p class="no-requester">
-          No one has applied for a ticket yet.
+      <div v-if="isCompleteDispense" class="text-wrap">
+        <p class="complete-register">
+          チケットの配布を行いました。<br>
+          配布完了までに約10秒、時間がかかります。<br>
+          「トランザクションを確認」をクリックして表示された画面でSEALEDと表示された後、<br>
+          配布されたチケットが表示されます。
+        </p>
+        <p
+          v-if="transactionScanUrl !== ''"
+          class="check-transaction"
+        >
+          <a :href="transactionScanUrl" target="_blank" class="scanlink">Confirm the transaction</a>
         </p>
       </div>
+      <div class="text-wrap">
+        List of ticket applicants
+        <br>
+        <b-button
+          @click="dispenseTicket"
+          :disabled="checkedRows.length === 0"
+          type="is-link"
+        >
+          Distribute
+        </b-button>
+        <br>
+      </div>
+      <b-table
+        :data="ticketRequesterArray"
+        :checked-rows.sync="checkedRows"
+        :is-row-checkable="(row) => row.id !== 3 && row.id !== 4"
+        checkable
+        :checkbox-position="checkboxPosition"
+        :checkbox-type="checkboxType"
+        :bordered="isBordered"
+        :striped="isStriped"
+        :narrowed="isNarrowed"
+        :hoverable="isHoverable"
+        :loading="isLoading"
+        :focusable="isFocusable"
+        :mobile-cards="hasMobileCards"
+      >
+        <b-table-column
+          field="user_id"
+          label="user ID"
+          width="40"
+          numeric
+          v-slot="props"
+        >
+          {{ props.row.user_id }}
+        </b-table-column>
+
+        <b-table-column
+          field="count"
+          label="Request Count"
+          v-slot="props"
+        >
+          {{ props.row.count }}
+        </b-table-column>
+
+        <b-table-column
+          field="paid"
+          label="Total Payments"
+          v-slot="props"
+        >
+          {{ new Number(props.row.paid).toFixed(2) }}
+        </b-table-column>
+
+        <b-table-column
+          field="latest_token"
+          label="Last issued token ID"
+          v-slot="props"
+        >
+          {{ props.row.latest_token }}
+        </b-table-column>
+
+        <b-table-column
+          field="time"
+          label="Request Date"
+          :th-attrs="dateThAttrs"
+          centered
+          v-slot="props"
+        >
+          <span class="tag is-success">
+            {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
+          </span>
+        </b-table-column>
+        <template #empty>
+          <div class="has-text-centered">No records</div>
+        </template>
+      </b-table>
     </section>
   </div>
 </template>
 
 <script>
 import FlowScripts from '~/cadence/scripts'
+import FlowTransactions from '~/cadence/transactions'
 
 export default {
   name: 'TicketConfirmModal',
@@ -75,10 +116,22 @@ export default {
   data () {
     return {
       ticketRequesters: {},
+      ticketRequesterArray: [],
       ticketName: '',
       transactionScanUrl: '',
       isCompleteRegister: false,
-      flowscanLink: 'https://testnet.flowscan.org/transaction'
+      flowscanLink: 'https://testnet.flowscan.org/transaction',
+      isCompleteDispense: false,
+      checkedRows: [],
+      checkboxPosition: 'left',
+      checkboxType: 'is-primary',
+      isBordered: false,
+      isStriped: false,
+      isNarrowed: false,
+      isHoverable: false,
+      isFocusable: false,
+      isLoading: false,
+      hasMobileCards: true
     }
   },
   async mounted () {
@@ -97,12 +150,54 @@ export default {
         ).then(this.$fcl.decode)
         console.log(ticketRequesters, 88888)
         this.ticketRequesters = ticketRequesters
-        this.ticketRequesters.forEach((obj) => {
-          obj.done = false
-        })
+        const keys = Object.keys(ticketRequesters)
+        for (let i = 0; i < keys.length; i++) {
+          this.ticketRequesterArray.push(ticketRequesters[keys[i]])
+        }
         this.$forceUpdate()
       } catch (e) {
       }
+    },
+    dispenseTicket () {
+      try {
+        this.$buefy.dialog.prompt({
+          message: 'Enter the dispenser_id in the text box below',
+          inputAttrs: {
+            type: 'text',
+            placeholder: 'e.g. 100',
+            maxlength: 10
+          },
+          trapFocus: true,
+          onConfirm: async (code) => {
+            // loading
+            const loadingComponent = this.$buefy.loading.open({
+              container: null
+            })
+            setTimeout(() => loadingComponent.close(), 3 * 1000)
+
+            const transactionId = await this.$fcl.send(
+              [
+                this.$fcl.transaction(FlowTransactions.dispenseTicket),
+                this.$fcl.args([
+                  this.$fcl.arg(code, this.$fclArgType.String),
+                  this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
+                  this.$fcl.arg(this.checkedRows, this.$fclArgType.Array(this.$fclArgType.AnyStruct))
+                ]),
+                this.$fcl.payer(this.$fcl.authz),
+                this.$fcl.proposer(this.$fcl.authz),
+                this.$fcl.authorizations([this.$fcl.authz]),
+                this.$fcl.limit(9999)
+              ]
+            ).then(this.$fcl.decode)
+            this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+            this.isCompleteDispense = true
+          }
+        })
+      } catch (e) {
+      }
+    },
+    dateThAttrs (column) {
+      return column.label === 'Date' ? { class: 'has-text-success' } : null
     }
   }
 }
@@ -116,6 +211,7 @@ export default {
   .modal-card-body {
 
     .text-wrap {
+      font-size: 24px;
       margin: 16px;
 
       p {
@@ -126,81 +222,16 @@ export default {
       h2 {
         font-size: 18px;
       }
+    }
 
-      p.no-requester {
-        font-weight: bold;
-      }
+    .check-transaction {
+      text-align : center;
+      margin-top: 16px;
 
-      .content-information {
-        margin: 0;
-        font-size: 12px;
-
-        .col1 {
-          margin-left: 2px;
-        }
-
-        .col2 {
-          margin-left: 14px;
-        }
-
-        .col3 {
-          margin-right: 7px;
-          display: block;
-          float: right;
-        }
-      }
-      .requester-list {
-        li {
-          position: relative;
-          display: flex;
-          animation: fadeIn 0.5s linear;
-          animation-fill-mode: both;
-          background-color: #fff;
-          border-bottom: 1.5px solid #222;
-
-          &:nth-child(1) {
-            border-top: 1.5px solid #222;
-          }
-
-          div {
-            border-left: 1.5px solid #222;
-            border-right: 1.5px solid #222;
-            padding: 7px;
-            color: #222;
-            font-size: 16px;
-            font-weight: bold;
-          }
-
-          .token-id {
-            width: 18%;
-            border-right: none;
-          }
-
-          .requester-address {
-            width: 70%;
-            border-right: none;
-          }
-
-          .requester-address-long {
-            font-size: 12px;
-          }
-
-          .address {
-            color: #0089c7;
-
-            &:visited {
-              color: #A766ff;
-            }
-          }
-
-          .is-done {
-            width: 12%;
-          }
-
-          .purple {
-            color: purple;
-          }
-        }
+      a {
+        color: purple;
+        font-size: 14px;
+        text-decoration: underline;
       }
     }
   }

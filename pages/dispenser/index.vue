@@ -32,13 +32,6 @@
               Distribute your original tickets
             </b-button>
             <b-button
-              v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
-              type="is-link is-light"
-              @click="showConfirmModal = true"
-            >
-              Check Ticket Request Status
-            </b-button>
-            <b-button
               v-if="bloctoWalletUser.addr && (!hasDispenserVault || !hasDispenser)"
               :disabled="hasDispenserVault || isApplied"
               type="is-link is-light"
@@ -46,6 +39,13 @@
               @click="requestDispenser"
             >
               Apply for ticket distribution function
+            </b-button>
+            <b-button
+              v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
+              type="is-link is-light"
+              @click="showConfirmModal = true"
+            >
+              Check Ticket Request Status
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
@@ -67,15 +67,6 @@
               @click="flowWalletLogout"
             >
               Log out from Wallet
-            </b-button>
-            <b-button
-              v-if="!bloctoWalletUser.addr"
-              tag="nuxt-link"
-              to="/"
-              type="is-warning is-light"
-              class="to-top"
-            >
-              Return to TOP
             </b-button>
           </div>
         </div>
@@ -239,7 +230,7 @@ export default {
       try {
         let domain = null
         this.$buefy.dialog.prompt({
-          message: 'What path would you like for your page? (https://tickets-on-flow.web.app/ti/XXXXX) (max:30 length)',
+          message: 'What name would you like for your page? (https://tickets-on-flow.web.app/ti/XXXXX) (max:30 length)',
           inputAttrs: {
             type: 'text',
             placeholder: 'e.g. hello-ticket',
@@ -257,7 +248,7 @@ export default {
             domain = value
             toast1 = this.$buefy.toast.open({
               indefinite: true,
-              message: `Your web site path will look like this: https://tickets-on-flow.web.app/ti/${domain}`
+              message: `Your web site name will look like this: https://tickets-on-flow.web.app/ti/${domain}`
             })
             this.$buefy.dialog.prompt({
               message: 'Enter your email address. (please enter a sub email as it will be stored in the blockchain) This is used to notify you when a page is created.',
@@ -278,6 +269,12 @@ export default {
                   confirmText: 'Agree',
                   onConfirm: async () => {
                     close()
+                    // loading
+                    const loadingComponent = this.$buefy.loading.open({
+                      container: null
+                    })
+                    setTimeout(() => loadingComponent.close(), 3 * 1000)
+
                     const transactionId = await this.$fcl.send(
                       [
                         this.$fcl.transaction(FlowTransactions.requestDispenser),
@@ -426,12 +423,6 @@ export default {
         margin-top: 34px;
       }
     }
-  }
-
-  .hero--video {
-    min-width: 100%;
-    min-height: 100vh;
-    z-index: 1;
   }
 
   .hero--overlay {

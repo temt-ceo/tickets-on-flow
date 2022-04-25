@@ -122,6 +122,14 @@ pub contract Tv15 {
       return dispenserArr
     }
 
+    pub fun getDispenserDomains(): [String] {
+      var dispenserArr: [String] = []
+      for data in Tv15.dispenserOwners.values {
+        dispenserArr.append(data.domain)
+      }
+      return dispenserArr
+    }
+
     init() {
     }
   }
@@ -137,7 +145,7 @@ pub contract Tv15 {
       return self.last_token_id
     }
 
-    pub fun mintNFT(secret_code: String, dispenser_id: UInt32, user_id: UInt32): @Ticket {
+    pub fun mintTicket(secret_code: String, dispenser_id: UInt32, user_id: UInt32): @Ticket {
       let token <- create Ticket(secret_code: secret_code, dispenser_id: dispenser_id)
       if(Tv15.ticketRequesters.containsKey(dispenser_id)) {
         if let data = Tv15.ticketRequesters[dispenser_id]![user_id] {
@@ -250,8 +258,8 @@ pub contract Tv15 {
     }
 
     // [private access]
-    pub fun mintNFT(secret_code: String, dispenser_id: UInt32, user_id: UInt32): @Ticket? {
-      return <- self.ownedDispenser?.mintNFT(secret_code: secret_code, dispenser_id: dispenser_id, user_id: user_id)
+    pub fun mintTicket(secret_code: String, dispenser_id: UInt32, user_id: UInt32): @Ticket? {
+      return <- self.ownedDispenser?.mintTicket(secret_code: secret_code, dispenser_id: dispenser_id, user_id: user_id)
     }
 
     destroy() {
@@ -353,12 +361,21 @@ pub contract Tv15 {
 
     // [private access]
     pub fun requestTicket(dispenser_id: UInt32, user_id: UInt32, address: Address) {
-      if(Tv15.ticketRequesters.containsKey(dispenser_id)) {
+      let time = getCurrentBlock().timestamp
+      if (Tv15.ticketRequesters.containsKey(dispenser_id)) {
         if let data = Tv15.ticketRequesters[dispenser_id]![user_id] {
           data.count = data.count + 1
-          data.time = getCurrentBlock().timestamp
+          data.time = time
           emit TicketRequested(dispenser_id: dispenser_id, user_id: self.user_id, address: address)
+        } else {
+          let requestStruct = RequestStruct(time: time, user_id: user_id, address: address)
+          if let data = Tv15.ticketRequesters[dispenser_id] {
+            data[user_id] = requestStruct
+          }
         }
+      } else {
+        let requestStruct = RequestStruct(time: time, user_id: user_id, address: address)
+        Tv15.ticketRequesters[dispenser_id] = {user_id: requestStruct}
       }
     }
 

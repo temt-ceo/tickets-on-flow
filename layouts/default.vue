@@ -186,7 +186,7 @@ export default {
       carouselArrowHover: false,
       carouselAutoPlay: true,
       carouselRepeat: false,
-      carouselInterval: 4000,
+      carouselInterval: 5000,
       carouselIndicator: true,
       carouselInside: true,
       carouselIndicatorStyle: 'is-lines',
@@ -195,7 +195,7 @@ export default {
         { text: 'Step 2. Select Blocto', image: '/help_slide_2.png', color: 'info' },
         { text: 'Step 2. Select Create Your Original Ticket', image: '/help_slide_3.png', color: 'success' },
         { text: 'Step 4. Press Apply button', image: '/help_slide_4.png', color: 'warning' },
-        { text: 'Step 5. Enter the ticket page path', image: '/help_slide_5.png', color: 'danger' },
+        { text: 'Step 5. Enter the ticket page name', image: '/help_slide_5.png', color: 'danger' },
         { text: 'Step 6. Enter your e-mail address', image: '/help_slide_6.png', color: 'primary' },
         { text: 'Step 7. Wait up to 24 hours', image: '/help_slide_7.png', color: 'info' },
         { text: 'Step 8. Press Distribute button', image: '/help_slide_8.png', color: 'success' },
@@ -457,6 +457,10 @@ export default {
 
 .carousel {
   z-index: 2;
+}
+
+.b-checkbox.checkbox {
+  display: grid !important;
 }
 
 .field {

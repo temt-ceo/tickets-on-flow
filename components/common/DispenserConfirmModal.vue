@@ -29,7 +29,7 @@
                 {{ obj.domain }}
               </div>
               <div class="payed-block">
-                {{ obj.paid.toString().substr(0, 3) }} $FLOW
+                {{ new Number(obj.paid).toFixed(2) }} $FLOW
               </div>
             </li>
           </ul>

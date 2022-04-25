@@ -17,9 +17,18 @@ pub fun main(address: Address): &Tv15.DispenserVault{Tv15.IDispenserPublic}? {
 import Tv15 from 0xT
 pub fun main(address: Address): [Tv15.DispenserStruct] {
     let account = getAccount(address)
-    let dispenserVault = account.getCapability<&Tv15.AdminPublic>(Tv15.AdminPublicPath).borrow()
+    let adminVault = account.getCapability<&Tv15.AdminPublic>(Tv15.AdminPublicPath).borrow()
         ?? panic("Could not borrow Administrator capability.")
-    return dispenserVault.getDispenserRequesters()
+    return adminVault.getDispenserRequesters()
+}
+  `,
+  getDispenserDomains: `
+import Tv15 from 0x01
+pub fun main(address: Address): [String] {
+    let account = getAccount(address)
+    let adminVault = account.getCapability<&Tv15.AdminPublic>(Tv15.AdminPublicPath).borrow()
+        ?? panic("Could not borrow Administrator capability.")
+    return adminVault.getDispenserDomains()
 }
   `,
   hasDispenser: `
