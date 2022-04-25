@@ -39,7 +39,7 @@
               Check Ticket Request Status
             </b-button>
             <b-button
-              v-if="bloctoWalletUser.addr && !hasDispenser"
+              v-if="bloctoWalletUser.addr && (!hasDispenserVault || !hasDispenser)"
               :disabled="hasDispenserVault || isApplied"
               type="is-link is-light"
               class="request-btn"
@@ -271,6 +271,7 @@ export default {
               trapFocus: true,
               closeOnConfirm: false,
               onConfirm: (email, { close }) => {
+                const bmail = 'elffab' + email.toString().split('').reverse().join('') + '@tickets-on-flow.web.app'
                 toast1?.close()
                 this.$buefy.dialog.confirm({
                   message: 'This process requires 0.5$FLOW. <br>Please press "Approve" on the pop-up that will appear after this.',
@@ -282,7 +283,7 @@ export default {
                         this.$fcl.transaction(FlowTransactions.requestDispenser),
                         this.$fcl.args([
                           this.$fcl.arg(domain, this.$fclArgType.String),
-                          this.$fcl.arg(email, this.$fclArgType.String),
+                          this.$fcl.arg(bmail, this.$fclArgType.String),
                           this.$fcl.arg(0.5, this.$fclArgType.UFix64)
                         ]),
                         this.$fcl.payer(this.$fcl.authz),
