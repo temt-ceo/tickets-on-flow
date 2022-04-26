@@ -103,6 +103,7 @@ pub contract Tv16 {
       }
       if let data = Tv16.dispenserOwners[dispenser_id] {
         data.grant = true
+        Tv16.dispenserOwners[dispenser_id] = data
       }
       emit DispenserGranted(dispenser_id: dispenser_id, address: address)
       return <- create Dispenser()
@@ -154,7 +155,8 @@ pub contract Tv16 {
       let token <- create Ticket(secret_code: secret_code, dispenser_id: dispenser_id)
       if(Tv16.ticketRequesters.containsKey(dispenser_id)) {
         if let data = Tv16.ticketRequesters[dispenser_id]![user_id] {
-          data.latest_token = token.getId()
+          let ref = &Tv16.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
+          ref.latest_token = token.getId()
           self.last_token_id = token.getId()
         }
       }
@@ -374,13 +376,16 @@ pub contract Tv16 {
       let time = getCurrentBlock().timestamp
       if (Tv16.ticketRequesters.containsKey(dispenser_id)) {
         if let data = Tv16.ticketRequesters[dispenser_id]![user_id] {
-          data.count = data.count + 1
-          data.time = time
+          let ref = &Tv16.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
+          ref.count = data.count + 1
+          ref.time = time
+
           emit TicketRequested(dispenser_id: dispenser_id, user_id: self.user_id, address: address)
         } else {
           let requestStruct = RequestStruct(time: time, user_id: user_id, address: address)
           if let data = Tv16.ticketRequesters[dispenser_id] {
             data[user_id] = requestStruct
+            Tv16.ticketRequesters[dispenser_id] = data
           }
         }
       } else {
@@ -396,7 +401,8 @@ pub contract Tv16 {
 
         if(Tv16.ticketRequesters.containsKey(dispenser_id)) {
           if let data = Tv16.ticketRequesters[dispenser_id]![user_id] {
-            data.paid = data.paid + price
+            let ref = &Tv16.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
+            ref.paid = data.paid + price
           }
         }
         emit TicketUsed(dispenser_id: dispenser_id, user_id: user_id, token_id: token_id, address: address)
@@ -424,6 +430,7 @@ pub contract Tv16 {
       let requestStruct = RequestStruct(time: time, user_id: self.user_id, address: address)
       if let data = Tv16.ticketRequesters[dispenser_id] {
         data[self.user_id] = requestStruct
+        Tv16.ticketRequesters[dispenser_id] = data
       } else {
         Tv16.ticketRequesters[dispenser_id] = {self.user_id: requestStruct}
       }

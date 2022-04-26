@@ -52,6 +52,16 @@ pub fun main(): [Tv16.TicketStruct] {
     return Tv16.getTickets()
 }
   `,
+  getTicketRequestStatus: `
+import Tv16 from 0xT
+pub fun main(addr: Address, dispenser_id: UInt32): Tv16.RequestStruct? {
+    let account = getAccount(addr)
+    let ticketVault = account.getCapability<&Tv16.TicketVault{Tv16.ITicketPublic}>(Tv16.TicketVaultPublicPath).borrow()
+        ?? panic("Could not borrow TicketVault capability.")
+    let user_id = ticketVault.getId()
+    return Tv16.getTicketRequestStatus(dispenser_id: dispenser_id, user_id: user_id)
+}
+  `,
   getTicketRequesters: `
 import Tv16 from 0xT
 pub fun main(addr: Address): {UInt32: Tv16.RequestStruct}?? {
@@ -67,17 +77,6 @@ import Tv16 from 0xT
 pub fun main(addr: Address): &Tv16.TicketVault{Tv16.ITicketPublic}? {
     let account = getAccount(addr)
     return account.getCapability<&Tv16.TicketVault{Tv16.ITicketPublic}>(Tv16.TicketVaultPublicPath).borrow()
-}
-  `,
-  getTicketRequestStatus: `
-import Tv16 from 0xT
-pub fun main(addr: Address, dispenser_id: UInt32): Tv16.RequestStruct? {
-  let account = getAccount(addr)
-  let ticketVault = account.getCapability<&Tv16.TicketVault{Tv16.ITicketPublic}>(Tv16.TicketVaultPublicPath).borrow()
-      ?? panic("Could not borrow TicketVault capability.")
-  let user_id = ticketVault.getId()
-  return Tv16.getTicketRequestStatus(dispenser_id: dispenser_id, user_id: user_id)
-
 }
   `
 }

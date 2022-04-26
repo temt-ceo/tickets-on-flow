@@ -220,7 +220,6 @@ export default {
     async getRequestStatus () {
       try {
         this.noticeTitle = ''
-        console.log(0, this.dispenser, this.$fclArgType)
         const result = await this.$fcl.send(
           [
             this.$fcl.script(FlowScripts.getTicketRequestStatus),
@@ -230,7 +229,6 @@ export default {
             ])
           ]
         ).then(this.$fcl.decode)
-        console.log(1, result)
         if (result) {
           const latestRequestTime = parseInt(result.time.replace(/.0+$/, '')) * 1000
           this.latestRequest = new Date(latestRequestTime)

@@ -291,7 +291,7 @@ export default {
                     ).then(this.$fcl.decode)
                     toast2 = this.$buefy.toast.open({
                       indefinite: true,
-                      message: 'Success. Your request has been sent and you will receive an email within 24 hours that your request has been processed.'
+                      message: 'If you have more than 0.5$Flow you will succeed. Your request has been sent and you will receive an email within 24 hours that your request has been processed.'
                     })
                     this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
                     this.noticeTitle = 'Your application for the ticket distribution function has been completed. Please wait until you receive an email that tells the feature has been distributed.'
