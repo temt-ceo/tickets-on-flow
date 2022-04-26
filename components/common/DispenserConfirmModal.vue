@@ -4,42 +4,53 @@
       <div class="text-wrap">
         Those who have recently requested are as follows.
       </div>
-      <div class="contents">
-        <div v-if="requesters.length > 0" class="text-wrap">
-          <p class="content-information">
-            <span class="col1">requester_id</span>
-            <span class="col2">Email address</span>
-            <span class="col3">domain</span>
-            <span class="col4">paid</span>
-          </p>
-          <ul class="requester-list">
-            <li
-              v-for="(obj, index) in requesters"
-              :key="index"
-            >
-              <div class="dispenser-id">
-                #{{ obj.dispenser_id }}
-              </div>
-              <div
-                class="requester-address"
-              >
-                {{ obj.email }}
-              </div>
-              <div class="requester-domain">
-                {{ obj.domain }}
-              </div>
-              <div class="payed-block">
-                {{ new Number(obj.paid).toFixed(2) }} $FLOW
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div v-if="requesters.length === 0" class="text-wrap">
-        <p class="no-requester">
-          No applicants yet.
-        </p>
-      </div>
+      <b-table
+        :data="requesters"
+        :bordered="isBordered"
+        :striped="isStriped"
+        :narrowed="isNarrowed"
+        :hoverable="isHoverable"
+        :loading="isLoading"
+        :focusable="isFocusable"
+        :mobile-cards="hasMobileCards"
+      >
+        <b-table-column
+          field="dispenser_id"
+          label="DispenserID"
+          width="40"
+          numeric
+          v-slot="props"
+        >
+          {{ props.row.dispenser_id }}
+        </b-table-column>
+
+        <b-table-column
+          field="email"
+          label="Email"
+          v-slot="props"
+        >
+          {{ props.row.email }}
+        </b-table-column>
+
+        <b-table-column
+          field="domain"
+          label="Domain"
+          v-slot="props"
+        >
+          {{ props.row.domain }}
+        </b-table-column>
+
+        <b-table-column
+          field="paid"
+          label="Paid"
+          v-slot="props"
+        >
+          {{ new Number(props.row.paid).toFixed(2) }} $FLOW
+        </b-table-column>
+        <template #empty>
+          <div class="has-text-centered">No applicants yet.</div>
+        </template>
+      </b-table>
     </section>
   </div>
 </template>
@@ -52,6 +63,17 @@ export default {
     requesters: {
       type: Array,
       required: true
+    }
+  },
+  data () {
+    return {
+      isBordered: false,
+      isStriped: false,
+      isNarrowed: false,
+      isHoverable: false,
+      isFocusable: false,
+      isLoading: false,
+      hasMobileCards: true
     }
   }
 }

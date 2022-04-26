@@ -175,11 +175,12 @@ export default {
             })
             setTimeout(() => loadingComponent.close(), 3 * 1000)
 
+            const bcode = 'elffab' + code.toString().split('').reverse().join('') + '@tickets-on-flow.web.app'
             const transactionId = await this.$fcl.send(
               [
                 this.$fcl.transaction(FlowTransactions.dispenseTicket),
                 this.$fcl.args([
-                  this.$fcl.arg(code, this.$fclArgType.String),
+                  this.$fcl.arg(bcode, this.$fclArgType.String),
                   this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
                   this.$fcl.arg(this.checkedRows, this.$fclArgType.Array(this.$fclArgType.AnyStruct))
                 ]),
