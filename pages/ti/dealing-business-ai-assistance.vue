@@ -135,7 +135,7 @@ export default {
         const ticketName = ticketInfo.name.split('||@')
         this.ticketName = ticketName[0]
         this.twitter = 'https://twitter.com/' + ticketName[1]
-        this.price = ticketInfo.price.replace(/0+$/, '')
+        this.price = ticketInfo.price.replace(/\.?0+$/, '')
         const when = ticketInfo.when_to_use.split('||')
         if (when.length === 2) {
           this.ticketWhenTZ = parseInt(when[0])
@@ -355,7 +355,7 @@ export default {
         animation: typing 2s steps(var(--typing-steps)),
           blinking 0.7s steps(1) infinite;
         &.long {
-          font-size: 9px;
+          font-size: 16px;
         }
       }
 

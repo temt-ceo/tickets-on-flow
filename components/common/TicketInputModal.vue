@@ -596,7 +596,8 @@ export default {
               this.registerWhenTZ = when[0]
               this.registerWhen = new Date(when[1])
             }
-            this.registerPrice = this.ticketInfo.price.replace(/0+$/, '')
+            this.registerPrice = this.ticketInfo.price.replace(/\.?0+$/, '')
+            console.log(this.registerPrice, 666)
             this.registerType = this.ticketInfo.type
           } else {
             this.ticketInfo = null
@@ -659,7 +660,7 @@ export default {
               this.$fcl.arg(registerName, this.$fclArgType.String),
               this.$fcl.arg(registerWhere, this.$fclArgType.String),
               this.$fcl.arg(registerWhen, this.$fclArgType.String),
-              this.$fcl.arg(Number(this.registerPrice), this.$fclArgType.UFix64)
+              this.$fcl.arg(parseFloat(this.registerPrice).toFixed(2), this.$fclArgType.UFix64)
             ]),
             this.$fcl.payer(this.$fcl.authz),
             this.$fcl.proposer(this.$fcl.authz),
@@ -695,7 +696,7 @@ export default {
               this.$fcl.arg(registerName, this.$fclArgType.String),
               this.$fcl.arg(registerWhere, this.$fclArgType.String),
               this.$fcl.arg(registerWhen, this.$fclArgType.String),
-              this.$fcl.arg(Number(this.registerPrice), this.$fclArgType.UFix64)
+              this.$fcl.arg(parseFloat(this.registerPrice).toFixed(2), this.$fclArgType.UFix64)
             ]),
             this.$fcl.payer(this.$fcl.authz),
             this.$fcl.proposer(this.$fcl.authz),
@@ -788,7 +789,7 @@ export default {
 
         a {
           color: purple;
-          font-size: 14px;
+          font-size: 16px;
           text-decoration: underline;
         }
       }

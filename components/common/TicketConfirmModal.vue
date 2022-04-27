@@ -3,10 +3,10 @@
     <section class="modal-card-body">
       <div v-if="isCompleteDispense" class="text-wrap">
         <p class="complete-register">
-          チケットの配布を行いました。<br>
-          配布完了までに約10秒、時間がかかります。<br>
-          「トランザクションを確認」をクリックして表示された画面でSEALEDと表示された後、<br>
-          配布されたチケットが表示されます。
+          Tickets were distributed.<br>
+          It takes about 10 seconds to complete registration.<br>
+          After clicking "Confirm the transaction" and seeing the word SEALED on the screen,<br>
+          A button of "Use a ticket" will appear on the customer's screen.
         </p>
         <p
           v-if="transactionScanUrl !== ''"
@@ -15,82 +15,84 @@
           <a :href="transactionScanUrl" target="_blank" class="scanlink">Confirm the transaction</a>
         </p>
       </div>
-      <div class="text-wrap">
-        List of ticket applicants
-        <br>
-        <b-button
-          @click="dispenseTicket"
-          :disabled="checkedRows.length === 0"
-          type="is-link"
+      <div v-if="!isCompleteDispense">
+        <div class="text-wrap">
+          List of ticket applicants
+          <br>
+          <b-button
+            @click="dispenseTicket"
+            :disabled="checkedRows.length === 0"
+            type="is-link"
+          >
+            Distribute tickets
+          </b-button>
+          <br>
+        </div>
+        <b-table
+          :data="ticketRequesterArray"
+          :checked-rows.sync="checkedRows"
+          :is-row-checkable="(row) => row.id !== 3 && row.id !== 4"
+          checkable
+          :checkbox-position="checkboxPosition"
+          :checkbox-type="checkboxType"
+          :bordered="isBordered"
+          :striped="isStriped"
+          :narrowed="isNarrowed"
+          :hoverable="isHoverable"
+          :loading="isLoading"
+          :focusable="isFocusable"
+          :mobile-cards="hasMobileCards"
         >
-          Distribute
-        </b-button>
-        <br>
+          <b-table-column
+            field="user_id"
+            label="user ID"
+            width="40"
+            numeric
+            v-slot="props"
+          >
+            {{ props.row.user_id }}
+          </b-table-column>
+
+          <b-table-column
+            field="count"
+            label="Request Count"
+            v-slot="props"
+          >
+            {{ props.row.count }}
+          </b-table-column>
+
+          <b-table-column
+            field="paid"
+            label="Total Payments"
+            v-slot="props"
+          >
+            {{ new Number(props.row.paid).toFixed(2) }}
+          </b-table-column>
+
+          <b-table-column
+            field="latest_token"
+            label="Last issued token ID"
+            v-slot="props"
+          >
+            {{ props.row.latest_token }}
+          </b-table-column>
+
+          <b-table-column
+            field="time"
+            label="Request Date"
+            :th-attrs="dateThAttrs"
+            centered
+            v-slot="props"
+          >
+            <span class="tag is-success">
+              {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
+            </span>
+          </b-table-column>
+          <template #empty>
+            <div class="has-text-centered">No records</div>
+          </template>
+        </b-table>
       </div>
-      <b-table
-        :data="ticketRequesterArray"
-        :checked-rows.sync="checkedRows"
-        :is-row-checkable="(row) => row.id !== 3 && row.id !== 4"
-        checkable
-        :checkbox-position="checkboxPosition"
-        :checkbox-type="checkboxType"
-        :bordered="isBordered"
-        :striped="isStriped"
-        :narrowed="isNarrowed"
-        :hoverable="isHoverable"
-        :loading="isLoading"
-        :focusable="isFocusable"
-        :mobile-cards="hasMobileCards"
-      >
-        <b-table-column
-          field="user_id"
-          label="user ID"
-          width="40"
-          numeric
-          v-slot="props"
-        >
-          {{ props.row.user_id }}
-        </b-table-column>
-
-        <b-table-column
-          field="count"
-          label="Request Count"
-          v-slot="props"
-        >
-          {{ props.row.count }}
-        </b-table-column>
-
-        <b-table-column
-          field="paid"
-          label="Total Payments"
-          v-slot="props"
-        >
-          {{ new Number(props.row.paid).toFixed(2) }}
-        </b-table-column>
-
-        <b-table-column
-          field="latest_token"
-          label="Last issued token ID"
-          v-slot="props"
-        >
-          {{ props.row.latest_token }}
-        </b-table-column>
-
-        <b-table-column
-          field="time"
-          label="Request Date"
-          :th-attrs="dateThAttrs"
-          centered
-          v-slot="props"
-        >
-          <span class="tag is-success">
-            {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
-          </span>
-        </b-table-column>
-        <template #empty>
-          <div class="has-text-centered">No records</div>
-        </template>
-      </b-table>
     </section>
   </div>
 </template>
@@ -148,7 +150,7 @@ export default {
             ])
           ]
         ).then(this.$fcl.decode)
-        console.log(ticketRequesters, 88888)
+
         this.ticketRequesters = ticketRequesters
         const keys = Object.keys(ticketRequesters)
         for (let i = 0; i < keys.length; i++) {
@@ -161,11 +163,11 @@ export default {
     dispenseTicket () {
       try {
         this.$buefy.dialog.prompt({
-          message: 'Enter the dispenser_id in the text box below',
+          message: 'Enter the information you want to put on the screen for the customer who used the ticket.',
           inputAttrs: {
             type: 'text',
             placeholder: 'e.g. 100',
-            maxlength: 10
+            maxlength: 50
           },
           trapFocus: true,
           onConfirm: async (code) => {
@@ -212,7 +214,6 @@ export default {
   .modal-card-body {
 
     .text-wrap {
-      font-size: 24px;
       margin: 16px;
 
       p {
@@ -225,13 +226,18 @@ export default {
       }
     }
 
+    p.complete-register {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
     .check-transaction {
       text-align : center;
       margin-top: 16px;
 
       a {
         color: purple;
-        font-size: 14px;
+        font-size: 16px;
         text-decoration: underline;
       }
     }

@@ -94,7 +94,7 @@ import FlowScripts from '~/cadence/scripts'
 import FlowTransactions from '~/cadence/transactions'
 
 export default {
-  name: 'TicketDispenser3',
+  name: 'TicketDispenser1',
   data () {
     return {
       bloctoWalletUser: {},
@@ -108,6 +108,7 @@ export default {
       twitter: '',
       price: null,
       status: 0,
+      latestRequest: null,
       transactionScanUrl: '',
       noticeTitle: ''
     }
@@ -129,29 +130,31 @@ export default {
   methods: {
     getTicketInfo (pathname) {
       const ticketInfo = this.tickets.find(obj => obj.domain === pathname.replace(/\/ti\//, '').replace(/\//g, ''))
-      this.dispenser = ticketInfo.dispenser_id
-      const ticketName = ticketInfo.name.split('||@')
-      this.ticketName = ticketName[0]
-      this.twitter = 'https://twitter.com/' + ticketName[1]
-      this.price = ticketInfo.price.replace(/0+$/, '')
-      const when = ticketInfo.when_to_use.split('||')
-      if (when.length === 2) {
-        this.ticketWhenTZ = parseInt(when[0])
-        const ticketWhen = new Date(when[1])
-        const mo = ticketWhen.getMonth().toString()
-        const d = ticketWhen.getDate().toString()
-        this.ticketWhenDate = `${ticketWhen.getFullYear()}/${mo.length > 1 ? mo : '0' + mo}/${d.length > 1 ? d : '0' + d}`
-        const h = ticketWhen.getHours().toString()
-        const m = ticketWhen.getMinutes().toString()
-        this.ticketWhenHour = `${h.length > 1 ? h : '0' + h}: ${m.length > 1 ? m : '0' + m}`
-      }
-      const where = ticketInfo.where_to_use.split('||')
-      if (where.length === 2) {
-        this.ticketWhere = where[1]
-      } else if (where.length > 2) {
-        this.ticketWhere = ''
-        for (let i = 1; i < where.length; i++) {
-          this.ticketWhere = this.ticketWhere + (i === 1 ? '' : '||') + where[i]
+      if (ticketInfo) {
+        this.dispenser = ticketInfo.dispenser_id
+        const ticketName = ticketInfo.name.split('||@')
+        this.ticketName = ticketName[0]
+        this.twitter = 'https://twitter.com/' + ticketName[1]
+        this.price = ticketInfo.price.replace(/\.?0+$/, '')
+        const when = ticketInfo.when_to_use.split('||')
+        if (when.length === 2) {
+          this.ticketWhenTZ = parseInt(when[0])
+          const ticketWhen = new Date(when[1])
+          const mo = ticketWhen.getMonth().toString()
+          const d = ticketWhen.getDate().toString()
+          this.ticketWhenDate = `${mo.length > 1 ? mo : '0' + mo}/${d.length > 1 ? d : '0' + d}/${ticketWhen.getYear()}`
+          const h = ticketWhen.getHours().toString()
+          const m = ticketWhen.getMinutes().toString()
+          this.ticketWhenHour = `${h.length > 1 ? h : '0' + h}: ${m.length > 1 ? m : '0' + m}`
+        }
+        const where = ticketInfo.where_to_use.split('||')
+        if (where.length === 2) {
+          this.ticketWhere = where[1]
+        } else if (where.length > 2) {
+          this.ticketWhere = ''
+          for (let i = 1; i < where.length; i++) {
+            this.ticketWhere = this.ticketWhere + (i === 1 ? '' : '||') + where[i]
+          }
         }
       }
     },
@@ -184,11 +187,11 @@ export default {
       }
     },
     async checkCurrentStatus () {
-      await this.isTicketVaultReady()
+      const ret = await this.isTicketVaultReady()
       // if (ret) {
       //   await this.getRequestStatus()
       // } else if (this.ticketName) {
-      this.status = 1
+      this.status = ret ? 2 : 1
       //   this.noticeTitle = `${this.ticketName}を申請可能です。以下から申請ボタンを押してください。`
       // } else {
       //   this.noticeTitle = 'Ticket has not been created yet.'
@@ -217,16 +220,34 @@ export default {
     async getRequestStatus () {
       try {
         this.noticeTitle = ''
-        await this.$fcl.send(
+        const result = await this.$fcl.send(
           [
-            this.$fcl.script(FlowScripts.getRequestStatus),
+            this.$fcl.script(FlowScripts.getTicketRequestStatus),
             this.$fcl.args([
               this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
               this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
             ])
           ]
         ).then(this.$fcl.decode)
+        if (result) {
+          const latestRequestTime = parseInt(result.time.replace(/.0+$/, '')) * 1000
+          this.latestRequest = new Date(latestRequestTime)
+          const mo = this.latestRequest.getMonth().toString()
+          const d = this.latestRequest.getDate().toString()
+          const requestDate = `${this.latestRequest.getFullYear()}/${mo.length > 1 ? mo : '0' + mo}/${d.length > 1 ? d : '0' + d}`
+          const h = this.latestRequest.getHours().toString()
+          const m = this.latestRequest.getMinutes().toString()
+          const requestHour = `${h.length > 1 ? h : '0' + h}: ${m.length > 1 ? m : '0' + m}`
+          const toast = this.$buefy.toast.open({
+            indefinite: true,
+            message: `Last Request Date: ${requestDate} ${requestHour}`
+          })
+          setTimeout(() => {
+            toast.close()
+          }, 5000)
+        }
       } catch (e) {
+        console.log(e)
       }
     },
     async requestTicket () {
@@ -238,9 +259,15 @@ export default {
         transactionCode = FlowTransactions.requestTicket
       }
       this.$buefy.dialog.confirm({
-        message: 'If you are applying for a ticket, please press "Approve" on the next wallet pop-up screen. This is free of charge. Money is charged when you use it.',
+        message: 'Please press "Approve" on the next wallet pop-up. The ticket registrar will put the ticket in your wallet. <br>This is free of charge.',
         onConfirm: async () => {
           try {
+            // loading
+            const loadingComponent = this.$buefy.loading.open({
+              container: null
+            })
+            setTimeout(() => loadingComponent.close(), 3 * 1000)
+
             const transactionId = await this.$fcl.send(
               [
                 this.$fcl.transaction(transactionCode),
@@ -265,6 +292,12 @@ export default {
     async useTicket () {
       alert('チケットを申請される方は、次のウォレットのポップアップ画面で「承認」を押してください')
       try {
+        // loading
+        const loadingComponent = this.$buefy.loading.open({
+          container: null
+        })
+        setTimeout(() => loadingComponent.close(), 3 * 1000)
+
         const transactionId = await this.$fcl.send(
           [
             this.$fcl.transaction(FlowTransactions.useTicket),
@@ -322,7 +355,7 @@ export default {
         animation: typing 2s steps(var(--typing-steps)),
           blinking 0.7s steps(1) infinite;
         &.long {
-          font-size: 9px;
+          font-size: 16px;
         }
       }
 
@@ -375,12 +408,6 @@ export default {
     50% {
       border-color: #9778d7;
     }
-  }
-
-  .hero--video {
-    min-width: 100%;
-    min-height: 100vh;
-    z-index: 1;
   }
 
   .hero--overlay {

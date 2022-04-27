@@ -463,6 +463,11 @@ export default {
   display: grid !important;
 }
 
+span.control-label {
+  position: absolute;
+  padding-left: calc(1.75em - 1px) !important;
+}
+
 .field {
   margin-top: 0.5rem;
   margin-bottom: 2rem !important;
