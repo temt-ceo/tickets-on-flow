@@ -40,12 +40,12 @@ transaction(address: Address) {
 import FlowToken from 0x7e60df042a9c0868
 import FungibleToken from 0x9a0766d93b6608b7
 import Tv17 from 0xT
-transaction(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64) {
+transaction(type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64) {
     prepare(signer: AuthAccount) {
         let FlowTokenReceiver = signer.getCapability<&FlowToken.Vault{FungibleToken.Receiver}>(/public/flowTokenReceiver)
         let dispenserVault = signer.borrow<&Tv17.DispenserVault>(from: /storage/Tv17DispenserVault)
             ?? panic("Could not borrow reference to the Owner's DispenserVault.")
-        dispenserVault.addTicketInfo(dispenser_id: dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, price: price, flow_vault_receiver: FlowTokenReceiver)
+        dispenserVault.addTicketInfo(type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, price: price, flow_vault_receiver: FlowTokenReceiver)
     }
 
     execute {
@@ -55,11 +55,11 @@ transaction(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: Strin
   `,
   updateTicketInfo: `
 import Tv17 from 0xT
-transaction(index: UInt32, dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64) {
+transaction(index: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64) {
     prepare(signer: AuthAccount) {
         let dispenserVault = signer.borrow<&Tv17.DispenserVault>(from: /storage/Tv17DispenserVault)
             ?? panic("Could not borrow reference to the Owner's DispenserVault.")
-        dispenserVault.updateTicketInfo(index: index, dispenser_id: dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, price: price)
+        dispenserVault.updateTicketInfo(index: index, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, price: price)
     }
 
     execute {
@@ -98,15 +98,15 @@ transaction(dispenser_id: UInt32) {
   `,
   dispenseTicket: `
 import Tv17 from 0xT
-transaction(secret_code: String, dispenser_id: UInt32, addrList: [Tv17.RequestStruct]) {
+transaction(addrList: {UInt32: Address}, secret_code: String) {
     prepare(signer: AuthAccount) {
         let dispenserVault = signer.borrow<&Tv17.DispenserVault>(from: /storage/Tv17DispenserVault)
             ?? panic("Could not borrow reference to the Owner's DispenserVault.")
-        for obj in addrList {
-            let account = getAccount(obj.address)
+        for user_id in addrList.keys {
+            let account = getAccount(addrList[user_id]!)
             let ticketVault = account.getCapability<&Tv17.TicketVault{Tv17.ITicketPublic}>(Tv17.TicketVaultPublicPath).borrow()
                 ?? panic("Could not borrow TicketVault capability.")
-            ticketVault.deposit(token: <- dispenserVault.mintTicket(secret_code: secret_code, dispenser_id: dispenser_id, user_id: obj.user_id)!)
+            ticketVault.deposit(token: <- dispenserVault.mintTicket(secret_code: secret_code, user_id: user_id)!)
         }
     }
 
@@ -118,15 +118,15 @@ transaction(secret_code: String, dispenser_id: UInt32, addrList: [Tv17.RequestSt
   useTicket: `
 import FlowToken from 0x7e60df042a9c0868
 import FungibleToken from 0x9a0766d93b6608b7
-import T from 0xT
-transaction(dispenser_id: UInt32, user_id: UInt32, token_id: UInt64, price: UFix64) {
+import Tv17 from 0xT
+transaction(dispenser_id: UInt32, token_id: UInt64, price: UFix64) {
     prepare(signer: AuthAccount) {
         let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: price * 0.97) as! @FlowToken.Vault
         let charge_fee = price - payment.balance
         let commission <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: charge_fee) as! @FlowToken.Vault
         let ticketVault = signer.borrow<&Tv17.TicketVault>(from: /storage/Tv17TicketVault)
             ?? panic("Could not borrow reference to the Owner's TicketVault.")
-        ticketVault.useTicket(dispenser_id: dispenser_id, user_id: user_id, token_id: token_id, address: signer.address, payment: <- payment, fee: <- commission)
+        ticketVault.useTicket(dispenser_id: dispenser_id, token_id: token_id, address: signer.address, payment: <- payment, fee: <- commission)
     }
 
     execute {

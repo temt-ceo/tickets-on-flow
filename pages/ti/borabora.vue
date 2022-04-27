@@ -23,11 +23,21 @@
             <h1 class="notice">
               {{ ticketWhenDate }} {{ ticketWhenHour }} Start
             </h1>
+            <h1 v-if="code" class="notice">
+              Code: {{ code }}
+            </h1>
+
             <p
               v-if="transactionScanUrl !== ''"
               class="check-transaction"
             >
               <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
+              <b-button
+                type="is-link"
+                @click="requestCode"
+              >
+                Request a Code
+              </b-button>
             </p>
             <hr>
             <b-button
@@ -99,7 +109,8 @@ export default {
     return {
       bloctoWalletUser: {},
       dispenser: null,
-      userId: null,
+      code: null,
+      ticketTokenId: null,
       ticketName: '',
       ticketWhere: '',
       ticketWhenDate: '',
@@ -188,15 +199,11 @@ export default {
     },
     async checkCurrentStatus () {
       const ret = await this.isTicketVaultReady()
-      // if (ret) {
-      //   await this.getRequestStatus()
-      // } else if (this.ticketName) {
-      this.status = ret ? 2 : 1
-      //   this.noticeTitle = `${this.ticketName}を申請可能です。以下から申請ボタンを押してください。`
-      // } else {
-      //   this.noticeTitle = 'Ticket has not been created yet.'
-      //   this.callToast()
-      // }
+      if (ret) {
+        await this.requestCode()
+      } else {
+        this.status = 1
+      }
     },
     async isTicketVaultReady () {
       try {
@@ -208,6 +215,7 @@ export default {
             ])
           ]
         ).then(this.$fcl.decode)
+        console.log(ticketVault, 999)
         if (ticketVault !== null) {
           return true
         } else {
@@ -229,6 +237,7 @@ export default {
             ])
           ]
         ).then(this.$fcl.decode)
+
         if (result) {
           const latestRequestTime = parseInt(result.time.replace(/.0+$/, '')) * 1000
           this.latestRequest = new Date(latestRequestTime)
@@ -259,7 +268,7 @@ export default {
         transactionCode = FlowTransactions.requestTicket
       }
       this.$buefy.dialog.confirm({
-        message: 'Please press "Approve" on the next wallet pop-up. The ticket registrar will put the ticket in your wallet. <br>This is free of charge.',
+        message: 'Tap "Approve" on the next wallet pop-up. The ticket registrar will put the ticket in your wallet. <br>This is free of charge.',
         onConfirm: async () => {
           try {
             // loading
@@ -289,33 +298,61 @@ export default {
         }
       })
     },
-    async useTicket () {
-      alert('チケットを申請される方は、次のウォレットのポップアップ画面で「承認」を押してください')
+    useTicket () {
       try {
-        // loading
-        const loadingComponent = this.$buefy.loading.open({
-          container: null
-        })
-        setTimeout(() => loadingComponent.close(), 3 * 1000)
+        this.$buefy.dialog.confirm({
+          message: 'Tap "Approve" on the next wallet pop-up.',
+          onConfirm: async () => {
+            // loading
+            const loadingComponent = this.$buefy.loading.open({
+              container: null
+            })
+            setTimeout(() => loadingComponent.close(), 3 * 1000)
 
-        const transactionId = await this.$fcl.send(
-          [
-            this.$fcl.transaction(FlowTransactions.useTicket),
-            this.$fcl.args([
-              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
-              this.$fcl.arg(this.user_id, this.$fclArgType.UInt32)
-            ]),
-            this.$fcl.payer(this.$fcl.authz),
-            this.$fcl.proposer(this.$fcl.authz),
-            this.$fcl.authorizations([this.$fcl.authz]),
-            this.$fcl.limit(9999)
-          ]
-        ).then(this.$fcl.decode)
-        this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-        this.noticeTitle = `${this.ticketName}を使用しました。チケット配布者にお知らせください。`
-        this.status = 2
-        return transactionId
+            const transactionId = await this.$fcl.send(
+              [
+                this.$fcl.transaction(FlowTransactions.useTicket),
+                this.$fcl.args([
+                  this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
+                  this.$fcl.arg(this.ticketTokenId, this.$fclArgType.UInt64),
+                  this.$fcl.arg(parseFloat(this.price).toFixed(2), this.$fclArgType.UFix64)
+                ]),
+                this.$fcl.payer(this.$fcl.authz),
+                this.$fcl.proposer(this.$fcl.authz),
+                this.$fcl.authorizations([this.$fcl.authz]),
+                this.$fcl.limit(9999)
+              ]
+            ).then(this.$fcl.decode)
+            this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+            this.noticeTitle = `${this.ticketName}を使用しました。チケット配布者にお知らせください。`
+            this.status = 4
+            return transactionId
+          }
+        })
       } catch (e) {
+      }
+    },
+    async requestCode () {
+      const result = await this.$fcl.send(
+        [
+          this.$fcl.script(FlowScripts.getTicketCode),
+          this.$fcl.args([
+            this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
+            this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
+          ])
+        ]
+      ).then(this.$fcl.decode)
+      if (result === null || Object.keys(result).length === 0) {
+        this.status = 2
+      } else {
+        this.ticketTokenId = parseInt(Object.keys(result)[0])
+        if (result[this.ticketTokenId] === '') {
+          this.status = 3
+          this.code = result[this.ticketTokenId]
+        } else {
+          this.status = 4
+          this.code = result[this.ticketTokenId].replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
+        }
       }
     },
     async flowWalletLogout () {

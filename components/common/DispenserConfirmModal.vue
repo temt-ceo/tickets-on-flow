@@ -15,40 +15,42 @@
         :mobile-cards="hasMobileCards"
       >
         <b-table-column
+          v-slot="props"
           field="dispenser_id"
           label="DispenserID"
           width="40"
           numeric
-          v-slot="props"
         >
           {{ props.row.dispenser_id }}
         </b-table-column>
 
         <b-table-column
+          v-slot="props"
           field="email"
           label="Email"
-          v-slot="props"
         >
           {{ props.row.email }}
         </b-table-column>
 
         <b-table-column
+          v-slot="props"
           field="domain"
           label="Domain"
-          v-slot="props"
         >
           {{ props.row.domain }}
         </b-table-column>
 
         <b-table-column
+          v-slot="props"
           field="paid"
           label="Paid"
-          v-slot="props"
         >
           {{ new Number(props.row.paid).toFixed(2) }} $FLOW
         </b-table-column>
         <template #empty>
-          <div class="has-text-centered">No applicants yet.</div>
+          <div class="has-text-centered">
+            No applicants yet.
+          </div>
         </template>
       </b-table>
     </section>

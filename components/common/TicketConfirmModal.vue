@@ -16,16 +16,15 @@
         </p>
       </div>
       <div v-if="!isCompleteDispense">
-        <div class="text-wrap">
-          List of ticket applicants
-          <br>
+        <div class="button-wrap">
           <b-button
-            @click="dispenseTicket"
             :disabled="checkedRows.length === 0"
             type="is-link"
+            @click="dispenseTicket"
           >
             Distribute tickets
           </b-button>
+          <span class="total-count">(Current Total: {{ latestMintedTokenId }})</span>
           <br>
         </div>
         <b-table
@@ -44,52 +43,54 @@
           :mobile-cards="hasMobileCards"
         >
           <b-table-column
+            v-slot="props"
             field="user_id"
             label="user ID"
             width="40"
             numeric
-            v-slot="props"
           >
             {{ props.row.user_id }}
           </b-table-column>
 
           <b-table-column
+            v-slot="props"
             field="count"
             label="Request Count"
-            v-slot="props"
           >
             {{ props.row.count }}
           </b-table-column>
 
           <b-table-column
+            v-slot="props"
             field="paid"
             label="Total Payments"
-            v-slot="props"
           >
             {{ new Number(props.row.paid).toFixed(2) }}
           </b-table-column>
 
           <b-table-column
+            v-slot="props"
             field="latest_token"
             label="Last issued token ID"
-            v-slot="props"
           >
             {{ props.row.latest_token }}
           </b-table-column>
 
           <b-table-column
+            v-slot="props"
             field="time"
             label="Request Date"
             :th-attrs="dateThAttrs"
             centered
-            v-slot="props"
           >
             <span class="tag is-success">
               {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
             </span>
           </b-table-column>
           <template #empty>
-            <div class="has-text-centered">No records</div>
+            <div class="has-text-centered">
+              No records
+            </div>
           </template>
         </b-table>
       </div>
@@ -120,6 +121,7 @@ export default {
       ticketRequesters: {},
       ticketRequesterArray: [],
       ticketName: '',
+      latestMintedTokenId: null,
       transactionScanUrl: '',
       isCompleteRegister: false,
       flowscanLink: 'https://testnet.flowscan.org/transaction',
@@ -142,6 +144,15 @@ export default {
   methods: {
     async confirmRequesters () {
       try {
+        const latestMintedTokenId = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getLatestMintedTokenId),
+            this.$fcl.args([
+              this.$fcl.arg(this.address, this.$fclArgType.Address)
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        this.latestMintedTokenId = latestMintedTokenId || 0
         const ticketRequesters = await this.$fcl.send(
           [
             this.$fcl.script(FlowScripts.getTicketRequesters),
@@ -150,7 +161,6 @@ export default {
             ])
           ]
         ).then(this.$fcl.decode)
-
         this.ticketRequesters = ticketRequesters
         const keys = Object.keys(ticketRequesters)
         for (let i = 0; i < keys.length; i++) {
@@ -178,13 +188,16 @@ export default {
             setTimeout(() => loadingComponent.close(), 3 * 1000)
 
             const bcode = 'elffab' + code.toString().split('').reverse().join('') + '@tickets-on-flow.web.app'
+            const addrList = []
+            for (let i = 0; i < this.checkedRows.length; i++) {
+              addrList.push({ key: parseInt(this.checkedRows[i].user_id), value: this.checkedRows[i].address })
+            }
             const transactionId = await this.$fcl.send(
               [
                 this.$fcl.transaction(FlowTransactions.dispenseTicket),
                 this.$fcl.args([
-                  this.$fcl.arg(bcode, this.$fclArgType.String),
-                  this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
-                  this.$fcl.arg(this.checkedRows, this.$fclArgType.Array(this.$fclArgType.AnyStruct))
+                  this.$fcl.arg(addrList, this.$fclArgType.Dictionary({ key: this.$fclArgType.UInt32, value: this.$fclArgType.Address })),
+                  this.$fcl.arg(bcode, this.$fclArgType.String)
                 ]),
                 this.$fcl.payer(this.$fcl.authz),
                 this.$fcl.proposer(this.$fcl.authz),
@@ -223,6 +236,14 @@ export default {
 
       h2 {
         font-size: 18px;
+      }
+    }
+
+    .button-wrap {
+      margin: 0 16px;
+
+      .total-count {
+        font-size: 12px;
       }
     }
 

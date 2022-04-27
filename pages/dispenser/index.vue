@@ -164,7 +164,7 @@ export default {
             this.noticeTitle = 'Currently applying for ticket distribution functionality.'
           }
         } else {
-          this.noticeTitle = 'You need to apply for the ticket distribution function. Please press Apply for distribution function.'
+          this.noticeTitle = 'You need to apply for the ticket distribution function. Tap Apply for distribution function.'
         }
       } else {
         this.noticeTitle = 'Please log in to the wallet of the person who will distribute the tickets.'
@@ -265,7 +265,7 @@ export default {
                 const bmail = 'elffab' + email.toString().split('').reverse().join('') + '@tickets-on-flow.web.app'
                 toast1?.close()
                 this.$buefy.dialog.confirm({
-                  message: 'This process requires 0.5$FLOW. <br>Please press "Approve" on the pop-up that will appear after this.',
+                  message: 'This process requires 0.5$FLOW. <br>Tap "Approve" on the pop-up that will appear after this.',
                   confirmText: 'Agree',
                   onConfirm: async () => {
                     close()

@@ -71,7 +71,7 @@
                 size="is-large"
               />
             </b-dropdown-item>
-            <b-dropdown-item  @click="sidebarOpen = true" aria-role="listitem" class="menu-help">
+            <b-dropdown-item aria-role="listitem" class="menu-help" @click="sidebarOpen = true">
               👋 Hi, need Help?
             </b-dropdown-item>
           </b-dropdown>
@@ -89,18 +89,20 @@
       :indicator="carouselIndicator"
       :indicator-inside="carouselInside"
       :indicator-style="carouselIndicatorStyle"
-      @change="carouselChange($event)"
       style="z-index: 100;"
+      @change="carouselChange($event)"
     >
       <b-carousel-item v-for="(carousel, i) in carousels" :key="i">
         <section :class="`hero is-medium is-${carousel.color}`">
           <div class="hero-body has-text-centered">
-            <h1 class="title">{{carousel.text}}</h1>
+            <h1 class="title">
+              {{ carousel.text }}
+            </h1>
             <img
               :src="carousel.image"
               alt="Tickets Manual"
               style="max-height: 400px;"
-            />
+            >
           </div>
         </section>
       </b-carousel-item>
@@ -109,53 +111,62 @@
     <Nuxt />
 
     <b-sidebar
+      v-model="sidebarOpen"
       type="is-light"
       :fullheight="sidebarFullheight"
       :fullwidth="sidebarFullwidth"
       :overlay="sidebarOverlay"
       :right="sidebarRight"
-      v-model="sidebarOpen"
     >
       <div class="p-1">
         <img
           src="~assets/image/tickets.png"
           alt="Tickets"
-        />
+        >
         <b-menu>
           <b-menu-list label="Help">
             <b-menu-item icon="information-outline" label="Info">
-              <b-menu-item @click="helpBasicData1" label="Basic data"></b-menu-item>
-              <b-menu-item @click="helpBasicData2" label="Basic data 2"></b-menu-item>
-              <b-menu-item @click="helpHowToUse" label="How to use"></b-menu-item>
+              <b-menu-item label="Basic data" @click="helpBasicData1" />
+              <b-menu-item label="Basic data 2" @click="helpBasicData2" />
+              <b-menu-item label="How to use" @click="helpHowToUse" />
             </b-menu-item>
             <b-menu-item icon="marker">
               <template #label="props">
                 Organizer
-                <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'"></b-icon>
+                <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'" />
               </template>
-              <b-menu-item @click="helpCustomers" icon="account" label="Customers"></b-menu-item>
+              <b-menu-item icon="account" label="Customers" @click="helpCustomers" />
               <b-menu-item icon="cellphone-link">
                 <template #label>
                   Businesses
                   <b-dropdown aria-role="list" class="is-pulled-right" position="is-bottom-left">
                     <template #trigger>
-                        <b-icon icon="dots-vertical"></b-icon>
+                      <b-icon icon="dots-vertical" />
                     </template>
-                    <b-dropdown-item @click="helpBusiness1" aria-role="listitem">Business?</b-dropdown-item>
-                    <b-dropdown-item @click="helpBusiness2" aria-role="listitem">Tipping?</b-dropdown-item>
-                    <b-dropdown-item @click="helpBusiness3" aria-role="listitem">Donations?</b-dropdown-item>
+                    <b-dropdown-item aria-role="listitem" @click="helpBusiness0">
+                      Community?
+                    </b-dropdown-item>
+                    <b-dropdown-item aria-role="listitem" @click="helpBusiness1">
+                      Business?
+                    </b-dropdown-item>
+                    <b-dropdown-item aria-role="listitem" @click="helpBusiness2">
+                      Tipping?
+                    </b-dropdown-item>
+                    <b-dropdown-item aria-role="listitem" @click="helpBusiness3">
+                      Donations?
+                    </b-dropdown-item>
                   </b-dropdown>
                 </template>
               </b-menu-item>
-              <b-menu-item @click="helpPayments" icon="cash-multiple" label="Payments"></b-menu-item>
+              <b-menu-item icon="cash-multiple" label="Payments" @click="helpPayments" />
             </b-menu-item>
             <b-menu-item icon="account" label="Flow Account">
-              <b-menu-item @click="helpAccount" label="Account data"></b-menu-item>
-              <b-menu-item @click="helpWallet" label="Wallet Address"></b-menu-item>
+              <b-menu-item label="Account data" @click="helpAccount" />
+              <b-menu-item label="Wallet Address" @click="helpWallet" />
             </b-menu-item>
           </b-menu-list>
           <b-menu-list label="Actions">
-            <b-menu-item @click="walletLogin" :label="helpLogin"></b-menu-item>
+            <b-menu-item :label="helpLogin" @click="walletLogin" />
           </b-menu-list>
         </b-menu>
       </div>
@@ -291,6 +302,22 @@ export default {
         }
       })
     },
+    helpBusiness0 () {
+      this.$buefy.snackbar.open({
+        duration: 10000,
+        message: 'Easily collect dues from the community.',
+        type: 'is-danger',
+        position: 'is-bottom-left',
+        actionText: 'Got it',
+        queue: false,
+        onAction: () => {
+          this.$buefy.toast.open({
+            message: 'Come on, Let\'s do it!',
+            queue: false
+          })
+        }
+      })
+    },
     helpBusiness1 () {
       this.$buefy.snackbar.open({
         duration: 10000,
@@ -388,7 +415,6 @@ export default {
       })
     },
     carouselChange (value) {
-      console.log(value)
       if (value >= 10) {
         this.showCarousel = false
         this.sidebarOpen = true
@@ -457,10 +483,6 @@ export default {
 
 .carousel {
   z-index: 2;
-}
-
-.b-checkbox.checkbox {
-  display: grid !important;
 }
 
 span.control-label {

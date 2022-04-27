@@ -597,7 +597,7 @@ export default {
               this.registerWhen = new Date(when[1])
             }
             this.registerPrice = this.ticketInfo.price.replace(/\.?0+$/, '')
-            console.log(this.registerPrice, 666)
+
             this.registerType = this.ticketInfo.type
           } else {
             this.ticketInfo = null
@@ -627,14 +627,14 @@ export default {
             this.registerTwitter = value
             const explanation = !this.ticketInfo ? `Once registered, a ticket request button will appear on your ticket webpage. (${this.ticketPage})<br>` : ''
             this.$buefy.dialog.confirm({
-              message: `${explanation}If you are sure, please press "Approve" on the pop-up that will appear after this.`,
+              message: `${explanation}If you are sure, tap "Approve" on the pop-up that will appear after this.`,
               onConfirm: this.ticketInfo ? this.updateTicketInfo : this.addTicketInfo
             })
           }
         })
       } else {
         this.$buefy.dialog.confirm({
-          message: 'If you are sure, please press "Approve" on the pop-up that will appear after this.',
+          message: 'If you are sure, tap "Approve" on the pop-up that will appear after this.',
           onConfirm: this.updateTicketInfo
         })
       }
@@ -655,7 +655,6 @@ export default {
           [
             this.$fcl.transaction(FlowTransactions.addTicketInfo),
             this.$fcl.args([
-              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
               this.$fcl.arg(registerType, this.$fclArgType.UInt8),
               this.$fcl.arg(registerName, this.$fclArgType.String),
               this.$fcl.arg(registerWhere, this.$fclArgType.String),
@@ -691,7 +690,6 @@ export default {
             this.$fcl.transaction(FlowTransactions.updateTicketInfo),
             this.$fcl.args([
               this.$fcl.arg(this.indexOfTicket, this.$fclArgType.UInt32),
-              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
               this.$fcl.arg(registerType, this.$fclArgType.UInt8),
               this.$fcl.arg(registerName, this.$fclArgType.String),
               this.$fcl.arg(registerWhere, this.$fclArgType.String),

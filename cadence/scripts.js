@@ -62,14 +62,22 @@ pub fun main(addr: Address, dispenser_id: UInt32): Tv17.RequestStruct? {
     return Tv17.getTicketRequestStatus(dispenser_id: dispenser_id, user_id: user_id)
 }
   `,
+  getLatestMintedTokenId: `
+import Tv17 from 0xT
+pub fun main(addr: Address): UInt64? {
+  let account = getAccount(addr)
+  let dispenserVault = account.getCapability<&Tv17.DispenserVault{Tv17.IDispenserPublic}>(Tv17.DispenserVaultPublicPath).borrow()
+      ?? panic("Could not borrow DispenserVault capability.")
+  return dispenserVault.getLatestMintedTokenId()
+}
+  `,
   getTicketRequesters: `
 import Tv17 from 0xT
 pub fun main(addr: Address): {UInt32: Tv17.RequestStruct}?? {
     let account = getAccount(addr)
     let dispenserVault = account.getCapability<&Tv17.DispenserVault{Tv17.IDispenserPublic}>(Tv17.DispenserVaultPublicPath).borrow()
         ?? panic("Could not borrow DispenserVault capability.")
-    let dispenser_id = dispenserVault.getId()
-    return dispenserVault.getTicketRequesters(dispenser_id: dispenser_id)
+    return dispenserVault.getTicketRequesters()
 }
   `,
   hasTicketResource: `
@@ -77,6 +85,15 @@ import Tv17 from 0xT
 pub fun main(addr: Address): &Tv17.TicketVault{Tv17.ITicketPublic}? {
     let account = getAccount(addr)
     return account.getCapability<&Tv17.TicketVault{Tv17.ITicketPublic}>(Tv17.TicketVaultPublicPath).borrow()
+}
+  `,
+  getTicketCode: `
+import Tv17 from 0xT
+pub fun main(addr: Address, dispenser_id: UInt32): {UInt64: String} {
+  let account = getAccount(addr)
+  let ticketVault = account.getCapability<&Tv17.TicketVault{Tv17.ITicketPublic}>(Tv17.TicketVaultPublicPath).borrow()
+      ?? panic("Could not borrow TicketVault capability.")
+  return ticketVault.getCode(dispenser_id: dispenser_id)
 }
   `
 }

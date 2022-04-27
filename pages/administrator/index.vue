@@ -94,7 +94,7 @@ export default {
         this.isAdmin = await this.isAdminWallet()
         if (this.isAdmin) {
           await this.getRequestedDispensers()
-          this.noticeTitle = 'Please press the grant button.'
+          this.noticeTitle = 'Tap the grant button.'
         } else {
           this.noticeTitle = 'Wrong address. Please log in with the contract administrator\'s wallet.'
         }
@@ -142,7 +142,7 @@ export default {
             return
           }
           this.$buefy.dialog.confirm({
-            message: `Grant ticket mint functionality to #${dispenserId}. Please press Grant button.`,
+            message: `Grant ticket mint functionality to #${dispenserId}. Tap Grant button.`,
             confirmText: 'Grant',
             onConfirm: async () => {
               try {

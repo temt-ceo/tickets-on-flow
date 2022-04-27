@@ -200,8 +200,8 @@ pub contract Tv17 {
   pub resource interface IDispenserPrivate {
     pub var ownedDispenser: @Dispenser?
     pub var dispenser_id: UInt32
-    pub fun addTicketInfo(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64, flow_vault_receiver: Capability<&FlowToken.Vault{FungibleToken.Receiver}>)
-    pub fun updateTicketInfo(index: UInt32, dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64)
+    pub fun addTicketInfo(type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64, flow_vault_receiver: Capability<&FlowToken.Vault{FungibleToken.Receiver}>)
+    pub fun updateTicketInfo(index: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64)
   }
 
   /*
@@ -211,7 +211,7 @@ pub contract Tv17 {
     pub fun deposit(minter: @Dispenser)
     pub fun hasDispenser(): Bool
     pub fun getId(): UInt32
-    pub fun getTicketRequesters(dispenser_id: UInt32): {UInt32: RequestStruct}??
+    pub fun getTicketRequesters(): {UInt32: RequestStruct}??
     pub fun getLatestMintedTokenId(): UInt64?
   }
 
@@ -250,8 +250,8 @@ pub contract Tv17 {
     }
 
     // [public access]
-    pub fun getTicketRequesters(dispenser_id: UInt32): {UInt32: RequestStruct}?? {
-      return self.ownedDispenser?.getTicketRequesters(dispenser_id: dispenser_id)
+    pub fun getTicketRequesters(): {UInt32: RequestStruct}?? {
+      return self.ownedDispenser?.getTicketRequesters(dispenser_id: self.dispenser_id)
     }
 
     // [public access]
@@ -260,18 +260,18 @@ pub contract Tv17 {
     }
 
     // [private access]
-    pub fun addTicketInfo(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64, flow_vault_receiver: Capability<&FlowToken.Vault{FungibleToken.Receiver}>) {
-      self.ownedDispenser?.addTicketInfo(dispenser_id: dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, price: price, flow_vault_receiver: flow_vault_receiver)
+    pub fun addTicketInfo(type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64, flow_vault_receiver: Capability<&FlowToken.Vault{FungibleToken.Receiver}>) {
+      self.ownedDispenser?.addTicketInfo(dispenser_id: self.dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, price: price, flow_vault_receiver: flow_vault_receiver)
     }
 
     // [private access]
-    pub fun updateTicketInfo(index: UInt32, dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64) {
-      self.ownedDispenser?.updateTicketInfo(index: index, dispenser_id: dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, price: price)
+    pub fun updateTicketInfo(index: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64) {
+      self.ownedDispenser?.updateTicketInfo(index: index, dispenser_id: self.dispenser_id, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, price: price)
     }
 
     // [private access]
-    pub fun mintTicket(secret_code: String, dispenser_id: UInt32, user_id: UInt32): @Ticket? {
-      return <- self.ownedDispenser?.mintTicket(secret_code: secret_code, dispenser_id: dispenser_id, user_id: user_id)
+    pub fun mintTicket(secret_code: String, user_id: UInt32): @Ticket? {
+      return <- self.ownedDispenser?.mintTicket(secret_code: secret_code, dispenser_id: self.dispenser_id, user_id: user_id)
     }
 
     destroy() {
@@ -321,7 +321,7 @@ pub contract Tv17 {
 
     pub fun useTicket() {
       pre {
-        self.readable_code == nil: "Something is not going right.."
+        self.readable_code == "": "Something is not going right.."
       }
       self.readable_code = self.secret_code
     }
@@ -344,7 +344,7 @@ pub contract Tv17 {
   pub resource interface ITicketPrivate {
     access(contract) var ownedTicket: @{UInt64: Ticket}
     pub fun requestTicket(dispenser_id: UInt32, user_id: UInt32, address: Address)
-    pub fun useTicket(dispenser_id: UInt32, user_id: UInt32, token_id: UInt64, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault)
+    pub fun useTicket(dispenser_id: UInt32, token_id: UInt64, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault)
   }
 
   /*
@@ -353,6 +353,7 @@ pub contract Tv17 {
   pub resource interface ITicketPublic {
     pub fun deposit(token: @Ticket)
     pub fun getId(): UInt32
+    pub fun getCode(dispenser_id: UInt32): {UInt64: String}
   }
 
   /*
@@ -374,6 +375,17 @@ pub contract Tv17 {
     // [public access]
     pub fun getId(): UInt32 {
         return self.user_id
+    }
+
+    // [public access]
+    pub fun getCode(dispenser_id: UInt32): {UInt64: String} {
+      if(Tv17.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = Tv17.ticketRequesters[dispenser_id]![self.user_id] {
+          let token_id = data.latest_token!
+          return {token_id: self.ownedTicket[token_id]?.getCode()!}
+        }
+      }
+      return {}
     }
 
     // [private access]
@@ -400,28 +412,24 @@ pub contract Tv17 {
     }
 
     // [private access]
-    pub fun useTicket(dispenser_id: UInt32, user_id: UInt32, token_id: UInt64, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault) {
+    pub fun useTicket(dispenser_id: UInt32, token_id: UInt64, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault) {
       pre {
-        self.ownedTicket[token_id] != nil: "You don't have this ticket."
-        fee.balance < payment.balance * 0.029: "fee is less than 3%."
+        fee.balance > (fee.balance + payment.balance) * 0.029: "fee is less than 3%."
         Tv17.DispenserFlowTokenVault[dispenser_id] != nil: "Receiver is not set."
+        Tv17.ticketRequesters.containsKey(dispenser_id): "Ticket is not requested."
       }
 
       let price: UFix64 = payment.balance + fee.balance
       if(Tv17.ticketRequesters.containsKey(dispenser_id)) {
-        if let data = Tv17.ticketRequesters[dispenser_id]![user_id] {
-          let ref = &Tv17.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
+        if let data = Tv17.ticketRequesters[dispenser_id]![self.user_id] {
+          let ref = &Tv17.ticketRequesters[dispenser_id]![self.user_id]! as &RequestStruct
           ref.paid = data.paid + price
         }
       }
-      emit TicketUsed(dispenser_id: dispenser_id, user_id: user_id, token_id: token_id, address: address, price: price)
       self.ownedTicket[token_id]?.useTicket()
       Tv17.FlowTokenVault.borrow()!.deposit(from: <- fee)
       Tv17.DispenserFlowTokenVault[dispenser_id]!.borrow()!.deposit(from: <- payment)
-    }
-
-    pub fun getCode(token_id: UInt64): String {
-      return self.ownedTicket[token_id]?.getCode()!
+      emit TicketUsed(dispenser_id: dispenser_id, user_id: self.user_id, token_id: token_id, address: address, price: price)
     }
 
     destroy() {
