@@ -3,28 +3,28 @@
     <div class="ticket-list">
       <div class="header">
         <div>
-          <i class="fa-solid fa-magnifying-glass"></i>
+          <i class="fa-solid fa-magnifying-glass" />
         </div>
         <div>
           <label>Tickets</label>
         </div>
         <div>
-          <i class="fa-solid fa-bars"></i>
+          <i class="fa-solid fa-bars" />
         </div>
       </div>
       <div class="seachbar">
-        <input type="text" name="searchcontact" placeholder="search..."/>
+        <input type="text" name="searchcontact" placeholder="search..." />
       </div>
       <div class="content">
         <div
           v-for="(ticket, index) in tickets"
           :key="index"
         >
-          <nuxt-link :to="'/ti/' + ticket.path" >
+          <nuxt-link :to="'/ti/' + ticket.path">
             <div class="c-contact">
               <div class="identity_block fa-3x">
                 <label>{{ ticket.label }}</label>
-                <i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s;"></i>
+                <i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s;" />
                 <span>{{ ticket.description }}</span>
               </div>
               <div

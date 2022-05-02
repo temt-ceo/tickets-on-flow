@@ -33,6 +33,7 @@
             >
               <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
               <b-button
+                v-if="status === 4"
                 type="is-link"
                 @click="requestCode"
               >
@@ -172,7 +173,7 @@ export default {
     walletLogin () {
       if (!this.bloctoWalletUser.addr) {
         this.$buefy.dialog.confirm({
-          message: 'Connect to the wallet where you will manage your tickets. Please create a new one if you have not.',
+          message: 'Please create a new wallet account if you have not.',
           onConfirm: async () => {
             await this.$fcl.authenticate()
           }
@@ -215,7 +216,6 @@ export default {
             ])
           ]
         ).then(this.$fcl.decode)
-        console.log(ticketVault, 999)
         if (ticketVault !== null) {
           return true
         } else {
@@ -256,7 +256,6 @@ export default {
           }, 5000)
         }
       } catch (e) {
-        console.log(e)
       }
     },
     async requestTicket () {
@@ -410,7 +409,6 @@ export default {
       }
 
       .check-transaction a {
-        color: tomato;
         font-size: 16px;
         text-decoration: underline;
       }

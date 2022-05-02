@@ -15,12 +15,12 @@
             Ticket Distribution
           </h1>
           <div class="content">
-            <p v-if="bloctoWalletUser.addr" class="description">
-              (Wallet Address: {{ bloctoWalletUser.addr }})
-            </p>
             <h1 class="notice">
               {{ noticeTitle }}
             </h1>
+            <p v-if="bloctoWalletUser.addr" class="description">
+              (Wallet Address: {{ bloctoWalletUser.addr }})
+            </p>
             <p v-if="transactionScanUrl !== ''" class="check-transaction">
               <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
             </p>
@@ -47,19 +47,19 @@
             >
               Check Ticket Request Status
             </b-button>
-            <b-button
+            <!-- <b-button
               v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
               type="is-link is-light"
               @click="showConfirmPayModal = true"
             >
               Check Ticket Usage Status
-            </b-button>
+            </b-button> -->
             <b-button
               v-if="!bloctoWalletUser.addr"
               type="is-success is-light"
               @click="flowWalletLogin"
             >
-              Connect to a wallet you manage
+              Connect to a wallet
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr"
@@ -206,7 +206,6 @@ export default {
           this.dispenserTicketPage = ''
         }
       } catch (e) {
-        console.log(e)
       }
     },
     async hasTicketDispenser () {
@@ -404,7 +403,6 @@ export default {
     }
 
     .check-transaction a {
-      color: purple;
       font-size: 16px;
       text-decoration: underline;
     }

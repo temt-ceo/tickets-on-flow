@@ -234,7 +234,6 @@ export default {
     }
 
     .check-transaction a {
-      color: purple;
       font-size: 16px;
       text-decoration: underline;
     }

@@ -725,7 +725,6 @@ export default {
         }
         this.showFlag = true
       } catch (e) {
-        console.log(e)
       }
     },
     async confirmReceivers () {
@@ -786,7 +785,6 @@ export default {
         margin-top: 16px;
 
         a {
-          color: purple;
           font-size: 16px;
           text-decoration: underline;
         }

@@ -16,14 +16,6 @@
             height="28"
           >
         </a>
-        <a :href="url.github" target="_blank">
-          <b-icon
-            class="navbar-item"
-            icon="github"
-            size="medium"
-            type="is-danger"
-          />
-        </a>
         <a :href="url.twitter" target="_blank">
           <b-icon
             class="navbar-item"
@@ -38,7 +30,7 @@
             pack="fa-brands"
             icon="youtube"
             size="medium"
-            type="is-warning"
+            type="is-danger"
           />
         </a>
         <a :href="url.discord" target="_blank">
@@ -48,6 +40,25 @@
             icon="discord"
             size="medium"
             type="is-success"
+          />
+        </a>
+        <span @click="showAccount">
+          <b-icon
+            class="navbar-item"
+            icon="account"
+            size="medium"
+            type="is-warning"
+          />
+        </span>
+        <a
+          v-if="developMode"
+          :href="url.github"
+          target="_blank"
+        >
+          <b-icon
+            class="navbar-item"
+            icon="github"
+            size="medium"
           />
         </a>
         <div class="navbar-burger">
@@ -108,6 +119,13 @@
       </b-carousel-item>
     </b-carousel>
 
+    <b-modal v-model="showConfirmModal">
+      <owned-tickets-confirm-modal
+        :tickets="ownedTicket"
+        @closeModal="showConfirmModal=false"
+      />
+    </b-modal>
+
     <Nuxt />
 
     <b-sidebar
@@ -166,7 +184,7 @@
             </b-menu-item>
           </b-menu-list>
           <b-menu-list label="Actions">
-            <b-menu-item :label="helpLogin" @click="walletLogin" />
+            <b-menu-item :label="loginLabel" @click="walletLogin" />
           </b-menu-list>
         </b-menu>
       </div>
@@ -175,17 +193,26 @@
 </template>
 
 <script>
+import FlowScripts from '~/cadence/scripts'
+import OwnedTicketsConfirmModal from '~/components/common/OwnedTicketsConfirmModal'
+
 export default {
   name: 'DefaultLayout',
+  components: {
+    OwnedTicketsConfirmModal
+  },
   data () {
     return {
       url: {
         twitter: 'https://mobile.twitter.com/_official_asp',
-        discord: 'https://discord.com/channels/965133581238296636/965133581238296640',
-        github: 'https://github.com/temt-ceo/tickets-on-flow/tree/develop',
-        youtube: 'https://youtu.be/-kqmTFCrPtE'
+        discord: 'https://discord.gg/DV6VafmQ2S',
+        github: 'https://github.com/temt-ceo/tickets-on-flow/',
+        youtube: 'https://www.youtube.com/channel/UC2ebXnn3Gab5qPrfKtGN6hA'
       },
-      helpLogin: null,
+      developMode: false,
+      ownedTicket: [],
+      showConfirmModal: false,
+      loginLabel: null,
       sidebarOpen: false,
       sidebarOverlay: true,
       sidebarFullheight: false,
@@ -215,13 +242,28 @@ export default {
       ]
     }
   },
+  computed: {
+    tickets: {
+      get () {
+        return this.$store.state.tickets
+      }
+    }
+  },
   async mounted () {
-    this.helpLogin = 'Logout'
+    this.developMode = location.search === '?develop'
+    this.loginLabel = 'Logout'
     await this.$fcl.currentUser.subscribe(this.setupWalletInfo)
   },
   methods: {
+    showAccount () {
+      if (this.loginLabel === 'Login') {
+        this.walletLogin()
+      } else {
+        this.showConfirmModal = true
+      }
+    },
     async walletLogin () {
-      if (this.helpLogin === 'Logout') {
+      if (this.loginLabel === 'Logout') {
         await this.$fcl.unauthenticate()
         this.$buefy.toast.open({
           message: 'Logged out.',
@@ -230,10 +272,10 @@ export default {
       } else {
         this.$buefy.snackbar.open({
           duration: 10000,
-          message: 'The login screen will appear.<br>Please login or Sign in.<br>If you are new to FlowBlockchain, we recommend the Blocto wallet.',
+          message: 'Please login or Sign in.<br>If you are new to FlowBlockchain, we recommend the Blocto wallet.',
           type: 'is-danger',
           position: 'is-bottom-left',
-          actionText: 'Got it',
+          actionText: null,
           queue: false,
           onAction: () => {
           }
@@ -241,13 +283,37 @@ export default {
         await this.$fcl.authenticate()
       }
     },
-    setupWalletInfo (user) {
+    async setupWalletInfo (user) {
       this.bloctoWalletUser = user
-
+      // get account data
       if (this.bloctoWalletUser?.addr) {
-        this.helpLogin = 'Logout'
+        this.loginLabel = 'Logout'
+        try {
+          const ret = await this.$fcl.send(
+            [
+              this.$fcl.script(FlowScripts.hasTicketResource),
+              this.$fcl.args([
+                this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
+              ])
+            ]
+          ).then(this.$fcl.decode)
+          const ownedTicket = ret.ownedTicket
+          const keys = Object.keys(ownedTicket)
+          keys.forEach((key) => {
+            if (ownedTicket[key].readable_code) {
+              ownedTicket[key].readable_code = ownedTicket[key].readable_code.replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
+            }
+            const ticketInfo = this.tickets.find(obj => obj.dispenser_id === ownedTicket[key].dispenser_id)
+            const ticketName = ticketInfo.name?.split('||@')
+            ownedTicket[key].path = `/ti/${ticketInfo.domain}`
+            ownedTicket[key].ticketName = ticketName[0]
+            ownedTicket[key].twitterAccount = ticketName[1]
+            this.ownedTicket.push(ownedTicket[key])
+          })
+        } catch (e) {
+        }
       } else {
-        this.helpLogin = 'Login'
+        this.loginLabel = 'Login'
       }
     },
     helpBasicData1 () {
@@ -456,6 +522,7 @@ export default {
         font-weight: bold;
         font-style: italic;
         color: darkslategrey;
+        padding: 0.8rem 1rem;
 
         .icon {
           top: calc(50% - 13px);
@@ -464,8 +531,7 @@ export default {
         }
 
         &.i18n {
-          margin: 7px 0;
-          min-height: 20px;
+          margin: 2px 0;
         }
 
         &.menu-help {
@@ -479,6 +545,10 @@ export default {
     min-width: 50px;
     min-height: 50px;
   }
+}
+
+a {
+  color: tomato !important;
 }
 
 .carousel {
@@ -503,7 +573,7 @@ span.control-label {
 
 @media screen and (max-width: 768px) {
   .modal .animation-content {
-      width: 90% !important;
+    width: 90% !important;
   }
 }
 

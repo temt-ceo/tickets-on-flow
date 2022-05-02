@@ -88,7 +88,7 @@ transaction(dispenser_id: UInt32) {
         let ticketVault = signer.borrow<&Tv17.TicketVault>(from: /storage/Tv17TicketVault)
             ?? panic("Could not borrow reference to the Owner's TicketVault.")
         let user_id = ticketVault.getId()
-        ticketVault.addTicketRequester(dispenser_id: dispenser_id, user_id: user_id, address: signer.address)
+        ticketVault.requestTicket(dispenser_id: dispenser_id, user_id: user_id, address: signer.address)
     }
 
     execute {
