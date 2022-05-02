@@ -19,12 +19,12 @@
         <div class="button-wrap">
           <b-button
             :disabled="checkedRows.length === 0"
-            type="is-link"
+            type="is-info"
             @click="dispenseTicket"
           >
             Distribute tickets
           </b-button>
-          <span class="total-count">(Current Total: {{ latestMintedTokenId }})</span>
+          <span class="total-count">(Total: {{ latestMintedTokenId }} tickets)</span>
           <br>
         </div>
         <b-table
@@ -89,7 +89,7 @@
           </b-table-column>
           <template #empty>
             <div class="has-text-centered">
-              No records
+              No request yet.
             </div>
           </template>
         </b-table>
@@ -240,11 +240,20 @@ export default {
     }
 
     .button-wrap {
-      margin: 0 16px;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      flex-direction: row-reverse;
+      margin-left: 10px;
 
       .total-count {
         font-size: 12px;
+        padding: 10px 3px 0 0;
       }
+    }
+
+    th.checkbox-cell {
+      margin-bottom: 0.5rem
     }
 
     p.complete-register {

@@ -21,9 +21,9 @@
           width="400"
           numeric
         >
-          <nuxt-link :to="props.row.path">
+          <a :href="props.row.path">
             {{ props.row.ticketName }}
-          </nuxt-link>
+          </a>
         </b-table-column>
 
         <b-table-column
@@ -39,9 +39,9 @@
         <b-table-column
           v-slot="props"
           field="time"
-          label="Purchased at"
+          label="Used at"
         >
-          {{ props.row.domain }}
+          {{ props.row.used_time ? props.row.used_time : 'unused' }}
         </b-table-column>
 
         <b-table-column
@@ -49,7 +49,7 @@
           field="paid"
           label="Paid"
         >
-          {{ new Number(props.row.paid).toFixed(2) }} $FLOW
+          {{ Number(props.row.price) > 0 ? `${new Number(props.row.price).toFixed(2)}$FLOW` : 'not yet' }}
         </b-table-column>
         <template #empty>
           <div class="has-text-centered">
@@ -57,6 +57,14 @@
           </div>
         </template>
       </b-table>
+      <b-button
+        v-if="wallet.addr"
+        type="is-success"
+        @click="walletLogout"
+        style="margin: 20px auto 0;"
+      >
+        Log out from Wallet
+      </b-button>
     </section>
   </div>
 </template>
@@ -68,6 +76,10 @@ export default {
   props: {
     tickets: {
       type: Array,
+      required: true
+    },
+    wallet: {
+      type: Object,
       required: true
     }
   },
@@ -81,6 +93,15 @@ export default {
       isLoading: false,
       hasMobileCards: true
     }
+  },
+  methods: {
+    async walletLogout () {
+      await this.$fcl.unauthenticate()
+      this.$buefy.toast.open({
+        message: 'Logged out.',
+        queue: false
+      })
+    }
   }
 }
 </script>
@@ -91,6 +112,7 @@ export default {
   width: auto;
 
   .modal-card-body {
+    text-align: center;
 
     .text-wrap {
       margin: 16px;

@@ -38,7 +38,7 @@
               class="request-btn"
               @click="requestDispenser"
             >
-              Apply for ticket distribution function
+              Apply for distribution function
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
@@ -60,13 +60,6 @@
               @click="flowWalletLogin"
             >
               Connect to a wallet
-            </b-button>
-            <b-button
-              v-if="bloctoWalletUser.addr"
-              type="is-danger is-light"
-              @click="flowWalletLogout"
-            >
-              Log out from Wallet
             </b-button>
           </div>
         </div>
@@ -116,6 +109,7 @@ export default {
       bloctoWalletUser: {},
       address: null,
       dispenserId: null,
+      dispenserDomains: [],
       dispenserTicketPage: '',
       hasDispenserVault: false,
       hasDispenser: false,
@@ -136,8 +130,10 @@ export default {
   },
   async mounted () {
     await this.$fcl.currentUser.subscribe(this.setupWalletInfo)
+    this.getDispenserDomains()
     setInterval(() => {
-      this.callReiterateEvents()
+      this.getDispenserDomains()
+      // this.callReiterateEvents()
     }, 4000)
   },
   methods: {
@@ -164,7 +160,7 @@ export default {
             this.noticeTitle = 'Currently applying for ticket distribution functionality.'
           }
         } else {
-          this.noticeTitle = 'You need to apply for the ticket distribution function. Tap Apply for distribution function.'
+          this.noticeTitle = 'You need to apply for the ticket distribution function. Tap Apply function button.'
         }
       } else {
         this.noticeTitle = 'Please log in to the wallet of the person who will distribute the tickets.'
@@ -229,7 +225,7 @@ export default {
       try {
         let domain = null
         this.$buefy.dialog.prompt({
-          message: 'What name would you like for your page? (https://tickets-on-flow.web.app/ti/XXXXX) (max:30 length)',
+          message: 'What name would you like for your page? <br><small>(https://tickets-on-flow.web.app/ti/XXXX)</small>',
           inputAttrs: {
             type: 'text',
             placeholder: 'e.g. hello-ticket',
@@ -238,19 +234,25 @@ export default {
           confirmText: 'Next',
           trapFocus: true,
           onConfirm: (value) => {
+            value = value.trim()
             const re = /^[a-zA-Z0-9-_]*$/
             if (value.replace(re, '') !== '') {
               this.$buefy.dialog.alert('Contains unavailable characters.')
+              return
+            }
+            console.log(this.dispenserDomains, 666)
+            if (this.dispenserDomains.includes(value)) {
+              this.$buefy.dialog.alert('I\'m sorry. Already in use.')
               return
             }
 
             domain = value
             toast1 = this.$buefy.toast.open({
               indefinite: true,
-              message: `Your web site name will look like this: https://tickets-on-flow.web.app/ti/${domain}`
+              message: `Your ticket site name will look like this: https://tickets-on-flow.web.app/ti/${domain}`
             })
             this.$buefy.dialog.prompt({
-              message: 'Enter your email address. (please enter a sub email as it will be stored in the blockchain) This is used to notify you when a page is created.',
+              message: '(Opptional) Enter your email address. This is used to notify you when a page is created. <br>(Enter "pass" if you do not want email address stored on the blockchain)',
               inputAttrs: {
                 type: 'text',
                 placeholder: 'e.g. yourname@example.com',
@@ -264,7 +266,7 @@ export default {
                 const bmail = 'elffab' + email.toString().split('').reverse().join('') + '@tickets-on-flow.web.app'
                 toast1?.close()
                 this.$buefy.dialog.confirm({
-                  message: 'This process requires 0.5$FLOW. <br>Tap "Approve" on the pop-up that will appear after this.',
+                  message: 'This process requires 0.5$FLOW. <br>Tap "Approve" on the next wallet pop-up.',
                   confirmText: 'Agree',
                   onConfirm: async () => {
                     close()
@@ -310,6 +312,20 @@ export default {
         })
       } catch (e) {
         this.noticeTitle = `Address: ${this.bloctoWalletUser?.addr}, Error: ${e}`
+      }
+    },
+    async getDispenserDomains () {
+      try {
+        const dispenserDomains = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.hasDispenser),
+            this.$fcl.args([
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        this.dispenserDomains = dispenserDomains
+      } catch (e) {
+        return false
       }
     },
     async callReiterateEvents () {

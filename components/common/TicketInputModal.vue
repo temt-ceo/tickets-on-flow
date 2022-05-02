@@ -59,7 +59,7 @@
               </b-select>
             </b-field>
             <b-field
-              label="3. How do you connect to the tool? or Detail the description of location"
+              label="3. How do you connect to the tool?"
               :message="registerWhere === '' ? 'Please enter': ''"
               :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
             >
@@ -69,7 +69,7 @@
                 placeholder="e.g. Send invitation code on this webpage."
               />
             </b-field>
-            <b-field label="4. When will the tickets be used?">
+            <b-field label="4. When will the event start?">
               <b-datepicker
                 v-model="registerWhen"
                 :first-day-of-week="1"
@@ -95,89 +95,19 @@
                 placeholder="Select..."
               />
             </b-field>
-            <b-field label="5. Where is your time zone?">
-              <b-select
-                v-model="registerWhenTZ"
-                placeholder="Select..."
-              >
-                <option value="0">
-                  London(+0)
-                </option>
-                <option value="1">
-                  Berlin(+1)
-                </option>
-                <option value="2">
-                  Johannesburg(+2)
-                </option>
-                <option value="3">
-                  Baghdad(+3)
-                </option>
-                <option value="4">
-                  Dubai(+4)
-                </option>
-                <option value="5">
-                  Karachi(+5)
-                </option>
-                <option value="6">
-                  Kolkata(+5.5)
-                </option>
-                <option value="7">
-                  Dhaka(+6)
-                </option>
-                <option value="8">
-                  Jakarta(+7)
-                </option>
-                <option value="9">
-                  Shanghai(+8)
-                </option>
-                <option value="10">
-                  Tokyo(+9)
-                </option>
-                <option value="11">
-                  Sydney(+10)
-                </option>
-                <option value="12">
-                  Noumea(+11)
-                </option>
-                <option value="13">
-                  Auckland(+12)
-                </option>
-                <option value="14">
-                  Pago Pago(-11)
-                </option>
-                <option value="15">
-                  Honolulu(-10)
-                </option>
-                <option value="16">
-                  Anchorage(-9)
-                </option>
-                <option value="17">
-                  Los Angeles(-8)
-                </option>
-                <option value="18">
-                  Denver(-7)
-                </option>
-                <option value="19">
-                  Chicago(-6)
-                </option>
-                <option value="20">
-                  New York(-5)
-                </option>
-                <option value="21">
-                  Santiago(-4)
-                </option>
-                <option value="22">
-                  Buenos Aires(-3)
-                </option>
-                <option value="23">
-                  Noronha(-2)
-                </option>
-                <option value="24">
-                  Azores(-1)
-                </option>
-              </b-select>
+            <b-field label=" Repeated?">
+              <b-taginput
+                v-model="registerWhenWeekdays"
+                :data="filteredWeekdays"
+                autocomplete
+                :open-on-focus="tagOpenOnFocus"
+                field="day"
+                icon="label"
+                placeholder="choose .."
+                @typing="getFilteredWeekdays">
+              </b-taginput>
             </b-field>
-            <b-field label="6. Price($FLOW)">
+            <b-field label="5. Price($FLOW)">
               <b-select
                 v-model="registerPrice"
                 placeholder="Select..."
@@ -215,6 +145,9 @@
                 <option value="0.05">
                   0.05 FLOW
                 </option>
+                <option value="5">
+                  5 FLOW
+                </option>
               </b-select>
             </b-field>
             <div class="button-wrap">
@@ -222,7 +155,7 @@
                 Close
               </b-button>
               <b-button
-                :disabled="!registerName || !registerWhere || !registerWhereType || !registerWhen || !registerWhenTZ || !registerPrice"
+                :disabled="!registerName || !registerWhere || !registerWhereType || !registerWhen || !registerPrice"
                 @click="registerTicketInfo"
               >
                 Register
@@ -287,7 +220,7 @@
               </b-select>
             </b-field>
             <b-field
-              label="3. How do you connect to the tool? or Detail the description of location"
+              label="3. How do you connect to the tool?"
               :message="registerWhere === '' ? 'Please enter': ''"
               :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
             >
@@ -297,7 +230,7 @@
                 placeholder="e.g. Send invitation code on this webpage."
               />
             </b-field>
-            <b-field label="4. When will the tickets be used?">
+            <b-field label="4. When will the event start?">
               <b-datepicker
                 v-model="registerWhen"
                 :first-day-of-week="1"
@@ -323,89 +256,20 @@
                 placeholder="Select..."
               />
             </b-field>
-            <b-field label="5. Where is your time zone?">
-              <b-select
-                v-model="registerWhenTZ"
-                placeholder="Select..."
-              >
-                <option value="0">
-                  London(+0)
-                </option>
-                <option value="1">
-                  Berlin(+1)
-                </option>
-                <option value="2">
-                  Johannesburg(+2)
-                </option>
-                <option value="3">
-                  Baghdad(+3)
-                </option>
-                <option value="4">
-                  Dubai(+4)
-                </option>
-                <option value="5">
-                  Karachi(+5)
-                </option>
-                <option value="6">
-                  Kolkata(+5.5)
-                </option>
-                <option value="7">
-                  Dhaka(+6)
-                </option>
-                <option value="8">
-                  Jakarta(+7)
-                </option>
-                <option value="9">
-                  Shanghai(+8)
-                </option>
-                <option value="10">
-                  Tokyo(+9)
-                </option>
-                <option value="11">
-                  Sydney(+10)
-                </option>
-                <option value="12">
-                  Noumea(+11)
-                </option>
-                <option value="13">
-                  Auckland(+12)
-                </option>
-                <option value="14">
-                  Pago Pago(-11)
-                </option>
-                <option value="15">
-                  Honolulu(-10)
-                </option>
-                <option value="16">
-                  Anchorage(-9)
-                </option>
-                <option value="17">
-                  Los Angeles(-8)
-                </option>
-                <option value="18">
-                  Denver(-7)
-                </option>
-                <option value="19">
-                  Chicago(-6)
-                </option>
-                <option value="20">
-                  New York(-5)
-                </option>
-                <option value="21">
-                  Santiago(-4)
-                </option>
-                <option value="22">
-                  Buenos Aires(-3)
-                </option>
-                <option value="23">
-                  Noronha(-2)
-                </option>
-                <option value="24">
-                  Azores(-1)
-                </option>
-              </b-select>
+            <b-field label=" Repeated?">
+              <b-taginput
+                v-model="registerWhenWeekdays"
+                :data="filteredWeekdays"
+                autocomplete
+                :open-on-focus="tagOpenOnFocus"
+                field="day"
+                icon="label"
+                placeholder="choose .."
+                @typing="getFilteredWeekdays">
+              </b-taginput>
             </b-field>
-            <b-field label="6. Price($FLOW)">
+
+            <b-field label="5. Price($FLOW)">
               <b-select
                 v-model="registerPrice"
                 placeholder="Select..."
@@ -443,6 +307,9 @@
                 <option value="0.05">
                   0.05 FLOW
                 </option>
+                <option value="5">
+                  5 FLOW
+                </option>
               </b-select>
             </b-field>
             <b-field label="7. Want to change your Twitter account name?">
@@ -459,7 +326,7 @@
                 Close
               </b-button>
               <b-button
-                :disabled="!registerWhere || !registerWhereType || !registerWhen || !registerWhenTZ || !registerPrice"
+                :disabled="!registerWhere || !registerWhereType || !registerWhen || !registerPrice"
                 @click="registerTicketInfo"
               >
                 Update
@@ -529,7 +396,7 @@ export default {
       registerWhereType: null,
       registerWhere: '',
       registerWhen: new Date(),
-      registerWhenTZ: null,
+      registerWhenWeekdays: [],
       registerType: null, // Reserves for the future
       registerPrice: null,
       registerTwitter: '',
@@ -541,6 +408,25 @@ export default {
       requestList: [],
       receivedList: [],
       showFlag: false,
+      tagOpenOnFocus: true,
+      weeekdays: [
+        { day: 'Monday', id: 0 },
+        { day: 'Tuesday', id: 1 },
+        { day: 'Wednesday', id: 2 },
+        { day: 'Thursday', id: 3 },
+        { day: 'Friday', id: 4 },
+        { day: 'Saturday', id: 5 },
+        { day: 'Sunday', id: 6 }
+      ],
+      filteredWeekdays: [
+        { day: 'Monday', id: 0 },
+        { day: 'Tuesday', id: 1 },
+        { day: 'Wednesday', id: 2 },
+        { day: 'Thursday', id: 3 },
+        { day: 'Friday', id: 4 },
+        { day: 'Saturday', id: 5 },
+        { day: 'Sunday', id: 6 }
+      ],
       indexOfTicket: null
     }
   },
@@ -548,6 +434,14 @@ export default {
     await this.getTickets()
   },
   methods: {
+    getFilteredWeekdays (text) {
+      this.filteredWeekdays = this.weeekdays.filter((option) => {
+        return option.day
+          .toString()
+          .toLowerCase()
+          .includes(text.toLowerCase())
+      })
+    },
     async getTickets () {
       this.showFlag = false
       this.isCompleteRegister = false
@@ -592,8 +486,34 @@ export default {
               }
             }
             const when = this.ticketInfo.when_to_use.split('||')
-            if (when.length === 2) {
-              this.registerWhenTZ = when[0]
+            if (when.length === 3) {
+              const weekdays = when[0]
+              for (let i = 0; i < weekdays.length; i++) {
+                const day = weekdays.substr(i, 1)
+                switch (day) {
+                  case '0':
+                    this.registerWhenWeekdays.push({ day: 'Monday', id: 0 })
+                    break
+                  case '1':
+                    this.registerWhenWeekdays.push({ day: 'Tuesday', id: 1 })
+                    break
+                  case '2':
+                    this.registerWhenWeekdays.push({ day: 'Wednesday', id: 2 })
+                    break
+                  case '3':
+                    this.registerWhenWeekdays.push({ day: 'Thursday', id: 3 })
+                    break
+                  case '4':
+                    this.registerWhenWeekdays.push({ day: 'Friday', id: 4 })
+                    break
+                  case '5':
+                    this.registerWhenWeekdays.push({ day: 'Saturday', id: 5 })
+                    break
+                  case '6':
+                    this.registerWhenWeekdays.push({ day: 'Sunday', id: 6 })
+                    break
+                }
+              }
               this.registerWhen = new Date(when[1])
             }
             this.registerPrice = this.ticketInfo.price.replace(/\.?0+$/, '')
@@ -625,16 +545,16 @@ export default {
               value = value.substr(1)
             }
             this.registerTwitter = value
-            const explanation = !this.ticketInfo ? `Once registered, a ticket request button will appear on your ticket webpage. (${this.ticketPage})<br>` : ''
+            const explanation = !this.ticketInfo ? `(Once registered, a ticket request button will appear on your ticket webpage. ${this.ticketPage})<br>` : ''
             this.$buefy.dialog.confirm({
-              message: `${explanation}If you are sure, tap "Approve" on the pop-up that will appear after this.`,
+              message: `Tap "Approve" on the next wallet pop-up.<br>${explanation}`,
               onConfirm: this.ticketInfo ? this.updateTicketInfo : this.addTicketInfo
             })
           }
         })
       } else {
         this.$buefy.dialog.confirm({
-          message: 'If you are sure, tap "Approve" on the pop-up that will appear after this.',
+          message: 'Tap "Approve" on the next wallet pop-up.',
           onConfirm: this.updateTicketInfo
         })
       }
@@ -643,7 +563,8 @@ export default {
       const registerType = 0 // Reserves for the future
       const registerName = this.registerName + '||@' + this.registerTwitter
       const registerWhere = this.registerWhereType + '||' + this.registerWhere
-      const registerWhen = this.registerWhenTZ + '||' + this.registerWhen
+      const registerWeekdays = this.registerWhenWeekdays.map(obj => obj.id).join('')
+      const registerWhen = registerWeekdays + '||' + this.registerWhen + '||' + navigator.language
       try {
         // loading
         const loadingComponent = this.$buefy.loading.open({
@@ -677,7 +598,8 @@ export default {
       const registerType = 0 // Reserves for the future
       const registerName = this.registerName + '||@' + this.registerTwitter
       const registerWhere = this.registerWhereType + '||' + this.registerWhere
-      const registerWhen = this.registerWhenTZ + '||' + this.registerWhen
+      const registerWeekdays = this.registerWhenWeekdays.map(obj => obj.id).join('')
+      const registerWhen = registerWeekdays + '||' + this.registerWhen + '||' + navigator.language
       try {
         // loading
         const loadingComponent = this.$buefy.loading.open({

@@ -1,7 +1,7 @@
 import FlowToken from 0x7e60df042a9c0868
 import FungibleToken from 0x9a0766d93b6608b7
 
-pub contract Tv17 {
+pub contract Tv18 {
   // Events
   pub event DispenserRequested(dispenser_id: UInt32, address: Address)
   pub event DispenserGranted(dispenser_id: UInt32, address: Address)
@@ -100,12 +100,12 @@ pub contract Tv17 {
   
     pub fun mintDispenser(dispenser_id: UInt32, address: Address): @Dispenser {
       pre {
-        Tv17.dispenserOwners[dispenser_id] != nil : "Requested address is not in previously requested list."
-        Tv17.dispenserOwners[dispenser_id]!.grant == false : "Requested address is already minted."
+        Tv18.dispenserOwners[dispenser_id] != nil : "Requested address is not in previously requested list."
+        Tv18.dispenserOwners[dispenser_id]!.grant == false : "Requested address is already minted."
       }
-      if let data = Tv17.dispenserOwners[dispenser_id] {
+      if let data = Tv18.dispenserOwners[dispenser_id] {
         data.grant = true
-        Tv17.dispenserOwners[dispenser_id] = data
+        Tv18.dispenserOwners[dispenser_id] = data
       }
       emit DispenserGranted(dispenser_id: dispenser_id, address: address)
       return <- create Dispenser()
@@ -121,20 +121,12 @@ pub contract Tv17 {
   pub resource AdminPublic {
     pub fun getDispenserRequesters(): [DispenserStruct] {
       var dispenserArr: [DispenserStruct] = []
-      for data in Tv17.dispenserOwners.values {
+      for data in Tv18.dispenserOwners.values {
         if (data.grant == false) {
           dispenserArr.append(data)
         }
       }
 
-      return dispenserArr
-    }
-
-    pub fun getDispenserDomains(): [String] {
-      var dispenserArr: [String] = []
-      for data in Tv17.dispenserOwners.values {
-        dispenserArr.append(data.domain)
-      }
       return dispenserArr
     }
 
@@ -155,9 +147,9 @@ pub contract Tv17 {
 
     pub fun mintTicket(secret_code: String, dispenser_id: UInt32, user_id: UInt32): @Ticket {
       let token <- create Ticket(secret_code: secret_code, dispenser_id: dispenser_id)
-      if(Tv17.ticketRequesters.containsKey(dispenser_id)) {
-        if let data = Tv17.ticketRequesters[dispenser_id]![user_id] {
-          let ref = &Tv17.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
+      if(Tv18.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = Tv18.ticketRequesters[dispenser_id]![user_id] {
+          let ref = &Tv18.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
           ref.latest_token = token.getId()
           self.last_token_id = token.getId()
         }
@@ -166,27 +158,27 @@ pub contract Tv17 {
     }
 
     pub fun addTicketInfo(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64, flow_vault_receiver: Capability<&FlowToken.Vault{FungibleToken.Receiver}>) {
-      let domain = Tv17.dispenserOwners[dispenser_id]!.domain
+      let domain = Tv18.dispenserOwners[dispenser_id]!.domain
       let ticket = TicketStruct(dispenser_id: dispenser_id, domain: domain, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, price: price)
-      Tv17.ticketInfo.append(ticket)
-      if (Tv17.DispenserFlowTokenVault[dispenser_id] == nil) {
-        Tv17.DispenserFlowTokenVault[dispenser_id] = flow_vault_receiver
+      Tv18.ticketInfo.append(ticket)
+      if (Tv18.DispenserFlowTokenVault[dispenser_id] == nil) {
+        Tv18.DispenserFlowTokenVault[dispenser_id] = flow_vault_receiver
       }
     }
 
     pub fun updateTicketInfo(index: UInt32, dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64) {
-      let domain = Tv17.dispenserOwners[dispenser_id]!.domain
+      let domain = Tv18.dispenserOwners[dispenser_id]!.domain
       let ticket = TicketStruct(dispenser_id: dispenser_id, domain: domain, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, price: price)
-      let existTicket = Tv17.ticketInfo.remove(at: index)
+      let existTicket = Tv18.ticketInfo.remove(at: index)
       if (existTicket.dispenser_id == dispenser_id) {
-        Tv17.ticketInfo.insert(at: index, ticket)
+        Tv18.ticketInfo.insert(at: index, ticket)
       } else {
         panic("Something is not going right.")
       }
     }
 
     pub fun getTicketRequesters(dispenser_id: UInt32): {UInt32: RequestStruct}? {
-      return Tv17.ticketRequesters[dispenser_id]
+      return Tv18.ticketRequesters[dispenser_id]
     }
 
     init() {
@@ -280,13 +272,13 @@ pub contract Tv17 {
 
     init(_ address: Address, _ domain: String, _ email: String, _ paid: UFix64) {
       // TotalSupply
-      self.dispenser_id = Tv17.totalDispenserVaultSupply + 1
-      Tv17.totalDispenserVaultSupply = Tv17.totalDispenserVaultSupply + 1
+      self.dispenser_id = Tv18.totalDispenserVaultSupply + 1
+      Tv18.totalDispenserVaultSupply = Tv18.totalDispenserVaultSupply + 1
 
       // Event, Data
       emit DispenserRequested(dispenser_id: self.dispenser_id, address: address)
       self.ownedDispenser <- nil
-      Tv17.dispenserOwners[self.dispenser_id] = DispenserStruct(dispenser_id: self.dispenser_id, address: address, domain: domain, email: email, paid: paid, grant: false)
+      Tv18.dispenserOwners[self.dispenser_id] = DispenserStruct(dispenser_id: self.dispenser_id, address: address, domain: domain, email: email, paid: paid, grant: false)
     }
   }
 
@@ -298,7 +290,7 @@ pub contract Tv17 {
       payment.balance >= 0.5: "Payment is not sufficient"
     }
     let paid: UFix64 = payment.balance
-    Tv17.FlowTokenVault.borrow()!.deposit(from: <- payment)
+    Tv18.FlowTokenVault.borrow()!.deposit(from: <- payment)
     return <- create DispenserVault(address, domain, email, paid)
   }
 
@@ -310,6 +302,8 @@ pub contract Tv17 {
     priv let dispenser_id: UInt32
     priv let secret_code: String
     priv var readable_code: String
+    priv var price: UFix64
+    priv var used_time: UFix64?
 
     pub fun getId(): UInt64 {
       return self.token_id
@@ -319,22 +313,26 @@ pub contract Tv17 {
       return self.readable_code
     }
 
-    pub fun useTicket() {
+    pub fun useTicket(price: UFix64) {
       pre {
-        self.readable_code == "": "Something is not going right.."
+        self.readable_code == nil: "Something went wrong."
       }
       self.readable_code = self.secret_code
+      self.price = price
+      self.used_time = getCurrentBlock().timestamp
     }
 
     init(secret_code: String, dispenser_id: UInt32) {
       // TotalSupply
-      self.token_id = Tv17.totalTicketSupply + 1
-      Tv17.totalTicketSupply = Tv17.totalTicketSupply + 1
+      self.token_id = Tv18.totalTicketSupply + 1
+      Tv18.totalTicketSupply = Tv18.totalTicketSupply + 1
 
       // Event, Data
       self.dispenser_id = dispenser_id
       self.secret_code = secret_code // チケット名称
       self.readable_code = "" // チケット枚数
+      self.price = 0.0
+      self.used_time = nil
     }
   }
 
@@ -353,7 +351,7 @@ pub contract Tv17 {
   pub resource interface ITicketPublic {
     pub fun deposit(token: @Ticket)
     pub fun getId(): UInt32
-    pub fun getCode(dispenser_id: UInt32): {UInt64: String}
+    pub fun getCode(dispenser_id: UInt32): {UInt64: String}?
   }
 
   /*
@@ -378,36 +376,39 @@ pub contract Tv17 {
     }
 
     // [public access]
-    pub fun getCode(dispenser_id: UInt32): {UInt64: String} {
-      if(Tv17.ticketRequesters.containsKey(dispenser_id)) {
-        if let data = Tv17.ticketRequesters[dispenser_id]![self.user_id] {
+    pub fun getCode(dispenser_id: UInt32): {UInt64: String}? {
+      if(Tv18.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = Tv18.ticketRequesters[dispenser_id]![self.user_id] {
+          if (data.latest_token == nil) {
+            return nil
+          }
           let token_id = data.latest_token!
           return {token_id: self.ownedTicket[token_id]?.getCode()!}
         }
       }
-      return {}
+      return nil
     }
 
     // [private access]
     pub fun requestTicket(dispenser_id: UInt32, user_id: UInt32, address: Address) {
       let time = getCurrentBlock().timestamp
-      if (Tv17.ticketRequesters.containsKey(dispenser_id)) {
-        if let data = Tv17.ticketRequesters[dispenser_id]![user_id] {
-          let ref = &Tv17.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
+      if (Tv18.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = Tv18.ticketRequesters[dispenser_id]![user_id] {
+          let ref = &Tv18.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
           ref.count = data.count + 1
           ref.time = time
 
           emit TicketRequested(dispenser_id: dispenser_id, user_id: self.user_id, address: address)
         } else {
           let requestStruct = RequestStruct(time: time, user_id: user_id, address: address)
-          if let data = Tv17.ticketRequesters[dispenser_id] {
+          if let data = Tv18.ticketRequesters[dispenser_id] {
             data[user_id] = requestStruct
-            Tv17.ticketRequesters[dispenser_id] = data
+            Tv18.ticketRequesters[dispenser_id] = data
           }
         }
       } else {
         let requestStruct = RequestStruct(time: time, user_id: user_id, address: address)
-        Tv17.ticketRequesters[dispenser_id] = {user_id: requestStruct}
+        Tv18.ticketRequesters[dispenser_id] = {user_id: requestStruct}
       }
     }
 
@@ -415,20 +416,20 @@ pub contract Tv17 {
     pub fun useTicket(dispenser_id: UInt32, token_id: UInt64, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault) {
       pre {
         fee.balance > (fee.balance + payment.balance) * 0.029: "fee is less than 3%."
-        Tv17.DispenserFlowTokenVault[dispenser_id] != nil: "Receiver is not set."
-        Tv17.ticketRequesters.containsKey(dispenser_id): "Ticket is not requested."
+        Tv18.DispenserFlowTokenVault[dispenser_id] != nil: "Receiver is not set."
+        Tv18.ticketRequesters.containsKey(dispenser_id): "Ticket is not requested."
       }
 
       let price: UFix64 = payment.balance + fee.balance
-      if(Tv17.ticketRequesters.containsKey(dispenser_id)) {
-        if let data = Tv17.ticketRequesters[dispenser_id]![self.user_id] {
-          let ref = &Tv17.ticketRequesters[dispenser_id]![self.user_id]! as &RequestStruct
+      if(Tv18.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = Tv18.ticketRequesters[dispenser_id]![self.user_id] {
+          let ref = &Tv18.ticketRequesters[dispenser_id]![self.user_id]! as &RequestStruct
           ref.paid = data.paid + price
         }
       }
-      self.ownedTicket[token_id]?.useTicket()
-      Tv17.FlowTokenVault.borrow()!.deposit(from: <- fee)
-      Tv17.DispenserFlowTokenVault[dispenser_id]!.borrow()!.deposit(from: <- payment)
+      self.ownedTicket[token_id]?.useTicket(price: price)
+      Tv18.FlowTokenVault.borrow()!.deposit(from: <- fee)
+      Tv18.DispenserFlowTokenVault[dispenser_id]!.borrow()!.deposit(from: <- payment)
       emit TicketUsed(dispenser_id: dispenser_id, user_id: self.user_id, token_id: token_id, address: address, price: price)
     }
 
@@ -438,18 +439,18 @@ pub contract Tv17 {
 
     init(_ dispenser_id: UInt32, _ address: Address) {
       // TotalSupply
-      self.user_id = Tv17.totalTicketVaultSupply + 1
-      Tv17.totalTicketVaultSupply = Tv17.totalTicketVaultSupply + 1
+      self.user_id = Tv18.totalTicketVaultSupply + 1
+      Tv18.totalTicketVaultSupply = Tv18.totalTicketVaultSupply + 1
 
       // Event, Data
       self.ownedTicket <- {}
       let time = getCurrentBlock().timestamp
       let requestStruct = RequestStruct(time: time, user_id: self.user_id, address: address)
-      if let data = Tv17.ticketRequesters[dispenser_id] {
+      if let data = Tv18.ticketRequesters[dispenser_id] {
         data[self.user_id] = requestStruct
-        Tv17.ticketRequesters[dispenser_id] = data
+        Tv18.ticketRequesters[dispenser_id] = data
       } else {
-        Tv17.ticketRequesters[dispenser_id] = {self.user_id: requestStruct}
+        Tv18.ticketRequesters[dispenser_id] = {self.user_id: requestStruct}
       }
       emit TicketRequested(dispenser_id: dispenser_id, user_id: self.user_id, address: address)
     }
@@ -463,11 +464,22 @@ pub contract Tv17 {
   }
 
   /*
+  ** [Public Function] getDispenserDomains
+  */
+  pub fun getDispenserDomains(): [String] {
+    var dispenserArr: [String] = []
+    for data in Tv18.dispenserOwners.values {
+      dispenserArr.append(data.domain)
+    }
+    return dispenserArr
+  }
+
+  /*
   ** [Public Function] getDispenserInfo
   */
   pub fun getDispenserInfo(address: Address): {UInt32: String}? {
     var dispenserArr: [DispenserStruct] = []
-    for data in Tv17.dispenserOwners.values {
+    for data in Tv18.dispenserOwners.values {
       if (data.address == address) {
         return {data.dispenser_id: data.domain}
       }
@@ -479,25 +491,25 @@ pub contract Tv17 {
   ** [Public Function] getTickets
   */
   pub fun getTickets(): [TicketStruct] {
-    return Tv17.ticketInfo
+    return Tv18.ticketInfo
   }
 
   /*
   ** [Public Function] getTicketRequestStatus
   */
   pub fun getTicketRequestStatus(dispenser_id: UInt32, user_id: UInt32): RequestStruct? {
-    return Tv17.ticketRequesters[dispenser_id]![user_id]
+    return Tv18.ticketRequesters[dispenser_id]![user_id]
   }
 
   /*
   ** init
   */
   init() {
-    self.AdminPublicPath = /public/Tv17AdminPublic
-    self.DispenserVaultPublicPath = /public/Tv17DispenserVault
-    self.TicketVaultPublicPath = /public/Tv17Vault
-    self.DispenserVaultPrivatePath = /private/Tv17DispenserVault
-    self.TicketVaultPrivatePath = /private/Tv17Vault
+    self.AdminPublicPath = /public/Tv18AdminPublic
+    self.DispenserVaultPublicPath = /public/Tv18DispenserVault
+    self.TicketVaultPublicPath = /public/Tv18Vault
+    self.DispenserVaultPrivatePath = /private/Tv18DispenserVault
+    self.TicketVaultPrivatePath = /private/Tv18Vault
     self.totalDispenserVaultSupply = 0
     self.totalTicketSupply = 0
     self.totalTicketVaultSupply = 0
@@ -509,8 +521,8 @@ pub contract Tv17 {
     self.DispenserFlowTokenVault = {}
 
     // grant admin rights
-    self.account.save<@Tv17.Admin>( <- create Admin(), to:/storage/Tv17Admin)
-    self.account.save<@Tv17.AdminPublic>(<- create AdminPublic(), to: /storage/Tv17AdminPublic)
-    self.account.link<&Tv17.AdminPublic>(Tv17.AdminPublicPath, target:/storage/Tv17AdminPublic)
+    self.account.save<@Tv18.Admin>( <- create Admin(), to:/storage/Tv18Admin)
+    self.account.save<@Tv18.AdminPublic>(<- create AdminPublic(), to: /storage/Tv18AdminPublic)
+    self.account.link<&Tv18.AdminPublic>(Tv18.AdminPublicPath, target:/storage/Tv18AdminPublic)
   }
 }

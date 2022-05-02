@@ -50,17 +50,60 @@
             type="is-warning"
           />
         </span>
-        <a
+        <b-dropdown
           v-if="developMode"
-          :href="url.github"
-          target="_blank"
+          aria-role="list"
+          class="is-pulled-right"
+          position="is-bottom-left"
         >
-          <b-icon
-            class="navbar-item"
-            icon="github"
-            size="medium"
-          />
-        </a>
+          <template #trigger>
+            <b-icon
+              class="navbar-item"
+              icon="github"
+              size="medium"
+            />
+          </template>
+          <b-dropdown-item aria-role="listitem">
+            <a
+              :href="url.github.transaction"
+              target="_blank"
+            >
+              All Transactions
+            </a>
+          </b-dropdown-item>
+          <b-dropdown-item aria-role="listitem">
+            <a
+              :href="url.github.script"
+              target="_blank"
+            >
+              All Scripts
+            </a>
+          </b-dropdown-item>
+          <b-dropdown-item aria-role="listitem">
+            <a
+              :href="url.github.contract1"
+              target="_blank"
+            >
+              Smart Contract
+            </a>
+            (
+            <a
+              :href="url.github.contract2"
+              target="_blank"
+            >
+              Github
+            </a>
+            )
+          </b-dropdown-item>
+          <b-dropdown-item aria-role="listitem">
+            <a
+              :href="url.github.playground"
+              target="_blank"
+            >
+              Play Ground
+            </a>(*Please do not edit.)
+          </b-dropdown-item>
+        </b-dropdown>
         <div class="navbar-burger">
           <b-dropdown aria-role="list">
             <template #trigger>
@@ -81,6 +124,9 @@
                 icon="language"
                 size="is-large"
               />
+            </b-dropdown-item>
+            <b-dropdown-item aria-role="listitem" class="menu-help" @click="isToUActive = !isToUActive">
+              Terms of Use
             </b-dropdown-item>
             <b-dropdown-item aria-role="listitem" class="menu-help" @click="sidebarOpen = true">
               👋 Hi, need Help?
@@ -119,9 +165,28 @@
       </b-carousel-item>
     </b-carousel>
 
+    <b-modal v-model="isToUActive" :width="640" scroll="keep">
+      <div class="card">
+        <div class="card-content">
+          <div class="content">
+            <p class="title is-4">
+              Terms of Use
+            </p>
+            This system is the infrastructure for the future of Web3, laying the foundation for building Web3 businesses using the payment methods of the Flow ecosystem.<br>
+            This will allow people who want to start a business to freely do business with people around the world in a situation where there is no one to exploit in the middle.<br>
+            By making Flow’s existing trusted digital marketplace more direct and user-to-user, the system allows people to enter the business of connecting with others around the world.<br>
+            You will be the first to experience the world of Web3, where payments are made instantly by blockchain.<br>
+            Flow blockchain system makes it clear that a common global interface can be created and monetized. By being able to sell a common value to the world, the Ukrainian war victims are able to sell their strengths to the rest of the world at equal value.<br>
+            <small>05/02/2022</small>
+          </div>
+        </div>
+      </div>
+    </b-modal>
+
     <b-modal v-model="showConfirmModal">
       <owned-tickets-confirm-modal
         :tickets="ownedTicket"
+        :wallet="bloctoWalletUser"
         @closeModal="showConfirmModal=false"
       />
     </b-modal>
@@ -144,8 +209,8 @@
         <b-menu>
           <b-menu-list label="Help">
             <b-menu-item icon="information-outline" label="Info">
-              <b-menu-item label="Basic data" @click="helpBasicData1" />
-              <b-menu-item label="Basic data 2" @click="helpBasicData2" />
+              <b-menu-item label="Basic data" @click="helpSnackbar(6)" />
+              <b-menu-item label="Basic data 2" @click="helpSnackbar(7)" />
               <b-menu-item label="How to use" @click="helpHowToUse" />
             </b-menu-item>
             <b-menu-item icon="marker">
@@ -153,7 +218,7 @@
                 Organizer
                 <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'" />
               </template>
-              <b-menu-item icon="account" label="Customers" @click="helpCustomers" />
+              <b-menu-item icon="account" label="Customers" @click="helpSnackbar(5)" />
               <b-menu-item icon="cellphone-link">
                 <template #label>
                   Businesses
@@ -161,25 +226,25 @@
                     <template #trigger>
                       <b-icon icon="dots-vertical" />
                     </template>
-                    <b-dropdown-item aria-role="listitem" @click="helpBusiness0">
+                    <b-dropdown-item aria-role="listitem" @click="helpSnackbar(0)">
                       Community?
                     </b-dropdown-item>
-                    <b-dropdown-item aria-role="listitem" @click="helpBusiness1">
+                    <b-dropdown-item aria-role="listitem" @click="helpSnackbar(1)">
                       Business?
                     </b-dropdown-item>
-                    <b-dropdown-item aria-role="listitem" @click="helpBusiness2">
+                    <b-dropdown-item aria-role="listitem" @click="helpSnackbar(2)">
                       Tipping?
                     </b-dropdown-item>
-                    <b-dropdown-item aria-role="listitem" @click="helpBusiness3">
+                    <b-dropdown-item aria-role="listitem" @click="helpSnackbar(3)">
                       Donations?
                     </b-dropdown-item>
                   </b-dropdown>
                 </template>
               </b-menu-item>
-              <b-menu-item icon="cash-multiple" label="Payments" @click="helpPayments" />
+              <b-menu-item icon="cash-multiple" label="Payments" @click="helpSnackbar(4)" />
             </b-menu-item>
             <b-menu-item icon="account" label="Flow Account">
-              <b-menu-item label="Account data" @click="helpAccount" />
+              <b-menu-item label="Account data" @click="helpSnackbar(8)" />
               <b-menu-item label="Wallet Address" @click="helpWallet" />
             </b-menu-item>
           </b-menu-list>
@@ -206,7 +271,13 @@ export default {
       url: {
         twitter: 'https://mobile.twitter.com/_official_asp',
         discord: 'https://discord.gg/DV6VafmQ2S',
-        github: 'https://github.com/temt-ceo/tickets-on-flow/',
+        github: {
+          transaction: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/transactions.js',
+          script: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/scripts.js',
+          contract1: 'https://flow-view-source.com/testnet/account/0x39899237382f2a8a/contract/Tv18',
+          contract2: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/Tickets.cdc',
+          playground: 'https://play.onflow.org/d9b1cb97-b54c-4d49-8187-258d6c2eab41?type=account&id=0e075014-fb30-4594-96d5-d13d94383399&storage=none'
+        },
         youtube: 'https://www.youtube.com/channel/UC2ebXnn3Gab5qPrfKtGN6hA'
       },
       developMode: false,
@@ -239,7 +310,8 @@ export default {
         { text: 'Step 8. Press Distribute button', image: '/help_slide_8.png', color: 'success' },
         { text: 'Step 9. Enter ticket information', image: '/help_slide_9.png', color: 'warning' },
         { text: 'Step 10. Share the URL of the ticket at the bottom of the screen', image: '/help_slide_10.png', color: 'danger' }
-      ]
+      ],
+      isToUActive: false
     }
   },
   computed: {
@@ -316,142 +388,44 @@ export default {
         this.loginLabel = 'Login'
       }
     },
-    helpBasicData1 () {
-      this.$buefy.snackbar.open({
-        duration: 5000,
-        message: 'Everyone in the world will pay for your ability.<br>Use your strengths to earn money for your ministry!',
-        type: 'is-danger',
-        position: 'is-bottom-left',
-        actionText: 'Got it',
-        queue: false,
-        onAction: () => {
-          this.$buefy.toast.open({
-            message: 'Come on, Let\'s do it!',
-            queue: false
-          })
-        }
-      })
-    },
-    helpBasicData2 () {
-      this.$buefy.snackbar.open({
-        duration: 10000,
-        message: 'Why Blockchain? All international transactions are instantaneous and commission-free.<br>Your expertise is instantly recognized and paid for by people all over the world!',
-        type: 'is-danger',
-        position: 'is-bottom-left',
-        actionText: 'Got it',
-        queue: false,
-        onAction: () => {
-          this.$buefy.toast.open({
-            message: 'Come on, Let\'s do it!',
-            queue: false
-          })
-        }
-      })
-    },
     helpHowToUse () {
       this.showCarousel = true
       this.sidebarOpen = false
     },
-    helpCustomers () {
+    helpSnackbar (type) {
+      let message = ''
+      switch (type) {
+        case 0:
+          message = 'You can easily collect dues from the community.'
+          break
+        case 1:
+          message = 'You can get crypto assets for a price by providing information primarily online.<br>You can also have a dedicated page.'
+          break
+        case 2:
+          message = 'When you want to give someone money, you can easily do so.<br>You can also have a dedicated page.'
+          break
+        case 3:
+          message = 'You can easily ask people to donate to support your project.<br>Everything is done user-to-user on the blockchain.'
+          break
+        case 4:
+          message = 'You will need your own page to create tickets. Its cost is only 0.5$Flow.<br>That\'s all you need to make money for life.'
+          break
+        case 5:
+          message = 'Everyone in the world will pay for your ability.<br>Use your strengths to earn money for your ministry!'
+          break
+        case 6:
+          message = 'Why Blockchain? All international transactions are instantly and commission-free.'
+          break
+        case 7:
+          message = 'Your expertise is instantly recognized and paid for by people!'
+          break
+        case 8:
+          message = 'This service uses Flow Blockchain.<br>All transactions are done via the blockchain.'
+          break
+      }
       this.$buefy.snackbar.open({
         duration: 10000,
-        message: 'Everyone in the world will pay for your ability.<br>Use your strengths to earn money for your ministry!',
-        type: 'is-danger',
-        position: 'is-bottom-left',
-        actionText: 'Got it',
-        queue: false,
-        onAction: () => {
-          this.$buefy.toast.open({
-            message: 'Come on, Let\'s do it!',
-            queue: false
-          })
-        }
-      })
-    },
-    helpBusiness0 () {
-      this.$buefy.snackbar.open({
-        duration: 10000,
-        message: 'Easily collect dues from the community.',
-        type: 'is-danger',
-        position: 'is-bottom-left',
-        actionText: 'Got it',
-        queue: false,
-        onAction: () => {
-          this.$buefy.toast.open({
-            message: 'Come on, Let\'s do it!',
-            queue: false
-          })
-        }
-      })
-    },
-    helpBusiness1 () {
-      this.$buefy.snackbar.open({
-        duration: 10000,
-        message: 'You can get crypto assets for a price by providing information primarily online.<br>You can also have a dedicated page.',
-        type: 'is-danger',
-        position: 'is-bottom-left',
-        actionText: 'Got it',
-        queue: false,
-        onAction: () => {
-          this.$buefy.toast.open({
-            message: 'Come on, Let\'s do it!',
-            queue: false
-          })
-        }
-      })
-    },
-    helpBusiness2 () {
-      this.$buefy.snackbar.open({
-        duration: 10000,
-        message: 'When you want to give someone money, you can easily do so.<br>You can also have a dedicated page.',
-        type: 'is-danger',
-        position: 'is-bottom-left',
-        actionText: 'Got it',
-        queue: false,
-        onAction: () => {
-          this.$buefy.toast.open({
-            message: 'Come on, Let\'s do it!',
-            queue: false
-          })
-        }
-      })
-    },
-    helpBusiness3 () {
-      this.$buefy.snackbar.open({
-        duration: 10000,
-        message: 'You can easily ask people to donate to support your project.<br>Everything is done user-to-user on the blockchain.',
-        type: 'is-danger',
-        position: 'is-bottom-left',
-        actionText: 'Got it',
-        queue: false,
-        onAction: () => {
-          this.$buefy.toast.open({
-            message: 'Come on, Let\'s do it!',
-            queue: false
-          })
-        }
-      })
-    },
-    helpPayments () {
-      this.$buefy.snackbar.open({
-        duration: 10000,
-        message: 'You will need your own page to create tickets. Its cost is only 0.5$Flow.<br>That\'s all you need to make money for life.',
-        type: 'is-danger',
-        position: 'is-bottom-left',
-        actionText: 'Got it',
-        queue: false,
-        onAction: () => {
-          this.$buefy.toast.open({
-            message: 'Come on, Let\'s do it!',
-            queue: false
-          })
-        }
-      })
-    },
-    helpAccount () {
-      this.$buefy.snackbar.open({
-        duration: 5000,
-        message: 'This service uses Flow Blockchain.<br>All transactions are done via the blockchain.',
+        message,
         type: 'is-danger',
         position: 'is-bottom-left',
         actionText: 'Got it',
@@ -521,7 +495,7 @@ export default {
         font-size: 17px;
         font-weight: bold;
         font-style: italic;
-        color: darkslategrey;
+        color: darkslategrey !important;
         padding: 0.8rem 1rem;
 
         .icon {
@@ -531,11 +505,11 @@ export default {
         }
 
         &.i18n {
-          margin: 2px 0;
+          margin: 8px 0 13px;
         }
 
         &.menu-help {
-          padding-left: 0.7em;
+          padding: 0.8rem 0.9em;
         }
       }
     }
@@ -551,6 +525,10 @@ a {
   color: tomato !important;
 }
 
+.menu-list a, a.dropdown-item {
+  color: #4a4a4a !important;
+}
+
 .carousel {
   z-index: 2;
 }
@@ -564,6 +542,7 @@ span.control-label {
   margin-top: 0.5rem;
   margin-bottom: 2rem !important;
 }
+
 @media screen and (min-width: 1024px) {
   .navbar,
   .navbar-burger {

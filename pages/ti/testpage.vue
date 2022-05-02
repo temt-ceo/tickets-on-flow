@@ -33,7 +33,7 @@
             >
               <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
               <b-button
-                v-if="status === 4"
+                v-if="ticketStatus === 4"
                 type="is-link"
                 @click="requestCode"
               >
@@ -49,31 +49,24 @@
               Sign up / Log in
             </b-button>
             <b-button
-              :disabled="status !== 3"
+              :disabled="ticketStatus !== 3"
               @click="useTicket"
             >
               Use a Ticket
             </b-button>
             <b-button
-              v-if="bloctoWalletUser.addr && status === 1"
+              v-if="bloctoWalletUser.addr && ticketStatus === 1"
               type="is-link is-light"
               @click="requestTicket"
             >
               Request a Ticket
             </b-button>
             <b-button
-              v-if="bloctoWalletUser.addr && status === 2"
+              v-if="bloctoWalletUser.addr && ticketStatus === 2"
               type="is-link is-light"
               @click="getRequestStatus"
             >
               Check Request Status
-            </b-button>
-            <b-button
-              v-if="bloctoWalletUser.addr"
-              type="is-danger is-light"
-              @click="flowWalletLogout"
-            >
-              Log out from Wallet
             </b-button>
             <b-button
               tag="nuxt-link"
@@ -85,6 +78,9 @@
             </b-button>
           </div>
           <div v-if="!ticketName">
+            <div>
+              It appears that ticket registration has not yet been completed or is suspended.
+            </div>
             <b-button
               tag="nuxt-link"
               to="/"
@@ -119,7 +115,7 @@ export default {
       ticketWhenTZ: 0,
       twitter: '',
       price: null,
-      status: 0,
+      ticketStatus: 0,
       latestRequest: null,
       transactionScanUrl: '',
       noticeTitle: ''
@@ -140,8 +136,12 @@ export default {
     }
   },
   methods: {
-    getTicketInfo (pathname) {
-      const ticketInfo = this.tickets.find(obj => obj.domain === pathname.replace(/\/ti\//, '').replace(/\//g, ''))
+    async getTicketInfo (pathname) {
+      let ticketInfo = this.tickets.find(obj => obj.domain === pathname.replace(/\/ti\//, '').replace(/\//g, ''))
+      if (!ticketInfo) {
+        await this.getTickets()
+        ticketInfo = this.tickets.find(obj => obj.domain === pathname.replace(/\/ti\//, '').replace(/\//g, ''))
+      }
       if (ticketInfo) {
         this.dispenser = ticketInfo.dispenser_id
         const ticketName = ticketInfo.name.split('||@')
@@ -203,7 +203,7 @@ export default {
       if (ret) {
         await this.requestCode()
       } else {
-        this.status = 1
+        this.ticketStatus = 1
       }
     },
     async isTicketVaultReady () {
@@ -237,7 +237,6 @@ export default {
             ])
           ]
         ).then(this.$fcl.decode)
-
         if (result) {
           const latestRequestTime = parseInt(result.time.replace(/.0+$/, '')) * 1000
           this.latestRequest = new Date(latestRequestTime)
@@ -267,7 +266,7 @@ export default {
         transactionCode = FlowTransactions.requestTicket
       }
       this.$buefy.dialog.confirm({
-        message: 'Tap "Approve" on the next wallet pop-up. The ticket registrar will put the ticket in your wallet. <br>This is free of charge.',
+        message: 'Tap "Approve" on the next wallet pop-up. <br>This is free of charge.',
         onConfirm: async () => {
           try {
             // loading
@@ -289,8 +288,9 @@ export default {
               ]
             ).then(this.$fcl.decode)
             this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-            this.noticeTitle = `${this.ticketName}の申請を行いました。`
-            this.status = 2
+            this.noticeTitle = `The ticket registrar will put the ${this.ticketName} ticket in your wallet. Please wait.`
+            this.ticketStatus = 2
+            this.callToast()
             return transactionId
           } catch (e) {
           }
@@ -300,7 +300,8 @@ export default {
     useTicket () {
       try {
         this.$buefy.dialog.confirm({
-          message: 'Tap "Approve" on the next wallet pop-up.',
+          message: `This process requires ${this.price}$FLOW. <br>Tap "Approve" on the next wallet pop-up.`,
+          confirmText: 'Agree',
           onConfirm: async () => {
             // loading
             const loadingComponent = this.$buefy.loading.open({
@@ -323,8 +324,9 @@ export default {
               ]
             ).then(this.$fcl.decode)
             this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-            this.noticeTitle = `${this.ticketName}を使用しました。チケット配布者にお知らせください。`
-            this.status = 4
+            this.noticeTitle = `You used ${this.ticketName} ticket. <br>Let's request a code`
+            this.ticketStatus = 4
+            this.callToast()
             return transactionId
           }
         })
@@ -342,23 +344,35 @@ export default {
         ]
       ).then(this.$fcl.decode)
       if (result === null || Object.keys(result).length === 0) {
-        this.status = 2
+        this.ticketStatus = 2
       } else {
         this.ticketTokenId = parseInt(Object.keys(result)[0])
         if (result[this.ticketTokenId] === '') {
-          this.status = 3
+          this.ticketStatus = 3
           this.code = result[this.ticketTokenId]
         } else {
-          this.status = 4
+          this.ticketStatus = 4
           this.code = result[this.ticketTokenId].replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
         }
       }
     },
     async flowWalletLogout () {
       await this.$fcl.unauthenticate()
-      if (this.ticketName !== '') {
-        this.noticeTitle = `${this.ticketWhere}で使える${this.ticketName}が${this.dispenser}によって提供されています。`
-      }
+    }
+  },
+  async getTickets () {
+    try {
+      const tickets = await this.$fcl.send(
+        [
+          this.$fcl.script(FlowScripts.getTickets),
+          this.$fcl.args([
+          ])
+        ]
+      ).then(this.$fcl.decode)
+      this.$store.commit('updateTickets', tickets) // save tickets
+      this.tickets = tickets
+    } catch (e) {
+      console.log(e)
     }
   }
 }
