@@ -115,10 +115,10 @@
             </template>
             <nuxt-link to="/dispenser/">
               <b-dropdown-item aria-role="listitem">
-                Create your original ticket
+                {{ $t('hamburger_menu1') }}
               </b-dropdown-item>
             </nuxt-link>
-            <b-dropdown-item aria-role="listitem" class="i18n">
+            <b-dropdown-item aria-role="listitem" class="i18n" @click="isI18nActive = !isI18nActive">
               <b-icon
                 pack="fa-solid"
                 icon="language"
@@ -177,9 +177,87 @@
             By making Flow’s existing trusted digital marketplace more direct and user-to-user, the system allows people to enter the business of connecting with others around the world.<br>
             You will be the first to experience the world of Web3, where payments are made instantly by blockchain.<br>
             Flow blockchain system makes it clear that a common global interface can be created and monetized. By being able to sell a common value to the world, the Ukrainian war victims are able to sell their strengths to the rest of the world at equal value.<br>
-            <small>05/02/2022</small>
+            <small>05/02/2022 Tokyo EM Technology & Co.</small>
           </div>
         </div>
+      </div>
+    </b-modal>
+
+    <b-modal v-model="isI18nActive" :width="640" scroll="keep" @click="changeLang">
+      <div class="card">
+        <b-field>
+          <b-radio-button
+            v-model="i18nRadioButton"
+            native-value="en"
+            type="is-success"
+          >
+            <span class="fi fi-gb" @click="changeLang" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-model="i18nRadioButton"
+            native-value="es"
+            type="is-success"
+          >
+            <span class="fi fi-es" @click="changeLang" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-model="i18nRadioButton"
+            native-value="fr"
+            type="is-success"
+          >
+            <span class="fi fi-fr" @click="changeLang" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-model="i18nRadioButton"
+            native-value="zh"
+            type="is-success"
+          >
+            <span class="fi fi-cn" @click="changeLang" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-model="i18nRadioButton"
+            native-value="ar"
+            type="is-success"
+          >
+            <span class="fi fi-sa" @click="changeLang" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-model="i18nRadioButton"
+            native-value="pt"
+            type="is-success"
+          >
+            <span class="fi fi-pt" @click="changeLang" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-model="i18nRadioButton"
+            native-value="ja"
+            type="is-success"
+          >
+            <span class="fi fi-jp" @click="changeLang" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-model="i18nRadioButton"
+            native-value="de"
+            type="is-success"
+          >
+            <span class="fi fi-de" @click="changeLang" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-model="i18nRadioButton"
+            native-value="ko"
+            type="is-success"
+          >
+            <span class="fi fi-kr" @click="changeLang" />
+          </b-radio-button>
+        </b-field>
       </div>
     </b-modal>
 
@@ -300,18 +378,47 @@ export default {
       carouselInside: true,
       carouselIndicatorStyle: 'is-lines',
       carousels: [
-        { text: 'Step 1. Click Login', image: '/help_slide_1.png', color: 'primary' },
-        { text: 'Step 2. Select Blocto', image: '/help_slide_2.png', color: 'info' },
-        { text: 'Step 2. Select Create Your Original Ticket', image: '/help_slide_3.png', color: 'success' },
-        { text: 'Step 4. Press Apply button', image: '/help_slide_4.png', color: 'warning' },
-        { text: 'Step 5. Enter the ticket page name', image: '/help_slide_5.png', color: 'danger' },
-        { text: 'Step 6. Enter your e-mail address', image: '/help_slide_6.png', color: 'primary' },
-        { text: 'Step 7. Wait up to 24 hours', image: '/help_slide_7.png', color: 'info' },
-        { text: 'Step 8. Press Distribute button', image: '/help_slide_8.png', color: 'success' },
-        { text: 'Step 9. Enter ticket information', image: '/help_slide_9.png', color: 'warning' },
-        { text: 'Step 10. Share the URL of the ticket at the bottom of the screen', image: '/help_slide_10.png', color: 'danger' }
+        { text: 'Step 1. Click Login', image: '/image/help_slide_1.png', color: 'primary' },
+        { text: 'Step 2. Select Blocto', image: '/image/help_slide_2.png', color: 'info' },
+        { text: 'Step 2. Select Create Your Original Ticket', image: '/image/help_slide_3.png', color: 'success' },
+        { text: 'Step 4. Press Apply button', image: '/image/help_slide_4.png', color: 'warning' },
+        { text: 'Step 5. Enter the ticket page name', image: '/image/help_slide_5.png', color: 'danger' },
+        { text: 'Step 6. Enter your e-mail address', image: '/image/help_slide_6.png', color: 'primary' },
+        { text: 'Step 7. Wait up to 24 hours', image: '/image/help_slide_7.png', color: 'info' },
+        { text: 'Step 8. Press Distribute button', image: '/image/help_slide_8.png', color: 'success' },
+        { text: 'Step 9. Enter ticket information', image: '/image/help_slide_9.png', color: 'warning' },
+        { text: 'Step 10. Share the URL of the ticket at the bottom of the screen', image: '/image/help_slide_10.png', color: 'danger' }
       ],
-      isToUActive: false
+      isToUActive: false,
+      i18nRadioButton: 'en',
+      isI18nActive: false
+    }
+  },
+  head () {
+    const i18nHead = this.$nuxtI18nHead({ addSeoAttributes: true })
+    return {
+      title: 'Tickets onFlow',
+      htmlAttrs: {
+        author: 'tokyo em technology',
+        ...i18nHead.htmlAttrs
+      },
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1' },
+        { hid: 'description', name: 'description', content: 'The first business application on Flow blockchain for everyone. Let\'s do a business on Flow blockchain.' },
+        { hid: 'keywords', name: 'keywords', content: 'tickets, onflow, flow, blockchain, donation, tipping, community, business, web3, ticket' },
+        { name: 'format-detection', content: 'telephone=no' },
+        ...i18nHead.meta
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'apple-touch-icon', href: '/tickets.png' },
+        { rel: 'apple-touch-icon', size: '72x72', href: '/tickets.png' },
+        { rel: 'apple-touch-icon', size: '114x114', href: '/tickets.png' },
+        { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css', integrity: 'sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==', crossorigin: 'anonymous', referrerpolicy: 'no-referrer' },
+        { rel: 'stylesheet', href: '/css/flag-icons.min.css' },
+        ...i18nHead.link
+      ]
     }
   },
   computed: {
@@ -327,6 +434,12 @@ export default {
     await this.$fcl.currentUser.subscribe(this.setupWalletInfo)
   },
   methods: {
+    changeLang () {
+      setTimeout(() => {
+        this.$i18n.setLocale(this.i18nRadioButton)
+        // location.href = this.switchLocalePath(this.i18nRadioButton)
+      })
+    },
     showAccount () {
       if (this.loginLabel === 'Login') {
         this.walletLogin()
@@ -541,6 +654,26 @@ span.control-label {
 .field {
   margin-top: 0.5rem;
   margin-bottom: 2rem !important;
+}
+
+.fi {
+  background-size: contain;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  font-size: 36px;
+}
+
+.field.has-addons {
+  flex-wrap: wrap;
+
+  .control {
+    flex: 0 0 33.333333%;
+
+    label {
+      border-radius: unset;
+      padding: 40px 0;
+    }
+  }
 }
 
 @media screen and (min-width: 1024px) {

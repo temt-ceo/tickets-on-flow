@@ -23,8 +23,8 @@
             <h1 class="notice">
               {{ ticketWhenDate }} {{ ticketWhenHour }} Start
             </h1>
-            <h1 v-if="code" class="notice">
-              Code: {{ code }}
+            <h1 v-if="code" class="code">
+              CODE: {{ code }}
             </h1>
 
             <p
@@ -32,14 +32,14 @@
               class="check-transaction"
             >
               <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
-              <b-button
-                v-if="ticketStatus === 4"
-                type="is-link"
-                @click="requestCode"
-              >
-                Request a Code
-              </b-button>
             </p>
+            <b-button
+              v-if="ticketStatus === 4 && !code"
+              type="is-link"
+              @click="requestCode"
+            >
+              Request a Code
+            </b-button>
             <hr>
             <b-button
               v-if="ticketName !== '' && !bloctoWalletUser.addr"
@@ -115,7 +115,7 @@ export default {
       ticketWhenTZ: 0,
       twitter: '',
       price: null,
-      ticketStatus: 0,
+      ticketStatus: 0, // 0: init, 1: can request a ticket, 2: ticket requested, 3: can use a ticket, 4: can request a code
       latestRequest: null,
       transactionScanUrl: '',
       noticeTitle: ''
@@ -196,14 +196,15 @@ export default {
         await this.checkCurrentStatus()
       } else {
         this.bloctoWalletUser = {}
+        this.ticketStatus = 0
       }
     },
     async checkCurrentStatus () {
       const ret = await this.isTicketVaultReady()
       if (ret) {
-        await this.requestCode()
+        await this.requestCode(true)
       } else {
-        this.ticketStatus = 1
+        this.ticketStatus = 1 // can request a ticket
       }
     },
     async isTicketVaultReady () {
@@ -324,7 +325,7 @@ export default {
               ]
             ).then(this.$fcl.decode)
             this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-            this.noticeTitle = `You used ${this.ticketName} ticket. <br>Let's request a code`
+            this.noticeTitle = `You used ${this.ticketName} ticket. <br>Request a code after 10 seconds since the transaction takes 10 seconds to complete.`
             this.ticketStatus = 4
             this.callToast()
             return transactionId
@@ -333,7 +334,7 @@ export default {
       } catch (e) {
       }
     },
-    async requestCode () {
+    async requestCode (checkOnly) {
       const result = await this.$fcl.send(
         [
           this.$fcl.script(FlowScripts.getTicketCode),
@@ -344,15 +345,17 @@ export default {
         ]
       ).then(this.$fcl.decode)
       if (result === null || Object.keys(result).length === 0) {
-        this.ticketStatus = 2
+        this.ticketStatus = 2 // ticket requested
       } else {
         this.ticketTokenId = parseInt(Object.keys(result)[0])
         if (result[this.ticketTokenId] === '') {
-          this.ticketStatus = 3
+          this.ticketStatus = 3 // can use a ticket
           this.code = result[this.ticketTokenId]
         } else {
-          this.ticketStatus = 4
-          this.code = result[this.ticketTokenId].replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
+          this.ticketStatus = 4 //  can request a code
+          if (checkOnly !== true) {
+            this.code = result[this.ticketTokenId].replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
+          }
         }
       }
     },
@@ -420,6 +423,11 @@ export default {
       .notice {
         font-size: 16px;
         color: lightsteelblue;
+      }
+
+      .code {
+        font-size: 18px;
+        color: #fff;
       }
 
       .check-transaction a {

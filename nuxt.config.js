@@ -5,26 +5,6 @@ export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
-  // Global page headers: https://go.nuxtjs.dev/config-head
-  head: {
-    title: 'tickets-on-flow',
-    htmlAttrs: {
-      lang: 'en'
-    },
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
-    ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'apple-touch-icon', href: '/tickets.png' },
-      { rel: 'apple-touch-icon', size: '72x72', href: '/tickets.png' },
-      { rel: 'apple-touch-icon', size: '114x114', href: '/tickets.png' },
-      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css', integrity: 'sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==', crossorigin: 'anonymous', referrerpolicy: 'no-referrer' }
-    ]
-  },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
   ],
@@ -48,13 +28,64 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/buefy
     'nuxt-buefy',
+    '@nuxtjs/i18n',
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
-    '@nuxtjs/i18n'
+    '@nuxtjs/axios'
   ],
 
   i18n: {
-    /* module options */
+    locales: [
+      {
+        code: 'en',
+        iso: 'en-US',
+        file: 'en-US.js'
+      },
+      {
+        code: 'es',
+        iso: 'es-ES',
+        file: 'es-ES.js'
+      },
+      {
+        code: 'fr',
+        iso: 'fr-FR',
+        file: 'fr-FR.js'
+      },
+      {
+        code: 'zh',
+        iso: 'zh-CN',
+        file: 'zh-CN.js'
+      },
+      {
+        code: 'ar',
+        iso: 'ar-SA',
+        file: 'ar-SA.js'
+      },
+      {
+        code: 'pt',
+        iso: 'pt-PT',
+        file: 'pt-PT.js'
+      },
+      {
+        code: 'ja',
+        iso: 'ja-JP',
+        file: 'ja-JP.js'
+      },
+      {
+        code: 'de',
+        iso: 'de-DE',
+        file: 'de-DE.js'
+      },
+      {
+        code: 'ko',
+        iso: 'en-US',
+        file: 'ko-KR.js'
+      }
+    ],
+    baseUrl: 'https://tickets-on-flow.web.app/',
+    defaultLocale: 'en',
+    langDir: 'lang/',
+    lazy: true,
+    strategy: 'no_prefix'
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

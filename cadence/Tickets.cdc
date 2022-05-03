@@ -315,7 +315,7 @@ pub contract Tv18 {
 
     pub fun useTicket(price: UFix64) {
       pre {
-        self.readable_code == nil: "Something went wrong."
+        self.readable_code == "": "Something went wrong."
       }
       self.readable_code = self.secret_code
       self.price = price
