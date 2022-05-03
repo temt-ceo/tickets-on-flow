@@ -68,7 +68,7 @@
               :href="url.github.transaction"
               target="_blank"
             >
-              All Transactions
+              {{ $t('develop_menu1') }}
             </a>
           </b-dropdown-item>
           <b-dropdown-item aria-role="listitem">
@@ -76,7 +76,7 @@
               :href="url.github.script"
               target="_blank"
             >
-              All Scripts
+              {{ $t('develop_menu2') }}
             </a>
           </b-dropdown-item>
           <b-dropdown-item aria-role="listitem">
@@ -84,7 +84,7 @@
               :href="url.github.contract1"
               target="_blank"
             >
-              Smart Contract
+              {{ $t('develop_menu3') }}
             </a>
             (
             <a
@@ -101,7 +101,8 @@
               target="_blank"
             >
               Play Ground
-            </a>(*Please do not edit.)
+            </a>
+            (*{{ $t('develop_menu4') }})
           </b-dropdown-item>
         </b-dropdown>
         <div class="navbar-burger">
@@ -126,10 +127,10 @@
               />
             </b-dropdown-item>
             <b-dropdown-item aria-role="listitem" class="menu-help" @click="isToUActive = !isToUActive">
-              Terms of Use
+              {{ $t('hamburger_menu2') }}
             </b-dropdown-item>
             <b-dropdown-item aria-role="listitem" class="menu-help" @click="sidebarOpen = true">
-              👋 Hi, need Help?
+              👋 {{ $t('hamburger_menu3') }}
             </b-dropdown-item>
           </b-dropdown>
         </div>
@@ -170,13 +171,18 @@
         <div class="card-content">
           <div class="content">
             <p class="title is-4">
-              Terms of Use
+              {{ $t('hamburger_menu2') }}
             </p>
-            This system is the infrastructure for the future of Web3, laying the foundation for building Web3 businesses using the payment methods of the Flow ecosystem.<br>
-            This will allow people who want to start a business to freely do business with people around the world in a situation where there is no one to exploit in the middle.<br>
-            By making Flow’s existing trusted digital marketplace more direct and user-to-user, the system allows people to enter the business of connecting with others around the world.<br>
-            You will be the first to experience the world of Web3, where payments are made instantly by blockchain.<br>
-            Flow blockchain system makes it clear that a common global interface can be created and monetized. By being able to sell a common value to the world, the Ukrainian war victims are able to sell their strengths to the rest of the world at equal value.<br>
+            {{ $t('terms_of_use1') }}
+            <br>
+            {{ $t('terms_of_use2') }}
+            <br>
+            {{ $t('terms_of_use3') }}
+            <br>
+            {{ $t('terms_of_use4') }}
+            <br>
+            {{ $t('terms_of_use5') }}
+            <br>
             <small>05/02/2022 Tokyo EM Technology & Co.</small>
           </div>
         </div>
@@ -287,9 +293,9 @@
         <b-menu>
           <b-menu-list label="Help">
             <b-menu-item icon="information-outline" label="Info">
-              <b-menu-item label="Basic data" @click="helpSnackbar(6)" />
-              <b-menu-item label="Basic data 2" @click="helpSnackbar(7)" />
-              <b-menu-item label="How to use" @click="helpHowToUse" />
+              <b-menu-item :label="$t('help_text2')" @click="helpSnackbar(6)" />
+              <b-menu-item :label="$t('help_text2') + ' 2'" @click="helpSnackbar(7)" />
+              <b-menu-item :label="$t('help_text3')" @click="helpHowToUse" />
             </b-menu-item>
             <b-menu-item icon="marker">
               <template #label="props">
@@ -305,16 +311,16 @@
                       <b-icon icon="dots-vertical" />
                     </template>
                     <b-dropdown-item aria-role="listitem" @click="helpSnackbar(0)">
-                      Community?
+                      {{ $t('help_text4') }}?
                     </b-dropdown-item>
                     <b-dropdown-item aria-role="listitem" @click="helpSnackbar(1)">
-                      Business?
+                      {{ $t('help_text5') }}?
                     </b-dropdown-item>
                     <b-dropdown-item aria-role="listitem" @click="helpSnackbar(2)">
-                      Tipping?
+                      {{ $t('help_text6') }}?
                     </b-dropdown-item>
                     <b-dropdown-item aria-role="listitem" @click="helpSnackbar(3)">
-                      Donations?
+                      {{ $t('help_text7') }}?
                     </b-dropdown-item>
                   </b-dropdown>
                 </template>
@@ -390,7 +396,7 @@ export default {
         { text: 'Step 10. Share the URL of the ticket at the bottom of the screen', image: '/image/help_slide_10.png', color: 'danger' }
       ],
       isToUActive: false,
-      i18nRadioButton: 'en',
+      i18nRadioButton: this.$i18n.locale || 'en',
       isI18nActive: false
     }
   },
@@ -437,7 +443,7 @@ export default {
     changeLang () {
       setTimeout(() => {
         this.$i18n.setLocale(this.i18nRadioButton)
-        // location.href = this.switchLocalePath(this.i18nRadioButton)
+        this.isI18nActive = false
       })
     },
     showAccount () {
@@ -509,31 +515,31 @@ export default {
       let message = ''
       switch (type) {
         case 0:
-          message = 'You can easily collect dues from the community.'
+          message = this.$t('help_text8')
           break
         case 1:
-          message = 'You can get crypto assets for a price by providing information primarily online.<br>You can also have a dedicated page.'
+          message = this.$t('help_text9')
           break
         case 2:
-          message = 'When you want to give someone money, you can easily do so.<br>You can also have a dedicated page.'
+          message = this.$t('help_text10')
           break
         case 3:
-          message = 'You can easily ask people to donate to support your project.<br>Everything is done user-to-user on the blockchain.'
+          message = this.$t('help_text11')
           break
         case 4:
-          message = 'You will need your own page to create tickets. Its cost is only 0.5$Flow.<br>That\'s all you need to make money for life.'
+          message = this.$t('help_text12')
           break
         case 5:
-          message = 'Everyone in the world will pay for your ability.<br>Use your strengths to earn money for your ministry!'
+          message = this.$t('help_text13')
           break
         case 6:
-          message = 'Why Blockchain? All international transactions are instantly and commission-free.'
+          message = this.$t('help_text14')
           break
         case 7:
-          message = 'Your expertise is instantly recognized and paid for by people!'
+          message = this.$t('help_text15')
           break
         case 8:
-          message = 'This service uses Flow Blockchain.<br>All transactions are done via the blockchain.'
+          message = this.$t('help_text16')
           break
       }
       this.$buefy.snackbar.open({
@@ -541,7 +547,7 @@ export default {
         message,
         type: 'is-danger',
         position: 'is-bottom-left',
-        actionText: 'Got it',
+        actionText: this.$t('help_text1'),
         queue: false,
         onAction: () => {
           this.$buefy.toast.open({
@@ -557,7 +563,7 @@ export default {
         message: this.bloctoWalletUser?.addr ? this.bloctoWalletUser?.addr : 'Log in to see your wallet address.<br>Note: <em>The blockchain uses FlowBlockchain</em>.',
         type: 'is-danger',
         position: 'is-bottom-left',
-        actionText: 'Got it',
+        actionText: this.$t('help_text1'),
         queue: false,
         onAction: () => {
           this.$buefy.toast.open({

@@ -85,7 +85,10 @@ export default {
     defaultLocale: 'en',
     langDir: 'lang/',
     lazy: true,
-    strategy: 'no_prefix'
+    strategy: 'no_prefix',
+    vueI18n: {
+      fallbackLocale: 'en'
+    }
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
