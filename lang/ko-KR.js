@@ -27,6 +27,8 @@ export default {
   help_text14: '왜 블록체인인가? 모든 국제 거래는 즉시 수수료가 없습니다.',
   help_text15: '귀하의 전문 지식은 즉시 인정되고 사람들은 귀하에게 비용을 지불합니다!',
   help_text16: '이 서비스는 Flow Blockchain을 사용합니다.<br>모든 거래는 블록체인을 통해 이루어집니다.',
+  help_text17: '로그인하여 지갑 주소를 확인하세요.',
+  help_text18: '로그인 또는 로그인하세요.<br>FlowBlockchain이 처음이시면 블록토 지갑을 추천합니다.',
   msg19: '',
   msg20: '',
   msg21: '',

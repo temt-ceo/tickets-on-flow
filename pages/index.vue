@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section :class="{tapped: isTapped}" class="section top-screen">
     <div class="ticket-list">
       <div class="header">
         <div>
@@ -12,32 +12,136 @@
           <i class="fa-solid fa-bars" />
         </div>
       </div>
-      <div class="seachbar">
-        <input type="text" name="searchcontact" placeholder="search..." />
+      <div class="searchbar">
+        <b-autocomplete
+          rounded
+          v-model="searchValue"
+          :data="filteredDataArray"
+          placeholder="search..."
+          clearable
+          @select="option => selected = option">
+          <template #empty>No results found</template>
+        </b-autocomplete>
       </div>
       <div class="content">
         <div
           v-for="(ticket, index) in tickets"
           :key="index"
+          class="ticket-card"
         >
-          <nuxt-link :to="'/ti/' + ticket.path">
-            <div class="c-contact">
+          <div class="c-contact">
+            <nuxt-link :to="'/ti/' + ticket.path">
               <div class="identity_block fa-3x">
                 <label>{{ ticket.label }}</label>
                 <i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s;" />
                 <span>{{ ticket.description }}</span>
               </div>
+              <div class="price">
+                <span>$FLOW: {{ ticket.price }}</span>
+                <span class="datetime">({{ ticket.datetime }})</span>
+              </div>
               <div
                 :class="ticket.style"
                 class="icon_block"
               >
-                <label>{{ ticket.type }}</label>
+                Held at <label>{{ ticket.type }}</label>
               </div>
-            </div>
-          </nuxt-link>
+            </nuxt-link>
+            <a :href="'https://mobile.twitter.com/' + ticket.twitter" target="_blank" class="twitter-label">@{{ ticket.twitter }}</a>
+          </div>
         </div>
       </div>
     </div>
+
+    <b-field class="rotate-gage">
+      <b-slider
+        v-model="language"
+        :min="0"
+        :max="9"
+        :tooltip="true"
+        tooltip-type="is-info is-light"
+        :custom-formatter="sliderFormatter"
+        indicator
+        tooltip-always
+      >
+      </b-slider>
+    </b-field>
+
+    <div @click="changeLang" class="globe-btn">
+      <b-icon
+        pack="fa-solid"
+        icon="globe"
+        size="medium"
+        type="is-info"
+      />
+    </div>
+
+    <div class="info-btn">
+      <b-dropdown
+        aria-role="list"
+      >
+        <template #trigger>
+          <b-icon
+            pack="fa-solid"
+            icon="circle-info"
+            type="is-info"
+          />
+        </template>
+        <b-dropdown-item aria-role="listitem" @click="helpHowToUse">
+          <div class="media">
+            <b-icon class="media-left" icon="information-outline"></b-icon>
+            <div class="media-content">
+              <h3>{{ $t('help_text3') }}</h3>
+            </div>
+          </div>
+        </b-dropdown-item>
+        <b-dropdown-item aria-role="listitem">
+          <div class="media">
+            <b-icon class="media-left" icon="information-outline"></b-icon>
+            <div class="media-content">
+              <h3>Configuration2</h3>
+            </div>
+          </div>
+        </b-dropdown-item>
+      </b-dropdown>
+    </div>
+
+    <b-carousel
+      v-if="showCarousel"
+      :arrow="carouselArrow"
+      :arrow-hover="carouselArrowHover"
+      :autoplay="carouselAutoPlay"
+      :repeat="carouselRepeat"
+      :interval="carouselInterval"
+      :indicator="carouselIndicator"
+      :indicator-inside="carouselInside"
+      :indicator-style="carouselIndicatorStyle"
+      @change="carouselChange($event)"
+    >
+      <b-carousel-item v-for="(carousel, i) in carousels" :key="i">
+        <section :class="`hero is-medium is-${carousel.color}`">
+          <div class="hero-body has-text-centered">
+            <h1 class="title">
+              {{ carousel.text }}
+            </h1>
+            <img
+              :src="carousel.image"
+              alt="Tickets Manual"
+              style="max-height: 400px;"
+            >
+          </div>
+          <div class="close-icon" @click="showCarousel = false">
+            <b-icon
+              pack="fa-solid"
+              icon="xmark"
+              size="is-large"
+            >
+            </b-icon>
+          </div>
+        </section>
+      </b-carousel-item>
+    </b-carousel>
+
   </section>
 </template>
 
@@ -50,58 +154,74 @@ export default {
     return {
       tickets: [],
       colors: { Finance: 'color1', Music: 'color3', Other: 'color7' },
-      labels: [
-        {
-          path: 'dealing-business-ai-assistance',
-          label: 'Dealing Business AI Assistance',
-          description: 'on this website',
-          style: 'color1',
-          type: 'Finance'
-        },
-        // {
-        //   label: 'testLeanne Graham',
-        //   description: '1-770-736-8031 x56442',
-        //   style: 'color2',
-        //   type: 'L'
-        // },
-        // {
-        //   label: 'testLeanne Graham',
-        //   description: '1-770-736-8031 x56442',
-        //   style: 'color3',
-        //   type: 'L'
-        // },
-        // {
-        //   label: 'testLeanne Graham',
-        //   description: '1-770-736-8031 x56442',
-        //   style: 'color4',
-        //   type: 'L'
-        // },
-        // {
-        //   label: 'testLeanne Graham',
-        //   description: '1-770-736-8031 x56442',
-        //   style: 'color5',
-        //   type: 'L'
-        // },
-        // {
-        //   label: 'Test Drink Ticket',
-        //   description: 'at charch',
-        //   style: 'color7',
-        //   type: 'Music'
-        // },
-        {
-          path: 'test-ticket',
-          label: 'Test Ticket',
-          description: 'on livestreaming',
-          style: 'color3',
-          type: 'Other'
-        }
-      ]
+      toolList: ['Zoom', 'Instagram', 'Discord', 'Teams', 'Google Meet', 'On this webpage', 'YouTube', 'Other tools', '(None)On-site'],
+      language: 0,
+      languageList: ['en', 'es', 'fr', 'zh', 'ar', 'pt', 'ja', 'de', 'ko', 'all'],
+      isTapped: false,
+      isTappedReset: null,
+      showCarousel: false,
+      carouselArrow: true,
+      carouselArrowHover: false,
+      carouselAutoPlay: true,
+      carouselRepeat: false,
+      carouselInterval: 5000,
+      carouselIndicator: true,
+      carouselInside: true,
+      carouselIndicatorStyle: 'is-lines',
+      carousels: [
+        { text: 'Step 1. Click Login', image: '/image/help_slide_1.png', color: 'primary' },
+        { text: 'Step 2. Select Blocto', image: '/image/help_slide_2.png', color: 'info' },
+        { text: 'Step 2. Select Create Your Original Ticket', image: '/image/help_slide_3.png', color: 'success' },
+        { text: 'Step 4. Press Apply button', image: '/image/help_slide_4.png', color: 'warning' },
+        { text: 'Step 5. Enter the ticket page name', image: '/image/help_slide_5.png', color: 'danger' },
+        { text: 'Step 6. Enter your e-mail address', image: '/image/help_slide_6.png', color: 'primary' },
+        { text: 'Step 7. Wait up to 24 hours', image: '/image/help_slide_7.png', color: 'info' },
+        { text: 'Step 8. Press Distribute button', image: '/image/help_slide_8.png', color: 'success' },
+        { text: 'Step 9. Enter ticket information', image: '/image/help_slide_9.png', color: 'warning' },
+        { text: 'Step 10. Share the URL of the ticket at the bottom of the screen', image: '/image/help_slide_10.png', color: 'danger' }
+      ],
+      searchValue: '',
+      selected: null
+    }
+  },
+  computed: {
+    filteredDataArray () {
+      return this.tickets.filter((option) => {
+        return option
+          .toString()
+          .toLowerCase()
+          .includes(this.searchValue.toLowerCase())
+      })
     }
   },
   async mounted () {
     await this.getTickets()
+    this.language = this.languageList.indexOf(this.$i18n.locale)
   },
   methods: {
+    sliderFormatter (val) {
+      return this.languageList[val] || 'en'
+    },
+    changeLang () {
+      clearTimeout(this.isTappedReset)
+      if (this.isTapped === true) {
+        this.language = this.language > 8 ? 0 : this.language + 1
+      }
+      this.isTapped = true
+      this.isTappedReset = setTimeout(() => {
+        this.isTapped = false
+      }, 3000)
+    },
+    helpHowToUse () {
+      this.showCarousel = true
+    },
+    carouselChange (value) {
+      if (value >= 9) {
+        setTimeout(() => {
+          this.showCarousel = false
+        }, 3000)
+      }
+    },
     async getTickets () {
       try {
         const tickets = await this.$fcl.send(
@@ -115,26 +235,40 @@ export default {
         for (let i = 0; i < tickets.length; i++) {
           const ticket = tickets[i]
           if (ticket.name) {
-            const detailArr = ticket.where_to_use.split('||')
+            const where = ticket.where_to_use.split('||')
             let detail = ''
-            if (detailArr.length === 2) {
-              detail = detailArr[1]
-            } else if (detailArr.length > 2) {
+            let tool = ''
+            if (where.length === 2) {
+              tool = where[0]
+              detail = where[1]
+            } else if (where.length > 2) {
+              tool = where[0]
               detail = ''
-              for (let i = 1; i < detailArr.length; i++) {
-                detail = detail + (i === 1 ? '' : '||') + detailArr[i]
+              for (let i = 1; i < where.length; i++) {
+                detail = detail + (i === 1 ? '' : '||') + where[i]
               }
             }
-            const ticketName = ticket.name.split('||@')[0]
-            if (ticketName) {
+            const when = ticket.when_to_use.split('||')
+            let datetime = ''
+            console.log(when, 888)
+            if (when.length >= 2) {
+              datetime = new Date(when[1]).toLocaleString()
+            }
+
+            const ticketName = ticket.name.split('||@')
+            if (ticketName[0].length) {
+              console.log(ticket, tool, 7777)
               setTimeout(() => {
                 this.tickets.push(
                   {
                     path: ticket.domain,
-                    label: ticket.name.split('||@')[0],
+                    label: ticketName[0],
+                    twitter: ticketName.length === 2 ? ticketName[1] : '',
                     description: detail,
+                    price: ticket.price.replace(/\.?0+$/, ''),
+                    datetime,
                     style: 'color3',
-                    type: 'Rank: ' + (i + 1)
+                    type: this.toolList[parseInt(tool) - 1] || ''
                   }
                 )
               }, 60 * i + 60)
@@ -157,7 +291,35 @@ export default {
 .section {
   height: 91vh;
   background-image: linear-gradient(to bottom right, #973999, #f8598b, #f7bf00);
-  padding: 1.1rem 1.5rem 0;
+  padding: 1.5rem 1.8rem 0;
+
+  .rotate-gage {
+    transform: rotate(-90deg);
+    position: absolute;
+    top: 25%;
+    z-index: 1;
+    width: 35px;
+    left: 0.1vw;
+  }
+
+  .globe-btn {
+    position: absolute;
+    z-index: 1;
+    top: 34%;
+    left: 1%;
+  }
+
+  .info-btn {
+    position: absolute;
+    z-index: 1;
+    top: 18%;
+    left: 1%;
+
+    .has-text-info {
+      color: aliceblue !important;
+      background-color: inherit;
+    }
+  }
 
   .ticket-list {
     width: 100%;
@@ -193,17 +355,15 @@ export default {
       }
     }
   }
-  .seachbar {
-    width: 100%;
-    transform: translateY(23px);
-    position: relative;
-    z-index: 2;
 
-    input {
+  .searchbar {
+    width: 100%;
+    transform: translateY(21px);
+    position: relative;
+
+    .control {
       width: 90%;
       font-family: 'Roboto', sans-serif;
-      font-size: 10px;
-      padding: 10px;
       outline: none;
       border: none;
       border-radius: 40px;
@@ -257,36 +417,64 @@ export default {
       display: none;
     }
 
-    .identity_block {
-      flex: 2;
-      color: black;
-      font-size: 15px;
-      font-family: 'Roboto', sans-serif;
-      font-style: italic;
+    .ticket-card {
+      min-height: 92px;
 
-      & > span{
-        color: gray;
-        font-size: 10px;
-      }
+      .identity_block {
+        flex: 2;
+        color: black;
+        font-size: 15px;
+        font-family: 'Roboto', sans-serif;
+        font-style: italic;
+        line-height: 98%;
+        padding-bottom: 5px;
 
-      & > i {
-        color: gray;
-        font-size: 8px;
-        margin-right: 5px;
-      }
+        & > span{
+          color: gray;
+          font-size: 12px;
+          display: inline-block;
+        }
 
-      & > label {
-        text-align: left;
-        display: block;
+        & > i {
+          color: gray;
+          font-size: 8px;
+        }
+
+        & > label {
+          text-align: left;
+          display: inline-block;
+          padding-right: 7px;
+        }
       }
     }
 
+    .price {
+      margin-left: 3px;
+    }
+
+    .datetime {
+      color: #7957d5;
+      margin-left: 10px;
+    }
+
+    .twitter-label {
+      color: #48c78e!important;
+      position: absolute;
+      top: 50px;
+      left: 135px;
+      font-weight: bold;
+      text-decoration: underline;
+      font-size: 17px;
+    }
+
     .icon_block {
-      display: flex;
+      color: white;
       justify-content: center;
       align-items: center;
-      width: 60px;
-      border-radius: 40%;
+      width: 120px;
+      border-radius: 5px;
+      padding: 0 0 3px 3px;
+      margin-left: 3px;
 
       &.color1 {
         background-color: rgb(135, 67, 86);
@@ -353,6 +541,25 @@ export default {
         transform: translateX(-50px);
         opacity: 0;
       }
+    }
+  }
+}
+
+.carousel {
+  position: absolute;
+  z-index: 100;
+  top: 62px;
+  left: 0;
+  width: 100vw;
+  height: 90vh;
+
+  .close-icon {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #666;
+    .icon {
+      background-color: inherit;
     }
   }
 }

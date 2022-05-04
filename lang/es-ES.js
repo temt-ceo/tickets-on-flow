@@ -27,6 +27,8 @@ export default {
   help_text14: '¿Por qué Blockchain? Todas las transacciones internacionales son instantáneas y sin comisiones.',
   help_text15: 'Tu experiencia se reconoce al instante y la gente te paga.',
   help_text16: 'Este servicio utiliza Flow Blockchain.<br>Todas las transacciones se realizan a través del blockchain.',
+  help_text17: 'Inicie sesión para ver la dirección de su cartera.',
+  help_text18: 'Por favor, identifíquese o inicie sesión.<br>Si es nuevo en FlowBlockchain, le recomendamos el monedero Blocto.',
   msg19: '',
   msg20: '',
   msg21: '',

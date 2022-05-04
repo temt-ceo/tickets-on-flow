@@ -27,6 +27,8 @@ export default {
   help_text14: 'Warum Blockchain? Alle internationalen Transaktionen sind sofort und provisionsfrei.',
   help_text15: 'Ihr Fachwissen wird sofort erkannt und Sie werden bezahlt!',
   help_text16: 'Dieser Dienst nutzt Flow Blockchain.<br>Alle Transaktionen werden über die Blockchain abgewickelt.',
+  help_text17: 'Melden Sie sich an, um Ihre Brieftaschenadresse zu sehen.',
+  help_text18: 'Bitte loggen Sie sich ein oder melden Sie sich an.<br>Wenn Sie neu bei FlowBlockchain sind, empfehlen wir die Blocto-Brieftasche.',
   msg19: '',
   msg20: '',
   msg21: '',

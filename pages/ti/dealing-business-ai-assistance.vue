@@ -21,7 +21,7 @@
               Usage: {{ ticketWhere }}
             </h1>
             <h1 class="notice">
-              {{ ticketWhenDate }} {{ ticketWhenHour }} Start
+              {{ ticketWhen }} Start
             </h1>
             <h1 v-if="code" class="code">
               CODE: {{ code }}
@@ -110,9 +110,7 @@ export default {
       ticketTokenId: null,
       ticketName: '',
       ticketWhere: '',
-      ticketWhenDate: '',
-      ticketWhenHour: '',
-      ticketWhenTZ: 0,
+      ticketWhen: '',
       twitter: '',
       price: null,
       ticketStatus: 0, // 0: init, 1: can request a ticket, 2: ticket requested, 3: can use a ticket, 4: can request a code
@@ -149,15 +147,9 @@ export default {
         this.twitter = 'https://twitter.com/' + ticketName[1]
         this.price = ticketInfo.price.replace(/\.?0+$/, '')
         const when = ticketInfo.when_to_use.split('||')
-        if (when.length === 2) {
-          this.ticketWhenTZ = parseInt(when[0])
-          const ticketWhen = new Date(when[1])
-          const mo = ticketWhen.getMonth().toString()
-          const d = ticketWhen.getDate().toString()
-          this.ticketWhenDate = `${mo.length > 1 ? mo : '0' + mo}/${d.length > 1 ? d : '0' + d}/${ticketWhen.getYear()}`
-          const h = ticketWhen.getHours().toString()
-          const m = ticketWhen.getMinutes().toString()
-          this.ticketWhenHour = `${h.length > 1 ? h : '0' + h}: ${m.length > 1 ? m : '0' + m}`
+        console.log(when, 888)
+        if (when.length >= 2) {
+          this.ticketWhen = new Date(when[1]).toLocaleString()
         }
         const where = ticketInfo.where_to_use.split('||')
         if (where.length === 2) {

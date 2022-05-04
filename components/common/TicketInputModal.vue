@@ -48,13 +48,13 @@
                   YouTube
                 </option>
                 <option value="6">
-                  On this webpage
+                  Ticket webpage
                 </option>
                 <option value="7">
-                  (None)On-site
+                  On-site
                 </option>
                 <option value="8">
-                  Other tools
+                  Any Tool
                 </option>
               </b-select>
             </b-field>
@@ -197,25 +197,28 @@
                   Zoom
                 </option>
                 <option value="2">
-                  Discord
+                  Instagram
                 </option>
                 <option value="3">
-                  Teams
+                  Discord
                 </option>
                 <option value="4">
-                  Google Meet
+                  Teams
                 </option>
                 <option value="5">
-                  YouTube
+                  Google Meet
                 </option>
                 <option value="6">
                   On this webpage
                 </option>
                 <option value="7">
-                  (None)On-site
+                  YouTube
                 </option>
                 <option value="8">
                   Other tools
+                </option>
+                <option value="9">
+                  (None)On-site
                 </option>
               </b-select>
             </b-field>

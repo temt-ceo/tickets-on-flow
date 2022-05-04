@@ -27,6 +27,8 @@ export default {
   help_text14: '为什么是区块链？所有的国际交易都是即时和无佣金的。',
   help_text15: '你的专业知识立即得到认可，人们会付钱给你!',
   help_text16: '这项服务使用Flow区块链。<br>所有交易都通过区块链完成。',
+  help_text17: '登录后可以看到你的钱包地址。',
+  help_text18: '请登陆或登录。<br>如果你是FlowBlockchain的新手，我们推荐Blocto钱包。',
   msg19: '',
   msg20: '',
   msg21: '',

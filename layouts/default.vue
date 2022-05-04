@@ -50,6 +50,13 @@
             type="is-warning"
           />
         </span>
+        <b-icon
+          v-if="this.loginLabel == 'Login'"
+          class="notice-icon"
+          icon="circle"
+          size="medium"
+          type="is-warning"
+        />
         <b-dropdown
           v-if="developMode"
           aria-role="list"
@@ -136,35 +143,6 @@
         </div>
       </div>
     </nav>
-
-    <b-carousel
-      v-if="showCarousel"
-      :arrow="carouselArrow"
-      :arrow-hover="carouselArrowHover"
-      :autoplay="carouselAutoPlay"
-      :repeat="carouselRepeat"
-      :interval="carouselInterval"
-      :indicator="carouselIndicator"
-      :indicator-inside="carouselInside"
-      :indicator-style="carouselIndicatorStyle"
-      style="z-index: 100;"
-      @change="carouselChange($event)"
-    >
-      <b-carousel-item v-for="(carousel, i) in carousels" :key="i">
-        <section :class="`hero is-medium is-${carousel.color}`">
-          <div class="hero-body has-text-centered">
-            <h1 class="title">
-              {{ carousel.text }}
-            </h1>
-            <img
-              :src="carousel.image"
-              alt="Tickets Manual"
-              style="max-height: 400px;"
-            >
-          </div>
-        </section>
-      </b-carousel-item>
-    </b-carousel>
 
     <b-modal v-model="isToUActive" :width="640" scroll="keep">
       <div class="card">
@@ -295,7 +273,6 @@
             <b-menu-item icon="information-outline" label="Info">
               <b-menu-item :label="$t('help_text2')" @click="helpSnackbar(6)" />
               <b-menu-item :label="$t('help_text2') + ' 2'" @click="helpSnackbar(7)" />
-              <b-menu-item :label="$t('help_text3')" @click="helpHowToUse" />
             </b-menu-item>
             <b-menu-item icon="marker">
               <template #label="props">
@@ -374,27 +351,6 @@ export default {
       sidebarFullwidth: false,
       sidebarRight: true,
       bloctoWalletUser: {},
-      showCarousel: false,
-      carouselArrow: true,
-      carouselArrowHover: false,
-      carouselAutoPlay: true,
-      carouselRepeat: false,
-      carouselInterval: 5000,
-      carouselIndicator: true,
-      carouselInside: true,
-      carouselIndicatorStyle: 'is-lines',
-      carousels: [
-        { text: 'Step 1. Click Login', image: '/image/help_slide_1.png', color: 'primary' },
-        { text: 'Step 2. Select Blocto', image: '/image/help_slide_2.png', color: 'info' },
-        { text: 'Step 2. Select Create Your Original Ticket', image: '/image/help_slide_3.png', color: 'success' },
-        { text: 'Step 4. Press Apply button', image: '/image/help_slide_4.png', color: 'warning' },
-        { text: 'Step 5. Enter the ticket page name', image: '/image/help_slide_5.png', color: 'danger' },
-        { text: 'Step 6. Enter your e-mail address', image: '/image/help_slide_6.png', color: 'primary' },
-        { text: 'Step 7. Wait up to 24 hours', image: '/image/help_slide_7.png', color: 'info' },
-        { text: 'Step 8. Press Distribute button', image: '/image/help_slide_8.png', color: 'success' },
-        { text: 'Step 9. Enter ticket information', image: '/image/help_slide_9.png', color: 'warning' },
-        { text: 'Step 10. Share the URL of the ticket at the bottom of the screen', image: '/image/help_slide_10.png', color: 'danger' }
-      ],
       isToUActive: false,
       i18nRadioButton: this.$i18n.locale || 'en',
       isI18nActive: false
@@ -438,6 +394,9 @@ export default {
     this.developMode = location.search === '?develop'
     this.loginLabel = 'Logout'
     await this.$fcl.currentUser.subscribe(this.setupWalletInfo)
+    setTimeout(() => {
+      window.scrollTo(0, 0)
+    }, 100)
   },
   methods: {
     changeLang () {
@@ -463,7 +422,7 @@ export default {
       } else {
         this.$buefy.snackbar.open({
           duration: 10000,
-          message: 'Please login or Sign in.<br>If you are new to FlowBlockchain, we recommend the Blocto wallet.',
+          message: this.$t('help_text18'),
           type: 'is-danger',
           position: 'is-bottom-left',
           actionText: null,
@@ -506,10 +465,6 @@ export default {
       } else {
         this.loginLabel = 'Login'
       }
-    },
-    helpHowToUse () {
-      this.showCarousel = true
-      this.sidebarOpen = false
     },
     helpSnackbar (type) {
       let message = ''
@@ -560,7 +515,7 @@ export default {
     helpWallet () {
       this.$buefy.snackbar.open({
         duration: 5000,
-        message: this.bloctoWalletUser?.addr ? this.bloctoWalletUser?.addr : 'Log in to see your wallet address.<br>Note: <em>The blockchain uses FlowBlockchain</em>.',
+        message: this.bloctoWalletUser?.addr ? this.bloctoWalletUser?.addr : this.$t('help_text17'),
         type: 'is-danger',
         position: 'is-bottom-left',
         actionText: this.$t('help_text1'),
@@ -572,12 +527,6 @@ export default {
           })
         }
       })
-    },
-    carouselChange (value) {
-      if (value >= 10) {
-        this.showCarousel = false
-        this.sidebarOpen = true
-      }
     }
   }
 }
@@ -592,6 +541,17 @@ export default {
     &.icon {
       height: 3.75rem;
       padding: 2px 1.25rem 0;
+    }
+  }
+
+  .notice-icon i {
+    color: #f14668;
+    font-size: 8px;
+    position: absolute;
+    left: 296px;
+    top: 14px;
+    &:before {
+      font-size: 8px;
     }
   }
 
@@ -648,10 +608,6 @@ a {
   color: #4a4a4a !important;
 }
 
-.carousel {
-  z-index: 2;
-}
-
 span.control-label {
   position: absolute;
   padding-left: calc(1.75em - 1px) !important;
@@ -680,6 +636,49 @@ span.control-label {
       padding: 40px 0;
     }
   }
+}
+
+.section.top-screen{
+  .b-slider {
+    .b-slider-fill {
+      background: #dbdbdb !important;
+    }
+    .b-slider-thumb-wrapper.has-indicator .b-slider-thumb {
+      border-radius: 4px;
+      padding: 2px 0px;
+      background: #b5b5b5;
+      color: #b5b5b5;
+    }
+    .b-tooltip.is-always .tooltip-content {
+      transform: translateY(100%) rotate(90deg);
+    }
+  }
+  .icon {
+    background-color: #454545;
+    border-radius: 5px;
+  }
+
+  .dropdown-item .icon {
+    background-color: inherit;
+  }
+
+  .tooltip-content {
+    display: none;
+  }
+
+  &.tapped .tooltip-content {
+    display: block !important;
+  }
+}
+
+.hero-body {
+  height: 95vh;
+}
+
+.searchbar .control input{
+  font-size: 12px;
+  padding: 16px 10px;
+  box-shadow: 0px 1px 2px -1px #cccccc;
 }
 
 @media screen and (min-width: 1024px) {

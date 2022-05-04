@@ -41,7 +41,7 @@
           field="time"
           label="Used at"
         >
-          {{ props.row.used_time ? props.row.used_time : 'unused' }}
+          {{ props.row.used_time ? new Date(Number(props.row.used_time).toFixed(3) * 1000).toLocaleString() : 'unused' }}
         </b-table-column>
 
         <b-table-column
