@@ -2,7 +2,7 @@
   <div class="modal-card">
     <section class="modal-card-body">
       <div class="text-wrap">
-        Ticket Information
+        {{ $t('ticket_text14') }}
       </div>
       <b-table
         :data="tickets"
@@ -17,7 +17,7 @@
         <b-table-column
           v-slot="props"
           field="ticketName"
-          label="Name"
+          :label="$t('ticket_text15')"
         >
           {{ props.row.ticketName }}
         </b-table-column>
@@ -25,7 +25,7 @@
         <b-table-column
           v-slot="props"
           field="description"
-          label="Description"
+          :label="$t('ticket_text16')"
         >
           {{ props.row.description }}
         </b-table-column>
@@ -41,7 +41,7 @@
         <b-table-column
           v-slot="props"
           field="twitter"
-          label="Contact"
+          :label="$t('ticket_text17')"
         >
           <a :href="props.row.twitter" target="_blank">
             @{{ props.row.twitterAccount }}
@@ -51,7 +51,7 @@
         <b-table-column
           v-slot="props"
           field="ticketPrice"
-          label="Price"
+          :label="$t('ticket_text18')"
         >
           {{ props.row.ticketPrice }} $FLOW
         </b-table-column>
@@ -59,13 +59,13 @@
         <b-table-column
           v-slot="props"
           field="ticketWhen"
-          label="Date"
+          :label="$t('ticket_text19')"
         >
           {{ props.row.ticketWhen }}
         </b-table-column>
         <template #empty>
           <div class="has-text-centered">
-            No ticket info.
+            {{ $t('ticket_text20') }}
           </div>
         </template>
       </b-table>

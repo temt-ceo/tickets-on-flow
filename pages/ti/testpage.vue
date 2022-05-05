@@ -27,13 +27,13 @@
                 type="is-link"
                 @click="requestCode"
               >
-                Request a Code
+                {{ $t('ticket_text21') }}
               </b-button>
               <b-button
                 v-if="ticketStatus === 3"
                 @click="useTicket"
               >
-                Use a Ticket
+                {{ $t('ticket_text22') }}
               </b-button>
               <b-button
                 v-if="ticketStatus <= 1"
@@ -41,14 +41,14 @@
                 type="is-link is-light"
                 @click="requestTicket"
               >
-                Request a Ticket
+                {{ $t('ticket_text23') }}
               </b-button>
               <b-button
                 v-if="bloctoWalletUser.addr && ticketStatus === 2"
                 type="is-link is-light"
                 @click="getRequestStatus"
               >
-                Check Request Status
+                {{ $t('ticket_text24') }}
               </b-button>
               <b-button
                 type="is-link is-light"
@@ -75,7 +75,7 @@
           <div v-if="!ticketName">
             <div class="content">
               <div>
-                It appears that ticket registration has not yet been completed or is suspended.
+                {{ $t('ticket_text25') }}
               </div>
               <b-button
                 tag="nuxt-link"
@@ -83,7 +83,7 @@
                 type="is-warning is-light"
                 class="to-top"
               >
-                Return to TOP
+                {{ $t('ticket_text26') }}
               </b-button>
             </div>
           </div>

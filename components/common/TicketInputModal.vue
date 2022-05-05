@@ -339,31 +339,12 @@
               </b-button>
             </div>
           </div>
-          <div
-            v-if="showFlag && ticketInfo && ticketRequesters.length > 0 && !isCompleteDispense"
-            class="text-wrap"
-          >
-            <p class="complete-register">
-              チケット配布待ちの方が<span class="important">{{ requestList.length }}人</span>います。<br>
-              チケットを配布される場合は配布ボタンを押してください。
-            </p>
-            <div class="button-wrap">
-              <b-button @click="$emit('closeModal')">
-                とじる
-              </b-button>
-              <b-button
-                :disabled="requestList.length === 0"
-              >
-                配布
-              </b-button>
-            </div>
-          </div>
           <div v-if="isCompleteDispense" class="text-wrap">
             <p class="complete-register">
-              チケットの配布を行いました。<br>
-              配布完了までに約10秒、時間がかかります。<br>
-              「トランザクションを確認」をクリックして表示された画面でSEALEDと表示された後、<br>
-              配布されたチケットが表示されます。
+              {{ $t('ticket_text27') }}<br>
+              {{ $t('ticket_text28') }}<br>
+              {{ $t('ticket_text29') }}<br>
+              {{ $t('ticket_text30') }}
             </p>
           </div>
         </div>
