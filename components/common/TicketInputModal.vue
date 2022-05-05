@@ -36,25 +36,28 @@
                   Zoom
                 </option>
                 <option value="2">
-                  Discord
+                  Instagram
                 </option>
                 <option value="3">
-                  Teams
+                  Discord
                 </option>
                 <option value="4">
-                  Google Meet
+                  Teams
                 </option>
                 <option value="5">
-                  YouTube
+                  Google Meet
                 </option>
                 <option value="6">
-                  Ticket webpage
+                  {{ $t('ticket_text2') }}
                 </option>
                 <option value="7">
-                  On-site
+                  YouTube
                 </option>
                 <option value="8">
-                  Any Tool
+                  {{ $t('ticket_text3') }}
+                </option>
+                <option value="9">
+                  {{ $t('ticket_text4') }}
                 </option>
               </b-select>
             </b-field>
@@ -209,16 +212,16 @@
                   Google Meet
                 </option>
                 <option value="6">
-                  On this webpage
+                  Ticket website
                 </option>
                 <option value="7">
                   YouTube
                 </option>
                 <option value="8">
-                  Other tools
+                  Any tool
                 </option>
                 <option value="9">
-                  (None)On-site
+                  On-site
                 </option>
               </b-select>
             </b-field>
@@ -548,7 +551,7 @@ export default {
               value = value.substr(1)
             }
             this.registerTwitter = value
-            const explanation = !this.ticketInfo ? `(Once registered, a ticket request button will appear on your ticket webpage. ${this.ticketPage})<br>` : ''
+            const explanation = !this.ticketInfo ? `(Once registered, a ticket request button will appear on your Ticket website. ${this.ticketPage})<br>` : ''
             this.$buefy.dialog.confirm({
               message: `Tap "Approve" on the next wallet pop-up.<br>${explanation}`,
               onConfirm: this.ticketInfo ? this.updateTicketInfo : this.addTicketInfo

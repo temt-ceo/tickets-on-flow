@@ -403,6 +403,7 @@ export default {
       setTimeout(() => {
         this.$i18n.setLocale(this.i18nRadioButton)
         this.isI18nActive = false
+        location.reload()
       })
     },
     showAccount () {
@@ -421,7 +422,7 @@ export default {
         })
       } else {
         this.$buefy.snackbar.open({
-          duration: 10000,
+          duration: 5000,
           message: this.$t('help_text18'),
           type: 'is-danger',
           position: 'is-bottom-left',

@@ -44,10 +44,17 @@
                 :class="ticket.style"
                 class="icon_block"
               >
-                Held at <label>{{ ticket.type }}</label>
+                {{ $t('ticket_text1') }}:<br><label>{{ ticket.type }}</label>
               </div>
             </nuxt-link>
-            <a :href="'https://mobile.twitter.com/' + ticket.twitter" target="_blank" class="twitter-label">@{{ ticket.twitter }}</a>
+            <a
+              :href="'https://mobile.twitter.com/' + ticket.twitter"
+              target="_blank"
+              :class="{ long: ticket.twitter.length > 15, too_long: ticket.twitter.length > 19 }"
+              class="twitter-label"
+            >
+              @{{ ticket.twitter }}
+            </a>
           </div>
         </div>
       </div>
@@ -154,7 +161,7 @@ export default {
     return {
       tickets: [],
       colors: { Finance: 'color1', Music: 'color3', Other: 'color7' },
-      toolList: ['Zoom', 'Instagram', 'Discord', 'Teams', 'Google Meet', 'On this webpage', 'YouTube', 'Other tools', '(None)On-site'],
+      toolList: ['Zoom', 'Instagram', 'Discord', 'Teams', 'Google Meet', 'Ticket website', 'YouTube', 'Any tool', 'On-site'],
       language: 0,
       languageList: ['en', 'es', 'fr', 'zh', 'ar', 'pt', 'ja', 'de', 'ko', 'all'],
       isTapped: false,
@@ -195,8 +202,8 @@ export default {
     }
   },
   async mounted () {
-    await this.getTickets()
     this.language = this.languageList.indexOf(this.$i18n.locale)
+    await this.getTickets()
   },
   methods: {
     sliderFormatter (val) {
@@ -252,12 +259,20 @@ export default {
             let datetime = ''
             console.log(when, 888)
             if (when.length >= 2) {
-              datetime = new Date(when[1]).toLocaleString()
+              datetime = new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1') + ` ${this.$t('ticket_text6')} `
             }
 
             const ticketName = ticket.name.split('||@')
             if (ticketName[0].length) {
               console.log(ticket, tool, 7777)
+              let type = this.toolList[parseInt(tool) - 1] || ''
+              if (type === 'Ticket website') {
+                type = this.$t('ticket_text2')
+              } else if (type === 'Any tool') {
+                type = this.$t('ticket_text3')
+              } else if (type === 'On-site') {
+                type = this.$t('ticket_text4')
+              }
               setTimeout(() => {
                 this.tickets.push(
                   {
@@ -267,8 +282,8 @@ export default {
                     description: detail,
                     price: ticket.price.replace(/\.?0+$/, ''),
                     datetime,
-                    style: 'color3',
-                    type: this.toolList[parseInt(tool) - 1] || ''
+                    style: 'color' + (7 % (parseInt(tool) - 1) + 1).toString(),
+                    type
                   }
                 )
               }, 60 * i + 60)
@@ -299,7 +314,7 @@ export default {
     top: 25%;
     z-index: 1;
     width: 35px;
-    left: 0.1vw;
+    left: 0;
   }
 
   .globe-btn {
@@ -460,21 +475,28 @@ export default {
     .twitter-label {
       color: #48c78e!important;
       position: absolute;
-      top: 50px;
-      left: 135px;
+      top: 52px;
+      left: 130px;
       font-weight: bold;
       text-decoration: underline;
       font-size: 17px;
+
+      &.long {
+        font-size: 14px;
+        &.too_long {
+          font-size: 11px;
+        }
+      }
     }
 
     .icon_block {
+      display: inline-block;
       color: white;
-      justify-content: center;
-      align-items: center;
-      width: 120px;
+      min-width: 100px;
+      max-width: 129px;
       border-radius: 5px;
-      padding: 0 0 3px 3px;
-      margin-left: 3px;
+      padding: 0 3px 3px 3px;
+      margin-top: 4px;
 
       &.color1 {
         background-color: rgb(135, 67, 86);
@@ -490,27 +512,22 @@ export default {
 
       &.color4 {
         background-color: rgb(246, 231, 216);
+        color: #333;
       }
 
       &.color5 {
         background-color: rgb(247, 204, 172);
+        color: #333;
       }
 
       &.color6 {
         background-color: rgb(198, 155, 123);
+        color: #333;
       }
 
       &.color7 {
         background-color: rgb(130, 111, 102);
       }
-    }
-
-    .photo_block {
-      background-color: rgba(1, 1, 1, .5);
-    }
-
-    .icon_block label {
-      font-size: 10px;
     }
 
     @keyframes comeOn {

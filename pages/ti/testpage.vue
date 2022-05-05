@@ -2,121 +2,128 @@
   <section class="section">
     <div class="hero">
       <div class="hero--overlay">
-        <div class="hero--content content">
-          <div v-if="ticketName && ticketName.length > 0" class="text-wrap">
-            <h1
-              :class="ticketName.length > 30 ? 'long' : ''"
-              class="page-title"
-            >
+        <div class="hero--content">
+          <div v-if="ticketName && ticketName.length > 0">
+            <h1 class="page-title">
               {{ ticketName }}
             </h1>
-            <hr>
-            <h1 class="notice">
-              Price: {{ price }} $FLOW
-            </h1>
-            <h1 class="notice">
-              Detail: <a :href="twitter" target="_blank">please click here</a>
-            </h1>
-            <h1 class="notice">
-              Usage: {{ ticketWhere }}
-            </h1>
-            <h1 class="notice">
-              {{ ticketWhen }} Start
-            </h1>
-            <h1 v-if="code" class="code">
-              CODE: {{ code }}
-            </h1>
+            <hr class="separator">
+            <div class="content">
+              <p v-if="bloctoWalletUser.addr" class="description">
+                (Wallet Address: {{ bloctoWalletUser.addr }})
+              </p>
+              <h1 class="notice">
+                {{ noticeTitle }}
+                <div v-if="ticketWhen" class="next-date">{{ ticketWhen }}</div>
+              </h1>
+              <h1 v-if="code" class="code">
+                CODE: {{ code }}
+              </h1>
+              <p v-if="transactionScanUrl !== ''" class="check-transaction">
+                <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
+              </p>
+              <b-button
+                v-if="ticketStatus === 4 && !code"
+                type="is-link"
+                @click="requestCode"
+              >
+                Request a Code
+              </b-button>
+              <b-button
+                v-if="ticketStatus === 3"
+                @click="useTicket"
+              >
+                Use a Ticket
+              </b-button>
+              <b-button
+                v-if="ticketStatus <= 1"
+                :disabled="!bloctoWalletUser.addr"
+                type="is-link is-light"
+                @click="requestTicket"
+              >
+                Request a Ticket
+              </b-button>
+              <b-button
+                v-if="bloctoWalletUser.addr && ticketStatus === 2"
+                type="is-link is-light"
+                @click="getRequestStatus"
+              >
+                Check Request Status
+              </b-button>
+              <b-button
+                type="is-link is-light"
+                @click="showConfirmModal = true"
+              >
+                {{ $t('ticket_text7') }}
+              </b-button>
 
-            <p
-              v-if="transactionScanUrl !== ''"
-              class="check-transaction"
-            >
-              <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
-            </p>
-            <b-button
-              v-if="ticketStatus === 4 && !code"
-              type="is-link"
-              @click="requestCode"
-            >
-              Request a Code
-            </b-button>
-            <hr>
-            <b-button
-              v-if="ticketName !== '' && !bloctoWalletUser.addr"
-              type="is-link is-light"
-              @click="walletLogin"
-            >
-              Sign up / Log in
-            </b-button>
-            <b-button
-              :disabled="ticketStatus !== 3"
-              @click="useTicket"
-            >
-              Use a Ticket
-            </b-button>
-            <b-button
-              v-if="bloctoWalletUser.addr && ticketStatus === 1"
-              type="is-link is-light"
-              @click="requestTicket"
-            >
-              Request a Ticket
-            </b-button>
-            <b-button
-              v-if="bloctoWalletUser.addr && ticketStatus === 2"
-              type="is-link is-light"
-              @click="getRequestStatus"
-            >
-              Check Request Status
-            </b-button>
-            <b-button
-              tag="nuxt-link"
-              to="/"
-              type="is-warning is-light"
-              class="to-top"
-            >
-              Return to TOP
-            </b-button>
+              <b-button
+                v-if="ticketName !== '' && !bloctoWalletUser.addr"
+                @click="walletLogin"
+              >
+                Connect to a wallet
+              </b-button>
+              <b-button
+                v-if="bloctoWalletUser.addr"
+                type="is-danger is-light"
+                @click="flowWalletLogout"
+              >
+                Log out from Wallet
+              </b-button>
+            </div>
           </div>
           <div v-if="!ticketName">
-            <div>
-              It appears that ticket registration has not yet been completed or is suspended.
+            <div class="content">
+              <div>
+                It appears that ticket registration has not yet been completed or is suspended.
+              </div>
+              <b-button
+                tag="nuxt-link"
+                to="/"
+                type="is-warning is-light"
+                class="to-top"
+              >
+                Return to TOP
+              </b-button>
             </div>
-            <b-button
-              tag="nuxt-link"
-              to="/"
-              type="is-warning is-light"
-              class="to-top"
-            >
-              Return to TOP
-            </b-button>
           </div>
         </div>
       </div>
     </div>
+    <b-modal v-model="showConfirmModal">
+      <check-ticket-modal
+        :ticket="ticketInfo"
+        @closeModal="showConfirmModal=false"
+      />
+    </b-modal>
   </section>
 </template>
 
 <script>
 import FlowScripts from '~/cadence/scripts'
 import FlowTransactions from '~/cadence/transactions'
+import CheckTicketModal from '~/components/common/CheckTicketModal'
 
 export default {
   name: 'TicketDispenser1',
+  components: {
+    CheckTicketModal
+  },
   data () {
     return {
       bloctoWalletUser: {},
       dispenser: null,
       code: null,
+      ticketInfo: null,
       ticketTokenId: null,
       ticketName: '',
-      ticketWhere: '',
       ticketWhen: '',
-      twitter: '',
       price: null,
       ticketStatus: 0, // 0: init, 1: can request a ticket, 2: ticket requested, 3: can use a ticket, 4: can request a code
       latestRequest: null,
       transactionScanUrl: '',
-      noticeTitle: ''
+      noticeTitle: '',
+      showConfirmModal: false
     }
   },
   computed: {
@@ -129,9 +136,7 @@ export default {
   async mounted () {
     this.getTicketInfo(location.pathname)
     await this.$fcl.currentUser.subscribe(this.setupUserInitialInfo)
-    if (this.bloctoWalletUser.addr) {
-      await this.checkCurrentStatus()
-    }
+    await this.checkCurrentStatus()
   },
   methods: {
     async getTicketInfo (pathname) {
@@ -140,36 +145,100 @@ export default {
         await this.getTickets()
         ticketInfo = this.tickets.find(obj => obj.domain === pathname.replace(/\/ti\//, '').replace(/\//g, ''))
       }
-      if (ticketInfo) {
+      this.ticketInfo = ticketInfo
+      if (this.ticketInfo) {
         this.dispenser = ticketInfo.dispenser_id
         const ticketName = ticketInfo.name.split('||@')
         this.ticketName = ticketName[0]
-        this.twitter = 'https://twitter.com/' + ticketName[1]
         this.price = ticketInfo.price.replace(/\.?0+$/, '')
         const when = ticketInfo.when_to_use.split('||')
-        console.log(when, 888)
         if (when.length >= 2) {
-          this.ticketWhen = new Date(when[1]).toLocaleString()
-        }
-        const where = ticketInfo.where_to_use.split('||')
-        if (where.length === 2) {
-          this.ticketWhere = where[1]
-        } else if (where.length > 2) {
-          this.ticketWhere = ''
-          for (let i = 1; i < where.length; i++) {
-            this.ticketWhere = this.ticketWhere + (i === 1 ? '' : '||') + where[i]
+          const unixTime = parseInt((new Date(when[1]).getTime() - new Date().getTime()) / 1000)
+          const h = Math.floor(unixTime / 3600)
+          const m = Math.floor(unixTime / 60 % 60)
+          const day = new Date().getDay()
+          const dayEvent = new Date(when[1])
+          const dayEventDay = dayEvent.getDay()
+          if (unixTime < 0) {
+            // すでに過去のイベントの場合、6時間経過ずみで12時間後次のイベントの始まる曜日に変わるのであれば、
+            const day2 = new Date(new Date() + 12 * 60 * 60 * 1000).getDay()
+            if (h < -6 && (day !== dayEventDay || day !== day2)) {
+              let nextDay = (day !== dayEventDay && h < -12) ? day : day2
+              // Mondayを0にしたので合わせる
+              nextDay = nextDay - 1 < 0 ? 6 : nextDay - 1
+              const weekdays = when[0].split('').sort().join('')
+              let match = false
+              let nextDate = 0
+              while (!match) {
+                for (let i = 0; i < weekdays.length; i++) {
+                  const registeredDay = parseInt(weekdays.substr(i, 1))
+                  if (registeredDay === nextDay) {
+                    match = true
+                  }
+                }
+                nextDay = nextDay + 1 > 6 ? 0 : nextDay + 1
+                if (nextDate > 6) {
+                  match = true // 繰り返しなし
+                }
+                if (!match) {
+                  nextDate++
+                }
+              }
+              if (nextDate <= 6) {
+                // console.log(nextDate)
+                const nextEventDate = new Date(new Date().getTime() + nextDate * 24 * 60 * 60 * 1000)
+                // ↓↓↓ nextEventが次のイベントの開始日
+                const nextEvent = new Date(nextEventDate.getFullYear(), nextEventDate.getMonth(), nextEventDate.getDate(), dayEvent.getHours(), dayEvent.getMinutes(), dayEvent.getSeconds())
+                const nextEventTime = parseInt(nextEvent.getTime() - new Date().getTime()) / 1000
+                const hNext = Math.floor(nextEventTime / 3600)
+                const mNext = Math.floor(nextEventTime / 60 % 60)
+                // console.log(hNext, mNext, nextEvent, 22222)
+                switch (hNext) {
+                  case 0:
+                    this.ticketWhen = `${this.$t('ticket_text12')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                    break
+                  case 1:
+                    this.ticketWhen = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text8')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                    break
+                  default:
+                    this.ticketWhen = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text9')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                    break
+                }
+              }
+            } else {
+              // 過去として表示
+              switch (h) {
+                case 0:
+                  this.ticketWhen = `${this.$t('ticket_text11_2')} ${m} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                  break
+                case 1:
+                  this.ticketWhen = `${this.$t('ticket_text11_2')} ${h} ${this.$t('ticket_text8')} ${m} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                  break
+                default:
+                  this.ticketWhen = `${this.$t('ticket_text11_2')} ${h} ${this.$t('ticket_text9')} ${m} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                  break
+              }
+            }
+          } else {
+            // もうすぐ始まる
+            switch (h) {
+              case 0:
+                this.ticketWhen = `${this.$t('ticket_text12')} ${m} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                break
+              case 1:
+                this.ticketWhen = `${this.$t('ticket_text12')} ${h} ${this.$t('ticket_text8')} ${m} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                break
+              default:
+                this.ticketWhen = `${this.$t('ticket_text12')} ${h} ${this.$t('ticket_text9')} ${m} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                break
+            }
           }
         }
       }
     },
-    walletLogin () {
+    async walletLogin () {
       if (!this.bloctoWalletUser.addr) {
-        this.$buefy.dialog.confirm({
-          message: 'Please create a new wallet account if you have not.',
-          onConfirm: async () => {
-            await this.$fcl.authenticate()
-          }
-        })
+        await this.$fcl.authenticate()
       }
     },
     callToast () {
@@ -183,20 +252,31 @@ export default {
     },
     async setupUserInitialInfo (user) {
       this.bloctoWalletUser = user
-
-      if (this.bloctoWalletUser?.addr) {
-        await this.checkCurrentStatus()
+      await this.checkCurrentStatus()
+    },
+    async checkCurrentStatus () {
+      if (this.bloctoWalletUser.addr) {
+        const ret = await this.isTicketVaultReady()
+        if (ret) {
+          await this.requestCode(true)
+        } else {
+          this.ticketStatus = 1 // can request a ticket
+        }
       } else {
         this.bloctoWalletUser = {}
         this.ticketStatus = 0
       }
-    },
-    async checkCurrentStatus () {
-      const ret = await this.isTicketVaultReady()
-      if (ret) {
-        await this.requestCode(true)
-      } else {
-        this.ticketStatus = 1 // can request a ticket
+
+      switch (this.ticketStatus) {
+        case 0:
+          this.noticeTitle = 'Please log in to your wallet'
+          break
+        case 1:
+          this.noticeTitle = 'Tap the grant button.'
+          break
+        case 4:
+          this.noticeTitle = 'Tap the Request a Code button.'
+          break
       }
     },
     async isTicketVaultReady () {
@@ -378,84 +458,58 @@ export default {
 .section {
   padding-bottom: 32px;
 
+  .page-title {
+    margin-top: 80px;
+    font-size: 24px;
+    text-align: center;
+  }
+
+  hr.separator {
+    height: 0;
+  }
+
   .content {
-    margin: 10px 0 20px;
+    margin: 10px auto 20px;
     padding: 16px;
     text-align: center;
     max-width: 800px;
 
-    .text-wrap {
-      margin: 0 20px;
-
-      .page-title {
-        margin: 80px auto 0;
-        font-size: 18px;
-        color: mediumspringgreen;
-        text-align: center;
-        --typing-steps: 14;
-        overflow: hidden;
-        white-space: nowrap;
-        letter-spacing: 3px;
-        border-right: 1px solid #9778d7;
-        animation: typing 2s steps(var(--typing-steps)),
-          blinking 0.7s steps(1) infinite;
-        &.long {
-          font-size: 16px;
-        }
-      }
-
-      h1 {
-        margin: 20px 0 16px;
-      }
-
-      .description {
-        font-size: 16px;
-      }
-
-      .notice {
-        font-size: 16px;
-        color: lightsteelblue;
-      }
-
-      .code {
-        font-size: 18px;
-        color: #fff;
-      }
-
-      .check-transaction a {
-        font-size: 16px;
-        text-decoration: underline;
-      }
-
-      .request-btn {
-        font-weight: bold;
-      }
-
-      .button {
-        width: 90%;
-        border-radius: 20px;
-        margin: 14px 0;
-        max-width: 400px;
+    h1 {
+      margin: 20px 0 16px;
+      .next-date {
+        color: #f14668;
+        margin-top: 4px;
       }
     }
-  }
 
-  @keyframes typing {
-    0% {
-      width: 0px;
+    .description {
+      font-size: 14px;
     }
-    100% {
-      width: 100%;
-    }
-  }
 
-  @keyframes blinking {
-    0%,
-    100% {
-      border-color: transparent;
+    .notice {
+      font-size: 14px;
+      color: rebeccapurple;
     }
-    50% {
-      border-color: #9778d7;
+
+    .check-transaction a {
+      font-size: 16px;
+      text-decoration: underline;
+    }
+
+    .button {
+      width: 90%;
+      border-radius: 20px;
+      margin: 18px 0;
+      max-width: 400px;
+    }
+
+    .code {
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .request-btn {
+      font-weight: bold;
     }
   }
 
@@ -489,4 +543,5 @@ export default {
     background-image: linear-gradient(0deg, rgba(0,0,0,.3), #1b1c50);
   }
 }
+
 </style>

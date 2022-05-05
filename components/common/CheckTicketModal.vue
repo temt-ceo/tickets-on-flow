@@ -2,7 +2,7 @@
   <div class="modal-card">
     <section class="modal-card-body">
       <div class="text-wrap">
-        Your Owned Tickets.
+        Ticket Information
       </div>
       <b-table
         :data="tickets"
@@ -17,54 +17,58 @@
         <b-table-column
           v-slot="props"
           field="ticketName"
-          label="Ticket"
-          width="400"
-          numeric
+          label="Name"
         >
-          <a :href="props.row.path">
-            {{ props.row.ticketName }}
-          </a>
+          {{ props.row.ticketName }}
         </b-table-column>
 
         <b-table-column
           v-slot="props"
-          field="twitterAccount"
+          field="description"
+          label="Description"
+        >
+          {{ props.row.description }}
+        </b-table-column>
+
+        <b-table-column
+          v-slot="props"
+          field="type"
+          :label="$t('ticket_text1')"
+        >
+          {{ props.row.type }}
+        </b-table-column>
+
+        <b-table-column
+          v-slot="props"
+          field="twitter"
           label="Contact"
         >
-          <a :href="'https://mobile.twitter.com/' + props.row.twitterAccount" target="_blank">
+          <a :href="props.row.twitter" target="_blank">
             @{{ props.row.twitterAccount }}
           </a>
         </b-table-column>
 
         <b-table-column
           v-slot="props"
-          field="time"
-          label="Used at"
+          field="ticketPrice"
+          label="Price"
         >
-          {{ props.row.used_time ? new Date(Number(props.row.used_time).toFixed(3) * 1000).toLocaleString().toLocaleString().replace(/(:\d{2}):00/, '$1') : 'unused' }}
+          {{ props.row.ticketPrice }} $FLOW
         </b-table-column>
 
         <b-table-column
           v-slot="props"
-          field="paid"
-          label="Paid"
+          field="ticketWhen"
+          label="Date"
         >
-          {{ Number(props.row.price) > 0 ? `${new Number(props.row.price).toFixed(2)}$FLOW` : 'not yet' }}
+          {{ props.row.ticketWhen }}
         </b-table-column>
         <template #empty>
           <div class="has-text-centered">
-            No tickets yet.
+            No ticket info.
           </div>
         </template>
       </b-table>
-      <b-button
-        v-if="wallet.addr"
-        type="is-success"
-        @click="walletLogout"
-        style="margin: 20px auto 0;"
-      >
-        Log out from Wallet
-      </b-button>
     </section>
   </div>
 </template>
@@ -74,17 +78,15 @@
 export default {
   name: 'OwnedTicketsConfirmModal',
   props: {
-    tickets: {
-      type: Array,
-      required: true
-    },
-    wallet: {
+    ticket: {
       type: Object,
-      required: true
+      default: () => {}
     }
   },
   data () {
     return {
+      tickets: [],
+      toolList: ['Zoom', 'Instagram', 'Discord', 'Teams', 'Google Meet', 'Ticket website', 'YouTube', 'Any tool', 'On-site'],
       isBordered: false,
       isStriped: false,
       isNarrowed: false,
@@ -94,14 +96,50 @@ export default {
       hasMobileCards: true
     }
   },
-  methods: {
-    async walletLogout () {
-      await this.$fcl.unauthenticate()
-      this.$buefy.toast.open({
-        message: 'Logged out.',
-        queue: false
-      })
+  mounted () {
+    const ticket = {}
+    const ticketName = this.ticket.name.split('||@')
+    ticket.ticketName = ticketName[0]
+    ticket.twitter = 'https://twitter.com/' + ticketName[1]
+    ticket.twitterAccount = ticketName[1]
+    ticket.ticketPrice = this.ticket.price.replace(/\.?0+$/, '')
+    const when = this.ticket.when_to_use.split('||')
+    if (when.length >= 2) {
+      ticket.ticketWhen = new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1') + ` ${this.$t('ticket_text6')} `
     }
+    const where = this.ticket.where_to_use.split('||')
+    let detail = ''
+    let tool = ''
+    if (where.length === 2) {
+      tool = where[0]
+      detail = where[1]
+    } else if (where.length > 2) {
+      tool = where[0]
+      detail = ''
+      for (let i = 1; i < where.length; i++) {
+        detail = detail + (i === 1 ? '' : '||') + where[i]
+      }
+    }
+    let type = this.toolList[parseInt(tool) - 1] || ''
+    if (type === 'Ticket website') {
+      type = 'in ' + this.$t('ticket_text2')
+    } else if (type === 'Any tool') {
+      type = this.$t('ticket_text3')
+    } else if (type === 'On-site') {
+      type = this.$t('ticket_text4')
+    }
+    ticket.description = detail
+    ticket.type = type
+    ticket.ticketWhereType = where[0]
+    if (where.length === 2) {
+      ticket.ticketWhere = where[1]
+    } else if (where.length > 2) {
+      ticket.ticketWhere = ''
+      for (let i = 1; i < where.length; i++) {
+        ticket.ticketWhere = ticket.ticketWhere + (i === 1 ? '' : '||') + where[i]
+      }
+    }
+    this.tickets.push(ticket)
   }
 }
 </script>
