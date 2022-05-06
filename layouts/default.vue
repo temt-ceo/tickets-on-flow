@@ -689,6 +689,12 @@ span.control-label {
   }
 }
 
+.button {
+  span {
+    padding: 3px;
+  }
+}
+
 .hero-body {
   height: 95vh;
 }

@@ -3,7 +3,7 @@
     <section class="modal-card-body">
       <div class="contents">
         <div class="text-wrap title">
-          Setting
+          {{ $t('ticket_text32') }}
         </div>
         <div class="nft-list-container">
           <p
@@ -17,20 +17,19 @@
             class="text-wrap"
           >
             <b-field
-              label="1. Ticket Name"
-              :message="registerName === '' ? 'Please enter a value': ''"
+              :label="$t('operation_text5')"
               :type="{ 'is-success': registerName != '', 'is-danger': registerName === ''}"
             >
               <b-input
                 v-model="registerName"
                 maxlength="40"
-                placeholder="e.g. Conversation Rights"
+                :placeholder="$t('operation_text1')"
               />
             </b-field>
-            <b-field label="2. Which tool do you use?">
+            <b-field :label="$t('operation_text6')">
               <b-select
                 v-model="registerWhereType"
-                placeholder="Select..."
+                :placeholder="$t('operation_text2')"
               >
                 <option value="1">
                   Zoom
@@ -62,21 +61,20 @@
               </b-select>
             </b-field>
             <b-field
-              label="3. How do you connect to the tool?"
-              :message="registerWhere === '' ? 'Please enter': ''"
+              :label="$t('operation_text7')"
               :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
             >
               <b-input
                 v-model="registerWhere"
                 maxlength="40"
-                placeholder="e.g. Send invitation code on this webpage."
+                :placeholder="$t('operation_text3')"
               />
             </b-field>
-            <b-field label="4. When will the event start?">
+            <b-field :label="$t('operation_text8')">
               <b-datepicker
                 v-model="registerWhen"
                 :first-day-of-week="1"
-                placeholder="Click to select..."
+                :placeholder="$t('operation_text2')"
               >
                 <b-button
                   label="Today"
@@ -95,10 +93,10 @@
               <b-timepicker
                 v-model="registerWhen"
                 rounded
-                placeholder="Select..."
+                :placeholder="$t('operation_text2')"
               />
             </b-field>
-            <b-field label=" Repeated?">
+            <b-field :label="$t('operation_text9')">
               <b-taginput
                 v-model="registerWhenWeekdays"
                 :data="filteredWeekdays"
@@ -106,14 +104,14 @@
                 :open-on-focus="tagOpenOnFocus"
                 field="day"
                 icon="label"
-                placeholder="choose .."
+                :placeholder="$t('operation_text2')"
                 @typing="getFilteredWeekdays">
               </b-taginput>
             </b-field>
-            <b-field label="5. Price($FLOW)">
+            <b-field :label="$t('operation_text10')">
               <b-select
                 v-model="registerPrice"
-                placeholder="Select..."
+                :placeholder="$t('operation_text2')"
               >
                 <option value="1">
                   1 FLOW
@@ -161,40 +159,39 @@
                 :disabled="!registerName || !registerWhere || !registerWhereType || !registerWhen || !registerPrice"
                 @click="registerTicketInfo"
               >
-                Register
+                {{ $t('operation_text12') }}
               </b-button>
             </div>
           </div>
           <div v-if="isCompleteRegister" class="text-wrap">
             <p class="complete-register">
-              Tickets registered.<br>
-              It takes about 10 seconds to complete registration.<br>
-              After clicking "Confirm the transaction" and seeing the word SEALED on the screen,<br>
-              the ticket request button will appear on <a :href="ticketPage">{{ ticketPage }}</a>
+              {{ $t('operation_text14') }}<br>
+              {{ $t('operation_text15') }}<br>
+              {{ $t('operation_text16') }}<br>
+              {{ $t('operation_text17') }} <a :href="ticketPage">{{ ticketPage }}</a>
             </p>
           </div>
           <div v-if="showFlag && ticketInfo && !isCompleteRegister" class="text-wrap">
             <p class="complete-register">
-              You have already registered a ticket. If you wish to edit/suspend your ticket, please enter the following and press the Update button.<br>
+              {{ $t('operation_text18') }}<br>
               <span class="red">
-                (Empty the ticket name if you want to suspend. Once a user has applied for a ticket, it cannot be suspended.)
+                {{ $t('operation_text19') }}
               </span>
             </p>
             <b-field
-              label="1. Ticket Name"
-              :message="registerName === '' ? 'Please enter a value': ''"
+              :label="$t('operation_text5')"
               :type="{ 'is-success': registerName != ''}"
             >
               <b-input
                 v-model="registerName"
                 maxlength="40"
-                placeholder="e.g. Conversation Rights"
+                :placeholder="$t('operation_text1')"
               />
             </b-field>
-            <b-field label="2. Which tool do you use?">
+            <b-field :label="$t('operation_text6')">
               <b-select
                 v-model="registerWhereType"
-                placeholder="Select..."
+                :placeholder="$t('operation_text2')"
               >
                 <option value="1">
                   Zoom
@@ -226,21 +223,20 @@
               </b-select>
             </b-field>
             <b-field
-              label="3. How do you connect to the tool?"
-              :message="registerWhere === '' ? 'Please enter': ''"
+              :label="$t('operation_text7')"
               :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
             >
               <b-input
                 v-model="registerWhere"
                 maxlength="40"
-                placeholder="e.g. Send invitation code on this webpage."
+                :placeholder="$t('operation_text3')"
               />
             </b-field>
-            <b-field label="4. When will the event start?">
+            <b-field :label="$t('operation_text8')">
               <b-datepicker
                 v-model="registerWhen"
                 :first-day-of-week="1"
-                placeholder="Click to select..."
+                :placeholder="$t('operation_text2')"
               >
                 <b-button
                   label="Today"
@@ -259,10 +255,10 @@
               <b-timepicker
                 v-model="registerWhen"
                 rounded
-                placeholder="Select..."
+                :placeholder="$t('operation_text2')"
               />
             </b-field>
-            <b-field label=" Repeated?">
+            <b-field :label="$t('operation_text9')">
               <b-taginput
                 v-model="registerWhenWeekdays"
                 :data="filteredWeekdays"
@@ -270,15 +266,15 @@
                 :open-on-focus="tagOpenOnFocus"
                 field="day"
                 icon="label"
-                placeholder="choose .."
+                :placeholder="$t('operation_text2')"
                 @typing="getFilteredWeekdays">
               </b-taginput>
             </b-field>
 
-            <b-field label="5. Price($FLOW)">
+            <b-field :label="$t('operation_text10')">
               <b-select
                 v-model="registerPrice"
-                placeholder="Select..."
+                :placeholder="$t('operation_text2')"
               >
                 <option value="1">
                   1 FLOW
@@ -318,7 +314,7 @@
                 </option>
               </b-select>
             </b-field>
-            <b-field label="7. Want to change your Twitter account name?">
+            <b-field :label="$t('operation_text11')">
               <b-checkbox
                 v-model="registerTwitterEdit"
                 true-value="Yes"
@@ -335,7 +331,7 @@
                 :disabled="!registerWhere || !registerWhereType || !registerWhen || !registerPrice"
                 @click="registerTicketInfo"
               >
-                Update
+                {{ $t('operation_text13') }}
               </b-button>
             </div>
           </div>
@@ -397,22 +393,22 @@ export default {
       showFlag: false,
       tagOpenOnFocus: true,
       weeekdays: [
-        { day: 'Monday', id: 0 },
-        { day: 'Tuesday', id: 1 },
-        { day: 'Wednesday', id: 2 },
-        { day: 'Thursday', id: 3 },
-        { day: 'Friday', id: 4 },
-        { day: 'Saturday', id: 5 },
-        { day: 'Sunday', id: 6 }
+        { day: this.$t('operation_text20'), id: 0 },
+        { day: this.$t('operation_text21'), id: 1 },
+        { day: this.$t('operation_text22'), id: 2 },
+        { day: this.$t('operation_text23'), id: 3 },
+        { day: this.$t('operation_text24'), id: 4 },
+        { day: this.$t('operation_text25'), id: 5 },
+        { day: this.$t('operation_text26'), id: 6 }
       ],
       filteredWeekdays: [
-        { day: 'Monday', id: 0 },
-        { day: 'Tuesday', id: 1 },
-        { day: 'Wednesday', id: 2 },
-        { day: 'Thursday', id: 3 },
-        { day: 'Friday', id: 4 },
-        { day: 'Saturday', id: 5 },
-        { day: 'Sunday', id: 6 }
+        { day: this.$t('operation_text20'), id: 0 },
+        { day: this.$t('operation_text21'), id: 1 },
+        { day: this.$t('operation_text22'), id: 2 },
+        { day: this.$t('operation_text23'), id: 3 },
+        { day: this.$t('operation_text24'), id: 4 },
+        { day: this.$t('operation_text25'), id: 5 },
+        { day: this.$t('operation_text26'), id: 6 }
       ],
       indexOfTicket: null
     }
@@ -479,25 +475,25 @@ export default {
                 const day = weekdays.substr(i, 1)
                 switch (day) {
                   case '0':
-                    this.registerWhenWeekdays.push({ day: 'Monday', id: 0 })
+                    this.registerWhenWeekdays.push({ day: this.$t('operation_text20'), id: 0 })
                     break
                   case '1':
-                    this.registerWhenWeekdays.push({ day: 'Tuesday', id: 1 })
+                    this.registerWhenWeekdays.push({ day: this.$t('operation_text21'), id: 1 })
                     break
                   case '2':
-                    this.registerWhenWeekdays.push({ day: 'Wednesday', id: 2 })
+                    this.registerWhenWeekdays.push({ day: this.$t('operation_text22'), id: 2 })
                     break
                   case '3':
-                    this.registerWhenWeekdays.push({ day: 'Thursday', id: 3 })
+                    this.registerWhenWeekdays.push({ day: this.$t('operation_text23'), id: 3 })
                     break
                   case '4':
-                    this.registerWhenWeekdays.push({ day: 'Friday', id: 4 })
+                    this.registerWhenWeekdays.push({ day: this.$t('operation_text24'), id: 4 })
                     break
                   case '5':
-                    this.registerWhenWeekdays.push({ day: 'Saturday', id: 5 })
+                    this.registerWhenWeekdays.push({ day: this.$t('operation_text25'), id: 5 })
                     break
                   case '6':
-                    this.registerWhenWeekdays.push({ day: 'Sunday', id: 6 })
+                    this.registerWhenWeekdays.push({ day: this.$t('operation_text26'), id: 6 })
                     break
                 }
               }
@@ -519,10 +515,10 @@ export default {
     registerTicketInfo () {
       if (!this.ticketInfo || this.registerTwitterEdit === 'Yes') {
         this.$buefy.dialog.prompt({
-          message: 'Enter your Twitter account detailing your ticket use.',
+          message: this.$t('operation_text27'),
           inputAttrs: {
             type: 'text',
-            placeholder: 'e.g. @official_ticket',
+            placeholder: `${this.$t('ticket_text40')} @official_twitter`,
             maxlength: 40
           },
           confirmText: 'Next',
@@ -532,16 +528,16 @@ export default {
               value = value.substr(1)
             }
             this.registerTwitter = value
-            const explanation = !this.ticketInfo ? `(Once registered, a ticket request button will appear on your Ticket website. ${this.ticketPage})<br>` : ''
+            const explanation = !this.ticketInfo ? `(${this.$t('operation_text28')} ${this.ticketPage})<br>` : ''
             this.$buefy.dialog.confirm({
-              message: `Tap "Approve" on the next wallet pop-up.<br>${explanation}`,
+              message: `${this.$t('operation_text29')}<br>${explanation}`,
               onConfirm: this.ticketInfo ? this.updateTicketInfo : this.addTicketInfo
             })
           }
         })
       } else {
         this.$buefy.dialog.confirm({
-          message: 'Tap "Approve" on the next wallet pop-up.',
+          message: this.$t('operation_text29'),
           onConfirm: this.updateTicketInfo
         })
       }

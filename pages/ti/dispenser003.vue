@@ -61,6 +61,7 @@
 
                 <b-button
                   v-if="ticketName !== '' && !bloctoWalletUser.addr"
+                  type="is-success is-light"
                   @click="walletLogin"
                 >
                   Connect to a wallet

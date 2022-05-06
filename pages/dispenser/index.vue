@@ -36,15 +36,14 @@
               <b-button
                 v-if="bloctoWalletUser.addr && (!hasDispenserVault || !hasDispenser)"
                 :disabled="hasDispenserVault || isApplied"
-                type="is-link is-light"
-                class="request-btn"
+                type="is-success is-light"
                 @click="requestDispenser"
               >
                 {{ $t('ticket_text33') }}
               </b-button>
               <b-button
                 v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
-                type="is-link is-light"
+                type="is-success is-light"
                 @click="showConfirmModal = true"
               >
                 {{ $t('ticket_text34') }}
@@ -399,6 +398,7 @@ export default {
   .page-title {
     font-size: 24px;
     text-align: center;
+    padding: 0 5px;
   }
 
   .content {
@@ -423,10 +423,6 @@ export default {
     .check-transaction a {
       font-size: 16px;
       text-decoration: underline;
-    }
-
-    .request-btn {
-      font-weight: bold;
     }
 
     .button {

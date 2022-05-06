@@ -17,7 +17,7 @@
           rounded
           v-model="searchValue"
           :data="filteredDataArray"
-          placeholder="search..."
+          :placeholder="$t('operation_text4')"
           clearable
           @select="option => selected = option">
           <template #empty>No results found</template>
