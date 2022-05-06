@@ -314,13 +314,13 @@ export default {
     top: 25%;
     z-index: 1;
     width: 35px;
-    left: 0;
+    left: 0.1%;
   }
 
   .globe-btn {
     position: absolute;
     z-index: 1;
-    top: 34%;
+    top: 34.1%;
     left: 1%;
   }
 
@@ -338,7 +338,7 @@ export default {
 
   .ticket-list {
     width: 100%;
-    max-width: 450px;
+    max-width: 620px;
     height: 85vh;
     margin: 0 auto;
     background: #596470;

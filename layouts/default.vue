@@ -16,17 +16,18 @@
             height="28"
           >
         </a>
-        <a :href="url.twitter" target="_blank">
+        <a :href="url.telegram" target="_blank">
           <b-icon
-            class="navbar-item"
-            icon="twitter"
+            class="navbar-item telegram"
+            pack="fab"
+            icon="telegram"
             size="medium"
             type="is-info"
           />
         </a>
         <a :href="url.youtube" target="_blank">
           <b-icon
-            class="navbar-item"
+            class="navbar-item youtube"
             pack="fa-brands"
             icon="youtube"
             size="medium"
@@ -331,6 +332,7 @@ export default {
     return {
       url: {
         twitter: 'https://mobile.twitter.com/_official_asp',
+        telegram: 'https://t.me/ukraine_blockchain',
         discord: 'https://discord.gg/DV6VafmQ2S',
         github: {
           transaction: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/transactions.js',
@@ -550,7 +552,7 @@ export default {
     font-size: 8px;
     position: absolute;
     left: 296px;
-    top: 14px;
+    top: 15px;
     &:before {
       font-size: 8px;
     }
@@ -599,6 +601,21 @@ export default {
     min-width: 50px;
     min-height: 50px;
   }
+
+  .telegram i {
+    background-image: radial-gradient(white 0%, transparent 90%);
+    border-radius: 50%;
+    &:before {
+      font-size: 18px;
+    }
+  }
+
+  .youtube i {
+    background-image: radial-gradient(white 0%, transparent 60%);
+    &:before {
+      font-size: 18px;
+    }
+  }
 }
 
 a {
@@ -645,8 +662,8 @@ span.control-label {
       background: #dbdbdb !important;
     }
     .b-slider-thumb-wrapper.has-indicator .b-slider-thumb {
-      border-radius: 4px;
-      padding: 2px 0px;
+      border-radius: 10px;
+      padding: 0px;
       background: #b5b5b5;
       color: #b5b5b5;
     }
@@ -680,6 +697,40 @@ span.control-label {
   font-size: 12px;
   padding: 16px 10px;
   box-shadow: 0px 1px 2px -1px #cccccc;
+}
+
+.ticket-title {
+  color: black;
+  text-align: center;
+  --typing-steps: 14;
+  overflow: hidden;
+  white-space: nowrap;
+  letter-spacing: 3px;
+  border-right: 1px solid #9778d7;
+  animation: typing 2s steps(var(--typing-steps)),
+    blinking 0.7s steps(1) infinite;
+  &.long {
+    font-size: 9px;
+  }
+}
+
+@keyframes typing {
+  0% {
+    width: 0px;
+  }
+  100% {
+    width: 90%;
+  }
+}
+
+@keyframes blinking {
+  0%,
+  100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #b29feb;
+  }
 }
 
 @media screen and (min-width: 1024px) {

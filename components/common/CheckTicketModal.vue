@@ -19,7 +19,7 @@
           field="ticketName"
           :label="$t('ticket_text15')"
         >
-          {{ props.row.ticketName }}
+          <div class="ticket-title">{{ props.row.ticketName }}</div>
         </b-table-column>
 
         <b-table-column

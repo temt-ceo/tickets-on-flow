@@ -1,67 +1,70 @@
 <template>
-  <section class="section">
+  <section>
     <div class="hero">
+      <video class="hero--video" src="https://static.videezy.com/system/resources/previews/000/012/739/original/Particles_3_60s_2kres_1.mp4" muted></video>
       <div class="hero--overlay">
         <div class="hero--content">
-          <b-notification
-            v-model="ticketUsedNow"
-            type="is-success is-light"
-            aria-close-label="Close notification"
-            @click="showConfirmPayModal = true"
-          >
-            {{ ticketUsedMessage }}
-          </b-notification>
-          <h1 class="page-title">
-            Ticket Distribution
-          </h1>
-          <div class="content">
-            <h1 class="notice">
-              {{ noticeTitle }}
-            </h1>
-            <p v-if="bloctoWalletUser.addr" class="description">
-              (Wallet Address: {{ bloctoWalletUser.addr }})
-            </p>
-            <p v-if="transactionScanUrl !== ''" class="check-transaction">
-              <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
-            </p>
-            <b-button
-              :disabled="!bloctoWalletUser.addr || !hasDispenserVault || !hasDispenser"
-              type="is-link is-light"
-              @click="showInputModal = true"
-            >
-              Distribute your original tickets
-            </b-button>
-            <b-button
-              v-if="bloctoWalletUser.addr && (!hasDispenserVault || !hasDispenser)"
-              :disabled="hasDispenserVault || isApplied"
-              type="is-link is-light"
-              class="request-btn"
-              @click="requestDispenser"
-            >
-              Apply for distribution function
-            </b-button>
-            <b-button
-              v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
-              type="is-link is-light"
-              @click="showConfirmModal = true"
-            >
-              Check Ticket Request Status
-            </b-button>
-            <!-- <b-button
-              v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
-              type="is-link is-light"
+          <section class="section">
+            <b-notification
+              v-model="ticketUsedNow"
+              type="is-success is-light"
+              aria-close-label="Close notification"
               @click="showConfirmPayModal = true"
             >
-              Check Ticket Usage Status
-            </b-button> -->
-            <b-button
-              v-if="!bloctoWalletUser.addr"
-              type="is-success is-light"
-              @click="flowWalletLogin"
-            >
-              Connect to a wallet
-            </b-button>
-          </div>
+              {{ ticketUsedMessage }}
+            </b-notification>
+            <h1 class="page-title">
+              {{ $t('ticket_text31') }}
+            </h1>
+            <div class="content">
+              <h1 class="notice">
+                {{ noticeTitle }}
+              </h1>
+              <p v-if="bloctoWalletUser.addr" class="description">
+                (Wallet Address: {{ bloctoWalletUser.addr }})
+              </p>
+              <p v-if="transactionScanUrl !== ''" class="check-transaction">
+                <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
+              </p>
+              <b-button
+                :disabled="!bloctoWalletUser.addr || !hasDispenserVault || !hasDispenser"
+                type="is-link is-light"
+                @click="showInputModal = true"
+              >
+                {{ $t('ticket_text32') }}
+              </b-button>
+              <b-button
+                v-if="bloctoWalletUser.addr && (!hasDispenserVault || !hasDispenser)"
+                :disabled="hasDispenserVault || isApplied"
+                type="is-link is-light"
+                class="request-btn"
+                @click="requestDispenser"
+              >
+                {{ $t('ticket_text33') }}
+              </b-button>
+              <b-button
+                v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
+                type="is-link is-light"
+                @click="showConfirmModal = true"
+              >
+                {{ $t('ticket_text34') }}
+              </b-button>
+              <!-- <b-button
+                v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
+                type="is-link is-light"
+                @click="showConfirmPayModal = true"
+              >
+                {{ $t('ticket_text35') }}
+              </b-button> -->
+              <b-button
+                v-if="!bloctoWalletUser.addr"
+                type="is-success is-light"
+                @click="flowWalletLogin"
+              >
+                Connect to a wallet
+              </b-button>
+            </div>
+          </section>
         </div>
       </div>
     </div>
@@ -155,15 +158,15 @@ export default {
           this.hasDispenser = await this.hasTicketDispenser()
 
           if (this.hasDispenser) {
-            this.noticeTitle = 'Now you can distribute your original tickets!'
+            this.noticeTitle = this.$t('ticket_text36')
           } else {
-            this.noticeTitle = 'Currently applying for ticket distribution functionality.'
+            this.noticeTitle = this.$t('ticket_text37')
           }
         } else {
-          this.noticeTitle = 'You need to apply for the ticket distribution function. Tap Apply function button.'
+          this.noticeTitle = this.$t('ticket_text38')
         }
       } else {
-        this.noticeTitle = 'Please log in to the wallet of the person who will distribute the tickets.'
+        this.noticeTitle = 'Please log in to your wallet.'
       }
     },
     async hasTicketDispenserVault () {
@@ -225,10 +228,10 @@ export default {
       try {
         let domain = null
         this.$buefy.dialog.prompt({
-          message: 'What name would you like for your page? <br><small>(https://tickets-on-flow.web.app/ti/XXXX)</small>',
+          message: this.$t('ticket_text39'),
           inputAttrs: {
             type: 'text',
-            placeholder: 'e.g. hello-ticket',
+            placeholder: `${this.$t('ticket_text40')} hello-ticket`,
             maxlength: 30
           },
           confirmText: 'Next',
@@ -237,37 +240,37 @@ export default {
             value = value.trim()
             const re = /^[a-zA-Z0-9-_]*$/
             if (value.replace(re, '') !== '') {
-              this.$buefy.dialog.alert('Contains unavailable characters.')
+              this.$buefy.dialog.alert(this.$t('ticket_text41'))
               return
             }
             console.log(this.dispenserDomains, 666)
             if (this.dispenserDomains.includes(value)) {
-              this.$buefy.dialog.alert('I\'m sorry. Already in use.')
+              this.$buefy.dialog.alert(this.$t('ticket_text42'))
               return
             }
 
             domain = value
             toast1 = this.$buefy.toast.open({
               indefinite: true,
-              message: `Your ticket site name will look like this: https://tickets-on-flow.web.app/ti/${domain}`
+              message: `${this.$t('ticket_text43')} https://tickets-on-flow.web.app/ti/${domain}`
             })
             this.$buefy.dialog.prompt({
-              message: '(Opptional) Enter your email address. This is used to notify you when a page is created. <br>(Enter "pass" if you do not want email address stored on the blockchain)',
+              message: this.$t('ticket_text44'),
               inputAttrs: {
                 type: 'text',
-                placeholder: 'e.g. yourname@example.com',
+                placeholder: `${this.$t('ticket_text43')} yourname@example.com`,
                 value: '',
                 maxlength: 40
               },
-              confirmText: 'Next',
+              confirmText: this.$t('ticket_text45'),
               trapFocus: true,
               closeOnConfirm: false,
               onConfirm: (email, { close }) => {
                 const bmail = 'elffab' + email.toString().split('').reverse().join('') + '@tickets-on-flow.web.app'
                 toast1?.close()
                 this.$buefy.dialog.confirm({
-                  message: 'This process requires 0.5$FLOW. <br>Tap "Approve" on the next wallet pop-up.',
-                  confirmText: 'Agree',
+                  message: this.$t('ticket_text46'),
+                  confirmText: this.$t('ticket_text47'),
                   onConfirm: async () => {
                     close()
                     // loading
@@ -292,10 +295,10 @@ export default {
                     ).then(this.$fcl.decode)
                     toast2 = this.$buefy.toast.open({
                       indefinite: true,
-                      message: 'If you have more than 0.5$Flow you will succeed. Your request has been sent and you will receive an email within 24 hours that your request has been processed.'
+                      message: this.$t('ticket_text48')
                     })
                     this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-                    this.noticeTitle = 'Your application for the ticket distribution function has been completed. Please wait until you receive an email that tells the feature has been distributed.'
+                    this.noticeTitle = this.$t('ticket_text49')
                     this.isApplied = true
                     close()
                     setTimeout(() => {
@@ -390,17 +393,16 @@ export default {
 <style lang="scss" scoped>
 
 .section {
-  padding-bottom: 32px;
+  padding-bottom: 100px;
+  padding: 0 1.5rem;
 
   .page-title {
-    margin-top: 70px;
     font-size: 24px;
-    color: mediumspringgreen;
     text-align: center;
   }
 
   .content {
-    margin-bottom: 25px;
+    margin-bottom: 80px;
     padding: 16px;
     text-align: center;
     max-width: 800px;
@@ -438,35 +440,48 @@ export default {
       }
     }
   }
+}
 
-  .hero--overlay {
-    width: 100%;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-image: linear-gradient(180deg, rgba(0,0,0,1), #1b1c50);
-    background-size: cover;
-    z-index: 2;
-  }
+.hero {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 92vh;
+}
 
-  .hero--content {
-    width: 100%;
-    height: 100vh;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    color: #dadff4;
-  }
+.hero--video {
+  min-width: 1980px;
+  z-index: 1;
+}
 
-  .hero--bottom {
-    width: 100%;
-    height: 50vh;
-    background-color: #1c1c1c;
-    background-image: linear-gradient(0deg, rgba(0,0,0,.3), #1b1c50);
-  }
+.hero--overlay {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(180deg, rgba(0,0,0,1), #1b1c50);
+  background-size: cover;
+  z-index: 2;
+  opacity: 0.85;
+}
+
+.hero--content {
+  width: 100%;
+  height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  color: #dadff4;
+}
+
+.hero--bottom {
+  width: 100%;
+  height: 50vh;
+  background-color: #1c1c1c;
+  background-image: linear-gradient(0deg, rgba(0,0,0,.3), #1b1c50);
 }
 </style>
