@@ -19,7 +19,9 @@
           field="ticketName"
           :label="$t('ticket_text15')"
         >
-          <div class="ticket-title">{{ props.row.ticketName }}</div>
+          <div :class="{long: props.row.ticketName.length > 20, very_long: props.row.ticketName.length > 25}" class="ticket-title">
+            {{ props.row.ticketName }}
+          </div>
         </b-table-column>
 
         <b-table-column

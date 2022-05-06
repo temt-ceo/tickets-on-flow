@@ -699,18 +699,30 @@ span.control-label {
   box-shadow: 0px 1px 2px -1px #cccccc;
 }
 
+// チケット名が縦長になるのを防ぐため
+.table-wrapper table.table {
+  td:first-child {
+    white-space: nowrap;
+  }
+}
+
 .ticket-title {
-  color: black;
+  color: #485fc7;
   text-align: center;
   --typing-steps: 14;
   overflow: hidden;
   white-space: nowrap;
   letter-spacing: 3px;
-  border-right: 1px solid #9778d7;
-  animation: typing 2s steps(var(--typing-steps)),
+  border-right: 0.4px solid #b29feb;
+  animation: typing 1.8s steps(var(--typing-steps)),
     blinking 0.7s steps(1) infinite;
   &.long {
-    font-size: 9px;
+    font-size: 12px;
+    padding-top: 3px;
+    &.very_long {
+      font-size: 9px;
+      padding-top: 5px;
+    }
   }
 }
 
