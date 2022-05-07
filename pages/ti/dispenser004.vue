@@ -135,6 +135,11 @@ export default {
       get () {
         return this.$store.state.tickets
       }
+    },
+    ticketTime: {
+      get () {
+        return this.$store.state.ticketTime
+      }
     }
   },
   async mounted () {
@@ -165,7 +170,7 @@ export default {
           const dayEventDay = dayEvent.getDay()
           if (unixTime < 0) {
             // すでに過去のイベントの場合、6時間経過ずみで12時間後次のイベントの始まる曜日に変わるのであれば、
-            const day2 = new Date(new Date() + 12 * 60 * 60 * 1000).getDay()
+            const day2 = new Date(new Date().getTime() + 12 * 60 * 60 * 1000).getDay()
             if (h < -6 && (day !== dayEventDay || day !== day2)) {
               let nextDay = (day !== dayEventDay && h < -12) ? day : day2
               // Mondayを0にしたので合わせる
@@ -196,30 +201,55 @@ export default {
                 const nextEventTime = parseInt(nextEvent.getTime() - new Date().getTime()) / 1000
                 const hNext = Math.floor(nextEventTime / 3600)
                 const mNext = Math.floor(nextEventTime / 60 % 60)
-                // console.log(hNext, mNext, nextEvent, 22222)
-                switch (hNext) {
-                  case 0:
-                    this.ticketWhen = `${this.$t('ticket_text12')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
-                    break
-                  case 1:
-                    this.ticketWhen = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text8')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
-                    break
-                  default:
-                    this.ticketWhen = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text9')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
-                    break
+                // 保存データ
+                let previousEventTime = null
+                let hPrev = null
+                let mPrev = null
+                if (this.ticketTime[this.dispenser]) {
+                  previousEventTime = parseInt(this.ticketTime[this.dispenser] - new Date().getTime()) / 1000
+                  hPrev = Math.floor(previousEventTime / 3600)
+                  mPrev = Math.floor(previousEventTime / 60 % 60)
+                }
+                if (hPrev && hPrev < -4) {
+                  switch (hNext) {
+                    case 0:
+                      this.ticketWhen = `${this.$t('ticket_text12')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                      break
+                    case 1:
+                      this.ticketWhen = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text8')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                      break
+                    default:
+                      this.ticketWhen = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text9')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                      break
+                  }
+                  this.ticketTime[this.dispenser] = nextEvent.getTime()
+                  this.$store.commit('updateTicketTime', this.ticketTime)
+                } else {
+                  // 過去として表示
+                  switch (h) {
+                    case 0:
+                      this.ticketWhen = `${this.$t('ticket_text11_2')} ${Math.abs(mPrev)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                      break
+                    case 1:
+                      this.ticketWhen = `${this.$t('ticket_text11_2')} ${Math.abs(hPrev)} ${this.$t('ticket_text8')} ${Math.abs(mPrev)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                      break
+                    default:
+                      this.ticketWhen = `${this.$t('ticket_text11_2')} ${Math.abs(hPrev)} ${this.$t('ticket_text9')} ${Math.abs(mPrev)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                      break
+                  }
                 }
               }
             } else {
               // 過去として表示
               switch (h) {
                 case 0:
-                  this.ticketWhen = `${this.$t('ticket_text11_2')} ${m} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                  this.ticketWhen = `${this.$t('ticket_text11_2')} ${Math.abs(m)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
                   break
                 case 1:
-                  this.ticketWhen = `${this.$t('ticket_text11_2')} ${h} ${this.$t('ticket_text8')} ${m} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                  this.ticketWhen = `${this.$t('ticket_text11_2')} ${Math.abs(h)} ${this.$t('ticket_text8')} ${Math.abs(m)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
                   break
                 default:
-                  this.ticketWhen = `${this.$t('ticket_text11_2')} ${h} ${this.$t('ticket_text9')} ${m} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                  this.ticketWhen = `${this.$t('ticket_text11_2')} ${Math.abs(h)} ${this.$t('ticket_text9')} ${Math.abs(m)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
                   break
               }
             }
@@ -236,6 +266,8 @@ export default {
                 this.ticketWhen = `${this.$t('ticket_text12')} ${h} ${this.$t('ticket_text9')} ${m} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
                 break
             }
+            this.ticketTime[this.dispenser] = new Date(when[1]).getTime()
+            this.$store.commit('updateTicketTime', this.ticketTime)
           }
         }
       }
@@ -272,7 +304,35 @@ export default {
       if (this.bloctoWalletUser.addr) {
         const ret = await this.isTicketVaultReady()
         if (ret) {
-          await this.requestCode(true)
+          const data = await this.getRequestStatus(true)
+          if (data) {
+            // このdispenserから過去チケットをリクエストしたことがある
+            if (!data.latest_token) {
+              // まだチケットを配布されていない。
+              this.ticketStatus = 2
+            } else {
+              // チケットを配布された過去がある
+              const usedTime = await this.getTicketUsedTime()
+              if (!usedTime) {
+                // まだ未使用
+                this.ticketStatus = 3
+              } else {
+                // チケット使用済み
+                const lastUsedTime = parseInt(usedTime.replace(/.0+$/, '')) * 1000
+                const pastTime = parseInt((new Date(lastUsedTime).getTime() - new Date().getTime()) / 1000)
+                const h = Math.floor(pastTime / 3600)
+                console.log(h, 'last used time hour', 999999)
+                if (h <= -4) {
+                  // 4時間以上経過
+                  this.ticketStatus = 1 // 新しくリクエストできる
+                } else {
+                  this.ticketStatus = 4
+                }
+              }
+            }
+          } else {
+            this.ticketStatus = 1
+          }
         } else {
           this.ticketStatus = 1 // can request a ticket
         }
@@ -283,13 +343,19 @@ export default {
 
       switch (this.ticketStatus) {
         case 0:
-          this.noticeTitle = 'Please log in to your wallet'
+          this.noticeTitle = 'Please log in to your wallet' // 0: init
           break
         case 1:
-          this.noticeTitle = 'Tap the grant button.'
+          this.noticeTitle = this.$t('operation_text33') // 1: can request a ticket
+          break
+        case 2:
+          this.noticeTitle = this.$t('operation_text34') // 2: ticket requested
+          break
+        case 3:
+          this.noticeTitle = this.$t('operation_text35') // 3: can use a ticket
           break
         case 4:
-          this.noticeTitle = 'Tap the Request a Code button.'
+          this.noticeTitle = 'Tap the Request a Code button. And save in texts.' // 4: can request a code
           break
       }
     },
@@ -312,7 +378,7 @@ export default {
         return false
       }
     },
-    async getRequestStatus () {
+    async getRequestStatus (checkOnly) {
       try {
         this.noticeTitle = ''
         const result = await this.$fcl.send(
@@ -325,21 +391,25 @@ export default {
           ]
         ).then(this.$fcl.decode)
         if (result) {
-          const latestRequestTime = parseInt(result.time.replace(/.0+$/, '')) * 1000
-          this.latestRequest = new Date(latestRequestTime)
-          const mo = this.latestRequest.getMonth().toString()
-          const d = this.latestRequest.getDate().toString()
-          const requestDate = `${this.latestRequest.getFullYear()}/${mo.length > 1 ? mo : '0' + mo}/${d.length > 1 ? d : '0' + d}`
-          const h = this.latestRequest.getHours().toString()
-          const m = this.latestRequest.getMinutes().toString()
-          const requestHour = `${h.length > 1 ? h : '0' + h}: ${m.length > 1 ? m : '0' + m}`
-          const toast = this.$buefy.toast.open({
-            indefinite: true,
-            message: `Last Request Date: ${requestDate} ${requestHour}`
-          })
-          setTimeout(() => {
-            toast.close()
-          }, 5000)
+          if (checkOnly !== true) {
+            const latestRequestTime = parseInt(result.time.replace(/.0+$/, '')) * 1000
+            this.latestRequest = new Date(latestRequestTime)
+            const mo = this.latestRequest.getMonth().toString()
+            const d = this.latestRequest.getDate().toString()
+            const requestDate = `${this.latestRequest.getFullYear()}/${mo.length > 1 ? mo : '0' + mo}/${d.length > 1 ? d : '0' + d}`
+            const h = this.latestRequest.getHours().toString()
+            const m = this.latestRequest.getMinutes().toString()
+            const requestHour = `${h.length > 1 ? h : '0' + h}: ${m.length > 1 ? m : '0' + m}`
+            const toast = this.$buefy.toast.open({
+              indefinite: true,
+              message: `Last Request Date: ${requestDate} ${requestHour}`
+            })
+            setTimeout(() => {
+              toast.close()
+            }, 5000)
+          } else {
+            return result
+          }
         }
       } catch (e) {
       }
@@ -353,7 +423,7 @@ export default {
         transactionCode = FlowTransactions.requestTicket
       }
       this.$buefy.dialog.confirm({
-        message: 'Tap "Approve" on the next wallet pop-up. <br>This is free of charge.',
+        message: this.$t('ticket_text50'),
         onConfirm: async () => {
           try {
             // loading
@@ -375,7 +445,7 @@ export default {
               ]
             ).then(this.$fcl.decode)
             this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-            this.noticeTitle = `The ticket registrar will put the ${this.ticketName} ticket in your wallet. Please wait.`
+            this.noticeTitle = this.$t('operation_text32')
             this.ticketStatus = 2
             this.callToast()
             return transactionId
@@ -430,20 +500,24 @@ export default {
           ])
         ]
       ).then(this.$fcl.decode)
-      if (result === null || Object.keys(result).length === 0) {
-        this.ticketStatus = 2 // ticket requested
-      } else {
+      if (result && Object.keys(result).length > 0) {
         this.ticketTokenId = parseInt(Object.keys(result)[0])
-        if (result[this.ticketTokenId] === '') {
-          this.ticketStatus = 3 // can use a ticket
-          this.code = result[this.ticketTokenId]
-        } else {
-          this.ticketStatus = 4 //  can request a code
-          if (checkOnly !== true) {
-            this.code = result[this.ticketTokenId].replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
-          }
+        if (result[this.ticketTokenId] !== '') {
+          this.code = result[this.ticketTokenId].replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
         }
       }
+    },
+    async getTicketUsedTime () {
+      const result = await this.$fcl.send(
+        [
+          this.$fcl.script(FlowScripts.getTicketUsedTime),
+          this.$fcl.args([
+            this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
+            this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
+          ])
+        ]
+      ).then(this.$fcl.decode)
+      return result
     },
     async flowWalletLogout () {
       await this.$fcl.unauthenticate()

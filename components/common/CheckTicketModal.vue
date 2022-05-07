@@ -1,7 +1,7 @@
 <template>
   <div class="modal-card">
     <section class="modal-card-body">
-      <div class="text-wrap">
+      <div class="text-wrap text-title">
         {{ $t('ticket_text14') }}
       </div>
       <b-table
@@ -20,7 +20,8 @@
           :label="$t('ticket_text15')"
         >
           <div :class="{long: props.row.ticketName.length > 20, very_long: props.row.ticketName.length > 25}" class="ticket-title">
-            {{ props.row.ticketName }}
+            {{ props.row.ticketName.substr(0, 30) }}<br>
+            {{ props.row.ticketName.substr(30) }}
           </div>
         </b-table-column>
 
@@ -153,9 +154,14 @@ export default {
 
   .modal-card-body {
     text-align: center;
+    padding: 20px 10px;
 
     .text-wrap {
       margin: 16px;
+
+      &.text-title {
+        font-size: 18px;
+      }
 
       p {
         color: #222;

@@ -70,7 +70,7 @@ pub fun main(addr: Address): UInt64? {
   `,
   getTicketRequesters: `
 import Tv18 from 0xT
-pub fun main(addr: Address): {UInt32: Tv18.RequestStruct}?? {
+pub fun main(addr: Address): {UInt32: Tv18.RequestStruct}? {
     let account = getAccount(addr)
     let dispenserVault = account.getCapability<&Tv18.DispenserVault{Tv18.IDispenserPublic}>(Tv18.DispenserVaultPublicPath).borrow()
         ?? panic("Could not borrow DispenserVault capability.")
@@ -84,6 +84,15 @@ pub fun main(addr: Address): &Tv18.TicketVault{Tv18.ITicketPublic}? {
     return account.getCapability<&Tv18.TicketVault{Tv18.ITicketPublic}>(Tv18.TicketVaultPublicPath).borrow()
 }
   `,
+  getTicketUsedTime: `
+import Tv18 from 0xT
+pub fun main(addr: Address, dispenser_id: UInt32): UFix64? {
+  let account = getAccount(addr)
+  let ticketVault = account.getCapability<&Tv18.TicketVault{Tv18.ITicketPublic}>(Tv18.TicketVaultPublicPath).borrow()
+      ?? panic("Could not borrow TicketVault capability.")
+  return ticketVault.getUsedTime(dispenser_id: dispenser_id)
+}
+`,
   getTicketCode: `
 import Tv18 from 0xT
 pub fun main(addr: Address, dispenser_id: UInt32): {UInt64: String}? {

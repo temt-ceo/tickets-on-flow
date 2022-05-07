@@ -264,7 +264,6 @@ export default {
 
             const ticketName = ticket.name.split('||@')
             if (ticketName[0].length) {
-              console.log(ticket, tool, 7777)
               let type = this.toolList[parseInt(tool) - 1] || ''
               if (type === 'Ticket website') {
                 type = this.$t('ticket_text2')

@@ -177,10 +177,6 @@ pub contract Tv18 {
       }
     }
 
-    pub fun getTicketRequesters(dispenser_id: UInt32): {UInt32: RequestStruct}? {
-      return Tv18.ticketRequesters[dispenser_id]
-    }
-
     init() {
       self.last_token_id = 0
     }
@@ -203,7 +199,7 @@ pub contract Tv18 {
     pub fun deposit(minter: @Dispenser)
     pub fun hasDispenser(): Bool
     pub fun getId(): UInt32
-    pub fun getTicketRequesters(): {UInt32: RequestStruct}??
+    pub fun getTicketRequesters(): {UInt32: RequestStruct}?
     pub fun getLatestMintedTokenId(): UInt64?
   }
 
@@ -242,8 +238,8 @@ pub contract Tv18 {
     }
 
     // [public access]
-    pub fun getTicketRequesters(): {UInt32: RequestStruct}?? {
-      return self.ownedDispenser?.getTicketRequesters(dispenser_id: self.dispenser_id)
+    pub fun getTicketRequesters(): {UInt32: RequestStruct}? {
+      return Tv18.ticketRequesters[self.dispenser_id]
     }
 
     // [public access]
@@ -313,6 +309,10 @@ pub contract Tv18 {
       return self.readable_code
     }
 
+    pub fun getUsedTime(): UFix64? {
+      return self.used_time
+    }
+
     pub fun useTicket(price: UFix64) {
       pre {
         self.readable_code == "": "Something went wrong."
@@ -352,6 +352,7 @@ pub contract Tv18 {
     pub fun deposit(token: @Ticket)
     pub fun getId(): UInt32
     pub fun getCode(dispenser_id: UInt32): {UInt64: String}?
+    pub fun getUsedTime(dispenser_id: UInt32): UFix64?
   }
 
   /*
@@ -389,6 +390,22 @@ pub contract Tv18 {
       return nil
     }
 
+    // [public access]
+    pub fun getUsedTime(dispenser_id: UInt32): UFix64? {
+      if(Tv18.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = Tv18.ticketRequesters[dispenser_id]![self.user_id] {
+          if (data.latest_token == nil) {
+            return nil
+          }
+          let token_id = data.latest_token!
+          if (self.ownedTicket[token_id]?.getUsedTime() != nil) {
+            return self.ownedTicket[token_id]?.getUsedTime()!
+          }
+        }
+      }
+      return nil
+    }
+
     // [private access]
     pub fun requestTicket(dispenser_id: UInt32, user_id: UInt32, address: Address) {
       let time = getCurrentBlock().timestamp
@@ -397,6 +414,7 @@ pub contract Tv18 {
           let ref = &Tv18.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
           ref.count = data.count + 1
           ref.time = time
+          ref.latest_token = nil
 
           emit TicketRequested(dispenser_id: dispenser_id, user_id: self.user_id, address: address)
         } else {

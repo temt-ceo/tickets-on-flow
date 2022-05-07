@@ -1,9 +1,13 @@
 export const state = () => ({
-  tickets: []
+  tickets: [],
+  ticketTime: {}
 })
 
 export const mutations = {
   updateTickets (state, value) {
     state.tickets = value
+  },
+  updateTicketTime (state, value) {
+    state.ticketTime = value
   }
 }

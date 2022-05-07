@@ -611,7 +611,7 @@ export default {
   }
 
   .youtube i {
-    background-image: radial-gradient(white 0%, white 50%, transparent 51%);
+    background-image: radial-gradient(white 0%, white 45%, transparent 46%);
     &:before {
       font-size: 18px;
     }
@@ -707,6 +707,10 @@ span.control-label {
 
 // チケット名が縦長になるのを防ぐため
 .table-wrapper table.table {
+  td {
+    font-size: 14px;
+  }
+
   td:first-child {
     white-space: nowrap;
   }
