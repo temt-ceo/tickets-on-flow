@@ -603,7 +603,7 @@ export default {
   }
 
   .telegram i {
-    background-image: radial-gradient(white 0%, transparent 90%);
+    background-image: radial-gradient(white 0%, white 60%, transparent 61%);
     border-radius: 50%;
     &:before {
       font-size: 18px;
@@ -611,7 +611,7 @@ export default {
   }
 
   .youtube i {
-    background-image: radial-gradient(white 0%, transparent 60%);
+    background-image: radial-gradient(white 0%, white 50%, transparent 51%);
     &:before {
       font-size: 18px;
     }

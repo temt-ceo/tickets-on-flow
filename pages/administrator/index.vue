@@ -82,6 +82,16 @@ export default {
   },
   methods: {
     async flowWalletLogin () {
+      this.$buefy.snackbar.open({
+        duration: 5000,
+        message: this.$t('help_text18'),
+        type: 'is-danger',
+        position: 'is-bottom-left',
+        actionText: null,
+        queue: false,
+        onAction: () => {
+        }
+      })
       await this.$fcl.authenticate()
     },
     async flowWalletLogout () {

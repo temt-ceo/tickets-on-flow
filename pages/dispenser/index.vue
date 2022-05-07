@@ -140,6 +140,16 @@ export default {
   },
   methods: {
     async flowWalletLogin () {
+      this.$buefy.snackbar.open({
+        duration: 5000,
+        message: this.$t('help_text18'),
+        type: 'is-danger',
+        position: 'is-bottom-left',
+        actionText: null,
+        queue: false,
+        onAction: () => {
+        }
+      })
       await this.$fcl.authenticate()
     },
     async flowWalletLogout () {
@@ -272,11 +282,23 @@ export default {
                   confirmText: this.$t('ticket_text47'),
                   onConfirm: async () => {
                     close()
+
                     // loading
                     const loadingComponent = this.$buefy.loading.open({
                       container: null
                     })
-                    setTimeout(() => loadingComponent.close(), 3 * 1000)
+                    setTimeout(() => loadingComponent.close(), 1000)
+
+                    this.$buefy.snackbar.open({
+                      duration: 120000, // 2 minutes
+                      message: this.$t('operation_text30') + ` <a href="https://testnet.flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
+                      type: 'is-danger',
+                      position: 'is-bottom-left',
+                      actionText: null,
+                      queue: false,
+                      onAction: () => {
+                      }
+                    })
 
                     const transactionId = await this.$fcl.send(
                       [
@@ -302,7 +324,7 @@ export default {
                     close()
                     setTimeout(() => {
                       toast2.close()
-                    }, 10000)
+                    }, 110000)
                   }
                 })
               },
