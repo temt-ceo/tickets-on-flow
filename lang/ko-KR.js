@@ -54,7 +54,7 @@ export default {
   ticket_text22: '티켓 사용',
   ticket_text23: '티켓 요청',
   ticket_text24: '요청 상태 확인',
-  ticket_text25: '티켓 등록이 아직 완료되지 않았거나 일시 중지된 것 같습니다.',
+  ticket_text25: '티켓 등록이 아직 완료되지 않았습니다. 잠시만 기다려주세요.',
   ticket_text26: '맨 위로 돌아가기',
   ticket_text27: '티켓이 제공되었습니다.',
   ticket_text28: '약 10초 정도 걸립니다.',

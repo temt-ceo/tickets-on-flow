@@ -54,7 +54,7 @@ export default {
   ticket_text22: 'Ticket verwenden',
   ticket_text23: 'Ticket anfordern',
   ticket_text24: 'Anfragestatus prüfen',
-  ticket_text25: 'Es scheint, dass die Ticketregistrierung noch nicht abgeschlossen ist oder ausgesetzt wurde.',
+  ticket_text25: 'Die Ticketregistrierung ist noch nicht abgeschlossen. Bitte warten Sie einen Moment.',
   ticket_text26: 'Zurück zu TOP',
   ticket_text27: 'Die Eintrittskarten wurden geliefert.',
   ticket_text28: 'Dies dauert etwa 10 Sekunden.',

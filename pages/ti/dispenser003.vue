@@ -447,21 +447,21 @@ export default {
     },
     async flowWalletLogout () {
       await this.$fcl.unauthenticate()
-    }
-  },
-  async getTickets () {
-    try {
-      const tickets = await this.$fcl.send(
-        [
-          this.$fcl.script(FlowScripts.getTickets),
-          this.$fcl.args([
-          ])
-        ]
-      ).then(this.$fcl.decode)
-      this.$store.commit('updateTickets', tickets) // save tickets
-      this.tickets = tickets
-    } catch (e) {
-      console.log(e)
+    },
+    async getTickets () {
+      try {
+        const tickets = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getTickets),
+            this.$fcl.args([
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        this.$store.commit('updateTickets', tickets) // save tickets
+        this.tickets = tickets
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }
@@ -549,7 +549,7 @@ export default {
   background-image: linear-gradient(180deg, rgba(0,0,0,1), #1b1c50);
   background-size: cover;
   z-index: 2;
-  opacity: 0.85;
+  opacity: 0.87;
 }
 
 .hero--content {

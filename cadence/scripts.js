@@ -23,8 +23,8 @@ pub fun main(address: Address): [Tv18.DispenserStruct] {
 }
   `,
   getDispenserDomains: `
-import Tv18 from 0x01
-pub fun main(address: Address): [String] {
+import Tv18 from 0xT
+pub fun main(): [String] {
   return Tv18.getDispenserDomains()
 }
   `,

@@ -54,7 +54,7 @@ export default {
   ticket_text22: 'Utilizar un billete',
   ticket_text23: 'Solicitar un código',
   ticket_text24: 'Comprobar el estado de la solicitud',
-  ticket_text25: 'Parece que el registro de entradas aún no se ha completado o está suspendido.',
+  ticket_text25: 'El registro de las entradas aún no se ha completado. Por favor, espere un momento.',
   ticket_text26: 'Volver al principio',
   ticket_text27: 'Se suministraron entradas.',
   ticket_text28: 'Tarda aproximadamente 10 segundos.',

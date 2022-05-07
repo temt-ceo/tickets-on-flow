@@ -252,7 +252,7 @@ export default {
               this.$buefy.dialog.alert(this.$t('ticket_text41'))
               return
             }
-            console.log(this.dispenserDomains, 666)
+
             if (this.dispenserDomains.includes(value)) {
               this.$buefy.dialog.alert(this.$t('ticket_text42'))
               return
@@ -267,7 +267,7 @@ export default {
               message: this.$t('ticket_text44'),
               inputAttrs: {
                 type: 'text',
-                placeholder: `${this.$t('ticket_text43')} yourname@example.com`,
+                placeholder: `${this.$t('ticket_text40')} yourname@example.com`,
                 value: '',
                 maxlength: 40
               },
@@ -342,14 +342,13 @@ export default {
       try {
         const dispenserDomains = await this.$fcl.send(
           [
-            this.$fcl.script(FlowScripts.hasDispenser),
+            this.$fcl.script(FlowScripts.getDispenserDomains),
             this.$fcl.args([
             ])
           ]
         ).then(this.$fcl.decode)
         this.dispenserDomains = dispenserDomains
       } catch (e) {
-        return false
       }
     },
     async callReiterateEvents () {
@@ -481,7 +480,7 @@ export default {
   background-image: linear-gradient(180deg, rgba(0,0,0,1), #1b1c50);
   background-size: cover;
   z-index: 2;
-  opacity: 0.85;
+  opacity: 0.87;
 }
 
 .hero--content {

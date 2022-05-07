@@ -54,7 +54,7 @@ export default {
   ticket_text22: 'Utiliser un ticket',
   ticket_text23: 'Demander un billet',
   ticket_text24: 'Vérifier l\'état de la demande',
-  ticket_text25: 'Il semble que l\'enregistrement des billets n\'ait pas encore été effectué ou soit suspendu.',
+  ticket_text25: 'L\'enregistrement des billets n\'est pas encore terminé. Veuillez patienter un moment.',
   ticket_text26: 'Retour au début',
   ticket_text27: 'Les billets ont été fournis.',
   ticket_text28: 'Cela prend environ 10 secondes.',

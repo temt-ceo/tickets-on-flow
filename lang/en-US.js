@@ -54,7 +54,7 @@ export default {
   ticket_text22: 'Use a Ticket',
   ticket_text23: 'Request a Ticket',
   ticket_text24: 'Check Request Status',
-  ticket_text25: 'It appears that ticket registration has not yet been completed or is suspended.',
+  ticket_text25: 'Ticket registration has not yet been completed. Please wait a moment.',
   ticket_text26: 'Return to TOP',
   ticket_text27: 'Tickets were supplied.',
   ticket_text28: 'It takes approximately 10 seconds.',
