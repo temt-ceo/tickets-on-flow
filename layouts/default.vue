@@ -656,6 +656,10 @@ span.control-label {
   }
 }
 
+#__layout {
+  background-image: linear-gradient(to bottom right, #973999, #f8598b, #f7bf00);
+}
+
 .section.top-screen{
   .b-slider {
     .b-slider-fill {
@@ -674,6 +678,11 @@ span.control-label {
   .icon {
     background-color: #454545;
     border-radius: 5px;
+
+    &.is-clickable { // searchbar
+      background-color: inherit;
+      padding-bottom: 5px;
+    }
   }
 
   .dropdown-item .icon {

@@ -12,17 +12,6 @@
           <i class="fa-solid fa-bars" />
         </div>
       </div>
-      <div class="searchbar">
-        <b-autocomplete
-          rounded
-          v-model="searchValue"
-          :data="filteredDataArray"
-          :placeholder="$t('operation_text4')"
-          clearable
-          @select="option => selected = option">
-          <template #empty>No results found</template>
-        </b-autocomplete>
-      </div>
       <div class="content">
         <div
           v-for="(ticket, index) in tickets"
@@ -57,6 +46,19 @@
             </a>
           </div>
         </div>
+      </div>
+      {{ selected }}
+      <div class="searchbar">
+        <b-autocomplete
+          rounded
+          v-model="searchValue"
+          :data="filteredDataArray"
+          :placeholder="$t('operation_text4')"
+          clearable
+          @select="option => { searchBarselected(option) }"
+        >
+          <template #empty>No results found</template>
+        </b-autocomplete>
       </div>
     </div>
 
@@ -187,15 +189,25 @@ export default {
         { text: 'Step 9. Enter ticket information', image: '/image/help_slide_9.png', color: 'warning' },
         { text: 'Step 10. Share the URL of the ticket at the bottom of the screen', image: '/image/help_slide_10.png', color: 'danger' }
       ],
+      searchLists: [],
       searchValue: '',
+      ticketsBkup: [],
       selected: null
     }
   },
   computed: {
     filteredDataArray () {
-      return this.tickets.filter((option) => {
-        console.log(option.label.toString().toLowerCase().includes(this.searchValue.toLowerCase()), this.searchValue.toLowerCase(), 8888)
-        return option.label
+      if (this.searchValue === '' && this.tickets.length !== this.ticketsBkup.length) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.tickets = []
+        // eslint-disable-next-line vue/no-async-in-computed-properties
+        setTimeout(() => {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.tickets = this.ticketsBkup
+        })
+      }
+      return this.searchLists.filter((value) => {
+        return value
           .toString()
           .toLowerCase()
           .includes(this.searchValue.toLowerCase())
@@ -258,7 +270,6 @@ export default {
             }
             const when = ticket.when_to_use.split('||')
             let datetime = ''
-            console.log(when, 888)
             if (when.length >= 2) {
               datetime = new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1') + ` ${this.$t('ticket_text6')} `
             }
@@ -274,24 +285,52 @@ export default {
                 type = this.$t('ticket_text4')
               }
               setTimeout(() => {
-                this.tickets.push(
-                  {
-                    path: ticket.domain,
-                    label: ticketName[0],
-                    twitter: ticketName.length === 2 ? ticketName[1] : '',
-                    description: detail,
-                    price: ticket.price.replace(/\.?0+$/, ''),
-                    datetime,
-                    style: 'color' + (7 % (parseInt(tool) - 1) + 1).toString(),
-                    type
-                  }
-                )
+                const data = {
+                  path: ticket.domain,
+                  label: ticketName[0],
+                  twitter: ticketName.length === 2 ? ticketName[1] : '',
+                  description: detail,
+                  price: ticket.price.replace(/\.?0+$/, ''),
+                  datetime,
+                  style: 'color' + (7 % (parseInt(tool) - 1) + 1).toString(),
+                  type
+                }
+                this.tickets.push(data)
+                this.ticketsBkup.push(data)
               }, 60 * i + 60)
             }
           }
         }
+        // 検索リスト
+        tickets.forEach((ticket) => {
+          const ticketName = ticket.name.split('||@')[0]
+          if (!this.searchLists.includes(ticketName)) {
+            this.searchLists.push(ticketName)
+          }
+        })
+        tickets.forEach((ticket) => {
+          const ticketName = ticket.name.split('||@')
+          if (ticketName.length === 2) {
+            const twitterAccount = '@' + ticketName[1]
+            if (!this.searchLists.includes(twitterAccount)) {
+              this.searchLists.push(twitterAccount)
+            }
+          }
+        })
       } catch (e) {
         console.log(e)
+      }
+    },
+    searchBarselected (selected) {
+      if (selected) {
+        this.tickets = []
+        this.ticketsBkup.forEach((ticket) => {
+          if (ticket.label === selected) {
+            this.tickets.push(ticket)
+          } else if (ticket.twitter === selected.substr(1)) {
+            this.tickets.push(ticket)
+          }
+        })
       }
     }
   }
@@ -305,29 +344,31 @@ export default {
 
 .section {
   height: 91vh;
-  background-image: linear-gradient(to bottom right, #973999, #f8598b, #f7bf00);
   padding: 1.5rem 1.8rem 0;
+  max-width: 750px;
+  margin: 0 auto;
+  position: relative;
 
   .rotate-gage {
     transform: rotate(-90deg);
     position: absolute;
-    top: 25%;
+    top: 110px;
     z-index: 1;
     width: 35px;
-    left: 0.1%;
+    left: 0px;
   }
 
   .globe-btn {
     position: absolute;
     z-index: 1;
-    top: 34.1%;
+    top: 167px;
     left: 1%;
   }
 
   .info-btn {
     position: absolute;
     z-index: 1;
-    top: 18%;
+    top: 60px;
     left: 1%;
 
     .has-text-info {
@@ -338,7 +379,7 @@ export default {
 
   .ticket-list {
     width: 100%;
-    max-width: 620px;
+    max-width: 685px;
     height: 85vh;
     margin: 0 auto;
     background: #596470;
