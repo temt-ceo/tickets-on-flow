@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="hero">
-      <video class="hero--video" src="https://static.videezy.com/system/resources/previews/000/012/739/original/Particles_3_60s_2kres_1.mp4" muted></video>
+      <video class="hero--video" src="https://static.videezy.com/system/resources/previews/000/012/739/original/Particles_3_60s_2kres_1.mp4" muted />
       <div class="hero--overlay">
         <div class="hero--content">
           <section class="section">
@@ -36,14 +36,14 @@
               <b-button
                 v-if="bloctoWalletUser.addr && (!hasDispenserVault || !hasDispenser)"
                 :disabled="hasDispenserVault || isApplied"
-                type="is-success is-light"
+                type="is-link is-light"
                 @click="requestDispenser"
               >
                 {{ $t('ticket_text33') }}
               </b-button>
               <b-button
                 v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
-                type="is-success is-light"
+                type="is-link is-light"
                 @click="showConfirmModal = true"
               >
                 {{ $t('ticket_text34') }}

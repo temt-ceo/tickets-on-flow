@@ -19,6 +19,7 @@
             </p>
             <b-button
               v-if="bloctoWalletUser.addr"
+              :disabled="!isAdmin"
               type="is-link is-light"
               @click="showConfirmModal = true"
             >
@@ -30,6 +31,13 @@
               @click="dispenseDispenser"
             >
               Grant Ticket Mint functionality
+            </b-button>
+            <b-button
+              v-if="bloctoWalletUser.addr && isAdmin"
+              type="is-link is-light"
+              @click="showTestModal1 = true"
+            >
+              Check Ticket Requesters
             </b-button>
             <b-button
               v-if="!bloctoWalletUser.addr"
@@ -54,6 +62,12 @@
         @closeModal="showConfirmModal=false"
       />
     </b-modal>
+    <b-modal v-model="showTestModal1">
+      <test-ticket-requesters-modal
+        :address="address"
+        @closeModal="showTestModal1=false"
+      />
+    </b-modal>
   </section>
 </template>
 
@@ -61,16 +75,20 @@
 import FlowScripts from '~/cadence/scripts'
 import FlowTransactions from '~/cadence/transactions'
 import DispenserConfirmModal from '~/components/common/DispenserConfirmModal'
+import TestTicketRequestersModal from '~/components/test/TestTicketRequestersModal'
 
 export default {
   name: 'AdministratorPage',
   components: {
-    DispenserConfirmModal
+    DispenserConfirmModal,
+    TestTicketRequestersModal
   },
   data () {
     return {
       dispenserRequesters: [],
+      address: null,
       showConfirmModal: false,
+      showTestModal1: false,
       bloctoWalletUser: {},
       isAdmin: false,
       noticeTitle: '',
@@ -103,6 +121,7 @@ export default {
       if (this.bloctoWalletUser?.addr) {
         this.isAdmin = await this.isAdminWallet()
         if (this.isAdmin) {
+          this.address = this.bloctoWalletUser?.addr
           await this.getRequestedDispensers()
           this.noticeTitle = 'Tap the grant button.'
         } else {

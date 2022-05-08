@@ -194,7 +194,8 @@ export default {
   computed: {
     filteredDataArray () {
       return this.tickets.filter((option) => {
-        return option
+        console.log(option.label.toString().toLowerCase().includes(this.searchValue.toLowerCase()), this.searchValue.toLowerCase(), 8888)
+        return option.label
           .toString()
           .toLowerCase()
           .includes(this.searchValue.toLowerCase())
@@ -397,6 +398,8 @@ export default {
     padding-top: 20px;
     background-color: white;
     bottom: 0;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
 
     &::-webkit-scrollbar {
       display: none;
@@ -458,6 +461,7 @@ export default {
           text-align: left;
           display: inline-block;
           padding-right: 7px;
+          padding-bottom: 3px;
         }
       }
     }
@@ -474,7 +478,7 @@ export default {
     .twitter-label {
       color: #48c78e!important;
       position: absolute;
-      top: 52px;
+      bottom: 7px;
       left: 130px;
       font-weight: bold;
       text-decoration: underline;

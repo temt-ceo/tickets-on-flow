@@ -119,6 +119,7 @@ pub contract Tv18 {
   ** [Resource] AdminPublic
   */
   pub resource AdminPublic {
+    // [public access]
     pub fun getDispenserRequesters(): [DispenserStruct] {
       var dispenserArr: [DispenserStruct] = []
       for data in Tv18.dispenserOwners.values {
@@ -131,6 +132,11 @@ pub contract Tv18 {
     }
 
     init() {
+    }
+
+    // [public access]
+    pub fun getTicketRequesters(dispenser_id: UInt32): {UInt32: RequestStruct}? {
+      return Tv18.ticketRequesters[dispenser_id]
     }
   }
 

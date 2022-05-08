@@ -101,5 +101,19 @@ pub fun main(addr: Address, dispenser_id: UInt32): {UInt64: String}? {
       ?? panic("Could not borrow TicketVault capability.")
   return ticketVault.getCode(dispenser_id: dispenser_id)
 }
+  `,
+  examinTicketRequesters: `
+import Tv18 from 0xT
+pub fun main(address: Address, idList: [UInt32]): {UInt32: {UInt32: Tv18.RequestStruct}?} {
+  let account = getAccount(address)
+  let adminVault = account.getCapability<&Tv18.AdminPublic>(Tv18.AdminPublicPath).borrow()
+      ?? panic("Could not borrow Administrator capability.")
+  let ticketRequester: {UInt32: {UInt32: Tv18.RequestStruct}?} = {}
+  for dispenser_id in idList {
+    let obj: {UInt32: Tv18.RequestStruct}? = adminVault.getTicketRequesters(dispenser_id: dispenser_id)
+    ticketRequester[dispenser_id] = obj
+  }
+  return ticketRequester
+}
   `
 }
