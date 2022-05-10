@@ -38,14 +38,12 @@ export default {
     }
   },
   mounted () {
-    console.log(88)
     const unixTime = parseInt((new Date(this.ticketWhen1).getTime() - new Date().getTime()) / 1000)
     const h = Math.floor(unixTime / 3600)
     const m = Math.floor(unixTime / 60 % 60)
     const day = new Date().getDay()
     const dayEvent = new Date(this.ticketWhen1)
     const dayEventDay = dayEvent.getDay()
-    console.log(unixTime, h, m)
     if (unixTime < 0) {
       // すでに過去のイベントの場合、6時間経過ずみで12時間後次のイベントの始まる曜日に変わるのであれば、
       const day2 = new Date(new Date().getTime() + 12 * 60 * 60 * 1000).getDay()
@@ -72,7 +70,6 @@ export default {
           }
         }
         if (nextDate <= 6) {
-          // console.log(nextDate)
           const nextEventDate = new Date(new Date().getTime() + nextDate * 24 * 60 * 60 * 1000)
           // ↓↓↓ nextEventが次のイベントの開始日
           const nextEvent = new Date(nextEventDate.getFullYear(), nextEventDate.getMonth(), nextEventDate.getDate(), dayEvent.getHours(), dayEvent.getMinutes(), dayEvent.getSeconds())

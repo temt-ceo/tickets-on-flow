@@ -100,7 +100,6 @@ export default {
         this.latestBlockHeight = laatestBlock.height
         this.ticketUsedList = this.ticketUsedTokenList.reverse()
       } catch (e) {
-        console.log(e)
       }
     }
   }

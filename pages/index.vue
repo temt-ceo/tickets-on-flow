@@ -150,6 +150,13 @@
         </section>
       </b-carousel-item>
     </b-carousel>
+    <div class="hero">
+      <div class="hero--overlay">
+        <div class="hero--content">
+        </div>
+      </div>
+    </div>
+    <img class="anime-image" src="/tickets.png">
 
   </section>
 </template>
@@ -297,7 +304,7 @@ export default {
                 }
                 this.tickets.push(data)
                 this.ticketsBkup.push(data)
-              }, 60 * i + 60)
+              }, 60 * i + 750)
             }
           }
         }
@@ -318,7 +325,6 @@ export default {
           }
         })
       } catch (e) {
-        console.log(e)
       }
     },
     searchBarselected (selected) {
@@ -622,6 +628,82 @@ export default {
     .icon {
       background-color: inherit;
     }
+  }
+}
+
+.hero {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 3;
+  animation: fadeOut 1.5s linear forwards;
+}
+
+.hero--overlay {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(180deg, rgba(0,0,0,1), #1b1c50);
+  background-size: cover;
+  z-index: 2;
+}
+
+.hero--content {
+  width: 100%;
+  height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  color: #dadff4;
+}
+
+.hero--bottom {
+  width: 100%;
+  height: 50vh;
+  background-color: #1c1c1c;
+  background-image: linear-gradient(0deg, rgba(0,0,0,.3), #1b1c50);
+}
+
+.anime-image {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  margin: 0 auto;
+  z-index: 5;
+  animation: fadeOut2 1.0s linear forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(0px);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-150vh);
+    opacity: 0.4;
+  }
+}
+
+@keyframes fadeOut2 {
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0.0;
   }
 }
 

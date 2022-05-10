@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="hero">
-      <video class="hero--video" src="https://static.videezy.com/system/resources/previews/000/012/739/original/Particles_3_60s_2kres_1.mp4" muted></video>
+      <video class="hero--video" src="https://static.videezy.com/system/resources/previews/000/012/739/original/Particles_3_60s_2kres_1.mp4" muted autoplay playsinline />
       <div class="hero--overlay">
         <div class="hero--content">
           <section class="section">
@@ -218,7 +218,6 @@ export default {
                 const lastUsedTime = parseInt(usedTime.replace(/.0+$/, '')) * 1000
                 const pastTime = parseInt((new Date(lastUsedTime).getTime() - new Date().getTime()) / 1000)
                 const h = Math.floor(pastTime / 3600)
-                console.log(h, 'last used time hour', 999999)
                 if (h <= -4) {
                   // 4時間以上経過
                   this.ticketStatus = 1 // 新しくリクエストできる

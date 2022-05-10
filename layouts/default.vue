@@ -538,6 +538,9 @@ export default {
 <style lang="scss">
 
 .navbar {
+  position: sticky;
+  top: 0;
+
   .navbar-item {
     padding: 0 0.25rem 0 0.75rem;
 
