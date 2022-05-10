@@ -358,7 +358,7 @@ pub contract Tv18 {
     pub fun deposit(token: @Ticket)
     pub fun getId(): UInt32
     pub fun getCode(dispenser_id: UInt32): {UInt64: String}?
-    pub fun getUsedTime(dispenser_id: UInt32): UFix64?
+    pub fun getUsedTime(dispenser_id: UInt32): {UInt64: UFix64??}?
   }
 
   /*
@@ -397,16 +397,14 @@ pub contract Tv18 {
     }
 
     // [public access]
-    pub fun getUsedTime(dispenser_id: UInt32): UFix64? {
+    pub fun getUsedTime(dispenser_id: UInt32): {UInt64: UFix64??}? {
       if(Tv18.ticketRequesters.containsKey(dispenser_id)) {
         if let data = Tv18.ticketRequesters[dispenser_id]![self.user_id] {
           if (data.latest_token == nil) {
             return nil
           }
           let token_id = data.latest_token!
-          if (self.ownedTicket[token_id]?.getUsedTime() != nil) {
-            return self.ownedTicket[token_id]?.getUsedTime()!
-          }
+          return {token_id: self.ownedTicket[token_id]?.getUsedTime()}
         }
       }
       return nil

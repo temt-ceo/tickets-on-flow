@@ -609,10 +609,10 @@ export default {
 .carousel {
   position: absolute;
   z-index: 100;
-  top: 62px;
+  top: 0px;
   left: 0;
-  width: 100vw;
-  height: 90vh;
+  width: 100%;
+  height: 100%;
 
   .close-icon {
     position: absolute;

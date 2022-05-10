@@ -85,10 +85,11 @@ export default {
           let mPrev = null
           if (this.ticketTime[this.dispenser]) {
             previousEventTime = parseInt(this.ticketTime[this.dispenser] - new Date().getTime()) / 1000
-            hPrev = Math.floor(previousEventTime / 3600)
-            mPrev = Math.floor(previousEventTime / 60 % 60)
+            hPrev = 24 - Math.ceil(previousEventTime / 3600)
+            mPrev = 60 - Math.ceil(previousEventTime / 60 % 60)
           }
-          if (!hPrev || hPrev < -4) {
+
+          if (!hPrev || hPrev > 4) {
             switch (hNext) {
               case 0:
                 this.ticketDateTime = `${this.$t('ticket_text12')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`

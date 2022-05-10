@@ -387,7 +387,7 @@ export default {
       } catch (e) {
       }
     },
-    async requestCode (checkOnly) {
+    async requestCode () {
       const result = await this.$fcl.send(
         [
           this.$fcl.script(FlowScripts.getTicketCode),
@@ -398,9 +398,9 @@ export default {
         ]
       ).then(this.$fcl.decode)
       if (result && Object.keys(result).length > 0) {
-        this.ticketTokenId = parseInt(Object.keys(result)[0])
-        if (result[this.ticketTokenId] !== '') {
-          this.code = result[this.ticketTokenId].replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
+        const ticketTokenId = parseInt(Object.keys(result)[0])
+        if (result[ticketTokenId] !== '') {
+          this.code = result[ticketTokenId].replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
         }
       }
     },
@@ -414,6 +414,11 @@ export default {
           ])
         ]
       ).then(this.$fcl.decode)
+      if (result && Object.keys(result).length > 0) {
+        this.ticketTokenId = parseInt(Object.keys(result)[0])
+        return result[this.ticketTokenId]
+      }
+
       return result
     },
     async flowWalletLogout () {

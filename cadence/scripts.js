@@ -86,7 +86,7 @@ pub fun main(addr: Address): &Tv18.TicketVault{Tv18.ITicketPublic}? {
   `,
   getTicketUsedTime: `
 import Tv18 from 0xT
-pub fun main(addr: Address, dispenser_id: UInt32): UFix64? {
+pub fun main(addr: Address, dispenser_id: UInt32): {UInt64: UFix64??}? {
   let account = getAccount(addr)
   let ticketVault = account.getCapability<&Tv18.TicketVault{Tv18.ITicketPublic}>(Tv18.TicketVaultPublicPath).borrow()
       ?? panic("Could not borrow TicketVault capability.")
