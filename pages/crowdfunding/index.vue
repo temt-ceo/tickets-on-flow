@@ -14,7 +14,7 @@
               {{ ticketUsedMessage }}
             </b-notification>
             <h1 class="page-title">
-              {{ $t('ticket_text31') }}
+              {{ $t('ticket_text51') }}
             </h1>
             <div class="content">
               <h1 class="notice">
@@ -70,10 +70,10 @@
       </div>
     </div>
     <b-modal v-model="showInputModal">
-      <ticket-input-modal
+      <crowdfunding-input-modal
         :address="address"
         :dispenser="dispenserId"
-        :ticket-page="dispenserTicketPage"
+        :dispenser-page="dispenserPage"
         @closeModal="showInputModal=false"
       />
     </b-modal>
@@ -97,14 +97,14 @@
 <script>
 import FlowScripts from '~/cadence/scripts'
 import FlowTransactions from '~/cadence/transactions'
-import TicketInputModal from '~/components/common/TicketInputModal'
+import CrowdfundingInputModal from '~/components/common/CrowdfundingInputModal'
 import TicketConfirmModal from '~/components/common/TicketConfirmModal'
 import TicketConfirmPayModal from '~/components/common/TicketConfirmPayModal'
 
 export default {
-  name: 'DispenserMaintenancePage',
+  name: 'CrowdfundingMaintenancePage',
   components: {
-    TicketInputModal,
+    CrowdfundingInputModal,
     TicketConfirmModal,
     TicketConfirmPayModal
   },
@@ -114,7 +114,7 @@ export default {
       address: null,
       dispenserId: null,
       dispenserDomains: [],
-      dispenserTicketPage: '',
+      dispenserPage: '',
       hasDispenserVault: false,
       hasDispenser: false,
       noticeTitle: '',
@@ -212,9 +212,9 @@ export default {
         ).then(this.$fcl.decode)
         if (dispenserInfo) {
           this.dispenserId = parseInt(Object.keys(dispenserInfo)[0])
-          this.dispenserTicketPage = 'https://tickets-on-flow.web.app/ti/' + dispenserInfo[this.dispenserId]
+          this.dispenserPage = 'https://tickets-on-flow.web.app/ti/' + dispenserInfo[this.dispenserId]
         } else {
-          this.dispenserTicketPage = ''
+          this.dispenserPage = ''
         }
       } catch (e) {
       }
@@ -244,7 +244,7 @@ export default {
           message: this.$t('ticket_text44'),
           inputAttrs: {
             type: 'text',
-            placeholder: `${this.$t('ticket_text40')} Online cooking school`,
+            placeholder: `${this.$t('ticket_text40')} Crowdfunding`,
             value: '',
             maxlength: 40
           },

@@ -221,9 +221,6 @@ export default {
             ])
           ]
         ).then(this.$fcl.decode)
-        dispenserRequesters.forEach((obj) => {
-          obj.email = obj.email.replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
-        })
         this.dispenserRequesters = dispenserRequesters
       } catch (e) {
       }

@@ -111,7 +111,12 @@
             </template>
             <nuxt-link to="/dispenser/">
               <b-dropdown-item aria-role="listitem">
-                {{ $t('hamburger_menu1') }}
+                ・{{ $t('hamburger_menu1') }}
+              </b-dropdown-item>
+            </nuxt-link>
+            <nuxt-link to="/crowdfunding/">
+              <b-dropdown-item aria-role="listitem">
+                ・{{ $t('hamburger_menu4') }}
               </b-dropdown-item>
             </nuxt-link>
             <b-dropdown-item aria-role="listitem" class="i18n" @click="isI18nActive = !isI18nActive">
@@ -120,6 +125,9 @@
                 icon="language"
                 size="is-large"
               />
+            </b-dropdown-item>
+            <b-dropdown-item aria-role="listitem" class="menu-help" @click="isToUActive = !isToUActive">
+              {{ $t('hamburger_menu5') }}
             </b-dropdown-item>
             <b-dropdown-item aria-role="listitem" class="menu-help" @click="isToUActive = !isToUActive">
               {{ $t('hamburger_menu2') }}
@@ -312,7 +320,7 @@ export default {
         github: {
           transaction: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/transactions.js',
           script: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/scripts.js',
-          contract1: 'https://flow-view-source.com/testnet/account/0x39899237382f2a8a/contract/Tv18',
+          contract1: 'https://flow-view-source.com/testnet/account/0x39899237382f2a8a/contract/TicketsV19',
           contract2: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/Tickets.cdc',
           playground: 'https://play.onflow.org/d9b1cb97-b54c-4d49-8187-258d6c2eab41?type=account&id=0e075014-fb30-4594-96d5-d13d94383399&storage=none'
         },

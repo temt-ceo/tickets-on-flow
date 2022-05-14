@@ -26,42 +26,8 @@
                 :placeholder="$t('operation_text1')"
               />
             </b-field>
-            <b-field :label="'2. ' + $t('operation_text6')">
-              <b-select
-                v-model="registerWhereType"
-                :placeholder="$t('operation_text2')"
-              >
-                <option value="1">
-                  Zoom
-                </option>
-                <option value="2">
-                  Instagram
-                </option>
-                <option value="3">
-                  Discord
-                </option>
-                <option value="4">
-                  Teams
-                </option>
-                <option value="5">
-                  Google Meet
-                </option>
-                <option value="6">
-                  {{ $t('ticket_text2') }}
-                </option>
-                <option value="7">
-                  YouTube
-                </option>
-                <option value="8">
-                  {{ $t('ticket_text3') }}
-                </option>
-                <option value="9">
-                  {{ $t('ticket_text4') }}
-                </option>
-              </b-select>
-            </b-field>
             <b-field
-              :label="'3. ' + $t('operation_text7')"
+              :label="'2. ' + $t('operation_text7')"
               :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
             >
               <b-input
@@ -70,7 +36,7 @@
                 :placeholder="$t('operation_text3')"
               />
             </b-field>
-            <b-field :label="'4. ' + $t('operation_text8')">
+            <b-field :label="'3. ' + $t('operation_text35')">
               <b-datepicker
                 v-model="registerWhen"
                 :first-day-of-week="1"
@@ -96,67 +62,13 @@
                 :placeholder="$t('operation_text2')"
               />
             </b-field>
-            <b-field :label="$t('operation_text9')">
-              <b-taginput
-                v-model="registerWhenWeekdays"
-                :data="filteredWeekdays"
-                autocomplete
-                :open-on-focus="tagOpenOnFocus"
-                field="day"
-                icon="label"
-                :placeholder="$t('operation_text2')"
-                @typing="getFilteredWeekdays">
-              </b-taginput>
-            </b-field>
-            <b-field :label="'5. ' + $t('operation_text10')">
-              <b-select
-                v-model="registerPrice"
-                :placeholder="$t('operation_text2')"
-              >
-                <option value="1">
-                  1 FLOW
-                </option>
-                <option value="0.9">
-                  0.9 FLOW
-                </option>
-                <option value="0.8">
-                  0.8 FLOW
-                </option>
-                <option value="0.7">
-                  0.7 FLOW
-                </option>
-                <option value="0.6">
-                  0.6 FLOW
-                </option>
-                <option value="0.5">
-                  0.5 FLOW
-                </option>
-                <option value="0.4">
-                  0.4 FLOW
-                </option>
-                <option value="0.3">
-                  0.3 FLOW
-                </option>
-                <option value="0.2">
-                  0.2 FLOW
-                </option>
-                <option value="0.1">
-                  0.1 FLOW
-                </option>
-                <option value="0.05">
-                  0.05 FLOW
-                </option>
-                <option value="5">
-                  5 FLOW
-                </option>
-              </b-select>
-            </b-field>
+
             <div class="button-wrap">
               <b-button @click="$emit('closeModal')">
                 Close
               </b-button>
               <b-button
-                :disabled="!registerName || !registerWhere || !registerWhereType || !registerWhen || !registerPrice"
+                :disabled="!registerName || !registerWhere || !registerWhen"
                 @click="registerTicketInfo"
               >
                 {{ $t('operation_text12') }}
@@ -168,7 +80,7 @@
               {{ $t('operation_text14') }}<br>
               {{ $t('operation_text15') }}<br>
               {{ $t('operation_text16') }}<br>
-              {{ $t('operation_text17') }} <a :href="ticketPage">{{ ticketPage }}</a>
+              {{ $t('operation_text17') }} <a :href="dispenserPage">{{ dispenserPage }}</a>
             </p>
           </div>
           <div v-if="showFlag && ticketInfo && !isCompleteRegister" class="text-wrap">
@@ -188,42 +100,8 @@
                 :placeholder="$t('operation_text1')"
               />
             </b-field>
-            <b-field :label="'2. ' + $t('operation_text6')">
-              <b-select
-                v-model="registerWhereType"
-                :placeholder="$t('operation_text2')"
-              >
-                <option value="1">
-                  Zoom
-                </option>
-                <option value="2">
-                  Instagram
-                </option>
-                <option value="3">
-                  Discord
-                </option>
-                <option value="4">
-                  Teams
-                </option>
-                <option value="5">
-                  Google Meet
-                </option>
-                <option value="6">
-                  Ticket website
-                </option>
-                <option value="7">
-                  YouTube
-                </option>
-                <option value="8">
-                  Any tool
-                </option>
-                <option value="9">
-                  On-site
-                </option>
-              </b-select>
-            </b-field>
             <b-field
-              :label="'3. ' + $t('operation_text7')"
+              :label="'2. ' + $t('operation_text7')"
               :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
             >
               <b-input
@@ -232,7 +110,7 @@
                 :placeholder="$t('operation_text3')"
               />
             </b-field>
-            <b-field :label="'4. ' + $t('operation_text8')">
+            <b-field :label="'3. ' + $t('operation_text35')">
               <b-datepicker
                 v-model="registerWhen"
                 :first-day-of-week="1"
@@ -258,63 +136,8 @@
                 :placeholder="$t('operation_text2')"
               />
             </b-field>
-            <b-field :label="$t('operation_text9')">
-              <b-taginput
-                v-model="registerWhenWeekdays"
-                :data="filteredWeekdays"
-                autocomplete
-                :open-on-focus="tagOpenOnFocus"
-                field="day"
-                icon="label"
-                :placeholder="$t('operation_text2')"
-                @typing="getFilteredWeekdays">
-              </b-taginput>
-            </b-field>
 
-            <b-field :label="'5. ' + $t('operation_text10')">
-              <b-select
-                v-model="registerPrice"
-                :placeholder="$t('operation_text2')"
-              >
-                <option value="1">
-                  1 FLOW
-                </option>
-                <option value="0.9">
-                  0.9 FLOW
-                </option>
-                <option value="0.8">
-                  0.8 FLOW
-                </option>
-                <option value="0.7">
-                  0.7 FLOW
-                </option>
-                <option value="0.6">
-                  0.6 FLOW
-                </option>
-                <option value="0.5">
-                  0.5 FLOW
-                </option>
-                <option value="0.4">
-                  0.4 FLOW
-                </option>
-                <option value="0.3">
-                  0.3 FLOW
-                </option>
-                <option value="0.2">
-                  0.2 FLOW
-                </option>
-                <option value="0.1">
-                  0.1 FLOW
-                </option>
-                <option value="0.05">
-                  0.05 FLOW
-                </option>
-                <option value="5">
-                  5 FLOW
-                </option>
-              </b-select>
-            </b-field>
-            <b-field :label="'6. ' + $t('operation_text11')">
+            <b-field :label="$t('operation_text11')">
               <b-checkbox
                 v-model="registerTwitterEdit"
                 true-value="Yes"
@@ -328,7 +151,7 @@
                 Close
               </b-button>
               <b-button
-                :disabled="!registerWhere || !registerWhereType || !registerWhen || !registerPrice"
+                :disabled="!registerWhere || !registerWhen"
                 @click="registerTicketInfo"
               >
                 {{ $t('operation_text13') }}
@@ -366,7 +189,7 @@ export default {
       required: true,
       default: null
     },
-    ticketPage: {
+    dispenserPage: {
       type: String,
       required: true,
       default: ''
@@ -376,12 +199,12 @@ export default {
     return {
       ticketInfo: null,
       registerName: '',
-      registerWhereType: null,
+      registerWhereType: '-',
       registerWhere: '',
       registerWhen: new Date(),
       registerWhenWeekdays: [],
       registerType: null, // Reserves for the future
-      registerPrice: null,
+      registerPrice: 0,
       registerTwitter: '',
       registerTwitterEdit: 'No',
       transactionScanUrl: '',

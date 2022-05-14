@@ -26,10 +26,10 @@
 
         <b-table-column
           v-slot="props"
-          field="email"
-          label="Email"
+          field="description"
+          label="Description"
         >
-          {{ props.row.email }}
+          {{ props.row.description }}
         </b-table-column>
 
         <b-table-column

@@ -50,14 +50,16 @@
       {{ selected }}
       <div class="searchbar">
         <b-autocomplete
-          rounded
           v-model="searchValue"
           :data="filteredDataArray"
           :placeholder="$t('operation_text4')"
           clearable
+          rounded
           @select="option => { searchBarselected(option) }"
         >
-          <template #empty>No results found</template>
+          <template #empty>
+            No results found
+          </template>
         </b-autocomplete>
       </div>
     </div>
@@ -72,11 +74,10 @@
         :custom-formatter="sliderFormatter"
         indicator
         tooltip-always
-      >
-      </b-slider>
+      />
     </b-field>
 
-    <div @click="changeLang" class="globe-btn">
+    <div class="globe-btn" @click="changeLang">
       <b-icon
         pack="fa-solid"
         icon="globe"
@@ -99,7 +100,7 @@
         </template>
         <b-dropdown-item aria-role="listitem" @click="helpHowToUse">
           <div class="media">
-            <b-icon class="media-left" icon="information-outline"></b-icon>
+            <b-icon class="media-left" icon="information-outline" />
             <div class="media-content">
               <h3>{{ $t('help_text3') }}</h3>
             </div>
@@ -109,8 +110,7 @@
     </div>
     <div class="hero2">
       <div class="hero--overlay">
-        <div class="hero--content">
-        </div>
+        <div class="hero--content" />
       </div>
     </div>
     <img class="anime-image" src="/tickets.png" :style="{display: offIcon}">
@@ -144,8 +144,7 @@
               pack="fa-solid"
               icon="xmark"
               size="is-large"
-            >
-            </b-icon>
+            />
           </div>
         </section>
       </b-carousel-item>
