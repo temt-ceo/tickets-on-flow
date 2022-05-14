@@ -7,6 +7,7 @@ pub contract Tv18 {
   pub event DispenserGranted(dispenser_id: UInt32, address: Address)
   pub event TicketRequested(dispenser_id: UInt32, user_id: UInt32, address: Address)
   pub event TicketUsed(dispenser_id: UInt32, user_id: UInt32, token_id: UInt64, address: Address, price: UFix64)
+  pub event ClowdFunding(dispenser_id: UInt32, user_id: UInt32, address: Address, fund: UFix64)
 
   // Paths
   pub let AdminPublicPath: PublicPath
@@ -347,8 +348,9 @@ pub contract Tv18 {
   */
   pub resource interface ITicketPrivate {
     access(contract) var ownedTicket: @{UInt64: Ticket}
-    pub fun requestTicket(dispenser_id: UInt32, user_id: UInt32, address: Address)
+    pub fun requestTicket(dispenser_id: UInt32, address: Address)
     pub fun useTicket(dispenser_id: UInt32, token_id: UInt64, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault)
+    pub fun clowdfunding(dispenser_id: UInt32, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault)
   }
 
   /*
@@ -411,26 +413,26 @@ pub contract Tv18 {
     }
 
     // [private access]
-    pub fun requestTicket(dispenser_id: UInt32, user_id: UInt32, address: Address) {
+    pub fun requestTicket(dispenser_id: UInt32, address: Address) {
       let time = getCurrentBlock().timestamp
       if (Tv18.ticketRequesters.containsKey(dispenser_id)) {
-        if let data = Tv18.ticketRequesters[dispenser_id]![user_id] {
-          let ref = &Tv18.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
+        if let data = Tv18.ticketRequesters[dispenser_id]![self.user_id] {
+          let ref = &Tv18.ticketRequesters[dispenser_id]![self.user_id]! as &RequestStruct
           ref.count = data.count + 1
           ref.time = time
           ref.latest_token = nil
 
           emit TicketRequested(dispenser_id: dispenser_id, user_id: self.user_id, address: address)
         } else {
-          let requestStruct = RequestStruct(time: time, user_id: user_id, address: address)
+          let requestStruct = RequestStruct(time: time, user_id: self.user_id, address: address)
           if let data = Tv18.ticketRequesters[dispenser_id] {
-            data[user_id] = requestStruct
+            data[self.user_id] = requestStruct
             Tv18.ticketRequesters[dispenser_id] = data
           }
         }
       } else {
-        let requestStruct = RequestStruct(time: time, user_id: user_id, address: address)
-        Tv18.ticketRequesters[dispenser_id] = {user_id: requestStruct}
+        let requestStruct = RequestStruct(time: time, user_id: self.user_id, address: address)
+        Tv18.ticketRequesters[dispenser_id] = {self.user_id: requestStruct}
       }
     }
 
@@ -453,6 +455,26 @@ pub contract Tv18 {
       Tv18.FlowTokenVault.borrow()!.deposit(from: <- fee)
       Tv18.DispenserFlowTokenVault[dispenser_id]!.borrow()!.deposit(from: <- payment)
       emit TicketUsed(dispenser_id: dispenser_id, user_id: self.user_id, token_id: token_id, address: address, price: price)
+    }
+
+    // [private access]
+    pub fun clowdfunding(dispenser_id: UInt32, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault) {
+      pre {
+        fee.balance >= 0.1: "fee is less than 0.1."
+        Tv18.DispenserFlowTokenVault[dispenser_id] != nil: "Receiver is not set."
+        Tv18.ticketRequesters.containsKey(dispenser_id): "Clowdfunding registration info is not set."
+      }
+
+      let fund: UFix64 = payment.balance + fee.balance
+      if(Tv18.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = Tv18.ticketRequesters[dispenser_id]![self.user_id] {
+          let ref = &Tv18.ticketRequesters[dispenser_id]![self.user_id]! as &RequestStruct
+          ref.paid = data.paid + fund
+        }
+      }
+      Tv18.FlowTokenVault.borrow()!.deposit(from: <- fee)
+      Tv18.DispenserFlowTokenVault[dispenser_id]!.borrow()!.deposit(from: <- payment)
+      emit ClowdFunding(dispenser_id: dispenser_id, user_id: self.user_id, address: address, fund: fund)
     }
 
     destroy() {

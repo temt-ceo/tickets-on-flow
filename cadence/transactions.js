@@ -87,8 +87,7 @@ transaction(dispenser_id: UInt32) {
     prepare(signer: AuthAccount) {
         let ticketVault = signer.borrow<&Tv18.TicketVault>(from: /storage/Tv18TicketVault)
             ?? panic("Could not borrow reference to the Owner's TicketVault.")
-        let user_id = ticketVault.getId()
-        ticketVault.requestTicket(dispenser_id: dispenser_id, user_id: user_id, address: signer.address)
+        ticketVault.requestTicket(dispenser_id: dispenser_id, address: signer.address)
     }
 
     execute {
@@ -131,6 +130,32 @@ transaction(dispenser_id: UInt32, token_id: UInt64, price: UFix64) {
 
     execute {
         log("ticket is used.")
+    }
+}
+  `,
+  clowdfunding: `
+import FlowToken from 0x7e60df042a9c0868
+import FungibleToken from 0x9a0766d93b6608b7
+import Tv18 from 0xT
+transaction(dispenser_id: UInt32, fund: UFix64) {
+    prepare(signer: AuthAccount) {
+        signer.save<@Tv18.TicketVault>(<- Tv18.createTicketVault(dispenser_id: dispenser_id, address: signer.address), to: /storage/Tv18TicketVault)
+        // public path
+        signer.link<&Tv18.TicketVault{Tv18.ITicketPublic}>(Tv18.TicketVaultPublicPath, target: /storage/Tv18TicketVault)
+
+        let ticketVault = signer.borrow<&Tv18.TicketVault>(from: /storage/Tv18TicketVault)
+            ?? panic("Could not borrow reference to the Owner's TicketVault.")
+        var charge_fee = 0.1
+        if (fund >= 10) {
+            charge_fee = 1.0
+        }
+        let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: fund - charge_fee) as! @FlowToken.Vault
+        let commission <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: charge_fee) as! @FlowToken.Vault
+        ticketVault.clowdfunding(dispenser_id: dispenser_id, address: signer.address, payment: <- payment, fee: <- commission)
+        }
+
+    execute {
+        log("clowdfunding is executed.")
     }
 }
   `
