@@ -34,7 +34,7 @@
             type="is-danger"
           />
         </a>
-        <a :href="url.discord" target="_blank">
+        <a :href="url.discord" target="_blank" class="discord">
           <b-icon
             class="navbar-item"
             pack="fa-brands"
@@ -43,21 +43,8 @@
             type="is-success"
           />
         </a>
-        <span @click="showAccount">
-          <b-icon
-            class="navbar-item"
-            icon="account"
-            size="medium"
-            type="is-warning"
-          />
-        </span>
-        <b-icon
-          v-if="this.loginLabel == 'Login'"
-          class="notice-icon"
-          icon="circle"
-          size="medium"
-          type="is-warning"
-        />
+        <user-data />
+
         <b-dropdown
           v-if="developMode"
           aria-role="list"
@@ -246,14 +233,6 @@
       </div>
     </b-modal>
 
-    <b-modal v-model="showConfirmModal">
-      <owned-tickets-confirm-modal
-        :tickets="ownedTicket"
-        :wallet="bloctoWalletUser"
-        @closeModal="showConfirmModal=false"
-      />
-    </b-modal>
-
     <Nuxt />
 
     <b-sidebar
@@ -310,9 +289,6 @@
               <b-menu-item label="Wallet Address" @click="helpWallet" />
             </b-menu-item>
           </b-menu-list>
-          <b-menu-list label="Actions">
-            <b-menu-item :label="loginLabel" @click="walletLogin" />
-          </b-menu-list>
         </b-menu>
       </div>
     </b-sidebar>
@@ -320,13 +296,12 @@
 </template>
 
 <script>
-import FlowScripts from '~/cadence/scripts'
-import OwnedTicketsConfirmModal from '~/components/common/OwnedTicketsConfirmModal'
+import UserData from '~/components/common/UserData'
 
 export default {
   name: 'DefaultLayout',
   components: {
-    OwnedTicketsConfirmModal
+    UserData
   },
   data () {
     return {
@@ -344,15 +319,11 @@ export default {
         youtube: 'https://www.youtube.com/channel/UC2ebXnn3Gab5qPrfKtGN6hA'
       },
       developMode: false,
-      ownedTicket: [],
-      showConfirmModal: false,
-      loginLabel: null,
       sidebarOpen: false,
       sidebarOverlay: true,
       sidebarFullheight: false,
       sidebarFullwidth: false,
       sidebarRight: true,
-      bloctoWalletUser: {},
       isToUActive: false,
       i18nRadioButton: this.$i18n.locale || 'en',
       isI18nActive: false
@@ -385,17 +356,8 @@ export default {
       ]
     }
   },
-  computed: {
-    tickets: {
-      get () {
-        return this.$store.state.tickets
-      }
-    }
-  },
-  async mounted () {
-    this.developMode = location.search === '?develop'
-    this.loginLabel = 'Logout'
-    await this.$fcl.currentUser.subscribe(this.setupWalletInfo)
+  mounted () {
+    this.developMode = location.search === '?m=developer'
     setTimeout(() => {
       window.scrollTo(0, 0)
     }, 100)
@@ -407,67 +369,6 @@ export default {
         this.isI18nActive = false
         location.reload()
       })
-    },
-    showAccount () {
-      if (this.loginLabel === 'Login') {
-        this.walletLogin()
-      } else {
-        this.showConfirmModal = true
-      }
-    },
-    async walletLogin () {
-      if (this.loginLabel === 'Logout') {
-        await this.$fcl.unauthenticate()
-        this.$buefy.toast.open({
-          message: 'Logged out.',
-          queue: false
-        })
-      } else {
-        this.$buefy.snackbar.open({
-          duration: 5000,
-          message: this.$t('help_text18'),
-          type: 'is-danger',
-          position: 'is-bottom-left',
-          actionText: null,
-          queue: false,
-          onAction: () => {
-          }
-        })
-        await this.$fcl.authenticate()
-      }
-    },
-    async setupWalletInfo (user) {
-      this.bloctoWalletUser = user
-      // get account data
-      if (this.bloctoWalletUser?.addr) {
-        this.loginLabel = 'Logout'
-        try {
-          const ret = await this.$fcl.send(
-            [
-              this.$fcl.script(FlowScripts.hasTicketResource),
-              this.$fcl.args([
-                this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
-              ])
-            ]
-          ).then(this.$fcl.decode)
-          const ownedTicket = ret.ownedTicket
-          const keys = Object.keys(ownedTicket)
-          keys.forEach((key) => {
-            if (ownedTicket[key].readable_code) {
-              ownedTicket[key].readable_code = ownedTicket[key].readable_code.replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
-            }
-            const ticketInfo = this.tickets.find(obj => obj.dispenser_id === ownedTicket[key].dispenser_id)
-            const ticketName = ticketInfo.name?.split('||@')
-            ownedTicket[key].path = `/ti/${ticketInfo.domain}`
-            ownedTicket[key].ticketName = ticketName[0]
-            ownedTicket[key].twitterAccount = ticketName[1]
-            this.ownedTicket.push(ownedTicket[key])
-          })
-        } catch (e) {
-        }
-      } else {
-        this.loginLabel = 'Login'
-      }
     },
     helpSnackbar (type) {
       let message = ''
@@ -518,7 +419,7 @@ export default {
     helpWallet () {
       this.$buefy.snackbar.open({
         duration: 5000,
-        message: this.bloctoWalletUser?.addr ? this.bloctoWalletUser?.addr : this.$t('help_text17'),
+        message: this.$t('help_text17'),
         type: 'is-danger',
         position: 'is-bottom-left',
         actionText: this.$t('help_text1'),
@@ -550,14 +451,20 @@ export default {
     }
   }
 
-  .notice-icon i {
-    color: #f14668;
-    font-size: 8px;
-    position: absolute;
-    left: 296px;
-    top: 15px;
-    &:before {
+  .discord {
+    display: none;
+  }
+
+  .notice-icon {
+    i {
+      color: #f14668;
       font-size: 8px;
+      position: absolute;
+      left: 256px;
+      top: 15px;
+      &:before {
+        font-size: 8px;
+      }
     }
   }
 
@@ -665,22 +572,35 @@ span.control-label {
 
 .section.top-screen{
   .b-slider {
-    .b-slider-fill {
-      background: #dbdbdb !important;
+    .b-slider-track {
+      background: none;
+
+      .b-slider-fill {
+        background: #dbdbdb !important;
+      }
+
+      .b-slider-thumb-wrapper.has-indicator .b-slider-thumb {
+        border-radius: 10px;
+        padding: 0px;
+        // background: #b5b5b5;
+        // color: #b5b5b5;
+      }
     }
-    .b-slider-thumb-wrapper.has-indicator .b-slider-thumb {
-      border-radius: 10px;
-      padding: 0px;
-      background: #b5b5b5;
-      color: #b5b5b5;
-    }
-    .b-tooltip.is-always .tooltip-content {
-      transform: translateY(100%) rotate(90deg);
+
+    .tooltip-trigger {
+      opacity: 0;
     }
   }
   .icon {
-    background-color: #454545;
-    border-radius: 5px;
+    .fa-2x {
+      font-size: 1.7em;
+    }
+
+    i.fa-globe {
+      background-color: #454545;
+      border-radius: 5px;
+      padding: 3px;
+    }
 
     &.is-clickable { // searchbar
       background-color: inherit;
@@ -771,12 +691,6 @@ span.control-label {
   .navbar,
   .navbar-burger {
     display: block;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .modal .animation-content {
-    width: 90% !important;
   }
 }
 

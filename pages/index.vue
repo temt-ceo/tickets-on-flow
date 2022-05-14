@@ -62,7 +62,7 @@
       </div>
     </div>
 
-    <b-field class="rotate-gage">
+    <b-field class="lang-gage">
       <b-slider
         v-model="language"
         :min="0"
@@ -80,7 +80,7 @@
       <b-icon
         pack="fa-solid"
         icon="globe"
-        size="medium"
+        size="is-large"
         type="is-info"
       />
     </div>
@@ -93,6 +93,7 @@
           <b-icon
             pack="fa-solid"
             icon="circle-info"
+            size="is-large"
             type="is-info"
           />
         </template>
@@ -104,16 +105,15 @@
             </div>
           </div>
         </b-dropdown-item>
-        <b-dropdown-item aria-role="listitem">
-          <div class="media">
-            <b-icon class="media-left" icon="information-outline"></b-icon>
-            <div class="media-content">
-              <h3>Configuration2</h3>
-            </div>
-          </div>
-        </b-dropdown-item>
       </b-dropdown>
     </div>
+    <div class="hero2">
+      <div class="hero--overlay">
+        <div class="hero--content">
+        </div>
+      </div>
+    </div>
+    <img class="anime-image" src="/tickets.png" :style="{display: offIcon}">
 
     <b-carousel
       v-if="showCarousel"
@@ -150,14 +150,6 @@
         </section>
       </b-carousel-item>
     </b-carousel>
-    <div class="hero">
-      <div class="hero--overlay">
-        <div class="hero--content">
-        </div>
-      </div>
-    </div>
-    <img class="anime-image" src="/tickets.png">
-
   </section>
 </template>
 
@@ -199,7 +191,9 @@ export default {
       searchLists: [],
       searchValue: '',
       ticketsBkup: [],
-      selected: null
+      selected: null,
+      loadingTime: 0,
+      offIcon: null
     }
   },
   computed: {
@@ -222,8 +216,12 @@ export default {
     }
   },
   async mounted () {
+    const timerID = setInterval(() => {
+      this.loadingTime += 200
+    }, 200)
     this.language = this.languageList.indexOf(this.$i18n.locale)
     await this.getTickets()
+    clearInterval(timerID)
   },
   methods: {
     sliderFormatter (val) {
@@ -304,7 +302,8 @@ export default {
                 }
                 this.tickets.push(data)
                 this.ticketsBkup.push(data)
-              }, 60 * i + 750)
+                this.offIcon = 'none'
+              }, 60 * i + (1500 - this.loadingTime))
             }
           }
         }
@@ -349,33 +348,32 @@ export default {
 }
 
 .section {
-  height: 91vh;
-  padding: 1.5rem 1.8rem 0;
+  height: calc(100vh - 60px);
+  padding: 1.5rem 0.3rem 0 2.7rem;
   max-width: 750px;
   margin: 0 auto;
   position: relative;
 
-  .rotate-gage {
-    transform: rotate(-90deg);
+  .lang-gage {
     position: absolute;
-    top: 110px;
+    top: 100px;
     z-index: 1;
-    width: 35px;
-    left: 0px;
+    width: 0;
+    left: 24px;
   }
 
   .globe-btn {
     position: absolute;
     z-index: 1;
-    top: 167px;
-    left: 1%;
+    top: 110px;
+    left: 0%;
   }
 
   .info-btn {
     position: absolute;
     z-index: 1;
-    top: 60px;
-    left: 1%;
+    top: 43px;
+    left: 0%;
 
     .has-text-info {
       color: aliceblue !important;
@@ -386,9 +384,9 @@ export default {
   .ticket-list {
     width: 100%;
     max-width: 685px;
-    height: 85vh;
+    height: calc(100vh - 100px);
     margin: 0 auto;
-    background: #596470;
+      background: #596470;
     border-radius: 30px;
     border: 5px solid rgba(1, 1, 1, .2);
     position: relative;
@@ -519,17 +517,17 @@ export default {
 
     .datetime {
       color: #7957d5;
-      margin-left: 10px;
+      margin-left: 6px;
     }
 
     .twitter-label {
       color: #48c78e!important;
       position: absolute;
-      bottom: 7px;
+      bottom: 10px;
       left: 130px;
       font-weight: bold;
       text-decoration: underline;
-      font-size: 17px;
+      font-size: 14px;
 
       &.long {
         font-size: 14px;
@@ -615,10 +613,14 @@ export default {
 .carousel {
   position: absolute;
   z-index: 100;
-  top: 0px;
+  top: 2px;
   left: 0;
   width: 100%;
   height: 100%;
+
+  .carousel-item {
+    height: 91vh;
+  }
 
   .close-icon {
     position: absolute;
@@ -631,13 +633,13 @@ export default {
   }
 }
 
-.hero {
+.hero2 {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   z-index: 3;
-  animation: fadeOut 1.5s linear forwards;
+  animation: fadeOut 2.1s linear forwards;
 }
 
 .hero--overlay {
@@ -677,7 +679,7 @@ export default {
   transform: translateX(-50%) translateY(-50%);
   margin: 0 auto;
   z-index: 5;
-  animation: fadeOut2 1.0s linear forwards;
+  animation: fadeOut2 1.6s linear forwards;
 }
 
 @keyframes fadeOut {
@@ -685,7 +687,7 @@ export default {
     transform: translateY(0px);
     opacity: 1;
   }
-  75% {
+  80% {
     transform: translateY(0px);
     opacity: 0.9;
   }
@@ -697,13 +699,26 @@ export default {
 
 @keyframes fadeOut2 {
   0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 0;
+  }
+  10% {
     opacity: 1;
   }
   80% {
-    opacity: 0.4;
+    opacity: 0.6;
   }
   100% {
     opacity: 0.0;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .hero2 {
+    left: -50%;
+    width: 200%;
   }
 }
 
