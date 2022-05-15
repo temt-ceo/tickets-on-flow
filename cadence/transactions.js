@@ -146,7 +146,7 @@ transaction(dispenser_id: UInt32, fund: UFix64) {
         let ticketVault = signer.borrow<&TicketsV19.TicketVault>(from: /storage/TicketsV19TicketVault)
             ?? panic("Could not borrow reference to the Owner's TicketVault.")
         var charge_fee = 0.1
-        if (fund >= 10) {
+        if (fund >= 10.0) {
             charge_fee = 1.0
         }
         let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: fund - charge_fee) as! @FlowToken.Vault

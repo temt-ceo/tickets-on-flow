@@ -2,7 +2,8 @@
   <div class="modal-card">
     <section class="modal-card-body">
       <div class="text-wrap text-title">
-        {{ $t('ticket_text14') }}
+        <span v-if="ticket.type == 0">{{ $t('ticket_text14') }}</span>
+        <span v-if="ticket.type == 1">{{ $t('ticket_text52') }}</span>
       </div>
       <b-table
         :data="tickets"
@@ -34,6 +35,7 @@
         </b-table-column>
 
         <b-table-column
+          v-if="ticket.type == 0"
           v-slot="props"
           field="type"
           :label="$t('ticket_text1')"
@@ -44,7 +46,7 @@
         <b-table-column
           v-slot="props"
           field="twitter"
-          :label="$t('ticket_text17')"
+          :label="ticket.type == 0 ? $t('ticket_text17') : $t('ticket_text53')"
         >
           <a :href="props.row.twitter" target="_blank">
             @{{ props.row.twitterAccount }}
@@ -52,6 +54,7 @@
         </b-table-column>
 
         <b-table-column
+          v-if="ticket.type == 0"
           v-slot="props"
           field="ticketPrice"
           :label="$t('ticket_text18')"
@@ -62,7 +65,7 @@
         <b-table-column
           v-slot="props"
           field="ticketWhen"
-          :label="$t('ticket_text19')"
+          :label="ticket.type == 0 ? $t('ticket_text19') : $t('operation_text35')"
         >
           {{ props.row.ticketWhen }}
         </b-table-column>
@@ -108,7 +111,7 @@ export default {
     ticket.ticketPrice = this.ticket.price.replace(/\.?0+$/, '')
     const when = this.ticket.when_to_use.split('||')
     if (when.length >= 2) {
-      ticket.ticketWhen = new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1') + ` ${this.$t('ticket_text6')} `
+      ticket.ticketWhen = new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1') + (this.ticket.type === 1 ? '' : ` ${this.$t('ticket_text6')} `)
     }
     const where = this.ticket.where_to_use.split('||')
     let detail = ''

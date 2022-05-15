@@ -352,7 +352,7 @@ export default {
 
 .section {
   height: calc(100vh - 60px);
-  padding: 1.5rem 0.3rem 0 2.7rem;
+  padding: 1.5rem 0.3rem 0 2.5rem;
   max-width: 750px;
   margin: 0 auto;
   position: relative;

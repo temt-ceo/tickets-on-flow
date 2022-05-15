@@ -4,12 +4,14 @@
       <video class="hero--video" src="https://static.videezy.com/system/resources/previews/000/012/739/original/Particles_3_60s_2kres_1.mp4" muted autoplay playsinline />
       <div class="hero--overlay">
         <div class="hero--content">
-        <b-breadcrumb
-            separator="has-succeeds-separator"
-        >
-            <b-breadcrumb-item href="/?return=true">Home</b-breadcrumb-item>
-            <b-breadcrumb-item active>{{ currentPageName }}</b-breadcrumb-item>
-        </b-breadcrumb>
+          <b-breadcrumb>
+              <b-breadcrumb-item href="/?return=true">
+                <b-icon
+                  icon="rotate-left"
+                  size="is-large">
+                </b-icon>
+              </b-breadcrumb-item>
+          </b-breadcrumb>
 
           <section class="section">
             <div v-if="ticketName && ticketName.length > 0">
@@ -23,7 +25,10 @@
                 </p>
                 <h1 class="notice">
                   {{ noticeTitle }}
+                  <b-skeleton size="is-large" height="70px" :active="waitTransactionComplete"></b-skeleton>
+                  <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete"></b-skeleton>
                   <ticket-date-time
+                    v-if="ticketInfo.type == 0"
                     :ticketWhen0="ticketWhenWeek"
                     :ticketWhen1="ticketWhenTime"
                     :dispenser="dispenser"
@@ -43,31 +48,39 @@
                   {{ $t('ticket_text21') }}
                 </b-button>
                 <b-button
+                  type="is-link is-light"
+                  @click="showConfirmModal = true"
+                >
+                  <span v-if="ticketInfo.type == 0">{{ $t('ticket_text7') }}</span>
+                  <span v-if="ticketInfo.type == 1">{{ $t('ticket_text52') }}</span>
+                </b-button>
+
+                <b-button
                   v-if="ticketStatus === 3"
                   @click="useTicket"
                 >
                   {{ $t('ticket_text22') }}
                 </b-button>
                 <b-button
-                  v-if="ticketStatus <= 1"
-                  :disabled="!bloctoWalletUser.addr"
+                  v-if="ticketStatus <= 1 && bloctoWalletUser.addr && ticketInfo.type == 0"
                   type="is-link is-light"
                   @click="requestTicket"
                 >
-                  {{ $t('ticket_text23') }}
                 </b-button>
                 <b-button
                   v-if="bloctoWalletUser.addr && ticketStatus === 2"
-                  type="is-link is-light"
+                  type="is-warning is-light"
                   @click="getRequestStatus"
                 >
-                  {{ $t('ticket_text24') }}
+                  <span v-if="ticketInfo.type == 0">{{ $t('ticket_text24') }}</span>
+                  <span v-if="ticketInfo.type == 1">{{ $t('operation_text38') }}</span>
                 </b-button>
                 <b-button
+                  v-if="ticketStatus <= 2 && bloctoWalletUser.addr && ticketInfo.type == 1"
                   type="is-link is-light"
-                  @click="showConfirmModal = true"
+                  @click="crowdfund"
                 >
-                  {{ $t('ticket_text7') }}
+                 {{ $t('ticket_text54') }}
                 </b-button>
 
                 <b-button
@@ -135,7 +148,9 @@ export default {
       transactionScanUrl: '',
       noticeTitle: '',
       currentPageName: location.pathname.replace(/\/ti\//, '').replace(/\//g, ''),
-      showConfirmModal: false
+      showConfirmModal: false,
+      waitTransactionComplete: false,
+      totalRemittance: null
     }
   },
   computed: {
@@ -188,7 +203,7 @@ export default {
     callToast () {
       const toast = this.$buefy.toast.open({
         indefinite: true,
-        message: this.noticeTitle
+        message: this.$t('operation_text34')
       })
       setTimeout(() => {
         toast.close()
@@ -227,6 +242,9 @@ export default {
                 }
               }
             }
+            if (this.ticketInfo.type === 1) {
+              this.totalRemittance = parseFloat(data.paid).toFixed(1)
+            }
           } else {
             this.ticketStatus = 1
           }
@@ -243,10 +261,18 @@ export default {
           this.noticeTitle = 'Please log in to your wallet' // 0: init
           break
         case 1:
-          this.noticeTitle = this.$t('operation_text33') // 1: can request a ticket
+          if (this.ticketInfo.type === 0) {
+            this.noticeTitle = this.$t('operation_text33') // 1: can request a ticket
+          } else if (this.ticketInfo.type === 1) {
+            this.noticeTitle = this.$t('operation_text40') // 1: can crowdfund
+          }
           break
         case 2:
-          this.noticeTitle = this.$t('operation_text34') // 2: ticket requested
+          if (this.ticketInfo.type === 0) {
+            this.noticeTitle = this.$t('operation_text32') // 2: ticket requested
+          } else if (this.ticketInfo.type === 1) {
+            this.noticeTitle = this.$t('operation_text37') // 2: crowdfunded
+          }
           break
         case 3:
           this.noticeTitle = this.$t('operation_text35') // 3: can use a ticket
@@ -297,9 +323,16 @@ export default {
             const h = this.latestRequest.getHours().toString()
             const m = this.latestRequest.getMinutes().toString()
             const requestHour = `${h.length > 1 ? h : '0' + h}: ${m.length > 1 ? m : '0' + m}`
+            let message = ''
+            if (this.ticketInfo.type === 0) {
+              message = `Last Request Date: ${requestDate} ${requestHour}`
+            } else if (this.ticketInfo.type === 1) {
+              message = `${this.$t('operation_text39')}: ${parseFloat(result.paid).toFixed(1)} $FLOW`
+            }
+
             const toast = this.$buefy.toast.open({
               indefinite: true,
-              message: `Last Request Date: ${requestDate} ${requestHour}`
+              message
             })
             setTimeout(() => {
               toast.close()
@@ -328,6 +361,17 @@ export default {
               container: null
             })
             setTimeout(() => loadingComponent.close(), 3 * 1000)
+
+            this.$buefy.snackbar.open({
+              duration: 30000, // 30 seconds
+              message: this.$t('operation_text17') + `↗︎ <a href="https://testnet.flowscan.org/account/${this.address}" target="_blank">${this.$t('operation_text31')}</a>`,
+              type: 'is-danger',
+              position: 'is-bottom-left',
+              actionText: null,
+              queue: false,
+              onAction: () => {
+              }
+            })
 
             const transactionId = await this.$fcl.send(
               [
@@ -387,6 +431,84 @@ export default {
       } catch (e) {
       }
     },
+    crowdfund () {
+      if (this.totalRemittance > 0) {
+        return this.confirmRepeatRemittance()
+      }
+      let fund = 0
+      this.$buefy.dialog.prompt({
+        message: this.$t('ticket_text55'),
+        inputAttrs: {
+          type: 'number',
+          placeholder: 'e.g. 10',
+          min: 1,
+          max: 99
+        },
+        confirmText: 'Next',
+        trapFocus: true,
+        onConfirm: (value) => {
+          fund = value
+
+          this.$buefy.dialog.confirm({
+            message: fund + this.$t('operation_text36') + '<br>' + this.$t('operation_text29'),
+            onConfirm: async () => {
+              try {
+                // loading
+                const loadingComponent = this.$buefy.loading.open({
+                  container: null
+                })
+                setTimeout(() => loadingComponent.close(), 3 * 1000)
+
+                this.$buefy.snackbar.open({
+                  duration: 120000, // 2 minutes
+                  message: this.$t('operation_text30') + ` <a href="https://testnet.flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
+                  type: 'is-danger',
+                  position: 'is-bottom-left',
+                  actionText: null,
+                  queue: false,
+                  onAction: () => {
+                  }
+                })
+
+                const transactionId = await this.$fcl.send(
+                  [
+                    this.$fcl.transaction(FlowTransactions.crowdfunding),
+                    this.$fcl.args([
+                      this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
+                      this.$fcl.arg(parseFloat(fund).toFixed(2), this.$fclArgType.UFix64)
+                    ]),
+                    this.$fcl.payer(this.$fcl.authz),
+                    this.$fcl.proposer(this.$fcl.authz),
+                    this.$fcl.authorizations([this.$fcl.authz]),
+                    this.$fcl.limit(9999)
+                  ]
+                ).then(this.$fcl.decode)
+                this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+                this.noticeTitle = ''
+                this.waitTransactionComplete = true
+                this.callToast()
+                const timerID = setInterval(async () => {
+                  const ret = await this.isTicketVaultReady()
+                  if (ret) {
+                    const data = await this.getRequestStatus(true)
+                    if (data) {
+                      this.ticketStatus = 2
+                      this.noticeTitle = this.$t('operation_text37')
+                      this.waitTransactionComplete = false
+                      clearInterval(timerID)
+                    }
+                  }
+                }, 4000)
+
+                return transactionId
+              } catch (e) {
+                console.log(e)
+              }
+            }
+          })
+        }
+      })
+    },
     async requestCode () {
       const result = await this.$fcl.send(
         [
@@ -403,6 +525,86 @@ export default {
           this.code = result[ticketTokenId].replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
         }
       }
+    },
+    confirmRepeatRemittance () {
+      this.$buefy.dialog.confirm({
+        message: this.$t('operation_text41'),
+        onConfirm: () => {
+          let fund = 0
+          this.$buefy.dialog.prompt({
+            message: this.$t('ticket_text55'),
+            inputAttrs: {
+              type: 'number',
+              placeholder: 'e.g. 10',
+              min: 1,
+              max: 99
+            },
+            confirmText: 'Next',
+            trapFocus: true,
+            onConfirm: (value) => {
+              fund = value
+
+              this.$buefy.dialog.confirm({
+                message: fund + this.$t('operation_text36') + '<br>' + this.$t('operation_text29'),
+                onConfirm: async () => {
+                  try {
+                    // loading
+                    const loadingComponent = this.$buefy.loading.open({
+                      container: null
+                    })
+                    setTimeout(() => loadingComponent.close(), 3 * 1000)
+
+                    this.$buefy.snackbar.open({
+                      duration: 120000, // 2 minutes
+                      message: this.$t('operation_text30') + ` <a href="https://testnet.flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
+                      type: 'is-danger',
+                      position: 'is-bottom-left',
+                      actionText: null,
+                      queue: false,
+                      onAction: () => {
+                      }
+                    })
+
+                    const transactionId = await this.$fcl.send(
+                      [
+                        this.$fcl.transaction(FlowTransactions.crowdfunding),
+                        this.$fcl.args([
+                          this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
+                          this.$fcl.arg(parseFloat(fund).toFixed(2), this.$fclArgType.UFix64)
+                        ]),
+                        this.$fcl.payer(this.$fcl.authz),
+                        this.$fcl.proposer(this.$fcl.authz),
+                        this.$fcl.authorizations([this.$fcl.authz]),
+                        this.$fcl.limit(9999)
+                      ]
+                    ).then(this.$fcl.decode)
+                    this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+                    this.noticeTitle = ''
+                    this.waitTransactionComplete = true
+                    this.callToast()
+                    const timerID = setInterval(async () => {
+                      const ret = await this.isTicketVaultReady()
+                      if (ret) {
+                        const data = await this.getRequestStatus(true)
+                        if (data) {
+                          this.ticketStatus = 2
+                          this.noticeTitle = this.$t('operation_text37')
+                          this.waitTransactionComplete = false
+                          clearInterval(timerID)
+                        }
+                      }
+                    }, 4000)
+
+                    return transactionId
+                  } catch (e) {
+                    console.log(e)
+                  }
+                }
+              })
+            }
+          })
+        }
+      })
     },
     async getTicketUsedTime () {
       const result = await this.$fcl.send(
@@ -442,7 +644,7 @@ export default {
 <style lang="scss" scoped>
 
 .section {
-  padding-bottom: 100px;
+  margin-bottom: 30px;
   padding: 0 1.5rem;
 
   .page-title {

@@ -49,7 +49,7 @@
               >
                 <b-input
                   v-model="registerWhere"
-                  maxlength="60"
+                  maxlength="80"
                   :placeholder="$t('operation_text3')"
                 />
               </b-field>
@@ -114,7 +114,7 @@
               >
                 <b-input
                   v-model="registerWhere"
-                  maxlength="60"
+                  maxlength="80"
                   :placeholder="$t('operation_text3')"
                 />
               </b-field>

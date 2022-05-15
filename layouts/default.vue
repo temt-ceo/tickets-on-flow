@@ -542,17 +542,12 @@ a {
 
 .breadcrumb {
   position: absolute;
-  top: 4px;
-  left: 20px;
+  top: 10px;
+  left: 5px;
 
   li {
     a {
-      color: #7957d5 !important;
-      text-decoration: underline;
-    }
-
-    &.is-active a {
-      text-decoration: none;
+      color: #3e8ed0 !important;
     }
   }
 }
