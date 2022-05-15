@@ -540,6 +540,23 @@ a {
   color: tomato !important;
 }
 
+.breadcrumb {
+  position: absolute;
+  top: 4px;
+  left: 20px;
+
+  li {
+    a {
+      color: #7957d5 !important;
+      text-decoration: underline;
+    }
+
+    &.is-active a {
+      text-decoration: none;
+    }
+  }
+}
+
 .menu-list a, a.dropdown-item {
   color: #4a4a4a !important;
 }
@@ -601,7 +618,7 @@ span.control-label {
   }
   .icon {
     .fa-2x {
-      font-size: 1.7em;
+      font-size: 1.3em;
     }
 
     i.fa-globe {

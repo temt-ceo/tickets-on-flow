@@ -108,12 +108,12 @@
         </b-dropdown-item>
       </b-dropdown>
     </div>
-    <div class="hero2">
+    <div v-if="!returnMode" class="hero2">
       <div class="hero--overlay">
         <div class="hero--content" />
       </div>
     </div>
-    <img class="anime-image" src="/tickets.png" :style="{display: offIcon}">
+    <img v-if="!returnMode" class="anime-image" src="/tickets.png" :style="{display: offIcon}">
 
     <b-carousel
       v-if="showCarousel"
@@ -192,6 +192,7 @@ export default {
       ticketsBkup: [],
       selected: null,
       loadingTime: 0,
+      returnMode: location.search === '?return=true',
       offIcon: null
     }
   },
@@ -287,6 +288,9 @@ export default {
                 type = this.$t('ticket_text3')
               } else if (type === 'On-site') {
                 type = this.$t('ticket_text4')
+              }
+              if (this.returnMode === true) {
+                this.loadingTime = 1500
               }
               setTimeout(() => {
                 const data = {

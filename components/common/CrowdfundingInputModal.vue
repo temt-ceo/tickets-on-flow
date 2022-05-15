@@ -6,165 +6,174 @@
           {{ $t('ticket_text32') }}
         </div>
         <div class="nft-list-container">
+          <div v-if="isCompleteRegister" class="text-wrap">
+            <p class="complete-register">
+              {{ $t('operation_text15') }}
+              <b-skeleton size="is-large" :active="isCompleteRegister"></b-skeleton>
+              <b-skeleton size="is-large" :active="isCompleteRegister"></b-skeleton>
+              <b-skeleton size="is-large" :active="isCompleteRegister"></b-skeleton>
+              {{ $t('operation_text16') }}<br>
+              <small>{{ dispenserPage }}</small>
+              <b-tooltip
+                label="Copied!"
+                type="is-info"
+              >
+                <b-button @click="clickCopy" type="is-info is-light">Copy</b-button>
+              </b-tooltip>
+            </p>
+          </div>
           <p
             v-if="transactionScanUrl !== ''"
             class="check-transaction"
           >
             <a :href="transactionScanUrl" target="_blank" class="scanlink">Confirm the transaction</a>
           </p>
-          <div
-            v-if="showFlag && !ticketInfo && !isCompleteRegister"
-            class="text-wrap"
-          >
-            <b-field
-              :label="'1. '+ $t('operation_text5')"
-              :type="{ 'is-success': registerName != '', 'is-danger': registerName === ''}"
+          <div v-if="isTypeSame">
+            <div
+              v-if="showFlag && !ticketInfo && !isCompleteRegister"
+              class="text-wrap"
             >
-              <b-input
-                v-model="registerName"
-                maxlength="40"
-                :placeholder="$t('operation_text1')"
-              />
-            </b-field>
-            <b-field
-              :label="'2. ' + $t('operation_text7')"
-              :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
-            >
-              <b-input
-                v-model="registerWhere"
-                maxlength="60"
-                :placeholder="$t('operation_text3')"
-              />
-            </b-field>
-            <b-field :label="'3. ' + $t('operation_text35')">
-              <b-datepicker
-                v-model="registerWhen"
-                :first-day-of-week="1"
-                :placeholder="$t('operation_text2')"
+              <b-field
+                :label="'1. '+ $t('operation_text5')"
+                :type="{ 'is-success': registerName != '', 'is-danger': registerName === ''}"
               >
-                <b-button
-                  label="Today"
-                  type="is-primary"
-                  icon-left="calendar-today"
-                  @click="registerWhen = new Date()"
+                <b-input
+                  v-model="registerName"
+                  maxlength="40"
+                  :placeholder="$t('operation_text1')"
                 />
-                <b-button
-                  label="Clear"
-                  type="is-danger"
-                  icon-left="close"
-                  outlined
-                  @click="registerWhen = null"
+              </b-field>
+              <b-field
+                :label="'2. ' + $t('operation_text7')"
+                :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
+              >
+                <b-input
+                  v-model="registerWhere"
+                  maxlength="60"
+                  :placeholder="$t('operation_text3')"
                 />
-              </b-datepicker>
-              <b-timepicker
-                v-model="registerWhen"
-                rounded
-                :placeholder="$t('operation_text2')"
-              />
-            </b-field>
+              </b-field>
+              <b-field :label="'3. ' + $t('operation_text35')">
+                <b-datepicker
+                  v-model="registerWhen"
+                  :first-day-of-week="1"
+                  :placeholder="$t('operation_text2')"
+                >
+                  <b-button
+                    label="Today"
+                    type="is-primary"
+                    icon-left="calendar-today"
+                    @click="registerWhen = new Date()"
+                  />
+                  <b-button
+                    label="Clear"
+                    type="is-danger"
+                    icon-left="close"
+                    outlined
+                    @click="registerWhen = null"
+                  />
+                </b-datepicker>
+                <b-timepicker
+                  v-model="registerWhen"
+                  rounded
+                  :placeholder="$t('operation_text2')"
+                />
+              </b-field>
 
-            <div class="button-wrap">
-              <b-button @click="$emit('closeModal')">
-                Close
-              </b-button>
-              <b-button
-                :disabled="!registerName || !registerWhere || !registerWhen"
-                @click="registerTicketInfo"
-              >
-                {{ $t('operation_text12') }}
-              </b-button>
+              <div class="button-wrap">
+                <b-button @click="$emit('closeModal')">
+                  Close
+                </b-button>
+                <b-button
+                  :disabled="!registerName || !registerWhere || !registerWhen"
+                  @click="registerTicketInfo"
+                >
+                  {{ $t('operation_text12') }}
+                </b-button>
+              </div>
             </div>
-          </div>
-          <div v-if="isCompleteRegister" class="text-wrap">
-            <p class="complete-register">
-              {{ $t('operation_text14') }}<br>
-              {{ $t('operation_text15') }}<br>
-              {{ $t('operation_text16') }}<br>
-              {{ $t('operation_text17') }} <a :href="dispenserPage">{{ dispenserPage }}</a>
-            </p>
-          </div>
-          <div v-if="showFlag && ticketInfo && !isCompleteRegister" class="text-wrap">
-            <p class="complete-register">
-              {{ $t('operation_text18') }}<br>
-              <span class="red">
-                {{ $t('operation_text19') }}
-              </span>
-            </p>
-            <b-field
-              :label="'1. '+ $t('operation_text5')"
-              :type="{ 'is-success': registerName != ''}"
-            >
-              <b-input
-                v-model="registerName"
-                maxlength="40"
-                :placeholder="$t('operation_text1')"
-              />
-            </b-field>
-            <b-field
-              :label="'2. ' + $t('operation_text7')"
-              :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
-            >
-              <b-input
-                v-model="registerWhere"
-                maxlength="60"
-                :placeholder="$t('operation_text3')"
-              />
-            </b-field>
-            <b-field :label="'3. ' + $t('operation_text35')">
-              <b-datepicker
-                v-model="registerWhen"
-                :first-day-of-week="1"
-                :placeholder="$t('operation_text2')"
+            <div v-if="showFlag && ticketInfo && !isCompleteRegister" class="text-wrap">
+              <p class="complete-register">
+                <span class="red">
+                  {{ $t('operation_text19') }}
+                </span>
+              </p>
+              <b-field
+                :label="'1. '+ $t('operation_text5')"
+                :type="{ 'is-success': registerName != ''}"
               >
-                <b-button
-                  label="Today"
-                  type="is-primary"
-                  icon-left="calendar-today"
-                  @click="registerWhen = new Date()"
+                <b-input
+                  v-model="registerName"
+                  maxlength="40"
+                  :placeholder="$t('operation_text1')"
                 />
-                <b-button
-                  label="Clear"
-                  type="is-danger"
-                  icon-left="close"
-                  outlined
-                  @click="registerWhen = null"
+              </b-field>
+              <b-field
+                :label="'2. ' + $t('operation_text7')"
+                :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
+              >
+                <b-input
+                  v-model="registerWhere"
+                  maxlength="60"
+                  :placeholder="$t('operation_text3')"
                 />
-              </b-datepicker>
-              <b-timepicker
-                v-model="registerWhen"
-                rounded
-                :placeholder="$t('operation_text2')"
-              />
-            </b-field>
+              </b-field>
+              <b-field :label="'3. ' + $t('operation_text35')">
+                <b-datepicker
+                  v-model="registerWhen"
+                  :first-day-of-week="1"
+                  :placeholder="$t('operation_text2')"
+                >
+                  <b-button
+                    label="Today"
+                    type="is-primary"
+                    icon-left="calendar-today"
+                    @click="registerWhen = new Date()"
+                  />
+                  <b-button
+                    label="Clear"
+                    type="is-danger"
+                    icon-left="close"
+                    outlined
+                    @click="registerWhen = null"
+                  />
+                </b-datepicker>
+                <b-timepicker
+                  v-model="registerWhen"
+                  rounded
+                  :placeholder="$t('operation_text2')"
+                />
+              </b-field>
 
-            <b-field :label="$t('operation_text11')">
-              <b-checkbox
-                v-model="registerTwitterEdit"
-                true-value="Yes"
-                false-value="No"
-              >
-                {{ registerTwitterEdit }}
-              </b-checkbox>
-            </b-field>
-            <div class="button-wrap">
-              <b-button @click="$emit('closeModal')">
-                Close
-              </b-button>
-              <b-button
-                :disabled="!registerWhere || !registerWhen"
-                @click="registerTicketInfo"
-              >
-                {{ $t('operation_text13') }}
-              </b-button>
+              <b-field :label="$t('operation_text11')">
+                <b-checkbox
+                  v-model="registerTwitterEdit"
+                  true-value="Yes"
+                  false-value="No"
+                >
+                  {{ registerTwitterEdit }}
+                </b-checkbox>
+              </b-field>
+              <div class="button-wrap">
+                <b-button @click="$emit('closeModal')">
+                  Close
+                </b-button>
+                <b-button
+                  :disabled="!registerWhere || !registerWhen"
+                  @click="registerTicketInfo"
+                >
+                  {{ $t('operation_text13') }}
+                </b-button>
+              </div>
             </div>
-          </div>
-          <div v-if="isCompleteDispense" class="text-wrap">
-            <p class="complete-register">
-              {{ $t('ticket_text27') }}<br>
-              {{ $t('ticket_text28') }}<br>
-              {{ $t('ticket_text29') }}<br>
-              {{ $t('ticket_text30') }}
-            </p>
+            <div v-if="isCompleteDispense" class="text-wrap">
+              <p class="complete-register">
+                {{ $t('ticket_text27') }}<br>
+                {{ $t('ticket_text28') }}<br>
+                {{ $t('ticket_text29') }}<br>
+                {{ $t('ticket_text30') }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -207,6 +216,7 @@ export default {
       registerPrice: 0,
       registerTwitter: '',
       registerTwitterEdit: 'No',
+      isTypeSame: false,
       transactionScanUrl: '',
       isCompleteRegister: false,
       isCompleteDispense: false,
@@ -324,8 +334,10 @@ export default {
             }
             this.registerPrice = this.ticketInfo.price.replace(/\.?0+$/, '')
 
-            this.registerType = this.ticketInfo.type
+            this.registerType = parseInt(this.ticketInfo.type)
+            this.isTypeSame = !(this.registerName !== '' && this.registerType !== 1)
           } else {
+            this.isTypeSame = true
             this.ticketInfo = null
           }
           await this.confirmRequesters()
@@ -351,9 +363,8 @@ export default {
               value = value.substr(1)
             }
             this.registerTwitter = value
-            const explanation = !this.ticketInfo ? `(${this.$t('operation_text28')})` : ''
             this.$buefy.dialog.confirm({
-              message: `${this.$t('operation_text29')}<br>${explanation}`,
+              message: this.$t('operation_text29'),
               onConfirm: this.ticketInfo ? this.updateTicketInfo : this.addTicketInfo
             })
           }
@@ -366,7 +377,7 @@ export default {
       }
     },
     async addTicketInfo () {
-      const registerType = 0 // Reserves for the future
+      const registerType = 1 // Reserves for the future
       const registerName = this.registerName + '||@' + this.registerTwitter
       const registerWhere = this.registerWhereType + '||' + this.registerWhere
       const registerWeekdays = this.registerWhenWeekdays.map(obj => obj.id).join('')
@@ -377,6 +388,17 @@ export default {
           container: null
         })
         setTimeout(() => loadingComponent.close(), 3 * 1000)
+
+        this.$buefy.snackbar.open({
+          duration: 30000, // 30 seconds
+          message: this.$t('operation_text17') + `↗︎ <a href="https://testnet.flowscan.org/account/${this.address}" target="_blank">${this.$t('operation_text31')}</a>`,
+          type: 'is-danger',
+          position: 'is-bottom-left',
+          actionText: null,
+          queue: false,
+          onAction: () => {
+          }
+        })
 
         const transactionId = await this.$fcl.send(
           [
@@ -401,7 +423,7 @@ export default {
       }
     },
     async updateTicketInfo () {
-      const registerType = 0 // Reserves for the future
+      const registerType = 1 // Reserves for the future
       const registerName = this.registerName + '||@' + this.registerTwitter
       const registerWhere = this.registerWhereType + '||' + this.registerWhere
       const registerWeekdays = this.registerWhenWeekdays.map(obj => obj.id).join('')
@@ -412,6 +434,17 @@ export default {
           container: null
         })
         setTimeout(() => loadingComponent.close(), 3 * 1000)
+
+        this.$buefy.snackbar.open({
+          duration: 30000, // 30 seconds
+          message: this.$t('operation_text17') + `↗︎ <a href="https://testnet.flowscan.org/account/${this.address}" target="_blank">${this.$t('operation_text31')}</a>`,
+          type: 'is-danger',
+          position: 'is-bottom-left',
+          actionText: null,
+          queue: false,
+          onAction: () => {
+          }
+        })
 
         const transactionId = await this.$fcl.send(
           [
@@ -474,6 +507,9 @@ export default {
         this.showFlag = true
       } catch (e) {
       }
+    },
+    async clickCopy () {
+      await navigator.clipboard.writeText(this.dispenserPage)
     }
   }
 }
@@ -506,15 +542,9 @@ export default {
 
       p.complete-register {
         font-weight: bold;
-      }
 
-      .check-transaction {
-        text-align : center;
-        margin-top: 16px;
-
-        a {
-          font-size: 16px;
-          text-decoration: underline;
+        small {
+          color: #485fc7;
         }
       }
 
@@ -536,6 +566,20 @@ export default {
         color: green;
       }
     }
+
+    .check-transaction {
+      text-align: center;
+      font-size: 18px;
+
+      a {
+        text-decoration: underline;
+      }
+    }
+  }
+  .button.is-info.is-light {
+    border-color: #0d68ce;
+    padding: 0 2px;
+    height: 1.8em;
   }
 }
 </style>
