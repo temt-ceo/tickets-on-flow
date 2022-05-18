@@ -449,7 +449,7 @@ pub contract TicketsV19 {
     // [private access]
     pub fun useTicket(dispenser_id: UInt32, token_id: UInt64, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault) {
       pre {
-        fee.balance > (fee.balance + payment.balance) * 0.029: "fee is less than 3%."
+        fee.balance > (fee.balance + payment.balance) * 0.024: "fee is less than 3%."
         TicketsV19.DispenserFlowTokenVault[dispenser_id] != nil: "Receiver is not set."
         TicketsV19.ticketRequesters.containsKey(dispenser_id): "Ticket is not requested."
         TicketsV19.ticketRequesters[dispenser_id]![self.user_id]!.crowdfunding == false : "crowdfunding cannot use ticket with fee."

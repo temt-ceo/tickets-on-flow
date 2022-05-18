@@ -4,14 +4,6 @@
       <video class="hero--video" src="https://static.videezy.com/system/resources/previews/000/012/739/original/Particles_3_60s_2kres_1.mp4" muted autoplay playsinline />
       <div class="hero--overlay">
         <div class="hero--content">
-          <b-breadcrumb>
-              <b-breadcrumb-item href="/?return=true">
-                <b-icon
-                  icon="rotate-left"
-                  size="is-large">
-                </b-icon>
-              </b-breadcrumb-item>
-          </b-breadcrumb>
 
           <section class="section">
             <b-notification

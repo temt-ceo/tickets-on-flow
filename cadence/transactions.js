@@ -120,7 +120,7 @@ import FungibleToken from 0x9a0766d93b6608b7
 import TicketsV19 from 0xT
 transaction(dispenser_id: UInt32, token_id: UInt64, price: UFix64) {
     prepare(signer: AuthAccount) {
-        let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: price * 0.97) as! @FlowToken.Vault
+        let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: price * 0.975) as! @FlowToken.Vault
         let charge_fee = price - payment.balance
         let commission <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: charge_fee) as! @FlowToken.Vault
         let ticketVault = signer.borrow<&TicketsV19.TicketVault>(from: /storage/TicketsV19TicketVault)

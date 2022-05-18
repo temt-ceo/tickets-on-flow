@@ -126,9 +126,11 @@
                 size="is-large"
               />
             </b-dropdown-item>
-            <b-dropdown-item aria-role="listitem" class="menu-help" @click="isToUActive = !isToUActive">
-              {{ $t('hamburger_menu5') }}
-            </b-dropdown-item>
+            <nuxt-link to="/about/">
+              <b-dropdown-item aria-role="listitem" class="menu-help">
+                {{ $t('hamburger_menu5') }}
+              </b-dropdown-item>
+            </nuxt-link>
             <b-dropdown-item aria-role="listitem" class="menu-help" @click="isToUActive = !isToUActive">
               {{ $t('hamburger_menu2') }}
             </b-dropdown-item>
@@ -157,7 +159,27 @@
             <br>
             {{ $t('terms_of_use5') }}
             <br>
-            <small>05/02/2022 Tokyo EM Technology & Co.</small>
+            {{ $t('terms_of_use6') }}
+            <br>
+            {{ $t('terms_of_use7') }}
+            <br>
+            {{ $t('terms_of_use8') }}
+            <br>
+            {{ $t('terms_of_use9') }}
+            <br>
+            {{ $t('terms_of_use10') }}
+            <br>
+            {{ $t('terms_of_use11') }}
+            <br>
+            {{ $t('terms_of_use12') }}
+            <br>
+            {{ $t('terms_of_use13') }}
+            <br>
+            {{ $t('terms_of_use15') }}
+            <br>
+            {{ $t('terms_of_use16') }}
+            <br><br><br>
+            <small>&copy; 05/10/2022 Tokyo EM Technology & Co.</small>
           </div>
         </div>
       </div>
