@@ -21,8 +21,7 @@
           :label="$t('ticket_text15')"
         >
           <div :class="{long: props.row.ticketName.length > 20, very_long: props.row.ticketName.length > 25}" class="ticket-title">
-            {{ props.row.ticketName.substr(0, 30) }}<br>
-            {{ props.row.ticketName.substr(30) }}
+            {{ props.row.ticketName }}
           </div>
         </b-table-column>
 

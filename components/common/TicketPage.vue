@@ -54,7 +54,6 @@
                   <span v-if="ticketInfo.type == 0">{{ $t('ticket_text7') }}</span>
                   <span v-if="ticketInfo.type == 1">{{ $t('ticket_text52') }}</span>
                 </b-button>
-
                 <b-button
                   v-if="ticketStatus === 3"
                   @click="useTicket"
@@ -66,6 +65,7 @@
                   type="is-link is-light"
                   @click="requestTicket"
                 >
+                 {{ $t('ticket_text23') }}
                 </b-button>
                 <b-button
                   v-if="bloctoWalletUser.addr && ticketStatus === 2"
@@ -364,7 +364,7 @@ export default {
 
             this.$buefy.snackbar.open({
               duration: 30000, // 30 seconds
-              message: this.$t('operation_text17') + `↗︎ <a href="https://testnet.flowscan.org/account/${this.address}" target="_blank">${this.$t('operation_text31')}</a>`,
+              message: this.$t('operation_text17') + `↗︎ <a href="https://testnet.flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
               type: 'is-danger',
               position: 'is-bottom-left',
               actionText: null,
@@ -446,11 +446,13 @@ export default {
         },
         confirmText: 'Next',
         trapFocus: true,
+        type: 'is-dark',
         onConfirm: (value) => {
           fund = value
 
           this.$buefy.dialog.confirm({
             message: fund + this.$t('operation_text36') + '<br>' + this.$t('operation_text29'),
+            type: 'is-dark',
             onConfirm: async () => {
               try {
                 // loading

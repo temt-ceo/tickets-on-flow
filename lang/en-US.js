@@ -142,8 +142,8 @@ export default {
   operation_text39: 'Amount of remittance',
   operation_text40: 'If you are interested in this project, tap the support button. ',
   operation_text41: 'You have already sent your support amount, would you like to send an additional amount?',
-  operation_text42: '',
-  operation_text43: '',
+  operation_text42: 'Would you like to log out?',
+  operation_text43: 'Sign Out',
   operation_text44: '',
   operation_text45: '',
   operation_text46: '',
@@ -160,5 +160,9 @@ export default {
   operation_text57: '',
   operation_text58: '',
   operation_text59: '',
-  operation_text60: ''
+  operation_text60: '',
+  modal_text1: 'Property',
+  modal_text2: 'Contribution',
+  modal_text3: 'Sales',
+  modal_text4: 'Fund'
 }

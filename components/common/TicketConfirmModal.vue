@@ -24,11 +24,11 @@
           >
             Distribute tickets
           </b-button>
-          <span class="total-count">(Total: {{ latestMintedTokenId }} tickets)</span>
+          <span class="total-count">(Total issues: {{ latestMintedTokenId }} tickets)</span>
           <br>
         </div>
         <b-table
-          :data="ticketRequesterArray"
+          :data="ticketRequesters"
           :checked-rows.sync="checkedRows"
           :is-row-checkable="(row) => row.id !== 3 && row.id !== 4"
           checkable
@@ -110,16 +110,13 @@ export default {
       required: true,
       default: ''
     },
-    dispenser: {
-      type: Number,
-      required: true,
-      default: null
+    ticketRequesters: {
+      type: Array,
+      required: true
     }
   },
   data () {
     return {
-      ticketRequesters: {},
-      ticketRequesterArray: [],
       ticketName: '',
       latestMintedTokenId: null,
       transactionScanUrl: '',
@@ -139,39 +136,20 @@ export default {
     }
   },
   async mounted () {
-    await this.confirmRequesters()
+    try {
+      const latestMintedTokenId = await this.$fcl.send(
+        [
+          this.$fcl.script(FlowScripts.getLatestMintedTokenId),
+          this.$fcl.args([
+            this.$fcl.arg(this.address, this.$fclArgType.Address)
+          ])
+        ]
+      ).then(this.$fcl.decode)
+      this.latestMintedTokenId = latestMintedTokenId || 0
+    } catch (e) {
+    }
   },
   methods: {
-    async confirmRequesters () {
-      try {
-        const latestMintedTokenId = await this.$fcl.send(
-          [
-            this.$fcl.script(FlowScripts.getLatestMintedTokenId),
-            this.$fcl.args([
-              this.$fcl.arg(this.address, this.$fclArgType.Address)
-            ])
-          ]
-        ).then(this.$fcl.decode)
-        this.latestMintedTokenId = latestMintedTokenId || 0
-        const ticketRequesters = await this.$fcl.send(
-          [
-            this.$fcl.script(FlowScripts.getTicketRequesters),
-            this.$fcl.args([
-              this.$fcl.arg(this.address, this.$fclArgType.Address)
-            ])
-          ]
-        ).then(this.$fcl.decode)
-        this.ticketRequesters = ticketRequesters
-        const keys = Object.keys(ticketRequesters)
-        for (let i = 0; i < keys.length; i++) {
-          if (ticketRequesters[keys[i]].latest_token === null) {
-            this.ticketRequesterArray.push(ticketRequesters[keys[i]])
-          }
-        }
-        this.$forceUpdate()
-      } catch (e) {
-      }
-    },
     dispenseTicket () {
       try {
         this.$buefy.dialog.prompt({
@@ -229,10 +207,10 @@ export default {
   .modal-card-body {
 
     .text-wrap {
+      color: #222;
       margin: 16px;
 
       p {
-        color: #222;
         margin: 8px 0;
       }
 
@@ -247,9 +225,10 @@ export default {
       flex-wrap: wrap;
       flex-direction: row-reverse;
       margin-left: 10px;
+      color: #222;
 
       .total-count {
-        font-size: 12px;
+        font-size: 14px;
         padding: 10px 3px 0 0;
       }
     }

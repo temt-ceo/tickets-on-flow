@@ -19,7 +19,7 @@
             </h1>
             <div class="content">
               <h1 class="notice">
-                {{ noticeTitle }}
+                {{ noticeTitle }}<br>
                 <b-skeleton size="is-large" height="70px" :active="waitTransactionComplete"></b-skeleton>
                 <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete"></b-skeleton>
               </h1>
@@ -37,19 +37,12 @@
                 {{ $t('ticket_text32') }}
               </b-button>
               <b-button
-                v-if="bloctoWalletUser.addr && (!hasDispenserVault || !hasDispenser)"
+                v-if="bloctoWalletUser.addr && (hasDispenserVault === false || hasDispenser === false)"
                 :disabled="hasDispenserVault || isApplied"
                 type="is-link is-light"
                 @click="requestDispenser"
               >
                 {{ $t('ticket_text33') }}
-              </b-button>
-              <b-button
-                v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
-                type="is-link is-light"
-                @click="showConfirmModal = true"
-              >
-                {{ $t('ticket_text34') }}
               </b-button>
               <!-- <b-button
                 v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
@@ -78,13 +71,6 @@
         @closeModal="showInputModal=false"
       />
     </b-modal>
-    <b-modal v-model="showConfirmModal">
-      <ticket-confirm-modal
-        :address="address"
-        :dispenser="dispenserId"
-        @closeModal="showConfirmModal=false"
-      />
-    </b-modal>
     <b-modal v-model="showConfirmPayModal">
       <ticket-confirm-pay-modal
         :address="address"
@@ -99,14 +85,12 @@
 import FlowScripts from '~/cadence/scripts'
 import FlowTransactions from '~/cadence/transactions'
 import TicketInputModal from '~/components/common/TicketInputModal'
-import TicketConfirmModal from '~/components/common/TicketConfirmModal'
 import TicketConfirmPayModal from '~/components/common/TicketConfirmPayModal'
 
 export default {
   name: 'DispenserMaintenancePage',
   components: {
     TicketInputModal,
-    TicketConfirmModal,
     TicketConfirmPayModal
   },
   data () {
@@ -116,14 +100,13 @@ export default {
       dispenserId: null,
       dispenserDomains: [],
       dispenserTicketPage: '',
-      hasDispenserVault: false,
-      hasDispenser: false,
+      hasDispenserVault: null,
+      hasDispenser: null,
       noticeTitle: '',
       transactionScanUrl: '',
       ticketUsedNow: false,
       ticketUsedMessage: '',
       showInputModal: false,
-      showConfirmModal: false,
       showConfirmPayModal: false,
       isApplied: false,
       waitTransactionComplete: false

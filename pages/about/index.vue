@@ -63,7 +63,7 @@
       <div class="container">
         <div class="section-header wow fadeInUp">
           <h3>Team</h3>
-          <p>If you have a question, you can ask me.</p>
+          <p>The team leans in and works hard every day to create a code that allows the viewer to have a great experience.</p>
         </div>
 
         <div class="row">
@@ -98,7 +98,7 @@
 
         <header class="section-header wow fadeInUp">
           <h3>Services</h3>
-          <p>Tickets is the app which can send FLOW token to each wallet very easily. You can refer to source codes if you want to send FLOW to any other wallet.</p>
+          <p>We are working hard to develop systems that can be said to be indispensable in our daily lives with cutting-edge technology.</p>
         </header>
 
         <div class="row">

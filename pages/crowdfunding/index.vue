@@ -37,27 +37,13 @@
                 {{ $t('ticket_text32') }}
               </b-button>
               <b-button
-                v-if="bloctoWalletUser.addr && (!hasDispenserVault || !hasDispenser)"
+                v-if="bloctoWalletUser.addr && (hasDispenserVault === false || hasDispenser === false)"
                 :disabled="hasDispenserVault || isApplied"
                 type="is-link is-light"
                 @click="requestDispenser"
               >
                 {{ $t('ticket_text33') }}
               </b-button>
-              <b-button
-                v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
-                type="is-link is-light"
-                @click="showConfirmModal = true"
-              >
-                {{ $t('ticket_text34') }}
-              </b-button>
-              <!-- <b-button
-                v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
-                type="is-link is-light"
-                @click="showConfirmPayModal = true"
-              >
-                {{ $t('ticket_text35') }}
-              </b-button> -->
               <b-button
                 v-if="!bloctoWalletUser.addr"
                 type="is-success is-light"
@@ -78,20 +64,6 @@
         @closeModal="showInputModal=false"
       />
     </b-modal>
-    <b-modal v-model="showConfirmModal">
-      <ticket-confirm-modal
-        :address="address"
-        :dispenser="dispenserId"
-        @closeModal="showConfirmModal=false"
-      />
-    </b-modal>
-    <b-modal v-model="showConfirmPayModal">
-      <ticket-confirm-pay-modal
-        :address="address"
-        :dispenser="dispenserId"
-        @closeModal="showConfirmPayModal=false"
-      />
-    </b-modal>
   </section>
 </template>
 
@@ -99,15 +71,11 @@
 import FlowScripts from '~/cadence/scripts'
 import FlowTransactions from '~/cadence/transactions'
 import CrowdfundingInputModal from '~/components/common/CrowdfundingInputModal'
-import TicketConfirmModal from '~/components/common/TicketConfirmModal'
-import TicketConfirmPayModal from '~/components/common/TicketConfirmPayModal'
 
 export default {
   name: 'CrowdfundingMaintenancePage',
   components: {
-    CrowdfundingInputModal,
-    TicketConfirmModal,
-    TicketConfirmPayModal
+    CrowdfundingInputModal
   },
   data () {
     return {
@@ -116,15 +84,13 @@ export default {
       dispenserId: null,
       dispenserDomains: [],
       dispenserPage: '',
-      hasDispenserVault: false,
-      hasDispenser: false,
+      hasDispenserVault: null,
+      hasDispenser: null,
       noticeTitle: '',
       transactionScanUrl: '',
       ticketUsedNow: false,
       ticketUsedMessage: '',
       showInputModal: false,
-      showConfirmModal: false,
-      showConfirmPayModal: false,
       isApplied: false,
       waitTransactionComplete: false
     }

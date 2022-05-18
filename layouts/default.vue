@@ -342,7 +342,7 @@ export default {
         github: {
           transaction: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/transactions.js',
           script: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/scripts.js',
-          contract1: 'https://flow-view-source.com/testnet/account/0x39899237382f2a8a/contract/TicketsV19',
+          contract1: 'https://flow-view-source.com/testnet/account/0x39899237382f2a8a/contract/TicketsV20',
           contract2: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/Tickets.cdc',
           playground: 'https://play.onflow.org/d9b1cb97-b54c-4d49-8187-258d6c2eab41?type=account&id=0e075014-fb30-4594-96d5-d13d94383399&storage=none'
         },
@@ -558,8 +558,26 @@ export default {
   }
 }
 
-a {
+.check-transaction a,
+.snackbar a {
   color: tomato !important;
+}
+
+.dialog {
+  .media .media-content {
+    input:focus {
+      border-color: #48c78e;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+  }
+}
+
+.modal-body nav.tabs {
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  background-color: #fff;
 }
 
 .breadcrumb {
@@ -693,21 +711,17 @@ span.control-label {
 .ticket-title {
   color: #485fc7;
   text-align: center;
-  --typing-steps: 14;
-  overflow: hidden;
-  white-space: nowrap;
-  letter-spacing: 3px;
-  border-right: 0.4px solid #b29feb;
-  animation: typing 1.8s steps(var(--typing-steps)),
-    blinking 0.7s steps(1) infinite;
-  &.long {
-    font-size: 12px;
-    padding-top: 3px;
-    &.very_long {
-      font-size: 9px;
-      padding-top: 5px;
-    }
-  }
+  // --typing-steps: 14;
+  // overflow: hidden;
+  // white-space: nowrap;
+  // letter-spacing: 3px;
+  // border-right: 0.4px solid #b29feb;
+  // animation: typing 1.8s steps(var(--typing-steps)),
+  //   blinking 0.7s steps(1) infinite;
+  // &.long {
+  //   font-size: 12px;
+  //   padding-top: 3px;
+  // }
 }
 
 @keyframes typing {

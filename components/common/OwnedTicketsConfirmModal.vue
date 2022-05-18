@@ -57,14 +57,6 @@
           </div>
         </template>
       </b-table>
-      <b-button
-        v-if="wallet.addr"
-        type="is-success"
-        @click="walletLogout"
-        style="margin: 20px auto 0;"
-      >
-        Log out from Wallet
-      </b-button>
     </section>
   </div>
 </template>
@@ -77,10 +69,6 @@ export default {
     tickets: {
       type: Array,
       required: true
-    },
-    wallet: {
-      type: Object,
-      required: true
     }
   },
   data () {
@@ -92,15 +80,6 @@ export default {
       isFocusable: false,
       isLoading: false,
       hasMobileCards: true
-    }
-  },
-  methods: {
-    async walletLogout () {
-      await this.$fcl.unauthenticate()
-      this.$buefy.toast.open({
-        message: 'Logged out.',
-        queue: false
-      })
     }
   }
 }
@@ -116,9 +95,9 @@ export default {
 
     .text-wrap {
       margin: 16px;
+      color: #222;
 
       p {
-        color: #222;
         margin: 8px 0;
       }
 
