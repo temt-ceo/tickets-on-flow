@@ -280,16 +280,24 @@
         >
         <b-menu>
           <b-menu-list label="Help">
-            <b-menu-item icon="information-outline" label="Info">
-              <b-menu-item :label="$t('help_text2')" @click="helpSnackbar(6)" />
-              <b-menu-item :label="$t('help_text2') + ' 2'" @click="helpSnackbar(7)" />
+            <b-menu-item icon="information-outline" label="FAQ">
+              <b-menu-item label="Why can anyone start a business?" />
+              <b-menu-item label="⇨How?" @click="helpSnackbar(9)" />
+              <b-menu-item label="⇨Why?" @click="helpSnackbar(11)" />
+              <b-menu-item label="⇨Where?" @click="helpSnackbar(12)" />
+              <b-menu-item label="⇨When?" @click="helpSnackbar(13)" />
+              <b-menu-item label="⇨Who?" @click="helpSnackbar(10)" />
             </b-menu-item>
-            <b-menu-item icon="marker">
+            <b-menu-item icon="information-outline" label="Info">
+              <b-menu-item icon="information-outline" :label="$t('help_text2')" @click="helpSnackbar(6)" />
+              <b-menu-item icon="account" label="Customers" @click="helpSnackbar(5)" />
+            </b-menu-item>
+            <!-- <b-menu-item icon="marker">
               <template #label="props">
                 Organizer
                 <b-icon class="is-pulled-right" :icon="props.expanded ? 'menu-down' : 'menu-up'" />
               </template>
-              <b-menu-item icon="account" label="Customers" @click="helpSnackbar(5)" />
+              <b-menu-item :label="$t('help_text2') + ' 2'" @click="helpSnackbar(7)" />
               <b-menu-item icon="cellphone-link">
                 <template #label>
                   Businesses
@@ -313,7 +321,7 @@
                 </template>
               </b-menu-item>
               <b-menu-item icon="cash-multiple" label="Payments" @click="helpSnackbar(4)" />
-            </b-menu-item>
+            </b-menu-item> -->
             <b-menu-item icon="account" label="Flow Account">
               <b-menu-item label="Account data" @click="helpSnackbar(8)" />
               <b-menu-item label="Wallet Address" @click="helpWallet" />
@@ -335,6 +343,7 @@ export default {
   },
   data () {
     return {
+      bloctoWalletUser: {},
       url: {
         twitter: 'https://mobile.twitter.com/_official_asp',
         telegram: 'https://t.me/ukraine_blockchain',
@@ -391,8 +400,12 @@ export default {
     setTimeout(() => {
       window.scrollTo(0, 0)
     }, 100)
+    this.$fcl.currentUser.subscribe(this.setupWalletInfo)
   },
   methods: {
+    setupWalletInfo (user) {
+      this.bloctoWalletUser = user
+    },
     changeLang () {
       setTimeout(() => {
         this.$i18n.setLocale(this.i18nRadioButton)
@@ -430,37 +443,65 @@ export default {
         case 8:
           message = this.$t('help_text16')
           break
+        case 9:
+          message = 'Because they don\'t care where the money is transfered to (the person providing support sees only the person they are supporting. It is necessary to devise a way not to show anyone other than the person they are supporting.)'
+          break
+        case 10:
+          message = 'Everyone has a smartphone now. Everyone is looking for ways to do business in the future in the age of smartphones.'
+          break
+        case 11:
+          message = 'Since blockchain runs on the Internet, you can start a business without anyone getting in your way. You can do business with people all over the world as long as you have a smartphone.'
+          break
+        case 12:
+          message = 'Connect with your supporters through a dedicated webpage that displays links to your social networking sites so you can always stay connected.'
+          break
+        case 13:
+          message = 'You can make contact with people on the other side of the globe who are not on the same time zone. Your supporters will pay you while you sleep.'
+          break
       }
       this.$buefy.snackbar.open({
         duration: 10000,
         message,
         type: 'is-danger',
-        position: 'is-bottom-left',
-        actionText: this.$t('help_text1'),
+        position: 'is-bottom-right',
+        actionText: null,
         queue: false,
         onAction: () => {
-          this.$buefy.toast.open({
-            message: 'Come on, Let\'s do it!',
-            queue: false
-          })
         }
       })
     },
+    async clickCopy () {
+      await navigator.clipboard.writeText(this.bloctoWalletUser?.addr)
+    },
     helpWallet () {
-      this.$buefy.snackbar.open({
-        duration: 5000,
-        message: this.$t('help_text17'),
-        type: 'is-danger',
-        position: 'is-bottom-left',
-        actionText: this.$t('help_text1'),
-        queue: false,
-        onAction: () => {
-          this.$buefy.toast.open({
-            message: 'Come on, Let\'s do it!',
-            queue: false
-          })
-        }
-      })
+      if (this.bloctoWalletUser?.addr) {
+        this.$buefy.snackbar.open({
+          duration: 5000,
+          message: this.bloctoWalletUser?.addr,
+          type: 'is-danger',
+          position: 'is-bottom-right',
+          actionText: 'Copy',
+          queue: false,
+          onAction: async () => {
+            await this.clickCopy()
+            this.$buefy.toast.open({
+              message: 'Copied!',
+              queue: false
+            })
+          }
+        })
+      } else {
+        this.$buefy.snackbar.open({
+          duration: 5000,
+          message: this.$t('help_text17'),
+          type: 'is-danger',
+          position: 'is-bottom-right',
+          actionText: null,
+          queue: false,
+          onAction: () => {
+          }
+        })
+      }
     }
   }
 }
@@ -722,6 +763,23 @@ span.control-label {
   //   font-size: 12px;
   //   padding-top: 3px;
   // }
+}
+
+.dropdown-item {
+  .media {
+    .media-left {
+      padding-right: 1rem;
+      margin-right: 0.5px;
+    }
+
+    .media-content {
+      color: #3e8ed0;
+      font-size: large;
+      h3 {
+        text-shadow: 0 0.2px 0.8px #0000ff;
+      }
+    }
+  }
 }
 
 @keyframes typing {

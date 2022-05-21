@@ -44,15 +44,35 @@
             />
           </b-tab-item>
         </b-tabs>
-        <b-button
-          v-if="bloctoWalletUser.addr"
-          type="is-danger"
-          @click="walletLogout"
-          style="margin: 0 auto;"
-          outlined
-        >
-          {{ $t('operation_text43') }}
-        </b-button>
+        <div>
+          <a :href="`https://testnet.flowscan.org/account/${bloctoWalletUser.addr}`" target="_blank" style="display: inline-block; padding-top: 5px; padding-right: 25px;">
+            <b-icon
+              class="navbar-item"
+              pack="fa-solid"
+              icon="wallet"
+              size="is-large"
+              type="is-success"
+              style="display: inline; padding-right: 0;"
+            />
+            <b-icon
+              class="navbar-item"
+              pack="fa-solid"
+              icon="franc-sign"
+              size="is-large"
+              type="is-success"
+              style="display: inline; padding-left: 0;"
+            />
+          </a>
+          <b-button
+            v-if="bloctoWalletUser.addr"
+            type="is-danger"
+            @click="walletLogout"
+            style="margin: 0 auto 0 30px;"
+            outlined
+          >
+            {{ $t('operation_text43') }}
+          </b-button>
+        </div>
       </div>
     </b-modal>
   </section>

@@ -26,10 +26,20 @@
                 <span>{{ ticket.description }}</span>
               </div>
               <div class="price">
-                <span>$FLOW: {{ ticket.price }}</span>
-                <span class="datetime">({{ ticket.datetime }})</span>
+                <span v-if="ticket.type !== 'Crowdfunding'">$FLOW: {{ ticket.price }}</span>
+                <span v-if="ticket.type !== 'Crowdfunding'" class="datetime">({{ ticket.datetime }})</span>
+                <span v-if="ticket.type === 'Crowdfunding'" class="datetime2">{{ ticket.datetime }}</span>
               </div>
               <div
+                v-if="ticket.type === 'Crowdfunding'"
+                :class="ticket.style"
+                class="icon_block"
+                style="padding: 11px 7px;"
+              >
+                <label>{{ ticket.type }}</label>
+              </div>
+              <div
+                v-if="ticket.type !== 'Crowdfunding'"
                 :class="ticket.style"
                 class="icon_block"
               >
@@ -98,11 +108,19 @@
             type="is-info"
           />
         </template>
-        <b-dropdown-item aria-role="listitem" @click="helpHowToUse">
+        <b-dropdown-item aria-role="listitem" @click="showCarousel = true">
           <div class="media">
-            <b-icon class="media-left" icon="information-outline" />
+            <b-icon class="media-left" icon="information" />
             <div class="media-content">
-              <h3>{{ $t('help_text3') }}</h3>
+              <h3>New! How to start crowdfunding!</h3>
+            </div>
+          </div>
+        </b-dropdown-item>
+        <b-dropdown-item aria-role="listitem" @click="showCarousel2 = true">
+          <div class="media">
+            <b-icon class="media-left" icon="information" />
+            <div class="media-content">
+              <h3>How to proceed with crowdfunding</h3>
             </div>
           </div>
         </b-dropdown-item>
@@ -149,6 +167,40 @@
         </section>
       </b-carousel-item>
     </b-carousel>
+    <b-carousel
+      v-if="showCarousel2"
+      :arrow="carouselArrow"
+      :arrow-hover="carouselArrowHover"
+      :autoplay="carouselAutoPlay"
+      :repeat="carouselRepeat"
+      :interval="carouselInterval"
+      :indicator="carouselIndicator"
+      :indicator-inside="carouselInside"
+      :indicator-style="carouselIndicatorStyle"
+      @change="carouselChange2($event)"
+    >
+      <b-carousel-item v-for="(carousel, i) in carousels2" :key="i">
+        <section :class="`hero is-medium is-${carousel.color}`">
+          <div class="hero-body has-text-centered">
+            <h1 class="title">
+              {{ carousel.text }}
+            </h1>
+            <img
+              :src="carousel.image"
+              alt="Tickets Manual"
+              style="max-height: 400px;"
+            >
+          </div>
+          <div class="close-icon" @click="showCarousel2 = false">
+            <b-icon
+              pack="fa-solid"
+              icon="xmark"
+              size="is-large"
+            />
+          </div>
+        </section>
+      </b-carousel-item>
+    </b-carousel>
   </section>
 </template>
 
@@ -167,25 +219,36 @@ export default {
       isTapped: false,
       isTappedReset: null,
       showCarousel: false,
+      showCarousel2: false,
       carouselArrow: true,
       carouselArrowHover: false,
       carouselAutoPlay: true,
       carouselRepeat: false,
-      carouselInterval: 5000,
+      carouselInterval: 7500,
       carouselIndicator: true,
       carouselInside: true,
       carouselIndicatorStyle: 'is-lines',
       carousels: [
-        { text: 'Step 1. Click Login', image: '/image/help_slide_1.png', color: 'primary' },
-        { text: 'Step 2. Select Blocto', image: '/image/help_slide_2.png', color: 'info' },
-        { text: 'Step 2. Select Create Your Original Ticket', image: '/image/help_slide_3.png', color: 'success' },
-        { text: 'Step 4. Press Apply button', image: '/image/help_slide_4.png', color: 'warning' },
-        { text: 'Step 5. Enter the ticket page name', image: '/image/help_slide_5.png', color: 'danger' },
-        { text: 'Step 6. Enter your e-mail address', image: '/image/help_slide_6.png', color: 'primary' },
-        { text: 'Step 7. Wait up to 24 hours', image: '/image/help_slide_7.png', color: 'info' },
-        { text: 'Step 8. Press Distribute button', image: '/image/help_slide_8.png', color: 'success' },
-        { text: 'Step 9. Enter ticket information', image: '/image/help_slide_9.png', color: 'warning' },
-        { text: 'Step 10. Share the URL of the ticket at the bottom of the screen', image: '/image/help_slide_10.png', color: 'danger' }
+        { text: 'Step 1. Tap Enable Button', image: '/image/help_slide_1_en.png', color: 'primary' },
+        { text: 'Step 2. Type a little description', image: '/image/help_slide_2_en.png', color: 'info' },
+        { text: 'Step 3. Decide your dedicated webpage name', image: '/image/help_slide_3_en.png', color: 'success' },
+        { text: 'Step 4. Wait for the transaction to complete', image: '/image/help_slide_4_en.png', color: 'warning' },
+        { text: 'Step 5. After the transaction is completed, wait up to 1 day for activation', image: '/image/help_slide_5_en.png', color: 'danger' },
+        { text: 'Step 6. Tap Setting Button', image: '/image/help_slide_6_en.png', color: 'primary' },
+        { text: 'Step 7. Enter a summary and wait for registration to complete.', image: '/image/help_slide_7_en.png', color: 'info' },
+        { text: 'Step 8. Now your crowdfunding begins!', image: '/image/help_slide_8_en.png', color: 'success' },
+        { text: 'Step 9. If you want to change from Crowdfunding to Tickets, leave the name empty.', image: '/image/help_slide_9_en.png', color: 'warning' },
+        { text: 'Step 10. You can then also issue tickets.', image: '/image/help_slide_10_en.png', color: 'danger' }
+      ],
+      carousels2: [
+        { text: 'Step 1. Tap Support Button', image: '/image/help_slide_11_en.png', color: 'primary' },
+        { text: 'Step 2. Enter the amount in $FLOW', image: '/image/help_slide_12_en.png', color: 'info' },
+        { text: 'Step 3. Proceed with the transaction', image: '/image/help_slide_13_en.png', color: 'success' },
+        { text: 'Step 4. Wait for the transaction to complete', image: '/image/help_slide_14_en.png', color: 'warning' },
+        { text: 'Step 5. After the transaction is completed, you can check the amount  by tapping the icon above.', image: '/image/help_slide_15_en.png', color: 'danger' },
+        { text: 'Step 6.You can also view your ticket sales.', image: '/image/help_slide_16_en.png', color: 'primary' },
+        { text: 'Step 7. You can also check the total amount on the Crowdfund web page.', image: '/image/help_slide_17_en.png', color: 'info' },
+        { text: 'Step 8. The organizer will see your wallet address and the amount of your donation.', image: '/image/help_slide_18_en.png', color: 'success' }
       ],
       searchLists: [],
       searchValue: '',
@@ -237,14 +300,18 @@ export default {
         this.isTapped = false
       }, 3000)
     },
-    helpHowToUse () {
-      this.showCarousel = true
-    },
     carouselChange (value) {
       if (value >= 9) {
         setTimeout(() => {
           this.showCarousel = false
-        }, 3000)
+        }, 7500)
+      }
+    },
+    carouselChange2 (value) {
+      if (value >= 7) {
+        setTimeout(() => {
+          this.showCarousel2 = false
+        }, 7500)
       }
     },
     async getTickets () {
@@ -276,18 +343,28 @@ export default {
             const when = ticket.when_to_use.split('||')
             let datetime = ''
             if (when.length >= 2) {
-              datetime = new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1') + ` ${this.$t('ticket_text6')} `
+              if (ticket.type === 1) {
+                datetime = `${this.$t('ticket_text56')} ` + new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1')
+              } else {
+                datetime = new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1') + ` ${this.$t('ticket_text6')} `
+              }
             }
 
             const ticketName = ticket.name.split('||@')
             if (ticketName[0].length) {
               let type = this.toolList[parseInt(tool) - 1] || ''
+              // チケット
               if (type === 'Ticket website') {
                 type = this.$t('ticket_text2')
               } else if (type === 'Any tool') {
                 type = this.$t('ticket_text3')
               } else if (type === 'On-site') {
                 type = this.$t('ticket_text4')
+              }
+              // Crowdfunding
+              if (ticket.type === 1) {
+                type = 'Crowdfunding'
+                tool = 1
               }
               if (this.returnMode === true) {
                 this.loadingTime = 1500
@@ -300,7 +377,7 @@ export default {
                   description: detail,
                   price: ticket.price.replace(/\.?0+$/, ''),
                   datetime,
-                  style: 'color' + (7 % (parseInt(tool) - 1) + 1).toString(),
+                  style: 'color' + (parseInt(tool) % 7 + 1).toString(),
                   type
                 }
                 this.tickets.push(data)
@@ -356,6 +433,10 @@ export default {
   max-width: 750px;
   margin: 0 auto;
   position: relative;
+
+  .c-contact {
+    width: 100%;
+  }
 
   .lang-gage {
     position: absolute;
@@ -523,6 +604,10 @@ export default {
       margin-left: 6px;
     }
 
+    .datetime2 {
+      color: #7957d5;
+    }
+
     .twitter-label {
       color: #48c78e!important;
       position: absolute;
@@ -542,23 +627,25 @@ export default {
 
     .icon_block {
       display: inline-block;
-      color: white;
       min-width: 100px;
       max-width: 129px;
       border-radius: 5px;
-      padding: 0 3px 3px 3px;
+      padding: 1px 3px 3px 3px;
       margin-top: 4px;
 
       &.color1 {
         background-color: rgb(135, 67, 86);
+        color: white;
       }
 
       &.color2 {
         background-color: rgb(198, 93, 123);
+        color: white;
       }
 
       &.color3 {
         background-color: rgb(246, 137, 137);
+        color: white;
       }
 
       &.color4 {
@@ -572,12 +659,13 @@ export default {
       }
 
       &.color6 {
-        background-color: rgb(198, 155, 123);
-        color: #333;
+        background-color: rgb(130, 111, 102);
+        color: white;
       }
 
       &.color7 {
-        background-color: rgb(130, 111, 102);
+        background-color: rgb(198, 155, 123);
+        color: white;
       }
     }
 
@@ -722,6 +810,12 @@ export default {
   .hero2 {
     left: -50%;
     width: 200%;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .section {
+    padding: 0.6rem 0.3rem 0 2.5rem;
   }
 }
 

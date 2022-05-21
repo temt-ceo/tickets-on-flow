@@ -49,7 +49,7 @@
                 type="is-success is-light"
                 @click="flowWalletLogin"
               >
-                Connect to a wallet
+                Connect Wallet
               </b-button>
             </div>
           </section>
@@ -138,6 +138,11 @@ export default {
 
           if (this.hasDispenser) {
             this.noticeTitle = this.$t('ticket_text36')
+            await this.getTickets()
+            const ticketInfo = this.tickets.find(obj => obj.dispenser_id === this.dispenserId)
+            if (ticketInfo && ticketInfo.name && ticketInfo.name.split('||@')[0]) {
+              this.noticeTitle = this.$t('ticket_text57')
+            }
           } else {
             this.noticeTitle = this.$t('ticket_text37')
           }
@@ -209,6 +214,7 @@ export default {
         let domain = null
         this.$buefy.dialog.prompt({
           message: this.$t('ticket_text44'),
+          type: 'is-success',
           inputAttrs: {
             type: 'text',
             placeholder: `${this.$t('ticket_text40')} Crowdfunding`,
@@ -221,6 +227,7 @@ export default {
             description = val
             this.$buefy.dialog.prompt({
               message: this.$t('ticket_text39'),
+              type: 'is-success',
               inputAttrs: {
                 type: 'text',
                 placeholder: `${this.$t('ticket_text40')} hello-ticket`,
@@ -246,6 +253,7 @@ export default {
                 })
                 this.$buefy.dialog.confirm({
                   message: this.$t('ticket_text46'),
+                  type: 'is-success',
                   confirmText: this.$t('ticket_text47'),
                   onConfirm: async () => {
                     toast1?.close()
@@ -273,7 +281,7 @@ export default {
                         this.$fcl.args([
                           this.$fcl.arg(domain, this.$fclArgType.String),
                           this.$fcl.arg(description, this.$fclArgType.String),
-                          this.$fcl.arg(1.5, this.$fclArgType.UFix64)
+                          this.$fcl.arg(0.1, this.$fclArgType.UFix64)
                         ]),
                         this.$fcl.payer(this.$fcl.authz),
                         this.$fcl.proposer(this.$fcl.authz),
@@ -378,6 +386,20 @@ export default {
         }
         const newTicketUsedTokenList = this.ticketUsedTokenList.concat(newEvents)
         this.$store.dispatch('ticketUsedTokenList', newTicketUsedTokenList)
+      }
+    },
+    async getTickets () {
+      try {
+        const tickets = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getTickets),
+            this.$fcl.args([
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        this.$store.commit('updateTickets', tickets) // save tickets
+        this.tickets = tickets
+      } catch (e) {
       }
     }
   }

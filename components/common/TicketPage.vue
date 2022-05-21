@@ -88,7 +88,7 @@
                   type="is-success is-light"
                   @click="walletLogin"
                 >
-                  Connect to a wallet
+                  Connect Wallet
                 </b-button>
               </div>
             </div>

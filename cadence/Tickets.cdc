@@ -292,7 +292,7 @@ pub contract TicketsV20 {
   */
   pub fun createDispenserVault(address: Address, domain: String, description: String, payment: @FlowToken.Vault): @DispenserVault {
     pre {
-      payment.balance >= 0.5: "Payment is not sufficient"
+      payment.balance >= 0.1: "Payment is not sufficient"
     }
     let paid: UFix64 = payment.balance
     TicketsV20.FlowTokenVault.borrow()!.deposit(from: <- payment)

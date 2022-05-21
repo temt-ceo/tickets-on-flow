@@ -17,7 +17,7 @@
 
         <header class="section-header">
           <h3>About Us</h3>
-          <p>
+          <p class="about-title-content">
             {{ $t('terms_of_use1') }}<br><br>
             {{ $t('terms_of_use2') }}<br><br>
             {{ $t('terms_of_use3') }}<br><br>
@@ -45,7 +45,7 @@
                 <div class="icon"><i class="ion-ios-speedometer-outline"></i></div>
               </div>
               <h2 class="title"><a href="#">Our Mission</a></h2>
-              <p>
+              <p class="mission">
                 We wanted to make it possible for the war-afflicted people in Ukraine to do business and make money using only their smartphones.<br><br>
               </p>
             </div>
@@ -85,6 +85,22 @@
               </div>
             </div>
           </div>
+
+          <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="member">
+              <img src="/img/team-2.jpg" class="img-fluid" alt="">
+              <div class="member-info">
+                <div class="member-info-content">
+                  <h4>Mio Yoneshima</h4>
+                  <span>Product Manager</span>
+                  <div class="social">
+                    <a href="https://twitter.com/_official_asp" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -1396,6 +1412,23 @@ body.mobile-nav-active #mobile-nav-toggle {
   color: #ddd;
 }
 
+#footer {
+  .footer-info,
+  .footer-contact {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}
+
+.about-title-content {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.mission {
+  text-align: center;
+}
 /*--------------------------------------------------------------
 # Responsive Media Queries
 --------------------------------------------------------------*/

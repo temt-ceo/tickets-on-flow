@@ -43,7 +43,7 @@
               v-if="!bloctoWalletUser.addr"
               @click="flowWalletLogin"
             >
-              Connect to a wallet
+              Connect Wallet
             </b-button>
             <b-button
               v-if="bloctoWalletUser.addr"
