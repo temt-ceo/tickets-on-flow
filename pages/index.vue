@@ -429,7 +429,7 @@ export default {
 
 .section {
   height: calc(100vh - 60px);
-  padding: 1.5rem 0.3rem 0 2.5rem;
+  padding: 1.0rem 0.3rem 0 2.5rem;
   max-width: 750px;
   margin: 0 auto;
   position: relative;
@@ -468,7 +468,7 @@ export default {
   .ticket-list {
     width: 100%;
     max-width: 685px;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 70px);
     margin: 0 auto;
       background: #596470;
     border-radius: 30px;

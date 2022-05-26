@@ -281,9 +281,9 @@
         <b-menu>
           <b-menu-list label="Help">
             <b-menu-item icon="information-outline" label="FAQ">
-              <b-menu-item label="Why can anyone start a business?" />
-              <b-menu-item label="⇨How?" @click="helpSnackbar(9)" />
+              <b-menu-item :label="$t('help_text15')" />
               <b-menu-item label="⇨Why?" @click="helpSnackbar(11)" />
+              <b-menu-item label="⇨How?" @click="helpSnackbar(9)" />
               <b-menu-item label="⇨Where?" @click="helpSnackbar(12)" />
               <b-menu-item label="⇨When?" @click="helpSnackbar(13)" />
               <b-menu-item label="⇨Who?" @click="helpSnackbar(10)" />
@@ -416,47 +416,47 @@ export default {
     helpSnackbar (type) {
       let message = ''
       switch (type) {
-        case 0:
-          message = this.$t('help_text8')
-          break
-        case 1:
-          message = this.$t('help_text9')
-          break
-        case 2:
-          message = this.$t('help_text10')
-          break
-        case 3:
-          message = this.$t('help_text11')
-          break
-        case 4:
-          message = this.$t('help_text12')
-          break
+        // case 0:
+        //   message =
+        //   break
+        // case 1:
+        //   message =
+        //   break
+        // case 2:
+        //   message =
+        //   break
+        // case 3:
+        //   message =
+        //   break
+        // case 4:
+        //   message =
+        //   break
         case 5:
           message = this.$t('help_text13')
           break
         case 6:
           message = this.$t('help_text14')
           break
-        case 7:
-          message = this.$t('help_text15')
-          break
+        // case 7:
+        //   message = this.$t('help_text15')
+        //   break
         case 8:
           message = this.$t('help_text16')
           break
         case 9:
-          message = 'Because they don\'t care where the money is transfered to (the person providing support sees only the person they are supporting. It is necessary to devise a way not to show anyone other than the person they are supporting.)'
+          message = this.$t('help_text8')
           break
         case 10:
-          message = 'Everyone has a smartphone now. Everyone is looking for ways to do business in the future in the age of smartphones.'
+          message = this.$t('help_text9')
           break
         case 11:
-          message = 'Since blockchain runs on the Internet, you can start a business without anyone getting in your way. You can do business with people all over the world as long as you have a smartphone.'
+          message = this.$t('help_text10')
           break
         case 12:
-          message = 'Connect with your supporters through a dedicated webpage that displays links to your social networking sites so you can always stay connected.'
+          message = this.$t('help_text11')
           break
         case 13:
-          message = 'You can make contact with people on the other side of the globe who are not on the same time zone. Your supporters will pay you while you sleep.'
+          message = this.$t('help_text12')
           break
       }
       this.$buefy.snackbar.open({
