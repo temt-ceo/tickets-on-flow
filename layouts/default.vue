@@ -512,6 +512,7 @@ export default {
 .navbar {
   position: sticky;
   top: 0;
+  background-color: #596886 !important;
 
   .navbar-item {
     padding: 0 0.25rem 0 0.75rem;
@@ -668,7 +669,7 @@ span.control-label {
 }
 
 #__layout {
-  background-image: linear-gradient(to bottom right, #973999, #f8598b, #f7bf00);
+  background-image: radial-gradient(#973999, #f8598b, #f7bf00);
 }
 
 .section.top-screen{

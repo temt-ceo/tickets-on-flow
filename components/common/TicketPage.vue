@@ -673,8 +673,8 @@ export default {
     }
 
     .notice {
-      font-size: 14px;
-      color: rebeccapurple;
+      font-size: 18px;
+      color: white;
     }
 
     .check-transaction a {
@@ -718,7 +718,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  background-image: linear-gradient(180deg, rgba(0,0,0,1), #1b1c50);
+  background-image: radial-gradient(rgb(65,105,225), #1b1c50);
   background-size: cover;
   z-index: 2;
   opacity: 0.87;
@@ -740,6 +740,6 @@ export default {
   width: 100%;
   height: 50vh;
   background-color: #1c1c1c;
-  background-image: linear-gradient(0deg, rgba(0,0,0,.3), #1b1c50);
+  background-image: radial-gradient(rgb(65,105,225), #1b1c50);
 }
 </style>
