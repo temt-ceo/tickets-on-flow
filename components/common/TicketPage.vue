@@ -5,12 +5,12 @@
       <div class="hero--overlay">
         <div class="hero--content">
           <b-breadcrumb>
-              <b-breadcrumb-item href="/?return=true">
-                <b-icon
-                  icon="rotate-left"
-                  size="is-large">
-                </b-icon>
-              </b-breadcrumb-item>
+            <b-breadcrumb-item href="/?home">
+              <b-icon
+                icon="rotate-left"
+                size="is-large"
+              />
+            </b-breadcrumb-item>
           </b-breadcrumb>
 
           <section class="section">
@@ -25,8 +25,8 @@
                 </p>
                 <h1 class="notice">
                   {{ noticeTitle }}
-                  <b-skeleton size="is-large" height="70px" :active="waitTransactionComplete"></b-skeleton>
-                  <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete"></b-skeleton>
+                  <b-skeleton size="is-large" height="70px" :active="waitTransactionComplete" />
+                  <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
                   <ticket-date-time
                     v-if="ticketInfo.type == 0"
                     :ticketWhen0="ticketWhenWeek"
@@ -65,7 +65,7 @@
                   type="is-link is-light"
                   @click="requestTicket"
                 >
-                 {{ $t('ticket_text23') }}
+                  {{ $t('ticket_text23') }}
                 </b-button>
                 <b-button
                   v-if="bloctoWalletUser.addr && ticketStatus === 2"
@@ -80,7 +80,7 @@
                   type="is-link is-light"
                   @click="crowdfund"
                 >
-                 {{ $t('ticket_text54') }}
+                  {{ $t('ticket_text54') }}
                 </b-button>
 
                 <b-button

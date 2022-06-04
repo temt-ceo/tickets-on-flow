@@ -5,16 +5,15 @@
     ============================-->
     <section id="about">
       <b-breadcrumb>
-        <b-breadcrumb-item href="/?return=true">
+        <b-breadcrumb-item href="/?home">
           <b-icon
             icon="rotate-left"
-            size="is-large">
-          </b-icon>
+            size="is-large"
+          />
         </b-breadcrumb-item>
       </b-breadcrumb>
 
       <div class="container">
-
         <header class="section-header">
           <h3>About Us</h3>
           <p class="about-title-content">
@@ -37,22 +36,23 @@
         </header>
 
         <div class="row about-cols">
-
           <div class="col-md-4 wow fadeInUp">
             <div class="about-col">
               <div class="img">
                 <img src="img/about-mission.jpg" alt="" class="img-fluid">
-                <div class="icon"><i class="ion-ios-speedometer-outline"></i></div>
+                <div class="icon">
+                  <i class="ion-ios-speedometer-outline" />
+                </div>
               </div>
-              <h2 class="title"><a href="#">Our Mission</a></h2>
+              <h2 class="title">
+                <a href="#">Our Mission</a>
+              </h2>
               <p class="mission">
                 We wanted to make it possible for the war-afflicted people in Ukraine to do business and make money using only their smartphones.<br><br>
               </p>
             </div>
           </div>
-
         </div>
-
       </div>
     </section><!-- #about -->
 
@@ -67,7 +67,6 @@
         </div>
 
         <div class="row">
-
           <div class="col-lg-3 col-md-6 wow fadeInUp">
             <div class="member">
               <img src="/img/team-1.jpeg" class="img-fluid" alt="">
@@ -76,10 +75,10 @@
                   <h4>Takashi Tahara</h4>
                   <span>Chief Executive Officer</span>
                   <div class="social">
-                    <a href="https://mobile.twitter.com/geek_geek_t" target="_blank"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="https://facebook.com/takashi.tahara.39" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="https://www.kaggle.com/takashitahara" target="_blank"><i class="fa-brands fa-kaggle"></i></a>
-                    <a href="https://jp.linkedin.com/in/tahara-takashi-em-technology/en" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://mobile.twitter.com/geek_geek_t" target="_blank"><i class="fa-brands fa-twitter" /></a>
+                    <a href="https://facebook.com/takashi.tahara.39" target="_blank"><i class="fa-brands fa-facebook" /></a>
+                    <a href="https://www.kaggle.com/takashitahara" target="_blank"><i class="fa-brands fa-kaggle" /></a>
+                    <a href="https://jp.linkedin.com/in/tahara-takashi-em-technology/en" target="_blank"><i class="fa-brands fa-linkedin" /></a>
                   </div>
                 </div>
               </div>
@@ -94,15 +93,13 @@
                   <h4>Mio Yoneshima</h4>
                   <span>Product Manager</span>
                   <div class="social">
-                    <a href="https://twitter.com/_official_asp" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="https://twitter.com/_official_asp" target="_blank"><i class="fa-brands fa-twitter" /></a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
-
       </div>
     </section><!-- #team -->
 
@@ -111,27 +108,35 @@
     ============================-->
     <section id="services">
       <div class="container">
-
         <header class="section-header wow fadeInUp">
           <h3>Services</h3>
           <p>We are working hard to develop systems that can be said to be indispensable in our daily lives with cutting-edge technology.</p>
         </header>
 
         <div class="row">
-
           <div class="col-lg-4 col-md-6 box wow bounceInUp" data-wow-duration="1.4s">
-            <div class="icon"><i class="ion-ios-analytics-outline"></i></div>
-            <h4 class="title"><a href="https://www.kaggle.com/code/takashitahara/stock-expected-move-analysis" target="_blank">Stock Expected Move Analysis</a></h4>
-            <p class="description">Prediction results are calculated using AI model.</p>
+            <div class="icon">
+              <i class="ion-ios-analytics-outline" />
+            </div>
+            <h4 class="title">
+              <a href="https://www.kaggle.com/code/takashitahara/stock-expected-move-analysis" target="_blank">Stock Expected Move Analysis</a>
+            </h4>
+            <p class="description">
+              Prediction results are calculated using AI model.
+            </p>
           </div>
           <div class="col-lg-4 col-md-6 box wow bounceInUp" data-wow-duration="1.4s">
-            <div class="icon"><i class="ion-ios-bookmarks-outline"></i></div>
-            <h4 class="title"><a href="https://tickets-on-flow.web.app/?m=developer">Tickets</a></h4>
-            <p class="description">The bussiness application built on Flow Blockchain.</p>
+            <div class="icon">
+              <i class="ion-ios-bookmarks-outline" />
+            </div>
+            <h4 class="title">
+              <a href="https://tickets-on-flow.web.app/?m=developer">Tickets</a>
+            </h4>
+            <p class="description">
+              The bussiness application built on Flow Blockchain.
+            </p>
           </div>
-
         </div>
-
       </div>
     </section><!-- #services -->
 
@@ -142,7 +147,6 @@
       <div class="footer-top">
         <div class="container">
           <div class="row">
-
             <div class="col-lg-3 col-md-6 footer-info">
               <h3>Contact Us</h3>
             </div>
@@ -157,13 +161,11 @@
               </p>
 
               <div class="social-links">
-                <a href="https://mobile.twitter.com/_official_asp" class="twitter" target="_blank"><i class="fa-brands fa-twitter"></i></a>
-                <a href="https://www.instagram.com/takashi_tahara_tokyo/" class="instagram" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://jp.linkedin.com/in/tahara-takashi-em-technology/en" class="linkedin" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://mobile.twitter.com/_official_asp" class="twitter" target="_blank"><i class="fa-brands fa-twitter" /></a>
+                <a href="https://www.instagram.com/takashi_tahara_tokyo/" class="instagram" target="_blank"><i class="fa-brands fa-instagram" /></a>
+                <a href="https://jp.linkedin.com/in/tahara-takashi-em-technology/en" class="linkedin" target="_blank"><i class="fa-brands fa-linkedin" /></a>
               </div>
-
             </div>
-
           </div>
         </div>
       </div>
@@ -175,29 +177,29 @@
       </div>
     </footer><!-- #footer -->
 
-    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up" /></a>
     <!-- Uncomment below i you want to use a preloader -->
     <!-- <div id="preloader"></div> -->
 
     <!-- JavaScript Libraries -->
-    <script src="lib/jquery/jquery.min.js"></script>
-    <script src="lib/jquery/jquery-migrate.min.js"></script>
-    <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/superfish/hoverIntent.js"></script>
-    <script src="lib/superfish/superfish.min.js"></script>
-    <script src="lib/wow/wow.min.js"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/counterup/counterup.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script>
-    <script src="lib/touchSwipe/jquery.touchSwipe.min.js"></script>
+    <script src="lib/jquery/jquery.min.js" />
+    <script src="lib/jquery/jquery-migrate.min.js" />
+    <script src="lib/bootstrap/js/bootstrap.bundle.min.js" />
+    <script src="lib/easing/easing.min.js" />
+    <script src="lib/superfish/hoverIntent.js" />
+    <script src="lib/superfish/superfish.min.js" />
+    <script src="lib/wow/wow.min.js" />
+    <script src="lib/waypoints/waypoints.min.js" />
+    <script src="lib/counterup/counterup.min.js" />
+    <script src="lib/owlcarousel/owl.carousel.min.js" />
+    <script src="lib/isotope/isotope.pkgd.min.js" />
+    <script src="lib/lightbox/js/lightbox.min.js" />
+    <script src="lib/touchSwipe/jquery.touchSwipe.min.js" />
     <!-- Contact Form JavaScript File -->
-    <script src="contactform/contactform.js"></script>
+    <script src="contactform/contactform.js" />
 
     <!-- Template Main Javascript File -->
-    <script src="js/main.js"></script>
+    <script src="js/main.js" />
   </section>
 </template>
 

@@ -8,7 +8,7 @@
       <div class="navbar-brand">
         <a
           class="navbar-item"
-          href="/"
+          href="/?home"
         >
           <img
             src="~assets/image/tickets.png"
@@ -781,6 +781,11 @@ span.control-label {
       }
     }
   }
+}
+
+.step-content {
+  width: 90%;
+  padding: 3rem 0 0 2rem !important;
 }
 
 @keyframes typing {

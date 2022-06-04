@@ -4,7 +4,6 @@
       <video class="hero--video" src="https://static.videezy.com/system/resources/previews/000/012/739/original/Particles_3_60s_2kres_1.mp4" muted autoplay playsinline />
       <div class="hero--overlay">
         <div class="hero--content">
-
           <section class="section">
             <b-notification
               v-model="ticketUsedNow"
@@ -20,8 +19,8 @@
             <div class="content">
               <h1 class="notice">
                 {{ noticeTitle }}
-                <b-skeleton size="is-large" height="70px" :active="waitTransactionComplete"></b-skeleton>
-                <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete"></b-skeleton>
+                <b-skeleton size="is-large" height="70px" :active="waitTransactionComplete" />
+                <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
               </h1>
               <p v-if="bloctoWalletUser.addr" class="description">
                 (Wallet Address: {{ bloctoWalletUser.addr }})
@@ -433,8 +432,8 @@ export default {
     }
 
     .notice {
-      font-size: 16px;
-      color: rebeccapurple;
+      font-size: 18px;
+      color: white;
     }
 
     .check-transaction a {

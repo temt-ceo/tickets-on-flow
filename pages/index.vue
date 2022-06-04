@@ -201,6 +201,96 @@
         </section>
       </b-carousel-item>
     </b-carousel>
+
+    <b-modal
+      v-model="isComponentModalActive"
+      has-modal-card
+      full-screen
+      :can-cancel="false"
+    >
+      <div class="modal-card" style="width: auto">
+        <section class="modal-card-body">
+          <b-steps
+            v-model="activeStep"
+            position="is-left"
+            size="is-small"
+            :animated="true"
+            :rounded="true"
+            :has-navigation="true"
+            label-position="bottom"
+            :mobile-mode="null"
+            vertical
+            class="step-center"
+          >
+            <b-step-item step="1" label="" type="is-success">
+              <h1 class="title has-text-centered">
+                It's how your smartphone should work.
+              </h1>
+              <h1 class="title has-text-centered">
+                Easy.&nbsp;&nbsp;Fast.&nbsp;&nbsp;Secure.
+              </h1>
+            </b-step-item>
+
+            <b-step-item step="2" label="01" type="is-success">
+              <h1 class="title has-text-centered">
+                It's easy.
+              </h1>
+              <h1 class="title has-text-centered">
+                Make businesses with just three taps.
+              </h1>
+            </b-step-item>
+
+            <b-step-item step="3" label="02" type="is-success">
+              <h1 class="title has-text-centered">
+                It's fast.
+              </h1>
+              <h1 class="title has-text-centered">
+                Send a cryptocurrency in seconds.
+              </h1>
+            </b-step-item>
+
+            <b-step-item step="4" label="03" type="is-success" disabled>
+              <h1 class="title has-text-centered">
+                It's secure.
+              </h1>
+              <h1 class="title has-text-centered">
+                Trusted by transactions on Flow Blockchain.
+              </h1>
+            </b-step-item>
+
+            <template
+              #navigation="{previous, next}"
+            >
+              <footer class="modal-card-foot">
+                <div style="width: 75%; margin-left: 30%;">
+                  <b-button
+                    outlined
+                    icon-pack="fas"
+                    icon-left="backward"
+                    :disabled="previous.disabled"
+                    @click.prevent="previous.action"
+                  />
+                  <b-button
+                    outlined
+                    type="is-success"
+                    icon-pack="fas"
+                    icon-right="forward"
+                    :disabled="next.disabled"
+                    @click.prevent="next.action"
+                  />
+                  <b-button
+                    type="is-text"
+                    label="Skip"
+                    style="margin-left: 10px;"
+                    @click="isComponentModalActive = false"
+                  />
+                </div>
+              </footer>
+            </template>
+          </b-steps>
+        </section>
+      </div>
+    </b-modal>
   </section>
 </template>
 
@@ -255,8 +345,23 @@ export default {
       ticketsBkup: [],
       selected: null,
       loadingTime: 0,
-      returnMode: location.search === '?return=true',
-      offIcon: null
+      returnMode: location.search === '?home',
+      offIcon: null,
+      isComponentModalActive: false,
+      activeStep: 0
+    }
+  },
+  watch: {
+    activeStep: {
+      handler (val) {
+        if (val === 3) {
+          setTimeout(() => {
+            if (this.activeStep === 3) {
+              this.isComponentModalActive = false
+            }
+          }, 3500)
+        }
+      }
     }
   },
   computed: {
@@ -285,6 +390,12 @@ export default {
     this.language = this.languageList.indexOf(this.$i18n.locale)
     await this.getTickets()
     clearInterval(timerID)
+
+    if (!this.returnMode) {
+      setTimeout(() => {
+        this.isComponentModalActive = true
+      }, 3500)
+    }
   },
   methods: {
     sliderFormatter (val) {
@@ -771,6 +882,22 @@ export default {
   margin: 0 auto;
   z-index: 5;
   animation: fadeOut2 1.6s linear forwards;
+}
+
+.step-center {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  min-width: 350px;
+}
+
+.modal-card-foot {
+  width: 100%;
+  position: absolute;
+  top: 55vh;
+  text-align: center;
+  background: none;
 }
 
 @keyframes fadeOut {
