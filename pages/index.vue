@@ -210,6 +210,11 @@
     >
       <div class="modal-card" style="width: auto">
         <section class="modal-card-body">
+          <img
+            src="~assets/image/tickets.png"
+            alt="Tickets"
+            style="width: 110px;"
+          >
           <b-steps
             v-model="activeStep"
             position="is-left"
@@ -280,7 +285,7 @@
                   />
                   <b-button
                     type="is-text"
-                    label="Skip"
+                    :label="$t('operation_text44')"
                     style="margin-left: 10px;"
                     @click="isComponentModalActive = false"
                   />
@@ -319,26 +324,26 @@ export default {
       carouselInside: true,
       carouselIndicatorStyle: 'is-lines',
       carousels: [
-        { text: 'Step 1. Tap Enable Button', image: '/image/help_slide_1_en.png', color: 'primary' },
-        { text: 'Step 2. Type a little description', image: '/image/help_slide_2_en.png', color: 'info' },
-        { text: 'Step 3. Decide your dedicated webpage name', image: '/image/help_slide_3_en.png', color: 'success' },
-        { text: 'Step 4. Wait for the transaction to complete', image: '/image/help_slide_4_en.png', color: 'warning' },
-        { text: 'Step 5. After the transaction is completed, wait up to 1 day for activation', image: '/image/help_slide_5_en.png', color: 'danger' },
-        { text: 'Step 6. Tap Setting Button', image: '/image/help_slide_6_en.png', color: 'primary' },
-        { text: 'Step 7. Enter a summary and wait for registration to complete.', image: '/image/help_slide_7_en.png', color: 'info' },
-        { text: 'Step 8. Now your crowdfunding begins!', image: '/image/help_slide_8_en.png', color: 'success' },
-        { text: 'Step 9. If you want to change from Crowdfunding to Tickets, leave the name empty.', image: '/image/help_slide_9_en.png', color: 'warning' },
-        { text: 'Step 10. You can then also issue tickets.', image: '/image/help_slide_10_en.png', color: 'danger' }
+        { text: `Step 1. ${this.$t('ticket_text58')}`, image: '/image/help_slide_1_en.png', color: 'primary' },
+        { text: `Step 2. ${this.$t('ticket_text59')}`, image: '/image/help_slide_2_en.png', color: 'info' },
+        { text: `Step 3. ${this.$t('ticket_text60')}`, image: '/image/help_slide_3_en.png', color: 'success' },
+        { text: `Step 4. ${this.$t('ticket_text61')}`, image: '/image/help_slide_4_en.png', color: 'warning' },
+        { text: `Step 5. ${this.$t('ticket_text62')}`, image: '/image/help_slide_5_en.png', color: 'danger' },
+        { text: `Step 6. ${this.$t('ticket_text63')}`, image: '/image/help_slide_6_en.png', color: 'primary' },
+        { text: `Step 7. ${this.$t('ticket_text64')}`, image: '/image/help_slide_7_en.png', color: 'info' },
+        { text: `Step 8. ${this.$t('ticket_text65')}`, image: '/image/help_slide_8_en.png', color: 'success' },
+        { text: `Step 9. ${this.$t('ticket_text66')}`, image: '/image/help_slide_9_en.png', color: 'warning' },
+        { text: `Step 10. ${this.$t('ticket_text67')}`, image: '/image/help_slide_10_en.png', color: 'danger' }
       ],
       carousels2: [
-        { text: 'Step 1. Tap Support Button', image: '/image/help_slide_11_en.png', color: 'primary' },
-        { text: 'Step 2. Enter the amount in $FLOW', image: '/image/help_slide_12_en.png', color: 'info' },
-        { text: 'Step 3. Proceed with the transaction', image: '/image/help_slide_13_en.png', color: 'success' },
-        { text: 'Step 4. Wait for the transaction to complete', image: '/image/help_slide_14_en.png', color: 'warning' },
-        { text: 'Step 5. After the transaction is completed, you can check the amount  by tapping the icon above.', image: '/image/help_slide_15_en.png', color: 'danger' },
-        { text: 'Step 6.You can also view your ticket sales.', image: '/image/help_slide_16_en.png', color: 'primary' },
-        { text: 'Step 7. You can also check the total amount on the Crowdfund web page.', image: '/image/help_slide_17_en.png', color: 'info' },
-        { text: 'Step 8. The organizer will see your wallet address and the amount of your donation.', image: '/image/help_slide_18_en.png', color: 'success' }
+        { text: `Step 1. ${this.$t('ticket_text68')}`, image: '/image/help_slide_11_en.png', color: 'primary' },
+        { text: `Step 2. ${this.$t('ticket_text69')}`, image: '/image/help_slide_12_en.png', color: 'info' },
+        { text: `Step 3. ${this.$t('ticket_text70')}`, image: '/image/help_slide_13_en.png', color: 'success' },
+        { text: `Step 4. ${this.$t('ticket_text71')}`, image: '/image/help_slide_14_en.png', color: 'warning' },
+        { text: `Step 5. ${this.$t('ticket_text72')}`, image: '/image/help_slide_15_en.png', color: 'danger' },
+        { text: `Step 6. ${this.$t('ticket_text73')}`, image: '/image/help_slide_16_en.png', color: 'primary' },
+        { text: `Step 7. ${this.$t('ticket_text74')}`, image: '/image/help_slide_17_en.png', color: 'info' },
+        { text: `Step 8. ${this.$t('ticket_text75')}`, image: '/image/help_slide_18_en.png', color: 'success' }
       ],
       searchLists: [],
       searchValue: '',
@@ -349,19 +354,6 @@ export default {
       offIcon: null,
       isComponentModalActive: false,
       activeStep: 0
-    }
-  },
-  watch: {
-    activeStep: {
-      handler (val) {
-        if (val === 3) {
-          setTimeout(() => {
-            if (this.activeStep === 3) {
-              this.isComponentModalActive = false
-            }
-          }, 3500)
-        }
-      }
     }
   },
   computed: {
@@ -381,6 +373,19 @@ export default {
           .toLowerCase()
           .includes(this.searchValue.toLowerCase())
       })
+    }
+  },
+  watch: {
+    activeStep: {
+      handler (val) {
+        if (val === 3) {
+          setTimeout(() => {
+            if (this.activeStep === 3) {
+              this.isComponentModalActive = false
+            }
+          }, 3500)
+        }
+      }
     }
   },
   async mounted () {
@@ -886,7 +891,7 @@ export default {
 
 .step-center {
   position: absolute;
-  top: 45%;
+  top: 43%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   min-width: 350px;
@@ -895,7 +900,7 @@ export default {
 .modal-card-foot {
   width: 100%;
   position: absolute;
-  top: 55vh;
+  top: 58vh;
   text-align: center;
   background: none;
 }

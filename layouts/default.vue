@@ -119,6 +119,11 @@
                 ・{{ $t('hamburger_menu4') }}
               </b-dropdown-item>
             </nuxt-link>
+            <nuxt-link to="/crowdfunding/">
+              <b-dropdown-item aria-role="listitem" class="menu-long">
+                ・{{ $t('operation_text55') }}
+              </b-dropdown-item>
+            </nuxt-link>
             <b-dropdown-item aria-role="listitem" class="i18n" @click="isI18nActive = !isI18nActive">
               <b-icon
                 pack="fa-solid"
@@ -134,13 +139,146 @@
             <b-dropdown-item aria-role="listitem" class="menu-help" @click="isToUActive = !isToUActive">
               {{ $t('hamburger_menu2') }}
             </b-dropdown-item>
-            <b-dropdown-item aria-role="listitem" class="menu-help" @click="sidebarOpen = true">
+            <b-dropdown-item aria-role="listitem" class="menu-help" @click="showNoticeModal">
               👋 {{ $t('hamburger_menu3') }}
             </b-dropdown-item>
           </b-dropdown>
         </div>
       </div>
     </nav>
+
+    <b-modal
+      v-model="isComponentModalActive"
+      has-modal-card
+      full-screen
+      :can-cancel="false"
+    >
+      <div class="modal-card" style="width: auto; background-image: radial-gradient(rgb(65,105,225), #1b1c50);">
+        <img
+          src="~assets/image/tickets.png"
+          alt="Tickets"
+          style="width: 160px; padding-left: 10px;"
+        >
+        <section class="modal-card-body modal-notifications">
+          <b-progress format="percent" :max="100">
+            <template #bar>
+              <b-progress-bar :value="progress1" show-value />
+              <b-progress-bar :value="progress2" type="is-info" :show-value="showProgress2value" />
+              <b-progress-bar :value="progress3" type="is-warning" :show-value="showProgress3value" />
+              <b-progress-bar :value="progress4" type="is-success" :show-value="showProgress4value" />
+            </template>
+          </b-progress>
+          <b-notification
+            v-model="notification.first"
+            aria-close-label="Close notification"
+            :progress-bar="true"
+            :auto-close="true"
+            :duration="18000"
+            :pause-on-hover="true"
+          >
+            {{ $t('operation_text45') }}
+          </b-notification>
+          <b-notification
+            v-model="notification.second"
+            :progress-bar="true"
+            :auto-close="true"
+            :duration="30000"
+            :pause-on-hover="true"
+            type="is-info"
+            aria-close-label="Close notification"
+          >
+            {{ $t('operation_text46') }}
+          </b-notification>
+          <b-notification
+            v-model="notification.third"
+            :progress-bar="true"
+            :auto-close="true"
+            :duration="35000"
+            :pause-on-hover="true"
+            type="is-info is-light"
+            aria-close-label="Close notification"
+          >
+            {{ $t('operation_text47') }}
+          </b-notification>
+          <b-notification
+            v-model="notification.fourth"
+            :progress-bar="true"
+            :auto-close="true"
+            :duration="46000"
+            :pause-on-hover="true"
+            type="is-warning"
+            aria-close-label="Close notification"
+            role="alert"
+          >
+            {{ $t('operation_text48') }}
+          </b-notification>
+          <b-notification
+            v-model="notification.fifth"
+            :progress-bar="true"
+            :auto-close="true"
+            :duration="51000"
+            :pause-on-hover="true"
+            type="is-warning is-light"
+            aria-close-label="Close notification"
+            role="alert"
+          >
+            {{ $t('operation_text49') }}
+          </b-notification>
+          <b-notification
+            v-model="notification.sixth"
+            :progress-bar="true"
+            :auto-close="true"
+            :duration="56000"
+            :pause-on-hover="true"
+            type="is-warning is-light"
+            aria-close-label="Close notification"
+            role="alert"
+          >
+            {{ $t('operation_text50') }}
+          </b-notification>
+          <b-notification
+            v-model="notification.seventh"
+            :progress-bar="true"
+            :auto-close="true"
+            :duration="69000"
+            :pause-on-hover="true"
+            type="is-success"
+            aria-close-label="Close notification"
+          >
+            {{ $t('operation_text51') }}
+          </b-notification>
+          <b-notification
+            v-model="notification.eighth"
+            :progress-bar="true"
+            :auto-close="true"
+            :duration="74000"
+            :pause-on-hover="true"
+            type="is-success is-light"
+            aria-close-label="Close notification"
+          >
+            {{ $t('operation_text52') }}
+          </b-notification>
+          <b-notification
+            v-model="notification.ninth"
+            aria-close-label="Close notification"
+            :progress-bar="true"
+            :auto-close="true"
+            :duration="80000"
+            :pause-on-hover="true"
+            type="is-dark"
+          >
+            {{ $t('operation_text53') }}
+          </b-notification>
+          <div style="text-align: center;">
+            <b-button
+              type="is-text"
+              :label="$t('operation_text54')"
+              @click="sidebarOpen = true"
+            />
+          </div>
+        </section>
+      </div>
+    </b-modal>
 
     <b-modal v-model="isToUActive" :width="640" scroll="keep">
       <div class="card">
@@ -272,6 +410,7 @@
       :fullwidth="sidebarFullwidth"
       :overlay="sidebarOverlay"
       :right="sidebarRight"
+      style="z-index: 99; width: 100%; position: absolute; top: 0%;"
     >
       <div class="p-1">
         <img
@@ -365,7 +504,26 @@ export default {
       sidebarRight: true,
       isToUActive: false,
       i18nRadioButton: this.$i18n.locale || 'en',
-      isI18nActive: false
+      isI18nActive: false,
+      isComponentModalActive: false,
+      notification: {
+        first: false,
+        second: false,
+        third: false,
+        fourth: false,
+        fifth: false,
+        sixth: false,
+        seventh: false,
+        eighth: false,
+        ninth: false
+      },
+      progress1: 0,
+      progress2: 0,
+      progress3: 0,
+      progress4: 0,
+      showProgress2value: false,
+      showProgress3value: false,
+      showProgress4value: false
     }
   },
   head () {
@@ -395,6 +553,137 @@ export default {
       ]
     }
   },
+  watch: {
+    isComponentModalActive: {
+      handler (val) {
+        if (val === true) {
+          setTimeout(() => {
+            this.notification.first = true
+          }, 300)
+          setTimeout(() => {
+            this.notification.second = true
+          }, 2000)
+          setTimeout(() => {
+            this.notification.third = true
+          }, 4000)
+          setTimeout(() => {
+            this.notification.fourth = true
+          }, 18000)
+          setTimeout(() => {
+            this.notification.fifth = true
+          }, 22000)
+          setTimeout(() => {
+            this.notification.sixth = true
+          }, 26000)
+          setTimeout(() => {
+            this.notification.seventh = true
+          }, 38000)
+          setTimeout(() => {
+            this.notification.eighth = true
+          }, 40000)
+          setTimeout(() => {
+            this.notification.ninth = true
+          }, 42000)
+        } else {
+          this.notification.first = false
+          this.notification.second = false
+          this.notification.third = false
+          this.notification.fourth = false
+          this.notification.fifth = false
+          this.notification.sixth = false
+          this.notification.seventh = false
+          this.notification.eighth = false
+          this.notification.ninth = false
+          this.progress1 = 0
+          this.progress2 = 0
+          this.progress3 = 0
+          this.progress4 = 0
+          this.showProgress2value = false
+          this.showProgress3value = false
+          this.showProgress4value = false
+        }
+      }
+    },
+    'notification.first': {
+      handler (val) {
+        if (val === false) {
+          this.progress1 = this.progress1 === 0 ? 12 : 25
+          this.checkProgress()
+        }
+      }
+    },
+    'notification.second': {
+      handler (val) {
+        if (val === false) {
+          this.progress2 = this.progress2 === 0 ? 12 : 25
+          this.showProgress2value = true
+          this.checkProgress()
+        }
+      }
+    },
+    'notification.third': {
+      handler (val) {
+        if (val === false) {
+          this.progress2 = this.progress2 === 0 ? 12 : 25
+          this.showProgress2value = true
+          this.checkProgress()
+        }
+      }
+    },
+    'notification.fourth': {
+      handler (val) {
+        if (val === false) {
+          this.progress3 = this.progress3 === 0 ? 10 : (this.progress3 === 10 ? 20 : 25)
+          this.showProgress3value = true
+          this.checkProgress()
+        }
+      }
+    },
+    'notification.fifth': {
+      handler (val) {
+        if (val === false) {
+          this.progress3 = this.progress3 === 0 ? 10 : (this.progress3 === 10 ? 20 : 25)
+          this.showProgress3value = true
+          this.checkProgress()
+        }
+      }
+    },
+    'notification.sixth': {
+      handler (val) {
+        if (val === false) {
+          this.progress3 = this.progress3 === 0 ? 10 : (this.progress3 === 10 ? 20 : 25)
+          this.showProgress3value = true
+          this.checkProgress()
+        }
+      }
+    },
+    'notification.seventh': {
+      handler (val) {
+        if (val === false) {
+          this.progress4 = this.progress4 === 0 ? 12 : 25
+          this.showProgress4value = true
+          this.checkProgress()
+        }
+      }
+    },
+    'notification.eighth': {
+      handler (val) {
+        if (val === false) {
+          this.progress4 = this.progress4 === 0 ? 12 : 25
+          this.showProgress4value = true
+          this.checkProgress()
+        }
+      }
+    },
+    'notification.ninth': {
+      handler (val) {
+        if (val === false) {
+          this.progress1 = this.progress1 === 0 ? 12 : 25
+          this.checkProgress()
+        }
+      }
+    }
+  },
   mounted () {
     this.developMode = location.search === '?m=developer'
     setTimeout(() => {
@@ -412,6 +701,13 @@ export default {
         this.isI18nActive = false
         location.reload()
       })
+    },
+    checkProgress () {
+      if (this.progress1 === 25 && this.progress2 === 25 && this.progress3 === 25 && this.progress4 === 25) {
+        setTimeout(() => {
+          this.isComponentModalActive = false
+        }, 1000)
+      }
     },
     helpSnackbar (type) {
       let message = ''
@@ -502,6 +798,9 @@ export default {
           }
         })
       }
+    },
+    showNoticeModal () {
+      this.isComponentModalActive = true
     }
   }
 }
@@ -574,6 +873,10 @@ export default {
 
         &.menu-help {
           padding: 0.8rem 0.9em;
+        }
+
+        &.menu-long {
+          font-size: 13px;
         }
       }
     }
@@ -666,6 +969,15 @@ span.control-label {
       padding: 40px 0;
     }
   }
+}
+
+.modal-notifications {
+  width: 100%;
+  max-width: 500px;
+  top: 10%;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
 }
 
 #__layout {
@@ -785,7 +1097,7 @@ span.control-label {
 
 .step-content {
   width: 90%;
-  padding: 3rem 0 0 2rem !important;
+  padding: 2.5rem 0 0 2rem !important;
 }
 
 @keyframes typing {
@@ -814,4 +1126,14 @@ span.control-label {
   }
 }
 
+@media screen and (min-width: 400px) {
+  .navbar .dropdown-menu .dropdown-content .dropdown-item.menu-long {
+    font-size: 15px;
+  }
+}
+@media screen and (min-width: 700px) {
+  .navbar .dropdown-menu .dropdown-content .dropdown-item.menu-long {
+    font-size: 17px;
+  }
+}
 </style>
