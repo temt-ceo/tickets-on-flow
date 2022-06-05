@@ -232,7 +232,7 @@
                 It's how your phone should work.
               </h1>
               <h1 class="title has-text-centered">
-                Fast.&nbsp;&nbsp;Secure.&nbsp;&nbsp;Simple.
+                Fast.&nbsp;Secure.&nbsp;Simple.
               </h1>
             </b-step-item>
 
@@ -814,6 +814,12 @@ export default {
         opacity: 0;
       }
     }
+  }
+}
+
+.modal-card-body {
+  .title {
+    font-size: 1.8rem;
   }
 }
 

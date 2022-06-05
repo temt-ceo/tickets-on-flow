@@ -14,22 +14,19 @@
               {{ ticketUsedMessage }}
             </b-notification>
             <h1 class="page-title">
-              {{ $t('ticket_text31') }}
+              {{ $t('operation_text55') }}
             </h1>
             <div class="content">
               <h1 class="notice">
-                {{ noticeTitle }}<br>
+                {{ noticeTitle }}
                 <b-skeleton size="is-large" height="70px" :active="waitTransactionComplete" />
                 <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
               </h1>
-              <p v-if="webpagePath">
-                <a :href="webpagePath" style="color: white;">{{ webpagePath }}</a>
-              </p>
               <p v-if="transactionScanUrl !== ''" class="check-transaction">
                 <a :href="transactionScanUrl" target="_blank">{{ $t('operation_text56') }}</a>
               </p>
               <b-button
-                :disabled="!bloctoWalletUser.addr || !hasDispenserVault || !hasDispenser"
+                :disabled="!bloctoWalletUser.addr || !hasDispenserVault || !hasDispenser || true"
                 type="is-link is-light"
                 @click="showInputModal = true"
               >
@@ -43,13 +40,6 @@
               >
                 {{ $t('ticket_text33') }}
               </b-button>
-              <!-- <b-button
-                v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
-                type="is-link is-light"
-                @click="showConfirmPayModal = true"
-              >
-                {{ $t('ticket_text35') }}
-              </b-button> -->
               <b-button
                 v-if="!bloctoWalletUser.addr"
                 type="is-success is-light"
@@ -66,18 +56,10 @@
       </div>
     </div>
     <b-modal v-model="showInputModal">
-      <ticket-input-modal
+      <crowdfunding-input-modal
         :address="address"
         :dispenser="dispenserId"
-        :ticket-page="dispenserPage"
         @closeModal="showInputModal=false"
-      />
-    </b-modal>
-    <b-modal v-model="showConfirmPayModal">
-      <ticket-confirm-pay-modal
-        :address="address"
-        :dispenser="dispenserId"
-        @closeModal="showConfirmPayModal=false"
       />
     </b-modal>
   </section>
@@ -86,14 +68,12 @@
 <script>
 import FlowScripts from '~/cadence/scripts'
 import FlowTransactions from '~/cadence/transactions'
-import TicketInputModal from '~/components/common/TicketInputModal'
-import TicketConfirmPayModal from '~/components/common/TicketConfirmPayModal'
+import CrowdfundingInputModal from '~/components/common/CrowdfundingInputModal'
 
 export default {
-  name: 'DispenserMaintenancePage',
+  name: 'CrowdfundingMaintenancePage',
   components: {
-    TicketInputModal,
-    TicketConfirmPayModal
+    CrowdfundingInputModal
   },
   data () {
     return {
@@ -101,8 +81,6 @@ export default {
       address: null,
       dispenserId: null,
       dispenserDomains: [],
-      dispenserPage: '',
-      webpagePath: null,
       hasDispenserVault: null,
       hasDispenser: null,
       noticeTitle: '',
@@ -110,7 +88,6 @@ export default {
       ticketUsedNow: false,
       ticketUsedMessage: '',
       showInputModal: false,
-      showConfirmPayModal: false,
       isApplied: false,
       waitTransactionComplete: false
     }
@@ -161,8 +138,7 @@ export default {
             await this.getTickets()
             const ticketInfo = this.tickets.find(obj => obj.dispenser_id === this.dispenserId)
             if (ticketInfo && ticketInfo.name && ticketInfo.name.split('||@')[0]) {
-              this.noticeTitle = this.$t('ticket_text57')
-              this.webpagePath = this.dispenserPage
+              this.noticeTitle = '現在作成中です。'
             }
           } else {
             this.noticeTitle = this.$t('ticket_text37')
@@ -205,9 +181,6 @@ export default {
         ).then(this.$fcl.decode)
         if (dispenserInfo) {
           this.dispenserId = parseInt(Object.keys(dispenserInfo)[0])
-          this.dispenserPage = 'https://tickets-on-flow.web.app/ti/' + dispenserInfo[this.dispenserId]
-        } else {
-          this.dispenserPage = ''
         }
       } catch (e) {
       }
@@ -238,7 +211,7 @@ export default {
           type: 'is-success',
           inputAttrs: {
             type: 'text',
-            placeholder: `${this.$t('ticket_text40')} Online cooking school`,
+            placeholder: `${this.$t('ticket_text40')} Crowdfunding`,
             value: '',
             maxlength: 40
           },
@@ -494,7 +467,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  background-image: radial-gradient(rgb(65,105,225), #1b1c50);
+  background-image: radial-gradient(#3e9, #1b1c50);
   background-size: cover;
   z-index: 2;
   opacity: 0.87;
@@ -516,6 +489,6 @@ export default {
   width: 100%;
   height: 50vh;
   background-color: #1c1c1c;
-  background-image: radial-gradient(rgb(65,105,225), #1b1c50);
+  background-image: radial-gradient(#3e9, #1b1c50);
 }
 </style>

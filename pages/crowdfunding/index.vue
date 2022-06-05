@@ -23,7 +23,7 @@
                 <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
               </h1>
               <p v-if="webpagePath">
-                <a :href="webpagePath" target="_blank" style="color: white;">{{ webpagePath }}</a>
+                <a :href="webpagePath" style="color: white;">{{ webpagePath }}</a>
               </p>
               <p v-if="transactionScanUrl !== ''" class="check-transaction">
                 <a :href="transactionScanUrl" target="_blank">{{ $t('operation_text56') }}</a>

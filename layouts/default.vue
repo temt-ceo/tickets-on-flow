@@ -89,13 +89,14 @@
             </a>
             )
           </b-dropdown-item>
-          <b-dropdown-item aria-role="listitem">
+          <b-dropdown-item v-if="developMode" aria-role="listitem">
             <a
               :href="url.github.playground"
               target="_blank"
             >
               Play Ground
             </a>
+            (*{{ $t('develop_menu4') }})
           </b-dropdown-item>
         </b-dropdown>
         <div class="navbar-burger">
@@ -117,7 +118,7 @@
                 ・{{ $t('hamburger_menu4') }}
               </b-dropdown-item>
             </nuxt-link>
-            <nuxt-link to="/crowdfunding/">
+            <nuxt-link to="/stats/">
               <b-dropdown-item aria-role="listitem" class="menu-long">
                 ・{{ $t('operation_text55') }}
               </b-dropdown-item>
