@@ -22,11 +22,11 @@
                 <b-skeleton size="is-large" height="70px" :active="waitTransactionComplete" />
                 <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
               </h1>
-              <p v-if="bloctoWalletUser.addr" class="description">
-                (Wallet Address: {{ bloctoWalletUser.addr }})
+              <p v-if="webpagePath">
+                <a :href="webpagePath" target="_blank" style="color: white;">{{ webpagePath }}</a>
               </p>
               <p v-if="transactionScanUrl !== ''" class="check-transaction">
-                <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
+                <a :href="transactionScanUrl" target="_blank">{{ $t('operation_text56') }}</a>
               </p>
               <b-button
                 :disabled="!bloctoWalletUser.addr || !hasDispenserVault || !hasDispenser"
@@ -57,6 +57,9 @@
               >
                 Connect Wallet
               </b-button>
+              <p v-if="bloctoWalletUser.addr" class="description">
+                (Wallet Address: {{ bloctoWalletUser.addr }})
+              </p>
             </div>
           </section>
         </div>
@@ -66,7 +69,7 @@
       <ticket-input-modal
         :address="address"
         :dispenser="dispenserId"
-        :ticket-page="dispenserTicketPage"
+        :ticket-page="dispenserPage"
         @closeModal="showInputModal=false"
       />
     </b-modal>
@@ -98,7 +101,8 @@ export default {
       address: null,
       dispenserId: null,
       dispenserDomains: [],
-      dispenserTicketPage: '',
+      dispenserPage: '',
+      webpagePath: null,
       hasDispenserVault: null,
       hasDispenser: null,
       noticeTitle: '',
@@ -158,6 +162,7 @@ export default {
             const ticketInfo = this.tickets.find(obj => obj.dispenser_id === this.dispenserId)
             if (ticketInfo && ticketInfo.name && ticketInfo.name.split('||@')[0]) {
               this.noticeTitle = this.$t('ticket_text57')
+              this.webpagePath = this.dispenserPage
             }
           } else {
             this.noticeTitle = this.$t('ticket_text37')
@@ -200,9 +205,9 @@ export default {
         ).then(this.$fcl.decode)
         if (dispenserInfo) {
           this.dispenserId = parseInt(Object.keys(dispenserInfo)[0])
-          this.dispenserTicketPage = 'https://tickets-on-flow.web.app/ti/' + dispenserInfo[this.dispenserId]
+          this.dispenserPage = 'https://tickets-on-flow.web.app/ti/' + dispenserInfo[this.dispenserId]
         } else {
-          this.dispenserTicketPage = ''
+          this.dispenserPage = ''
         }
       } catch (e) {
       }

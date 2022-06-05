@@ -5,14 +5,14 @@
         <p class="complete-register">
           Tickets were distributed.<br>
           It takes about 10 seconds to complete registration.<br>
-          After clicking "Confirm the transaction" and seeing the word SEALED on the screen,<br>
+          After clicking "{{ $t('operation_text56') }}" and seeing the word SEALED on the screen,<br>
           A button of "Use a ticket" will appear on the customer's screen.
         </p>
         <p
           v-if="transactionScanUrl !== ''"
           class="check-transaction"
         >
-          <a :href="transactionScanUrl" target="_blank" class="scanlink">Confirm the transaction</a>
+          <a :href="transactionScanUrl" target="_blank" class="scanlink">{{ $t('operation_text56') }}</a>
         </p>
       </div>
       <div v-if="!isCompleteDispense">

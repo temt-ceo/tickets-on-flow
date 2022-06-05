@@ -45,7 +45,7 @@
           </b-tab-item>
         </b-tabs>
         <div>
-          <a :href="`https://testnet.flowscan.org/account/${bloctoWalletUser.addr}`" target="_blank" style="display: inline-block; padding-top: 5px; padding-right: 25px;">
+          <a :href="`https://testnet.flowscan.org/account/${bloctoWalletUser.addr}`" target="_blank" style="display: inline-block; padding-right: 25px;">
             <b-icon
               class="navbar-item"
               pack="fa-solid"
@@ -62,13 +62,14 @@
               type="is-success"
               style="display: inline; padding-left: 0;"
             />
+            <br>
+            <span style="color: #48c78e;">{{ balance }}</span>
           </a>
           <b-button
-            v-if="bloctoWalletUser.addr"
             type="is-danger"
-            @click="walletLogout"
             style="margin: 0 auto 0 30px;"
             outlined
+            @click="walletLogout"
           >
             {{ $t('operation_text43') }}
           </b-button>
@@ -95,6 +96,7 @@ export default {
   },
   data () {
     return {
+      balance: null,
       ownedTicket: [],
       contributions: {},
       ticketSalesData: [],
@@ -202,7 +204,7 @@ export default {
             ).then(this.$fcl.decode)
             const keys = Object.keys(ticketRequesters)
             keys.forEach((key) => {
-              console.log(ticketRequesters[key])
+              // console.log(ticketRequesters[key])
               // クラウドファンディング利益分
               if (ticketRequesters[key].crowdfunding === true) {
                 this.crowdfundingData.push(ticketRequesters[key])
@@ -213,10 +215,27 @@ export default {
               }
             })
           }
+          await this.getFlowBalance()
         } catch (e) {
         }
       } else {
         this.noticeIcon = true
+      }
+    },
+    async getFlowBalance () {
+      try {
+        const balance = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getBalance),
+            this.$fcl.args([
+              this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        if (balance !== null) {
+          this.balance = '(' + parseFloat(balance).toFixed(3) + ' $FLOW)'
+        }
+      } catch (e) {
       }
     },
     async hasTicketDispenserVault () {

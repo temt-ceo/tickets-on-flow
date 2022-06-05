@@ -46,7 +46,6 @@
         <user-data />
 
         <b-dropdown
-          v-if="developMode"
           aria-role="list"
           class="is-pulled-right"
           position="is-bottom-left"
@@ -97,7 +96,6 @@
             >
               Play Ground
             </a>
-            (*{{ $t('develop_menu4') }})
           </b-dropdown-item>
         </b-dropdown>
         <div class="navbar-burger">
@@ -173,7 +171,7 @@
             aria-close-label="Close notification"
             :progress-bar="true"
             :auto-close="true"
-            :duration="18000"
+            :duration="20000"
             :pause-on-hover="true"
           >
             {{ $t('operation_text45') }}
@@ -182,7 +180,7 @@
             v-model="notification.second"
             :progress-bar="true"
             :auto-close="true"
-            :duration="30000"
+            :duration="34000"
             :pause-on-hover="true"
             type="is-info"
             aria-close-label="Close notification"
@@ -193,7 +191,7 @@
             v-model="notification.third"
             :progress-bar="true"
             :auto-close="true"
-            :duration="35000"
+            :duration="42000"
             :pause-on-hover="true"
             type="is-info is-light"
             aria-close-label="Close notification"
@@ -204,7 +202,7 @@
             v-model="notification.fourth"
             :progress-bar="true"
             :auto-close="true"
-            :duration="46000"
+            :duration="54000"
             :pause-on-hover="true"
             type="is-warning"
             aria-close-label="Close notification"
@@ -216,7 +214,7 @@
             v-model="notification.fifth"
             :progress-bar="true"
             :auto-close="true"
-            :duration="51000"
+            :duration="63000"
             :pause-on-hover="true"
             type="is-warning is-light"
             aria-close-label="Close notification"
@@ -228,7 +226,7 @@
             v-model="notification.sixth"
             :progress-bar="true"
             :auto-close="true"
-            :duration="56000"
+            :duration="71000"
             :pause-on-hover="true"
             type="is-warning is-light"
             aria-close-label="Close notification"
@@ -240,7 +238,7 @@
             v-model="notification.seventh"
             :progress-bar="true"
             :auto-close="true"
-            :duration="69000"
+            :duration="80000"
             :pause-on-hover="true"
             type="is-success"
             aria-close-label="Close notification"
@@ -251,7 +249,7 @@
             v-model="notification.eighth"
             :progress-bar="true"
             :auto-close="true"
-            :duration="74000"
+            :duration="88000"
             :pause-on-hover="true"
             type="is-success is-light"
             aria-close-label="Close notification"
@@ -263,7 +261,7 @@
             aria-close-label="Close notification"
             :progress-bar="true"
             :auto-close="true"
-            :duration="80000"
+            :duration="100000"
             :pause-on-hover="true"
             type="is-dark"
           >
@@ -1097,7 +1095,7 @@ span.control-label {
 
 .step-content {
   width: 90%;
-  padding: 2.5rem 0 0 2rem !important;
+  padding: 3rem 0 0 2rem !important;
 }
 
 @keyframes typing {

@@ -38,7 +38,7 @@
                   CODE: {{ code }}
                 </h1>
                 <p v-if="transactionScanUrl !== ''" class="check-transaction">
-                  <a :href="transactionScanUrl" target="_blank">Confirm the transaction</a>
+                  <a :href="transactionScanUrl" target="_blank">{{ $t('operation_text56') }}</a>
                 </p>
                 <b-button
                   v-if="ticketStatus === 4 && !code"
@@ -76,7 +76,7 @@
                   <span v-if="ticketInfo.type == 1">{{ $t('operation_text38') }}</span>
                 </b-button>
                 <b-button
-                  v-if="ticketStatus <= 2 && bloctoWalletUser.addr && ticketInfo.type == 1"
+                  v-if="ticketStatus <= 2 && bloctoWalletUser.addr && ticketInfo.type == 1 && waitTransactionComplete == false"
                   type="is-link is-light"
                   @click="crowdfund"
                 >
@@ -135,6 +135,7 @@ export default {
   data () {
     return {
       bloctoWalletUser: {},
+      hasTicketVault: false,
       dispenser: null,
       code: null,
       ticketInfo: null,
@@ -163,7 +164,6 @@ export default {
   async mounted () {
     this.getTicketInfo(location.pathname)
     await this.$fcl.currentUser.subscribe(this.setupUserInitialInfo)
-    await this.checkCurrentStatus()
   },
   methods: {
     async getTicketInfo (pathname) {
@@ -215,8 +215,8 @@ export default {
     },
     async checkCurrentStatus () {
       if (this.bloctoWalletUser.addr) {
-        const ret = await this.isTicketVaultReady()
-        if (ret) {
+        this.hasTicketVault = await this.isTicketVaultReady()
+        if (this.hasTicketVault) {
           const data = await this.getRequestStatus(true)
           if (data) {
             // このdispenserから過去チケットをリクエストしたことがある
@@ -345,9 +345,11 @@ export default {
       }
     },
     async requestTicket () {
-      const ret = await this.isTicketVaultReady()
+      if (!this.hasTicketVault) {
+        this.hasTicketVault = await this.isTicketVaultReady()
+      }
       let transactionCode = ''
-      if (ret) {
+      if (this.hasTicketVault) {
         transactionCode = FlowTransactions.requestMoreTicket
       } else {
         transactionCode = FlowTransactions.requestTicket
@@ -472,26 +474,45 @@ export default {
                   }
                 })
 
-                const transactionId = await this.$fcl.send(
-                  [
-                    this.$fcl.transaction(FlowTransactions.crowdfunding),
-                    this.$fcl.args([
-                      this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
-                      this.$fcl.arg(parseFloat(fund).toFixed(2), this.$fclArgType.UFix64)
-                    ]),
-                    this.$fcl.payer(this.$fcl.authz),
-                    this.$fcl.proposer(this.$fcl.authz),
-                    this.$fcl.authorizations([this.$fcl.authz]),
-                    this.$fcl.limit(9999)
-                  ]
-                ).then(this.$fcl.decode)
-                this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+                if (!this.hasTicketVault) {
+                  const transactionId = await this.$fcl.send(
+                    [
+                      this.$fcl.transaction(FlowTransactions.crowdfunding),
+                      this.$fcl.args([
+                        this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
+                        this.$fcl.arg(parseFloat(fund).toFixed(2), this.$fclArgType.UFix64)
+                      ]),
+                      this.$fcl.payer(this.$fcl.authz),
+                      this.$fcl.proposer(this.$fcl.authz),
+                      this.$fcl.authorizations([this.$fcl.authz]),
+                      this.$fcl.limit(9999)
+                    ]
+                  ).then(this.$fcl.decode)
+                  this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+                } else {
+                  const transactionId = await this.$fcl.send(
+                    [
+                      this.$fcl.transaction(FlowTransactions.moreCrowdfunding),
+                      this.$fcl.args([
+                        this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
+                        this.$fcl.arg(parseFloat(fund).toFixed(2), this.$fclArgType.UFix64)
+                      ]),
+                      this.$fcl.payer(this.$fcl.authz),
+                      this.$fcl.proposer(this.$fcl.authz),
+                      this.$fcl.authorizations([this.$fcl.authz]),
+                      this.$fcl.limit(9999)
+                    ]
+                  ).then(this.$fcl.decode)
+                  this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+                }
                 this.noticeTitle = ''
                 this.waitTransactionComplete = true
                 this.callToast()
                 const timerID = setInterval(async () => {
-                  const ret = await this.isTicketVaultReady()
-                  if (ret) {
+                  if (!this.hasTicketVault) {
+                    this.hasTicketVault = await this.isTicketVaultReady()
+                  }
+                  if (this.hasTicketVault) {
                     const data = await this.getRequestStatus(true)
                     if (data) {
                       this.ticketStatus = 2
@@ -501,8 +522,6 @@ export default {
                     }
                   }
                 }, 4000)
-
-                return transactionId
               } catch (e) {
                 console.log(e)
               }
@@ -585,8 +604,10 @@ export default {
                     this.waitTransactionComplete = true
                     this.callToast()
                     const timerID = setInterval(async () => {
-                      const ret = await this.isTicketVaultReady()
-                      if (ret) {
+                      if (!this.hasTicketVault) {
+                        this.hasTicketVault = await this.isTicketVaultReady()
+                      }
+                      if (this.hasTicketVault) {
                         const data = await this.getRequestStatus(true)
                         if (data) {
                           this.ticketStatus = 2

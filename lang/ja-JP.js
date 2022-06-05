@@ -136,7 +136,7 @@ export default {
   operation_text13: '更新',
   operation_text14: 'チケットの登録が完了しました。',
   operation_text15: '10秒程度で登録が完了します。',
-  operation_text16: '"Confirm the transaction"をクリックし、画面にSEALEDの文字が表示された後、あなたのウェブサイトが掲載されます。',
+  operation_text16: '"トランザクションの確認"をクリックし、画面にSEALEDの文字が表示された後、あなたのウェブサイトが掲載されます。',
   operation_text17: '(手数料はかかりません) 残高の確認',
   operation_text18: 'チケット発行かクラウドファンディングかどちらかしかできません。名称を空にして中断するとどちらも設定できるようになります。',
   operation_text19: '(中断する場合は、名称を空欄にしてください。一度申し込まれたお客様は、中断することができません。)',
@@ -176,11 +176,13 @@ export default {
   operation_text53: 'ブロックチェーンを使ったシステムはあなただけが権利を全て保有します。世界中の誰とでもあなた自身がビジネスをすることができます。',
   operation_text54: 'もっと知る',
   operation_text55: '統計をみんなで共有',
-  operation_text56: '',
+  operation_text56: 'トランザクションの確認',
   operation_text57: '',
   operation_text58: '',
   operation_text59: '',
   operation_text60: '',
   modal_text1: '所有チケット',
-  modal_text2: '出資額'
+  modal_text2: '出資額',
+  modal_text3: 'Sales',
+  modal_text4: 'Fund'
 }

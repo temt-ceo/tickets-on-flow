@@ -145,18 +145,37 @@ transaction(dispenser_id: UInt32, fund: UFix64) {
 
         let ticketVault = signer.borrow<&TicketsV20.TicketVault>(from: /storage/TicketsV20TicketVault)
             ?? panic("Could not borrow reference to the Owner's TicketVault.")
-        var charge_fee = 0.1
-        if (fund >= 10.0) {
-            charge_fee = 1.0
-        }
-        let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: fund - charge_fee) as! @FlowToken.Vault
+
+        let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: fund * 0.975) as! @FlowToken.Vault
+        let charge_fee = fund - payment.balance
         let commission <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: charge_fee) as! @FlowToken.Vault
         ticketVault.crowdfunding(dispenser_id: dispenser_id, address: signer.address, payment: <- payment, fee: <- commission)
-        }
+    }
 
     execute {
         log("crowdfunding is executed.")
     }
+}
+  `,
+  moreCrowdfunding: `
+import FlowToken from 0x7e60df042a9c0868
+import FungibleToken from 0x9a0766d93b6608b7
+import TicketsV20 from 0xT
+transaction(dispenser_id: UInt32, fund: UFix64) {
+    prepare(signer: AuthAccount) {
+        let ticketVault = signer.borrow<&TicketsV20.TicketVault>(from: /storage/TicketsV20TicketVault)
+            ?? panic("Could not borrow reference to the Owner's TicketVault.")
+        ticketVault.prepareCrowdfund(dispenser_id: dispenser_id, address: signer.address)
+
+        let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: fund * 0.975) as! @FlowToken.Vault
+        let charge_fee = fund - payment.balance
+        let commission <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: charge_fee) as! @FlowToken.Vault
+        ticketVault.crowdfunding(dispenser_id: dispenser_id, address: signer.address, payment: <- payment, fee: <- commission)
+  }
+
+  execute {
+      log("crowdfunding is executed.")
+  }
 }
   `
 }

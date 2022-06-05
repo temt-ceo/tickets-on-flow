@@ -360,6 +360,7 @@ pub contract TicketsV20 {
     access(contract) var ownedTicket: @{UInt64: Ticket}
     pub fun requestTicket(dispenser_id: UInt32, address: Address)
     pub fun useTicket(dispenser_id: UInt32, token_id: UInt64, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault)
+    pub fun prepareCrowdfund(dispenser_id: UInt32, address: Address)
     pub fun crowdfunding(dispenser_id: UInt32, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault)
   }
 
@@ -450,7 +451,7 @@ pub contract TicketsV20 {
     // [private access]
     pub fun useTicket(dispenser_id: UInt32, token_id: UInt64, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault) {
       pre {
-        fee.balance > (fee.balance + payment.balance) * 0.024: "fee is less than 3%."
+        fee.balance > (fee.balance + payment.balance) * 0.024: "fee is less than 2.5%."
         TicketsV20.DispenserFlowTokenVault[dispenser_id] != nil: "Receiver is not set."
         TicketsV20.ticketRequesters.containsKey(dispenser_id): "Ticket is not requested."
         TicketsV20.ticketRequesters[dispenser_id]![self.user_id]!.crowdfunding == false : "crowdfunding cannot use ticket with fee."
@@ -470,9 +471,18 @@ pub contract TicketsV20 {
     }
 
     // [private access]
+    pub fun prepareCrowdfund(dispenser_id: UInt32, address: Address) {
+      let time = getCurrentBlock().timestamp
+      if (!TicketsV20.ticketRequesters.containsKey(dispenser_id)) {
+        let requestStruct = RequestStruct(time: time, user_id: self.user_id, address: address, crowdfunding: true)
+        TicketsV20.ticketRequesters[dispenser_id] = {self.user_id: requestStruct}
+      }
+    }
+
+    // [private access]
     pub fun crowdfunding(dispenser_id: UInt32, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault) {
       pre {
-        fee.balance >= 0.1: "fee is less than 0.1."
+        fee.balance > (fee.balance + payment.balance) * 0.024: "fee is less than 2.5%."
         TicketsV20.DispenserFlowTokenVault[dispenser_id] != nil: "Receiver is not set."
         TicketsV20.ticketRequesters.containsKey(dispenser_id): "crowdfunding registration info is not set."
         TicketsV20.ticketRequesters[dispenser_id]![self.user_id]!.crowdfunding == true : "this ticket requester is not asking crowdfunding."

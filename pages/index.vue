@@ -213,7 +213,7 @@
           <img
             src="~assets/image/tickets.png"
             alt="Tickets"
-            style="width: 110px;"
+            style="width: 70px;"
           >
           <b-steps
             v-model="activeStep"
@@ -229,23 +229,14 @@
           >
             <b-step-item step="1" label="" type="is-success">
               <h1 class="title has-text-centered">
-                It's how your smartphone should work.
+                It's how your phone should work.
               </h1>
               <h1 class="title has-text-centered">
-                Easy.&nbsp;&nbsp;Fast.&nbsp;&nbsp;Secure.
+                Fast.&nbsp;&nbsp;Secure.&nbsp;&nbsp;Simple.
               </h1>
             </b-step-item>
 
             <b-step-item step="2" label="01" type="is-success">
-              <h1 class="title has-text-centered">
-                It's easy.
-              </h1>
-              <h1 class="title has-text-centered">
-                Make businesses with just three taps.
-              </h1>
-            </b-step-item>
-
-            <b-step-item step="3" label="02" type="is-success">
               <h1 class="title has-text-centered">
                 It's fast.
               </h1>
@@ -254,12 +245,21 @@
               </h1>
             </b-step-item>
 
-            <b-step-item step="4" label="03" type="is-success" disabled>
+            <b-step-item step="3" label="02" type="is-success">
               <h1 class="title has-text-centered">
                 It's secure.
               </h1>
               <h1 class="title has-text-centered">
                 Trusted by transactions on Flow Blockchain.
+              </h1>
+            </b-step-item>
+
+            <b-step-item step="4" label="03" type="is-success" disabled>
+              <h1 class="title has-text-centered">
+                It's easy.
+              </h1>
+              <h1 class="title has-text-centered">
+                Make business with just three taps.
               </h1>
             </b-step-item>
 
@@ -383,7 +383,7 @@ export default {
             if (this.activeStep === 3) {
               this.isComponentModalActive = false
             }
-          }, 3500)
+          }, 4000)
         }
       }
     }
@@ -399,7 +399,7 @@ export default {
     if (!this.returnMode) {
       setTimeout(() => {
         this.isComponentModalActive = true
-      }, 3500)
+      }, 2800)
     }
   },
   methods: {
@@ -931,7 +931,7 @@ export default {
     opacity: 1;
   }
   80% {
-    opacity: 0.6;
+    opacity: 0.7;
   }
   100% {
     opacity: 0.0;

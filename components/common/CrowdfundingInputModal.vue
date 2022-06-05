@@ -9,16 +9,18 @@
           <div v-if="isCompleteRegister" class="text-wrap">
             <p class="complete-register">
               {{ $t('operation_text15') }}
-              <b-skeleton size="is-large" :active="isCompleteRegister"></b-skeleton>
-              <b-skeleton size="is-large" :active="isCompleteRegister"></b-skeleton>
-              <b-skeleton size="is-large" :active="isCompleteRegister"></b-skeleton>
+              <b-skeleton size="is-large" :active="isCompleteRegister" />
+              <b-skeleton size="is-large" :active="isCompleteRegister" />
+              <b-skeleton size="is-large" :active="isCompleteRegister" />
               {{ $t('operation_text16') }}<br>
               <small>{{ dispenserPage }}</small>
               <b-tooltip
                 label="Copied!"
                 type="is-info"
               >
-                <b-button @click="clickCopy" type="is-info is-light">Copy</b-button>
+                <b-button type="is-info is-light" @click="clickCopy">
+                  Copy
+                </b-button>
               </b-tooltip>
             </p>
           </div>
@@ -26,7 +28,7 @@
             v-if="transactionScanUrl !== ''"
             class="check-transaction"
           >
-            <a :href="transactionScanUrl" target="_blank" class="scanlink">Confirm the transaction</a>
+            <a :href="transactionScanUrl" target="_blank" class="scanlink">{{ $t('operation_text56') }}</a>
           </p>
           <div v-if="isTypeSame">
             <div
