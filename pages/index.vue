@@ -902,6 +902,7 @@ export default {
   top: 43%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
+  max-width: 485px;
   min-width: 350px;
 }
 
