@@ -132,7 +132,7 @@
       </div>
     </div>
     <img v-if="!returnMode" class="anime-image" src="/tickets.png" :style="{display: offIcon}">
-
+    <small class="bottom-copyright">&copy; Tokyo EM Technology & Co.</small>
     <b-carousel
       v-if="showCarousel"
       :arrow="carouselArrow"
@@ -913,6 +913,14 @@ export default {
   background: none;
 }
 
+.bottom-copyright {
+  display: none;
+  position: absolute;
+  bottom: 3px;
+  left: 65px;
+  color: wheat;
+}
+
 @keyframes fadeOut {
   0% {
     transform: translateY(0px);
@@ -950,6 +958,10 @@ export default {
   .hero2 {
     left: -50%;
     width: 200%;
+  }
+
+  .bottom-copyright {
+    display: block;
   }
 }
 
