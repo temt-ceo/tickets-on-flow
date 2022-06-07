@@ -383,24 +383,26 @@ export default {
             if (this.activeStep === 3) {
               this.isComponentModalActive = false
             }
-          }, 4000)
+          }, 3500)
         }
       }
     }
   },
   async mounted () {
-    const timerID = setInterval(() => {
-      this.loadingTime += 200
-    }, 200)
     this.language = this.languageList.indexOf(this.$i18n.locale)
-    await this.getTickets()
-    clearInterval(timerID)
 
+    // animation
     if (!this.returnMode) {
       setTimeout(() => {
         this.isComponentModalActive = true
       }, 2800)
     }
+
+    const timerID = setInterval(() => {
+      this.loadingTime += 200
+    }, 200)
+    await this.getTickets()
+    clearInterval(timerID)
   },
   methods: {
     sliderFormatter (val) {

@@ -1119,6 +1119,10 @@ span.control-label {
 }
 
 @media screen and (min-width: 1024px) {
+  #__layout {
+    background-image: linear-gradient(to bottom right, #973999, #f8598b, #f7bf00);
+  }
+
   .navbar,
   .navbar-burger {
     display: block;
