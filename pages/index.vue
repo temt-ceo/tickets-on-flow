@@ -17,6 +17,7 @@
           v-for="(ticket, index) in tickets"
           :key="index"
           class="ticket-card"
+          :class="{'short-card': ticket.type === 'stats'}"
         >
           <div class="c-contact">
             <nuxt-link :to="'/ti/' + ticket.path">
@@ -26,8 +27,8 @@
                 <span>{{ ticket.description }}</span>
               </div>
               <div class="price">
-                <span v-if="ticket.type !== 'Crowdfunding'">$FLOW: {{ ticket.price }}</span>
-                <span v-if="ticket.type !== 'Crowdfunding'" class="datetime">({{ ticket.datetime }})</span>
+                <span v-if="ticket.type !== 'Crowdfunding' && ticket.type !== 'stats'">$FLOW: {{ ticket.price }}</span>
+                <span v-if="ticket.type !== 'Crowdfunding' && ticket.type !== 'stats'" class="datetime">({{ ticket.datetime }})</span>
                 <span v-if="ticket.type === 'Crowdfunding'" class="datetime2">{{ ticket.datetime }}</span>
               </div>
               <div
@@ -39,7 +40,7 @@
                 <label>{{ ticket.type }}</label>
               </div>
               <div
-                v-if="ticket.type !== 'Crowdfunding'"
+                v-if="ticket.type !== 'Crowdfunding' && ticket.type !== 'stats'"
                 :class="ticket.style"
                 class="icon_block"
               >
@@ -47,6 +48,7 @@
               </div>
             </nuxt-link>
             <a
+              v-if="ticket.type !== 'stats'"
               :href="'https://mobile.twitter.com/' + ticket.twitter"
               target="_blank"
               :class="{ long: ticket.twitter.length > 15, too_long: ticket.twitter.length > 19 }"
@@ -403,6 +405,7 @@ export default {
     }, 200)
     await this.getTickets()
     clearInterval(timerID)
+    await this.getStats()
   },
   methods: {
     sliderFormatter (val) {
@@ -416,7 +419,7 @@ export default {
       this.isTapped = true
       this.isTappedReset = setTimeout(() => {
         this.isTapped = false
-      }, 3000)
+      }, 2000)
     },
     carouselChange (value) {
       if (value >= 9) {
@@ -483,6 +486,8 @@ export default {
               if (ticket.type === 1) {
                 type = 'Crowdfunding'
                 tool = 1
+              } else {
+                tool = 4 // チケットも色固定
               }
               if (this.returnMode === true) {
                 this.loadingTime = 1500
@@ -521,6 +526,34 @@ export default {
             }
           }
         })
+      } catch (e) {
+      }
+    },
+    async getStats () {
+      try {
+        const stats = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getStats),
+            this.$fcl.args([
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        if (Object.keys(stats).length > 0) {
+          setTimeout(() => {
+            const data = {
+              path: 'our_stats',
+              label: this.$t('operation_text55'),
+              twitter: '',
+              description: this.$t('operation_text66'),
+              price: '',
+              datetime: '',
+              style: 'color1',
+              type: 'stats'
+            }
+            this.tickets.unshift(data)
+            this.ticketsBkup.unshift(data)
+          }, 3000)
+        }
       } catch (e) {
       }
     },
@@ -684,6 +717,10 @@ export default {
     .ticket-card {
       min-height: 92px;
 
+      &.short-card {
+        min-height: 40px;
+      }
+
       .identity_block {
         flex: 2;
         color: black;
@@ -706,7 +743,7 @@ export default {
 
         & > label {
           text-align: left;
-          display: inline-block;
+          // display: inline-block;
           padding-right: 7px;
           padding-bottom: 3px;
         }

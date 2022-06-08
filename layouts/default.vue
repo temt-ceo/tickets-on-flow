@@ -947,7 +947,7 @@ span.control-label {
 
 .field {
   margin-top: 0.5rem;
-  margin-bottom: 2rem !important;
+  margin-bottom: 0.5rem !important;
 }
 
 .fi {

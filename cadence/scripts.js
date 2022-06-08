@@ -126,5 +126,18 @@ pub fun main(address: Address, idList: [UInt32]): {UInt32: {UInt32: TicketsV20.R
   }
   return ticketRequester
 }
+  `,
+  hasStatsVault: `
+import TicketStatsV12 from 0xT
+pub fun main(address: Address): &TicketStatsV12.StatsPublic? {
+    let account = getAccount(address)
+    return account.getCapability<&TicketStatsV12.StatsPublic>(TicketStatsV12.StatsVaultPublicPath).borrow()
+}
+  `,
+  getStats: `
+import TicketStatsV12 from 0xT
+pub fun main(): {Address: [TicketStatsV12.StatsStruct]} {
+  return TicketStatsV12.stats
+}
   `
 }
