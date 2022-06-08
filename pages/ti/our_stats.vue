@@ -148,6 +148,7 @@
               disabled
             />
           </b-field>
+          <b-button @click="csvDownload" class="download" type="is-info is-light" icon-right="download" style="float: right; margin-top: -15px;">CSV</b-button>
         </section>
       </div>
     </b-modal>
@@ -267,6 +268,22 @@ export default {
     },
     async flowWalletLogout () {
       await this.$fcl.unauthenticate()
+    },
+    csvDownload () {
+      let csvContent = 'data:text/csv;charset=utf-8,'
+      csvContent += 'Nickname, Date, Title, Item1, Item2, Item3, Item4, Result1, Result2, Result3, Result4' + '\r\n'
+
+      this.registeredPolls.forEach((row) => {
+        const datetime = new Date(parseInt(row.time) * 1000).toLocaleDateString() + ' ' + new Date(parseInt(row.time) * 1000).toLocaleTimeString()
+        const rowArray = [row.nickname, datetime, row.title, row.answer1, row.answer2, row.answer3, row.answer4, parseFloat(row.value1).toFixed(1).toString() + '%', parseFloat(row.value2).toFixed(1).toString() + '%', parseFloat(row.value3).toFixed(1).toString() + '%', parseFloat(row.value4).toFixed(1).toString() + '%']
+        csvContent += rowArray.join(',') + '\r\n'
+      })
+      const encodedUri = encodeURI(csvContent)
+      const link = document.createElement('a')
+      link.setAttribute('href', encodedUri)
+      link.setAttribute('download', 'statistics_result.csv')
+      document.body.appendChild(link)
+      link.click()
     }
   }
 }

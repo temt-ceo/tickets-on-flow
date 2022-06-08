@@ -1113,6 +1113,15 @@ input[type="number"]:disabled {
     padding: 0 22px;
   }
 
+  button.download {
+    padding: 4px 17px;
+    height: 1.8rem;
+    width: 1rem;
+    float: right;
+    bottom: 4px;
+    left: 8px;
+  }
+
   .modal {
     line-height: 1.2;
     padding-top: 8%;

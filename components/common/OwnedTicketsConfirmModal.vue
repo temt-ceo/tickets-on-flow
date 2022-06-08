@@ -3,6 +3,7 @@
     <section class="modal-card-body">
       <div class="text-wrap">
         Your Owned Tickets.
+        <b-button @click="csvDownload" class="download" type="is-light" icon-right="download" />
       </div>
       <b-table
         :data="tickets"
@@ -100,6 +101,24 @@ export default {
       rangeAfter: 1,
       isSimple: false,
       isRounded: true
+    }
+  },
+  methods: {
+    csvDownload () {
+      let csvContent = 'data:text/csv;charset=utf-8,'
+      csvContent += 'Ticket Name, Organizer\'s Twitter Account, Price, Datetime' + '\r\n'
+
+      this.tickets.forEach((row) => {
+        const datetime = new Date(parseInt(row.used_time) * 1000).toLocaleDateString() + ' ' + new Date(parseInt(row.used_time) * 1000).toLocaleTimeString()
+        const rowArray = [row.ticketName, '@' + row.twitterAccount, parseFloat(row.price).toFixed(2).toString() + ' FLOW', datetime]
+        csvContent += rowArray.join(',') + '\r\n'
+      })
+      const encodedUri = encodeURI(csvContent)
+      const link = document.createElement('a')
+      link.setAttribute('href', encodedUri)
+      link.setAttribute('download', 'own_tickets.csv')
+      document.body.appendChild(link)
+      link.click()
     }
   }
 }

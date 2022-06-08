@@ -3,6 +3,7 @@
     <section class="modal-card-body">
       <div class="text-wrap">
         Your Funds.
+        <b-button @click="csvDownload" class="download" type="is-light" icon-right="download" />
       </div>
       <div>
         <b-table
@@ -116,7 +117,7 @@ export default {
       hasMobileCards: true,
       isPaginate: false,
       current: 10,
-      perPage: window.innerWidth < 768 ? 3 : 10,
+      perPage: window.innerWidth < 768 ? 2 : 10,
       rangeBefore: 1,
       rangeAfter: 1,
       isSimple: false,
@@ -133,6 +134,24 @@ export default {
   methods: {
     dateThAttrs (column) {
       return column.label === 'Date' ? { class: 'has-text-success' } : null
+    },
+    csvDownload () {
+      console.log(this.ticketRequesters, 888)
+      let csvContent = 'data:text/csv;charset=utf-8,'
+      csvContent += 'User Id, Wallet Address, Count, Amount, Datetime' + '\r\n'
+
+      this.ticketRequesters.forEach((row) => {
+        console.log(row)
+        const datetime = new Date(parseInt(row.time) * 1000).toLocaleDateString() + ' ' + new Date(parseInt(row.time) * 1000).toLocaleTimeString()
+        const rowArray = [row.user_id, row.address, row.count, parseFloat(row.paid).toFixed(2).toString() + ' FLOW', datetime]
+        csvContent += rowArray.join(',') + '\r\n'
+      })
+      const encodedUri = encodeURI(csvContent)
+      const link = document.createElement('a')
+      link.setAttribute('href', encodedUri)
+      link.setAttribute('download', 'funds.csv')
+      document.body.appendChild(link)
+      link.click()
     }
   }
 }
