@@ -71,6 +71,7 @@
               {{ data.title }}
             </option>
           </b-select>
+          <div style="position: absolute; right: 25px; margin-top: 48px; z-index: 2;">%</div>
           <b-field :label="$t('operation_text61') + '(%)'">
             <b-input
               v-model="statItem1"
@@ -89,6 +90,7 @@
               disabled
             />
           </b-field>
+          <div style="position: absolute; right: 25px; margin-top: 8px; z-index: 2;">%</div>
           <b-field>
             <b-input
               v-model="statItem2"
@@ -107,6 +109,7 @@
               disabled
             />
           </b-field>
+          <div v-if="itemCount >= 3" style="position: absolute; right: 25px; margin-top: 8px; z-index: 2;">%</div>
           <b-field v-if="itemCount >= 3">
             <b-input
               v-model="statItem3"
@@ -125,6 +128,7 @@
               disabled
             />
           </b-field>
+          <div v-if="itemCount >= 4" style="position: absolute; right: 25px; margin-top: 8px; z-index: 2;">%</div>
           <b-field v-if="itemCount >= 4">
             <b-input
               v-model="statItem4"

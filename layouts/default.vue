@@ -1099,6 +1099,15 @@ span.control-label {
   padding: 3rem 0 0 2rem !important;
 }
 
+input[type="text"]:disabled,
+input[type="number"]:disabled {
+  color: black;
+}
+
+.field.has-addons .control {
+    flex: 0 0 18%;
+}
+
 @keyframes typing {
   0% {
     width: 0px;
