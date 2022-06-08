@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-card">
+  <div class="modal-card user-data">
     <section class="modal-card-body">
       <div class="text-wrap">
         Your Owned Tickets.
@@ -57,6 +57,19 @@
           </div>
         </template>
       </b-table>
+        <hr>
+        <b-pagination
+          v-if="isPaginate"
+          total="100"
+          v-model="current"
+          :range-before="rangeBefore"
+          :range-after="rangeAfter"
+          size="is-small"
+          :simple="isSimple"
+          :rounded="isRounded"
+          :per-page="perPage"
+        >
+        </b-pagination>
     </section>
   </div>
 </template>
@@ -79,7 +92,14 @@ export default {
       isHoverable: false,
       isFocusable: false,
       isLoading: false,
-      hasMobileCards: true
+      hasMobileCards: true,
+      isPaginate: false,
+      current: 10,
+      perPage: window.innerWidth < 768 ? 3 : 10,
+      rangeBefore: 1,
+      rangeAfter: 1,
+      isSimple: false,
+      isRounded: true
     }
   }
 }

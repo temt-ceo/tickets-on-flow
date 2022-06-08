@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="user-data">
     <span @click="showAccount">
       <b-icon
         class="navbar-item"
@@ -118,11 +118,12 @@ export default {
     await this.$fcl.currentUser.subscribe(this.setupWalletInfo)
   },
   methods: {
-    showAccount () {
+    async showAccount () {
       if (this.bloctoWalletUser?.addr) {
         this.showConfirmModal = true
       } else {
-        this.walletLogin()
+        await this.walletLogin()
+        this.showConfirmModal = true
       }
     },
     async walletLogin () {
@@ -284,6 +285,7 @@ section {
   display: inline-flex;
   width: 40px;
 }
+
 .modal-body {
   background-color: white;
   text-align: center;

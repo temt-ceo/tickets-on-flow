@@ -12,7 +12,7 @@
           <i class="fa-solid fa-bars" />
         </div>
       </div>
-      <div class="content">
+      <div class="content top-list">
         <div
           v-for="(ticket, index) in tickets"
           :key="index"
@@ -618,7 +618,7 @@ export default {
 
   .ticket-list {
     width: 100%;
-    max-width: 685px;
+    max-width: 785px;
     height: calc(100vh - 70px);
     margin: 0 auto;
       background: #596470;
@@ -957,6 +957,7 @@ export default {
   bottom: 3px;
   left: 65px;
   color: wheat;
+  font-size: 8px;
 }
 
 @keyframes fadeOut {
@@ -1000,6 +1001,25 @@ export default {
 
   .bottom-copyright {
     display: block;
+  }
+
+  .section {
+    .content.top-list {
+      top: 51px;
+      padding-top: 10px;
+    }
+
+    .searchbar {
+      transform: translateY(10px);
+    }
+
+    .globe-btn {
+      top: 100px;
+    }
+
+    .info-btn {
+      top: 35px;
+    }
   }
 }
 

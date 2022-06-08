@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-card">
+  <div class="modal-card user-data">
     <section class="modal-card-body">
       <div v-if="isCompleteDispense" class="text-wrap">
         <p class="complete-register">
@@ -24,7 +24,7 @@
           >
             Distribute tickets
           </b-button>
-          <span class="total-count">(Total issues: {{ latestMintedTokenId }} tickets)</span>
+          <span class="total-count">(Total: {{ latestMintedTokenId }} tickets)</span>
           <br>
         </div>
         <b-table
@@ -93,6 +93,19 @@
             </div>
           </template>
         </b-table>
+        <hr>
+        <b-pagination
+          v-if="isPaginate"
+          total="100"
+          v-model="current"
+          :range-before="rangeBefore"
+          :range-after="rangeAfter"
+          size="is-small"
+          :simple="isSimple"
+          :rounded="isRounded"
+          :per-page="perPage"
+        >
+        </b-pagination>
       </div>
     </section>
   </div>
@@ -132,7 +145,14 @@ export default {
       isHoverable: false,
       isFocusable: false,
       isLoading: false,
-      hasMobileCards: true
+      hasMobileCards: true,
+      isPaginate: false,
+      current: 10,
+      perPage: window.innerWidth < 768 ? 3 : 10,
+      rangeBefore: 1,
+      rangeAfter: 1,
+      isSimple: false,
+      isRounded: true
     }
   },
   async mounted () {
