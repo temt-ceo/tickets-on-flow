@@ -14,6 +14,7 @@
         :loading="isLoading"
         :focusable="isFocusable"
         :mobile-cards="hasMobileCards"
+        style="height: 210px;"
       >
         <b-table-column
           v-slot="props"
@@ -62,6 +63,7 @@
         </b-table-column>
 
         <b-table-column
+          v-if="ticket.type == 1"
           v-slot="props"
           field="ticketWhen"
           :label="ticket.type == 0 ? $t('ticket_text19') : $t('operation_text35')"
@@ -87,9 +89,12 @@
       always
     >
       <template v-slot:content>
-        <b style="font-size: 18px;">{{ startTime }} Start</b>
-        <b-icon icon="thumb-up"></b-icon>
-        <b-icon icon="heart" type="is-danger"></b-icon>
+        <b v-if="ticket.type === 0 && !isScheduleDate" style="font-size: 18px;">{{ startTime }} Start</b>
+        <b v-if="ticket.type === 1 && !isScheduleDate" style="font-size: 18px;">{{ $t('operation_text70') }}</b>
+        <b v-if="ticket.type === 0 && isScheduleDate" style="font-size: 18px;">{{ $t('ticket_text19') }}</b>
+        <b v-if="ticket.type === 1 && isScheduleDate" style="font-size: 18px;">{{ $t('operation_text35') }}</b>
+        <b-icon v-if="!isScheduleDate" icon="thumb-up"></b-icon>
+        <b-icon v-if="!isScheduleDate" icon="heart" type="is-danger"></b-icon>
     </template>
       <b-button style="border-color: transparent; margin-left: 50%; height: 0px;" />
     </b-tooltip>
@@ -135,17 +140,32 @@ export default {
       showTooltip: false,
       date: new Date(),
       startTime: null,
-      events: []
+      events: [],
+      isScheduleDate: false
     }
   },
   watch: {
     date: {
       handler (val) {
+        this.isScheduleDate = false
         const target = new Date(val).getTime()
         const hasEvent = this.events.find((obj) => {
           return obj.date.getTime() === target
         })
         this.showTooltip = hasEvent
+        const when = this.ticket.when_to_use.split('||')
+        if (when.length >= 2) {
+          const scheduleDate = new Date(when[1])
+          const targetDate = new Date(val)
+          if (
+            scheduleDate.getYear() === targetDate.getYear() &&
+            scheduleDate.getMonth() === targetDate.getMonth() &&
+            scheduleDate.getDate() === targetDate.getDate()
+          ) {
+            this.isScheduleDate = true
+            this.showTooltip = true
+          }
+        }
       }
     }
   },
@@ -200,23 +220,49 @@ export default {
       this.$emit('eventname')
     },
     showSchedule () {
-      // Mondayが0
-      const weekdays = this.ticketWhen0.split('')
-      // operation_text20
-      const today = new Date()
-      const todayTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0).getTime()
-      for (let i = 0; i < 365; i++) {
-        const target = new Date(todayTime + (i * 86400000))
-        let nextDay = target.getDay()
-        // Mondayを0にしたので合わせる
-        nextDay = nextDay - 1 < 0 ? 6 : nextDay - 1
-        if (weekdays.includes(nextDay.toString())) {
-          this.events.push(
-            {
-              date: new Date(target),
-              type: 'is-warning'
-            }
-          )
+      if (this.ticket.type === 0) {
+        // Mondayが0
+        const weekdays = this.ticketWhen0.split('')
+        const today = new Date()
+        const todayTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0).getTime()
+        for (let i = 0; i < 365; i++) {
+          const target = new Date(todayTime + (i * 86400000))
+          let nextDay = target.getDay()
+          // Mondayを0にしたので合わせる
+          nextDay = nextDay - 1 < 0 ? 6 : nextDay - 1
+          if (weekdays.includes(nextDay.toString())) {
+            this.events.push(
+              {
+                date: new Date(target),
+                type: 'is-warning'
+              }
+            )
+          }
+        }
+      }
+      const when = this.ticket.when_to_use.split('||')
+      if (when.length >= 2) {
+        this.events.push(
+          {
+            date: new Date(when[1]),
+            type: 'is-link'
+          }
+        )
+      }
+      if (this.ticket.type === 1 && when.length >= 2) {
+        const _today = new Date()
+        const _todayTime = new Date(_today.getFullYear(), _today.getMonth(), _today.getDate(), 0, 0, 0).getTime()
+        const endDateTime = new Date(when[1]).getTime()
+        for (let i = 0; i < 365; i++) {
+          const target = new Date(_todayTime + (i * 86400000))
+          if (target.getTime() < endDateTime) {
+            this.events.push(
+              {
+                date: new Date(target),
+                type: 'is-info'
+              }
+            )
+          }
         }
       }
       this.showCalendar = true
@@ -237,6 +283,7 @@ export default {
   .modal-card-body {
     text-align: center;
     padding: 20px 10px;
+    height: 420px;
 
     .text-wrap {
       margin: 16px;
@@ -337,11 +384,6 @@ export default {
         }
       }
     }
-  }
-}
-@media screen and (min-width: 700px) {
-  .modal-card-body {
-    height: 420px;
   }
 }
 </style>

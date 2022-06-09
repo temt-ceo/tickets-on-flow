@@ -1181,6 +1181,18 @@ tr {
   border-radius: 5px;
 }
 
+.ticket-page {
+  .content p:not(:last-child) {
+    margin-bottom: 0;
+  }
+
+  .ticket-code-display {
+    article {
+      margin: 4px 0;
+    }
+  }
+}
+
 .ticket-detail {
   .datepicker {
     .dropdown.is-inline .dropdown-menu {

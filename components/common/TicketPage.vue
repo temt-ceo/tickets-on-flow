@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="hero">
+    <div class="hero ticket-page">
       <video class="hero--video" src="https://static.videezy.com/system/resources/previews/000/012/739/original/Particles_3_60s_2kres_1.mp4" muted autoplay playsinline />
       <div class="hero--overlay">
         <div class="hero--content">
@@ -18,45 +18,53 @@
               <h1 class="page-title">
                 {{ ticketName }}
               </h1>
-              <hr class="separator">
+              <hr v-if="!noticeTitle" class="separator">
               <div class="content">
-                <p v-if="bloctoWalletUser.addr" class="description">
-                  (Wallet Address: {{ bloctoWalletUser.addr }})
-                </p>
-                <h1 class="notice">
-                  {{ noticeTitle }}
+                <div>
+                  <b-message v-if="noticeTitle" type="is-info" has-icon>
+                    {{ noticeTitle }}
+                  </b-message>
                   <b-skeleton size="is-large" height="70px" :active="waitTransactionComplete" />
                   <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
-                </h1>
-                <h1 v-if="code" class="code">
-                  CODE: {{ code }}
-                </h1>
+                </div>
+                <div v-if="code" class="ticket-code-display" style="position: relative;">
+                  <b-message
+                    title="CODE:"
+                    type="is-dark"
+                    :closable="false"
+                  >
+                    {{ code }}
+                  </b-message>
+                  <b-tooltip
+                    label="Copied!"
+                    type="is-link"
+                    style="position: absolute; z-index: 99; top: 40px; right: 5px;"
+                  >
+                    <b-button type="is-link" @click="clickCopy">
+                      Copy
+                    </b-button>
+                  </b-tooltip>
+                </div>
                 <p v-if="transactionScanUrl !== ''" class="check-transaction">
                   <a :href="transactionScanUrl" target="_blank">{{ $t('operation_text56') }}</a>
                 </p>
                 <b-button
-                  v-if="ticketStatus === 4 && !code"
+                  v-if="ticketStatus === 4"
                   type="is-link"
                   @click="requestCode"
                 >
                   {{ $t('ticket_text21') }}
                 </b-button>
                 <b-button
-                  type="is-link is-light"
-                  @click="showConfirmModal = true"
-                >
-                  <span v-if="ticketInfo.type == 0">{{ $t('ticket_text7') }}</span>
-                  <span v-if="ticketInfo.type == 1">{{ $t('ticket_text52') }}</span>
-                </b-button>
-                <b-button
                   v-if="ticketStatus === 3"
+                  type="is-danger"
                   @click="useTicket"
                 >
                   {{ $t('ticket_text22') }}
                 </b-button>
                 <b-button
                   v-if="ticketStatus <= 1 && bloctoWalletUser.addr && ticketInfo.type == 0"
-                  type="is-link is-light"
+                  type="is-danger"
                   @click="requestTicket"
                 >
                   {{ $t('ticket_text23') }}
@@ -71,10 +79,17 @@
                 </b-button>
                 <b-button
                   v-if="ticketStatus <= 2 && bloctoWalletUser.addr && ticketInfo.type == 1 && waitTransactionComplete == false"
-                  type="is-link is-light"
+                  type="is-warning"
                   @click="crowdfund"
                 >
                   {{ $t('ticket_text54') }}
+                </b-button>
+                <b-button
+                  type="is-link is-light"
+                  @click="showConfirmModal = true"
+                >
+                  <span v-if="ticketInfo.type == 0">{{ $t('ticket_text7') }}</span>
+                  <span v-if="ticketInfo.type == 1">{{ $t('ticket_text52') }}</span>
                 </b-button>
 
                 <!-- <b-button
@@ -92,6 +107,9 @@
                     :dispenser="dispenser"
                   />
                 </h1>
+                <p v-if="bloctoWalletUser.addr" class="description">
+                  (Wallet Address: {{ bloctoWalletUser.addr }})
+                </p>
               </div>
             </div>
             <div v-if="!ticketName">
@@ -191,7 +209,75 @@ export default {
     },
     async nextEvent () {
       this.showConfirmModal = false
+      const alreadyLogin = this.bloctoWalletUser?.addr
       await this.walletLogin()
+      if (this.bloctoWalletUser?.addr) {
+        console.log(this.ticketStatus, 777)
+        switch (this.ticketStatus) {
+          case 0:
+            break
+          case 1:
+            if (this.ticketInfo.type === 0) {
+              // 1: can request a ticket
+              this.$buefy.toast.open({
+                message: this.$t('operation_text33'),
+                duration: 8000,
+                queue: false
+              })
+              if (alreadyLogin) {
+                await this.requestTicket()
+              }
+            } else if (this.ticketInfo.type === 1) {
+              // 1: can crowdfund
+              this.$buefy.toast.open({
+                message: this.$t('operation_text40'),
+                duration: 8000,
+                queue: false
+              })
+              if (alreadyLogin) {
+                await this.crowdfund()
+              }
+            }
+            break
+          case 2:
+            if (this.ticketInfo.type === 0) {
+              // 2: ticket requested
+              this.$buefy.toast.open({
+                message: this.$t('operation_text32'),
+                duration: 4000,
+                queue: false
+              })
+            } else if (this.ticketInfo.type === 1) {
+              // 2: crowdfunded
+              this.$buefy.toast.open({
+                message: this.$t('operation_text37'),
+                duration: 4000,
+                queue: false
+              })
+            }
+            break
+          case 3:
+            this.$buefy.toast.open({
+              message: this.$t('ticket_text27'),
+              duration: 4000,
+              queue: false
+            })
+            if (alreadyLogin) {
+              await this.useTicket()
+            }
+            break
+          case 4:
+            this.$buefy.toast.open({
+              message: this.$t('operation_text71'),
+              duration: 4000,
+              queue: false
+            })
+            if (alreadyLogin) {
+              await this.requestCode()
+            }
+            break
+        }
+      }
     },
     async walletLogin () {
       if (!this.bloctoWalletUser.addr) {
@@ -271,23 +357,23 @@ export default {
           break
         case 1:
           if (this.ticketInfo.type === 0) {
-            this.noticeTitle = this.$t('operation_text33') // 1: can request a ticket
+            this.noticeTitle = this.$t('operation_text33').replace('<br>', '\r\n') // 1: can request a ticket
           } else if (this.ticketInfo.type === 1) {
-            this.noticeTitle = this.$t('operation_text40') // 1: can crowdfund
+            this.noticeTitle = this.$t('operation_text40').replace('<br>', '\r\n') // 1: can crowdfund
           }
           break
         case 2:
           if (this.ticketInfo.type === 0) {
-            this.noticeTitle = this.$t('operation_text32') // 2: ticket requested
+            this.noticeTitle = this.$t('operation_text32').replace('<br>', '\r\n') // 2: ticket requested
           } else if (this.ticketInfo.type === 1) {
-            this.noticeTitle = this.$t('operation_text37') // 2: crowdfunded
+            this.noticeTitle = this.$t('operation_text37').replace('<br>', '\r\n') // 2: crowdfunded
           }
           break
         case 3:
-          this.noticeTitle = this.$t('operation_text35') // 3: can use a ticket
+          this.noticeTitle = this.$t('ticket_text27').replace('<br>', '\r\n') // 3: can use a ticket
           break
         case 4:
-          this.noticeTitle = 'Tap the Request a Code button. And save in texts.' // 4: can request a code
+          this.noticeTitle = this.$t('operation_text71').replace('<br>', '\r\n') // 4: can request a code
           break
       }
     },
@@ -397,7 +483,7 @@ export default {
               ]
             ).then(this.$fcl.decode)
             this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-            this.noticeTitle = this.$t('operation_text32')
+            this.noticeTitle = this.$t('operation_text32').replace('<br>', '\r\n')
             this.ticketStatus = 2
             this.callToast()
             return transactionId
@@ -433,7 +519,7 @@ export default {
               ]
             ).then(this.$fcl.decode)
             this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-            this.noticeTitle = `You used ${this.ticketName} ticket. <br>Request a code after 10 seconds since the transaction takes 10 seconds to complete.`
+            this.noticeTitle = `You used ${this.ticketName} ticket. <br>Request a code after 10 seconds since the transaction takes 10 seconds to complete.`.replace('<br>', '\r\n')
             this.ticketStatus = 4
             this.callToast()
             return transactionId
@@ -525,7 +611,7 @@ export default {
                     const data = await this.getRequestStatus(true)
                     if (data) {
                       this.ticketStatus = 2
-                      this.noticeTitle = this.$t('operation_text37')
+                      this.noticeTitle = this.$t('operation_text37').replace('<br>', '\r\n')
                       this.waitTransactionComplete = false
                       clearInterval(timerID)
                     }
@@ -620,7 +706,7 @@ export default {
                         const data = await this.getRequestStatus(true)
                         if (data) {
                           this.ticketStatus = 2
-                          this.noticeTitle = this.$t('operation_text37')
+                          this.noticeTitle = this.$t('operation_text37').replace('<br>', '\r\n')
                           this.waitTransactionComplete = false
                           clearInterval(timerID)
                         }
@@ -668,6 +754,9 @@ export default {
         this.tickets = tickets
       } catch (e) {
       }
+    },
+    async clickCopy () {
+      await navigator.clipboard.writeText(this.code)
     }
   }
 }
@@ -686,6 +775,7 @@ export default {
 
   hr.separator {
     height: 0;
+    margin: 1rem 0;
   }
 
   .content {
@@ -715,7 +805,7 @@ export default {
     .button {
       width: 90%;
       border-radius: 20px;
-      margin: 18px 0;
+      margin: 36px 0 0;
       max-width: 400px;
     }
 
