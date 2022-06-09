@@ -189,7 +189,7 @@ export default {
   operation_text66: 'Dies ist ein Schwarzes Brett für Informationen, die Sie über die Blockchain mit anderen teilen möchten.',
   operation_text67: 'Bulletin Board ansehen',
   operation_text68: 'Registrant',
-  operation_text69: '',
+  operation_text69: 'Zeitplan',
   operation_text70: '',
   operation_text71: '',
   operation_text72: '',

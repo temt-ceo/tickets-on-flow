@@ -189,7 +189,7 @@ export default {
   operation_text66: 'This is a bulletin board for information you want to share with anyone through the blockchain.',
   operation_text67: 'View Bulletin Board',
   operation_text68: 'registrant',
-  operation_text69: '',
+  operation_text69: 'Schedule',
   operation_text70: '',
   operation_text71: '',
   operation_text72: '',

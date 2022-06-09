@@ -189,7 +189,7 @@ export default {
   operation_text66: 'هذه لوحة إعلانات للمعلومات التي تريد مشاركتها مع أي شخص عبر blockchain.',
   operation_text67: 'عرض لوحة النشرات',
   operation_text68: 'المسجل',
-  operation_text69: '',
+  operation_text69: 'برنامج',
   operation_text70: '',
   operation_text71: '',
   operation_text72: '',

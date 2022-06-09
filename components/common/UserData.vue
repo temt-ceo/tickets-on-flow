@@ -123,29 +123,23 @@ export default {
         this.showConfirmModal = true
       } else {
         await this.walletLogin()
-        this.showConfirmModal = true
+        if (this.bloctoWalletUser?.addr) {
+          this.showConfirmModal = true
+        }
       }
     },
     async walletLogin () {
-      if (this.bloctoWalletUser?.addr) {
-        await this.$fcl.unauthenticate()
-        this.$buefy.toast.open({
-          message: 'Logged out.',
-          queue: false
-        })
-      } else {
-        this.$buefy.snackbar.open({
-          duration: 5000,
-          message: this.$t('help_text18'),
-          type: 'is-danger',
-          position: 'is-bottom-left',
-          actionText: null,
-          queue: false,
-          onAction: () => {
-          }
-        })
-        await this.$fcl.authenticate()
-      }
+      this.$buefy.snackbar.open({
+        duration: 5000,
+        message: this.$t('help_text18'),
+        type: 'is-danger',
+        position: 'is-bottom-left',
+        actionText: null,
+        queue: false,
+        onAction: () => {
+        }
+      })
+      await this.$fcl.authenticate()
     },
     async setupWalletInfo (user) {
       this.bloctoWalletUser = user
@@ -218,6 +212,7 @@ export default {
           }
           await this.getFlowBalance()
         } catch (e) {
+          console.log(e)
         }
       } else {
         this.noticeIcon = true

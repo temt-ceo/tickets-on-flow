@@ -945,11 +945,6 @@ span.control-label {
   padding-left: calc(1.75em - 1px) !important;
 }
 
-.field {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem !important;
-}
-
 .fi {
   background-size: contain;
   background-position: 50%;
@@ -1184,6 +1179,22 @@ input[type="number"]:disabled {
 
 tr {
   border-radius: 5px;
+}
+
+.ticket-detail {
+  .datepicker {
+    .dropdown.is-inline .dropdown-menu {
+      width: 100%;
+    }
+    .dropdown-content {
+      box-shadow: 0 1em 2em -0.25em rgb(10 10 10 / 40%), 0 0px 0 1px rgb(10 10 10 / 2%);
+    }
+  }
+  .b-tooltip {
+    position: fixed;
+    width: 100%;
+    max-width: 960px;
+  }
 }
 
 @keyframes typing {

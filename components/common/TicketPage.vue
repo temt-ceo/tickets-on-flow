@@ -27,12 +27,6 @@
                   {{ noticeTitle }}
                   <b-skeleton size="is-large" height="70px" :active="waitTransactionComplete" />
                   <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
-                  <ticket-date-time
-                    v-if="ticketInfo.type == 0"
-                    :ticketWhen0="ticketWhenWeek"
-                    :ticketWhen1="ticketWhenTime"
-                    :dispenser="dispenser"
-                  />
                 </h1>
                 <h1 v-if="code" class="code">
                   CODE: {{ code }}
@@ -83,13 +77,21 @@
                   {{ $t('ticket_text54') }}
                 </b-button>
 
-                <b-button
+                <!-- <b-button
                   v-if="ticketName !== '' && !bloctoWalletUser.addr"
                   type="is-success is-light"
                   @click="walletLogin"
                 >
                   Connect Wallet
-                </b-button>
+                </b-button> -->
+                <h1 class="notice">
+                  <ticket-date-time
+                    v-if="ticketInfo.type == 0"
+                    :ticketWhen0="ticketWhenWeek"
+                    :ticketWhen1="ticketWhenTime"
+                    :dispenser="dispenser"
+                  />
+                </h1>
               </div>
             </div>
             <div v-if="!ticketName">
@@ -114,7 +116,9 @@
     <b-modal v-model="showConfirmModal">
       <check-ticket-modal
         :ticket="ticketInfo"
+        :ticketWhen0="ticketWhenWeek"
         @closeModal="showConfirmModal=false"
+        @eventname="nextEvent"
       />
     </b-modal>
   </section>
@@ -184,6 +188,10 @@ export default {
           this.ticketWhenTime = when[1]
         }
       }
+    },
+    async nextEvent () {
+      this.showConfirmModal = false
+      await this.walletLogin()
     },
     async walletLogin () {
       if (!this.bloctoWalletUser.addr) {
@@ -258,7 +266,8 @@ export default {
 
       switch (this.ticketStatus) {
         case 0:
-          this.noticeTitle = 'Please log in to your wallet' // 0: init
+          // this.noticeTitle = 'Please log in to your wallet' // 0: init
+          this.noticeTitle = '' // 0: init
           break
         case 1:
           if (this.ticketInfo.type === 0) {

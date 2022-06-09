@@ -189,7 +189,7 @@ export default {
   operation_text66: 'Este é um quadro de avisos para informações que você deseja compartilhar com qualquer pessoa através da cadeia de bloqueio.',
   operation_text67: 'Ver Quadro de Avisos',
   operation_text68: 'registrante',
-  operation_text69: '',
+  operation_text69: 'Horário',
   operation_text70: '',
   operation_text71: '',
   operation_text72: '',

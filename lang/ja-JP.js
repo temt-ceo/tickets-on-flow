@@ -189,7 +189,7 @@ export default {
   operation_text66: 'ブロックチェーンを通じて、誰とでも共有したい情報の掲示板です。',
   operation_text67: '掲示板を見る',
   operation_text68: '登録者',
-  operation_text69: '',
+  operation_text69: 'スケジュール',
   operation_text70: '',
   operation_text71: '',
   operation_text72: '',

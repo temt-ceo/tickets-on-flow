@@ -189,7 +189,7 @@ export default {
   operation_text66: 'Se trata de un tablón de anuncios para la información que se quiere compartir con cualquier persona a través de la cadena de bloques.',
   operation_text67: 'Ver el tablón de anuncios',
   operation_text68: 'registrante',
-  operation_text69: '',
+  operation_text69: 'Horario',
   operation_text70: '',
   operation_text71: '',
   operation_text72: '',

@@ -189,7 +189,7 @@ export default {
   operation_text66: 'Il s\'agit d\'un tableau d\'affichage pour les informations que vous souhaitez partager avec quiconque via la blockchain.',
   operation_text67: 'Voir le tableau d\'affichage',
   operation_text68: 'déclarant',
-  operation_text69: '',
+  operation_text69: 'Programme',
   operation_text70: '',
   operation_text71: '',
   operation_text72: '',

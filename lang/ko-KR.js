@@ -189,7 +189,7 @@ export default {
   operation_text66: '블록체인을 통해 누구와도 공유하고 싶은 정보를 게시하는 게시판입니다.',
   operation_text67: '게시판 보기',
   operation_text68: '등록자',
-  operation_text69: '',
+  operation_text69: '일정',
   operation_text70: '',
   operation_text71: '',
   operation_text72: '',

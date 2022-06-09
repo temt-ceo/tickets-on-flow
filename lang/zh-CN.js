@@ -189,7 +189,7 @@ export default {
   operation_text66: '这是一个公告板，用于你想通过区块链与任何人分享的信息。',
   operation_text67: '查看公告栏',
   operation_text68: '登记人',
-  operation_text69: '',
+  operation_text69: '时间表',
   operation_text70: '',
   operation_text71: '',
   operation_text72: '',
