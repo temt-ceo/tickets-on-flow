@@ -91,7 +91,7 @@
               disabled
             />
           </b-field>
-          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 9px; z-index: 2;">%</div>
+          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 14px; z-index: 2;">%</div>
           <b-field>
             <b-input
               v-model="statItem2"
@@ -110,7 +110,7 @@
               disabled
             />
           </b-field>
-          <div v-if="itemCount >= 3" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 9px; z-index: 2;">%</div>
+          <div v-if="itemCount >= 3" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 14px; z-index: 2;">%</div>
           <b-field v-if="itemCount >= 3">
             <b-input
               v-model="statItem3"
@@ -129,7 +129,7 @@
               disabled
             />
           </b-field>
-          <div v-if="itemCount >= 4" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 9px; z-index: 2;">%</div>
+          <div v-if="itemCount >= 4" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 14px; z-index: 2;">%</div>
           <b-field v-if="itemCount >= 4">
             <b-input
               v-model="statItem4"
@@ -336,6 +336,11 @@ export default {
       }
     }
   }
+}
+
+.field:not(:last-child) {
+  margin-bottom: 0.2rem;
+  margin-top: 0.55rem;
 }
 
 .hero {

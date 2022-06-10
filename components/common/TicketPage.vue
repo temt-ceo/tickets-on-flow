@@ -38,6 +38,7 @@
                   <b-tooltip
                     label="Copied!"
                     type="is-link"
+                    :active="tooltipActive"
                     style="position: absolute; z-index: 99; top: 40px; right: 5px;"
                   >
                     <b-button type="is-link" @click="clickCopy">
@@ -173,7 +174,8 @@ export default {
       currentPageName: location.pathname.replace(/\/ti\//, '').replace(/\//g, ''),
       showConfirmModal: false,
       waitTransactionComplete: false,
-      totalRemittance: null
+      totalRemittance: null,
+      tooltipActive: false
     }
   },
   computed: {
@@ -757,6 +759,7 @@ export default {
     },
     async clickCopy () {
       await navigator.clipboard.writeText(this.code)
+      this.tooltipActive = true
     }
   }
 }
@@ -805,7 +808,7 @@ export default {
     .button {
       width: 90%;
       border-radius: 20px;
-      margin: 36px 0 0;
+      margin: 17px 0 0;
       max-width: 400px;
     }
 

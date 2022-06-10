@@ -17,6 +17,7 @@
               <b-tooltip
                 label="Copied!"
                 type="is-info"
+                :active="tooltipActive"
               >
                 <b-button type="is-info is-light" @click="clickCopy">
                   Copy
@@ -245,7 +246,8 @@ export default {
         { day: this.$t('operation_text25'), id: 5 },
         { day: this.$t('operation_text26'), id: 6 }
       ],
-      indexOfTicket: null
+      indexOfTicket: null,
+      tooltipActive: false
     }
   },
   async mounted () {
@@ -512,6 +514,7 @@ export default {
     },
     async clickCopy () {
       await navigator.clipboard.writeText(this.dispenserPage)
+      this.tooltipActive = true
     }
   }
 }

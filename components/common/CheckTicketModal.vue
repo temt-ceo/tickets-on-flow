@@ -78,8 +78,12 @@
       </b-table>
       <hr style="background-color: #fff;">
       <div class="buttons" style="display: block; margin-bottom: 0;">
-        <b-button type="is-warning" style="margin: 0 6%;" @click="showSchedule" inverted>{{ $t('operation_text69') }}</b-button>
-        <b-button type="is-warning" style="margin: 0 6%;" @click="nextEvent" inverted>{{ $t('operation_text54') }}</b-button>
+        <b-button type="is-warning" style="margin: 0 6%;" inverted @click="showSchedule">
+          {{ $t('operation_text69') }}
+        </b-button>
+        <b-button type="is-warning" style="margin: 0 6%;" inverted @click="nextEvent">
+          {{ $t('operation_text54') }}
+        </b-button>
       </div>
     </section>
     <b-tooltip
@@ -88,25 +92,27 @@
       :auto-close="['outside', 'escape']"
       always
     >
-      <template v-slot:content>
+      <template #content>
         <b v-if="ticket.type === 0 && !isScheduleDate" style="font-size: 18px;">{{ startTime }} Start</b>
         <b v-if="ticket.type === 1 && !isScheduleDate" style="font-size: 18px;">{{ $t('operation_text70') }}</b>
         <b v-if="ticket.type === 0 && isScheduleDate" style="font-size: 18px;">{{ $t('ticket_text19') }}</b>
         <b v-if="ticket.type === 1 && isScheduleDate" style="font-size: 18px;">{{ $t('operation_text35') }}</b>
-        <b-icon v-if="!isScheduleDate" icon="thumb-up"></b-icon>
-        <b-icon v-if="!isScheduleDate" icon="heart" type="is-danger"></b-icon>
-    </template>
+        <b-icon v-if="!isScheduleDate" icon="thumb-up" />
+        <b-icon v-if="!isScheduleDate" icon="heart" type="is-danger" />
+      </template>
       <b-button style="border-color: transparent; margin-left: 50%; height: 0px;" />
     </b-tooltip>
     <b-datepicker
       v-if="showCalendar"
-      inline
       v-model="date"
+      inline
       :events="events"
       indicators="bars"
       style="position: absolute; left: 5%; width: 90%; top: 8%;"
     />
-    <b-button v-if="showCalendar" type="is-danger" @click="hideSchedule">Close</b-button>
+    <b-button v-if="showCalendar" type="is-danger" @click="hideSchedule">
+      Close
+    </b-button>
   </div>
 </template>
 
