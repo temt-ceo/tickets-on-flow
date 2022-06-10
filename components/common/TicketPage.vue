@@ -24,7 +24,8 @@
                   <b-message v-if="noticeTitle" type="is-info" has-icon>
                     {{ noticeTitle }}
                   </b-message>
-                  <b-skeleton size="is-large" height="70px" :active="waitTransactionComplete" />
+                  <b-skeleton size="is-large" :active="waitTransactionComplete" />
+                  <b-skeleton size="is-large" :active="waitTransactionComplete" />
                   <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
                 </div>
                 <div v-if="code" class="ticket-code-display" style="position: relative;">
@@ -64,7 +65,7 @@
                   {{ $t('ticket_text22') }}
                 </b-button>
                 <b-button
-                  v-if="ticketStatus <= 1 && bloctoWalletUser.addr && ticketInfo.type == 0"
+                  v-if="ticketStatus <= 1 && bloctoWalletUser.addr && parseInt(ticketInfo.type) == 0"
                   type="is-danger"
                   @click="requestTicket"
                 >
@@ -75,11 +76,11 @@
                   type="is-warning is-light"
                   @click="getRequestStatus"
                 >
-                  <span v-if="ticketInfo.type == 0">{{ $t('ticket_text24') }}</span>
-                  <span v-if="ticketInfo.type == 1">{{ $t('operation_text38') }}</span>
+                  <span v-if="parseInt(ticketInfo.type) == 0">{{ $t('ticket_text24') }}</span>
+                  <span v-if="parseInt(ticketInfo.type) == 1">{{ $t('operation_text38') }}</span>
                 </b-button>
                 <b-button
-                  v-if="ticketStatus <= 2 && bloctoWalletUser.addr && ticketInfo.type == 1 && waitTransactionComplete == false"
+                  v-if="ticketStatus <= 2 && bloctoWalletUser.addr && parseInt(ticketInfo.type) == 1 && waitTransactionComplete == false"
                   type="is-warning"
                   @click="crowdfund"
                 >
@@ -89,8 +90,8 @@
                   type="is-link is-light"
                   @click="showConfirmModal = true"
                 >
-                  <span v-if="ticketInfo.type == 0">{{ $t('ticket_text7') }}</span>
-                  <span v-if="ticketInfo.type == 1">{{ $t('ticket_text52') }}</span>
+                  <span v-if="parseInt(ticketInfo.type) == 0">{{ $t('ticket_text7') }}</span>
+                  <span v-if="parseInt(ticketInfo.type) == 1">{{ $t('ticket_text52') }}</span>
                 </b-button>
 
                 <!-- <b-button
@@ -102,7 +103,7 @@
                 </b-button> -->
                 <h1 class="notice">
                   <ticket-date-time
-                    v-if="ticketInfo.type == 0"
+                    v-if="parseInt(ticketInfo.type) == 0"
                     :ticketWhen0="ticketWhenWeek"
                     :ticketWhen1="ticketWhenTime"
                     :dispenser="dispenser"
@@ -214,12 +215,11 @@ export default {
       const alreadyLogin = this.bloctoWalletUser?.addr
       await this.walletLogin()
       if (this.bloctoWalletUser?.addr) {
-        console.log(this.ticketStatus, 777)
         switch (this.ticketStatus) {
           case 0:
             break
           case 1:
-            if (this.ticketInfo.type === 0) {
+            if (parseInt(this.ticketInfo.type) === 0) {
               // 1: can request a ticket
               this.$buefy.toast.open({
                 message: this.$t('operation_text33'),
@@ -229,7 +229,7 @@ export default {
               if (alreadyLogin) {
                 await this.requestTicket()
               }
-            } else if (this.ticketInfo.type === 1) {
+            } else if (parseInt(this.ticketInfo.type) === 1) {
               // 1: can crowdfund
               this.$buefy.toast.open({
                 message: this.$t('operation_text40'),
@@ -242,14 +242,14 @@ export default {
             }
             break
           case 2:
-            if (this.ticketInfo.type === 0) {
+            if (parseInt(this.ticketInfo.type) === 0) {
               // 2: ticket requested
               this.$buefy.toast.open({
                 message: this.$t('operation_text32'),
                 duration: 4000,
                 queue: false
               })
-            } else if (this.ticketInfo.type === 1) {
+            } else if (parseInt(this.ticketInfo.type) === 1) {
               // 2: crowdfunded
               this.$buefy.toast.open({
                 message: this.$t('operation_text37'),
@@ -338,7 +338,7 @@ export default {
                 }
               }
             }
-            if (this.ticketInfo.type === 1) {
+            if (parseInt(this.ticketInfo.type) === 1) {
               this.totalRemittance = parseFloat(data.paid).toFixed(1)
             }
           } else {
@@ -351,23 +351,23 @@ export default {
         this.bloctoWalletUser = {}
         this.ticketStatus = 0
       }
-
+      console.log(this.ticketStatus, parseInt(this.ticketInfo.type), 9999)
       switch (this.ticketStatus) {
         case 0:
           // this.noticeTitle = 'Please log in to your wallet' // 0: init
           this.noticeTitle = '' // 0: init
           break
         case 1:
-          if (this.ticketInfo.type === 0) {
+          if (parseInt(this.ticketInfo.type) === 0) {
             this.noticeTitle = this.$t('operation_text33').replace('<br>', '\r\n') // 1: can request a ticket
-          } else if (this.ticketInfo.type === 1) {
+          } else if (parseInt(this.ticketInfo.type) === 1) {
             this.noticeTitle = this.$t('operation_text40').replace('<br>', '\r\n') // 1: can crowdfund
           }
           break
         case 2:
-          if (this.ticketInfo.type === 0) {
+          if (parseInt(this.ticketInfo.type) === 0) {
             this.noticeTitle = this.$t('operation_text32').replace('<br>', '\r\n') // 2: ticket requested
-          } else if (this.ticketInfo.type === 1) {
+          } else if (parseInt(this.ticketInfo.type) === 1) {
             this.noticeTitle = this.$t('operation_text37').replace('<br>', '\r\n') // 2: crowdfunded
           }
           break
@@ -421,9 +421,9 @@ export default {
             const m = this.latestRequest.getMinutes().toString()
             const requestHour = `${h.length > 1 ? h : '0' + h}: ${m.length > 1 ? m : '0' + m}`
             let message = ''
-            if (this.ticketInfo.type === 0) {
+            if (parseInt(this.ticketInfo.type) === 0) {
               message = `Last Request Date: ${requestDate} ${requestHour}`
-            } else if (this.ticketInfo.type === 1) {
+            } else if (parseInt(this.ticketInfo.type) === 1) {
               message = `${this.$t('operation_text39')}: ${parseFloat(result.paid).toFixed(1)} $FLOW`
             }
 

@@ -215,7 +215,7 @@
             v-model="notification.fifth"
             :progress-bar="true"
             :auto-close="true"
-            :duration="63000"
+            :duration="66000"
             :pause-on-hover="true"
             type="is-warning is-light"
             aria-close-label="Close notification"
@@ -227,7 +227,7 @@
             v-model="notification.sixth"
             :progress-bar="true"
             :auto-close="true"
-            :duration="71000"
+            :duration="76000"
             :pause-on-hover="true"
             type="is-warning is-light"
             aria-close-label="Close notification"
@@ -239,7 +239,7 @@
             v-model="notification.seventh"
             :progress-bar="true"
             :auto-close="true"
-            :duration="80000"
+            :duration="86000"
             :pause-on-hover="true"
             type="is-success"
             aria-close-label="Close notification"
@@ -250,7 +250,7 @@
             v-model="notification.eighth"
             :progress-bar="true"
             :auto-close="true"
-            :duration="88000"
+            :duration="95000"
             :pause-on-hover="true"
             type="is-success is-light"
             aria-close-label="Close notification"
@@ -910,7 +910,7 @@ export default {
 .dialog {
   .media .media-content {
     input:focus {
-      border-color: #48c78e;
+      border-color: #3e8ed0;
       -webkit-box-shadow: none;
       box-shadow: none;
     }

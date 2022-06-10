@@ -23,13 +23,8 @@
             <nuxt-link :to="'/ti/' + ticket.path">
               <div class="identity_block fa-3x">
                 <label>{{ ticket.label }}</label>
-                <i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s;" />
+                <i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s;" /><br>
                 <span>{{ ticket.description }}</span>
-              </div>
-              <div class="price">
-                <span v-if="ticket.type !== 'Crowdfunding' && ticket.type !== 'stats'">$FLOW: {{ ticket.price }}</span>
-                <span v-if="ticket.type !== 'Crowdfunding' && ticket.type !== 'stats'" class="datetime">({{ ticket.datetime }})</span>
-                <span v-if="ticket.type === 'Crowdfunding'" class="datetime2">{{ ticket.datetime }}</span>
               </div>
               <div
                 v-if="ticket.type === 'Crowdfunding'"
@@ -45,6 +40,12 @@
                 class="icon_block"
               >
                 {{ $t('ticket_text1') }}:<br><label>{{ ticket.type }}</label>
+              </div>
+            </nuxt-link>
+            <nuxt-link :to="'/ti/' + ticket.path">
+              <div class="price">
+                <span v-if="ticket.type !== 'Crowdfunding' && ticket.type !== 'stats'">$FLOW: {{ ticket.price }}</span>
+                <span v-if="ticket.type === 'Crowdfunding'" class="datetime2">{{ ticket.datetime }}</span>
               </div>
             </nuxt-link>
             <a
@@ -621,11 +622,20 @@ export default {
     max-width: 785px;
     height: calc(100vh - 70px);
     margin: 0 auto;
-      background: #596470;
+    // background: #596470;
+    background: rgba(255, 255, 255, 0.6);
     border-radius: 30px;
-    border: 5px solid rgba(1, 1, 1, .2);
+    // border: 5px solid rgba(1, 1, 1, .2);
+    border: 3px solid rgba(255, 255, 5, 0.2);
     position: relative;
     overflow: hidden;
+  }
+
+  .content.top-list {
+    background-image: linear-gradient(to top left, honeydew 0%, snow 35%, honeydew 100%);
+    padding-top: 5px;
+    top: 65px;
+    margin-bottom: 0.3rem;
   }
 
   .header {
@@ -653,7 +663,7 @@ export default {
 
   .searchbar {
     width: 100%;
-    transform: translateY(21px);
+    transform: translateY(16px);
     position: relative;
 
     .control {
@@ -716,6 +726,7 @@ export default {
 
     .ticket-card {
       min-height: 92px;
+      background-color: white;
 
       &.short-card {
         min-height: 40px;
@@ -727,8 +738,8 @@ export default {
         font-size: 15px;
         font-family: 'Roboto', sans-serif;
         font-style: italic;
-        line-height: 98%;
-        padding-bottom: 5px;
+        line-height: 99%;
+        padding-bottom: 4px;
 
         & > span{
           color: gray;
@@ -739,19 +750,16 @@ export default {
         & > i {
           color: gray;
           font-size: 8px;
+          vertical-align: 2px;
         }
 
         & > label {
           text-align: left;
           // display: inline-block;
-          padding-right: 7px;
+          padding-right: 3px;
           padding-bottom: 3px;
         }
       }
-    }
-
-    .price {
-      margin-left: 3px;
     }
 
     .datetime {
@@ -763,10 +771,17 @@ export default {
       color: #7957d5;
     }
 
+    .price {
+      margin-left: 3px;
+      position: absolute;
+      bottom: 24px;
+      left: 127px;
+    }
+
     .twitter-label {
       color: #48c78e!important;
       position: absolute;
-      bottom: 10px;
+      bottom: 2px;
       left: 130px;
       font-weight: bold;
       text-decoration: underline;
@@ -1004,9 +1019,14 @@ export default {
   }
 
   .section {
+    .ticket-list {
+      border: 4px solid rgba(255, 255, 255, 0.2);
+    }
+
     .content.top-list {
-      top: 51px;
+      top: 52px;
       padding-top: 10px;
+      margin-bottom: 1.3rem;
     }
 
     .searchbar {

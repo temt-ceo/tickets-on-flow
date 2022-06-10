@@ -6,10 +6,10 @@
           {{ $t('ticket_text32') }}
         </div>
         <div class="nft-list-container">
-          <div v-if="!isTypeSame" class="text-wrap">
-            <p class="complete-register">
+          <div v-if="isTypeSame == false" class="text-wrap">
+            <b-message type="is-warning" has-icon>
               {{ $t('operation_text18') }}
-            </p>
+            </b-message>
           </div>
           <div v-if="isCompleteRegister" class="text-wrap">
             <p class="complete-register">
@@ -44,6 +44,7 @@
               <b-field
                 :label="'1. '+ $t('operation_text5')"
                 :type="{ 'is-success': registerName != '', 'is-danger': registerName === ''}"
+                class="register-text-input"
               >
                 <b-input
                   v-model="registerName"
@@ -88,10 +89,11 @@
               <b-field
                 :label="'3. ' + $t('operation_text7')"
                 :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
+                class="register-text-input"
               >
                 <b-input
                   v-model="registerWhere"
-                  maxlength="80"
+                  maxlength="100"
                   :placeholder="$t('operation_text3')"
                 />
               </b-field>
@@ -197,6 +199,7 @@
               <b-field
                 :label="'1. '+ $t('operation_text5')"
                 :type="{ 'is-success': registerName != ''}"
+                class="register-text-input"
               >
                 <b-input
                   v-model="registerName"
@@ -241,10 +244,11 @@
               <b-field
                 :label="'3. ' + $t('operation_text7')"
                 :type="{ 'is-success': registerWhere != '', 'is-danger': registerWhere === ''}"
+                class="register-text-input"
               >
                 <b-input
                   v-model="registerWhere"
-                  maxlength="80"
+                  maxlength="100"
                   :placeholder="$t('operation_text3')"
                 />
               </b-field>
@@ -400,7 +404,7 @@ export default {
       registerPrice: null,
       registerTwitter: '',
       registerTwitterEdit: 'No',
-      isTypeSame: false,
+      isTypeSame: null,
       transactionScanUrl: '',
       isCompleteRegister: false,
       isCompleteDispense: false,
@@ -456,7 +460,7 @@ export default {
             ]
           ).then(this.$fcl.decode)
           this.ticketInfo = tickets.find((ticket, index) => {
-            const match = ticket.dispenser_id === this.dispenser
+            const match = parseInt(ticket.dispenser_id) === this.dispenser
             if (match) {
               this.indexOfTicket = index
             }
@@ -712,6 +716,10 @@ export default {
 
     .scanlink {
       text-decoration: underline;
+    }
+
+    .field.register-text-input {
+      margin-bottom: 0;
     }
 
     .text-wrap {

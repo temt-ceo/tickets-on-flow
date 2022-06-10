@@ -16,20 +16,25 @@
             <h1 class="page-title">
               {{ $t('ticket_text31') }}
             </h1>
+            <hr style="background-color: inherit; margin: 1rem 0;">
             <div class="content">
-              <h1 class="notice">
-                {{ noticeTitle }}<br>
-                <b-skeleton size="is-large" height="70px" :active="waitTransactionComplete" />
+              <div>
+                <b-message v-if="noticeTitle" type="is-success" has-icon>
+                  {{ noticeTitle }}
+                </b-message>
+                <b-skeleton size="is-large" :active="waitTransactionComplete" />
+                <b-skeleton size="is-large" :active="waitTransactionComplete" />
                 <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
-              </h1>
-              <p v-if="webpagePath">
-                <a :href="webpagePath" style="color: white;">{{ webpagePath }}</a>
+              </div>
+              <p v-if="webpagePath" class="check-webpage">
+                <a :href="webpagePath">{{ webpagePath }}</a>
               </p>
               <p v-if="transactionScanUrl !== ''" class="check-transaction">
                 <a :href="transactionScanUrl" target="_blank">{{ $t('operation_text56') }}</a>
               </p>
               <b-button
-                :disabled="!bloctoWalletUser.addr || !hasDispenserVault || !hasDispenser"
+                v-if="bloctoWalletUser.addr"
+                :disabled="!hasDispenserVault || !hasDispenser"
                 type="is-link is-light"
                 @click="showInputModal = true"
               >
@@ -53,9 +58,9 @@
               <b-button
                 v-if="!bloctoWalletUser.addr"
                 type="is-success is-light"
-                @click="flowWalletLogin"
+                @click="nextEvent"
               >
-                Connect Wallet
+                {{ $t('ticket_text32') }}
               </b-button>
               <p v-if="bloctoWalletUser.addr" class="description">
                 (Wallet Address: {{ bloctoWalletUser.addr }})
@@ -159,7 +164,7 @@ export default {
           if (this.hasDispenser) {
             this.noticeTitle = this.$t('ticket_text36')
             await this.getTickets()
-            const ticketInfo = this.tickets.find(obj => obj.dispenser_id === this.dispenserId)
+            const ticketInfo = this.tickets.find(obj => parseInt(obj.dispenser_id) === this.dispenserId)
             if (ticketInfo && ticketInfo.name && ticketInfo.name.split('||@')[0]) {
               this.noticeTitle = this.$t('ticket_text57')
               this.webpagePath = this.dispenserPage
@@ -171,7 +176,7 @@ export default {
           this.noticeTitle = this.$t('ticket_text38')
         }
       } else {
-        this.noticeTitle = 'Please log in to your wallet.'
+        this.noticeTitle = ''
       }
     },
     async hasTicketDispenserVault () {
@@ -231,105 +236,90 @@ export default {
       let toast1 = null
       let toast2 = null
       try {
-        let description = null
+        const description = 'Fow Tickets'
         let domain = null
         this.$buefy.dialog.prompt({
-          message: this.$t('ticket_text44'),
-          type: 'is-success',
+          message: this.$t('ticket_text39'),
+          type: 'is-info',
           inputAttrs: {
             type: 'text',
-            placeholder: `${this.$t('ticket_text40')} Online cooking school`,
-            value: '',
-            maxlength: 40
+            placeholder: `${this.$t('ticket_text40')} hello-ticket`,
+            maxlength: 30
           },
-          confirmText: this.$t('ticket_text45'),
+          confirmText: 'Next',
           trapFocus: true,
-          onConfirm: (val) => {
-            description = val
-            this.$buefy.dialog.prompt({
-              message: this.$t('ticket_text39'),
-              type: 'is-success',
-              inputAttrs: {
-                type: 'text',
-                placeholder: `${this.$t('ticket_text40')} hello-ticket`,
-                maxlength: 30
-              },
-              confirmText: 'Next',
-              trapFocus: true,
-              onConfirm: (value) => {
-                domain = value.trim()
-                const re = /^[a-zA-Z0-9-_]*$/
-                if (domain.replace(re, '') !== '') {
-                  this.$buefy.dialog.alert(this.$t('ticket_text41'))
-                  return
-                }
+          onConfirm: (value) => {
+            domain = value.trim()
+            const re = /^[a-zA-Z0-9-_]*$/
+            if (domain.replace(re, '') !== '') {
+              this.$buefy.dialog.alert(this.$t('ticket_text41'))
+              return
+            }
 
-                if (this.dispenserDomains.includes(domain)) {
-                  this.$buefy.dialog.alert(this.$t('ticket_text42'))
-                  return
-                }
-                toast1 = this.$buefy.toast.open({
-                  indefinite: true,
-                  message: `${this.$t('ticket_text43')} https://tickets-on-flow.web.app/ti/${domain}`
+            if (this.dispenserDomains.includes(domain)) {
+              this.$buefy.dialog.alert(this.$t('ticket_text42'))
+              return
+            }
+            toast1 = this.$buefy.toast.open({
+              indefinite: true,
+              message: `${this.$t('ticket_text43')} https://tickets-on-flow.web.app/ti/${domain}`
+            })
+            this.$buefy.dialog.confirm({
+              message: this.$t('ticket_text46'),
+              type: 'is-dark',
+              confirmText: this.$t('ticket_text47'),
+              onConfirm: async () => {
+                toast1?.close()
+
+                // loading
+                const loadingComponent = this.$buefy.loading.open({
+                  container: null
                 })
-                this.$buefy.dialog.confirm({
-                  message: this.$t('ticket_text46'),
-                  type: 'is-success',
-                  confirmText: this.$t('ticket_text47'),
-                  onConfirm: async () => {
-                    toast1?.close()
+                setTimeout(() => loadingComponent.close(), 1000)
 
-                    // loading
-                    const loadingComponent = this.$buefy.loading.open({
-                      container: null
-                    })
-                    setTimeout(() => loadingComponent.close(), 1000)
-
-                    this.$buefy.snackbar.open({
-                      duration: 120000, // 2 minutes
-                      message: this.$t('operation_text30') + ` <a href="https://testnet.flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
-                      type: 'is-danger',
-                      position: 'is-bottom-left',
-                      actionText: null,
-                      queue: false,
-                      onAction: () => {
-                      }
-                    })
-
-                    const transactionId = await this.$fcl.send(
-                      [
-                        this.$fcl.transaction(FlowTransactions.requestDispenser),
-                        this.$fcl.args([
-                          this.$fcl.arg(domain, this.$fclArgType.String),
-                          this.$fcl.arg(description, this.$fclArgType.String),
-                          this.$fcl.arg(0.1, this.$fclArgType.UFix64)
-                        ]),
-                        this.$fcl.payer(this.$fcl.authz),
-                        this.$fcl.proposer(this.$fcl.authz),
-                        this.$fcl.authorizations([this.$fcl.authz]),
-                        this.$fcl.limit(9999)
-                      ]
-                    ).then(this.$fcl.decode)
-                    toast2 = this.$buefy.toast.open({
-                      indefinite: true,
-                      message: this.$t('operation_text34')
-                    })
-                    this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-                    this.noticeTitle = this.$t('ticket_text48')
-                    this.waitTransactionComplete = true
-                    this.isApplied = true
-
-                    const timerID = setInterval(async () => {
-                      const done = await this.hasTicketDispenserVault()
-                      if (done) {
-                        this.noticeTitle = this.$t('ticket_text49')
-                        this.waitTransactionComplete = false
-                        toast2.close()
-                        clearInterval(timerID)
-                      }
-                    }, 4000)
+                this.$buefy.snackbar.open({
+                  duration: 120000, // 2 minutes
+                  message: this.$t('operation_text30') + ` <a href="https://testnet.flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
+                  type: 'is-danger',
+                  position: 'is-bottom-left',
+                  actionText: null,
+                  queue: false,
+                  onAction: () => {
                   }
                 })
+
+                const transactionId = await this.$fcl.send(
+                  [
+                    this.$fcl.transaction(FlowTransactions.requestDispenser),
+                    this.$fcl.args([
+                      this.$fcl.arg(domain, this.$fclArgType.String),
+                      this.$fcl.arg(description, this.$fclArgType.String),
+                      this.$fcl.arg(0.1, this.$fclArgType.UFix64)
+                    ]),
+                    this.$fcl.payer(this.$fcl.authz),
+                    this.$fcl.proposer(this.$fcl.authz),
+                    this.$fcl.authorizations([this.$fcl.authz]),
+                    this.$fcl.limit(9999)
+                  ]
+                ).then(this.$fcl.decode)
+                toast2 = this.$buefy.toast.open({
+                  indefinite: true,
+                  message: this.$t('operation_text34')
+                })
+                this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+                this.noticeTitle = this.$t('ticket_text48')
+                this.waitTransactionComplete = true
+                this.isApplied = true
+
+                const timerID = setInterval(async () => {
+                  const done = await this.hasTicketDispenserVault()
+                  if (done) {
+                    this.noticeTitle = this.$t('ticket_text49')
+                    this.waitTransactionComplete = false
+                    toast2.close()
+                    clearInterval(timerID)
+                  }
+                }, 4000)
               },
               onCancel: () => {
                 toast1?.close()
@@ -422,6 +412,24 @@ export default {
         this.tickets = tickets
       } catch (e) {
       }
+    },
+    async nextEvent () {
+      await this.flowWalletLogin()
+      if (this.bloctoWalletUser?.addr) {
+        setTimeout(() => {
+          if (this.hasDispenserVault && this.hasDispenser) {
+            this.showInputModal = true
+          }
+          if (!this.hasDispenserVault) {
+            this.$buefy.toast.open({
+              message: this.$t('operation_text72'),
+              duration: 8000,
+              queue: false
+            })
+            this.requestDispenser()
+          }
+        }, 2000)
+      }
     }
   }
 }
@@ -450,7 +458,8 @@ export default {
     }
 
     .description {
-      font-size: 16px;
+      display: none;
+      font-size: 14px;
     }
 
     .notice {
@@ -458,9 +467,23 @@ export default {
       color: white;
     }
 
-    .check-transaction a {
-      font-size: 16px;
-      text-decoration: underline;
+    .check-transaction {
+      margin: 1em 0 0;
+
+      a {
+        font-size: 16px;
+        text-decoration: underline;
+      }
+    }
+
+    .check-webpage {
+      margin: 1em 0 0;
+
+      a {
+        font-size: 16px;
+        color: #ffe08a;
+        text-decoration: none;
+      }
     }
 
     .button {

@@ -6,6 +6,11 @@
           {{ $t('ticket_text32') }}
         </div>
         <div class="nft-list-container">
+          <div v-if="isTypeSame == false" class="text-wrap">
+            <b-message type="is-warning" has-icon>
+              {{ $t('operation_text18') }}
+            </b-message>
+          </div>
           <div v-if="isCompleteRegister" class="text-wrap">
             <p class="complete-register">
               {{ $t('operation_text15') }}
@@ -52,7 +57,7 @@
               >
                 <b-input
                   v-model="registerWhere"
-                  maxlength="80"
+                  maxlength="100"
                   :placeholder="$t('operation_text3')"
                 />
               </b-field>
@@ -117,7 +122,7 @@
               >
                 <b-input
                   v-model="registerWhere"
-                  maxlength="80"
+                  maxlength="100"
                   :placeholder="$t('operation_text3')"
                 />
               </b-field>
@@ -275,7 +280,7 @@ export default {
             ]
           ).then(this.$fcl.decode)
           this.ticketInfo = tickets.find((ticket, index) => {
-            const match = ticket.dispenser_id === this.dispenser
+            const match = parseInt(ticket.dispenser_id) === this.dispenser
             if (match) {
               this.indexOfTicket = index
             }
@@ -454,7 +459,7 @@ export default {
           [
             this.$fcl.transaction(FlowTransactions.updateTicketInfo),
             this.$fcl.args([
-              this.$fcl.arg(this.indexOfTicket, this.$fclArgType.UInt32),
+              this.$fcl.arg(String(this.indexOfTicket), this.$fclArgType.UInt32),
               this.$fcl.arg(registerType, this.$fclArgType.UInt8),
               this.$fcl.arg(registerName, this.$fclArgType.String),
               this.$fcl.arg(registerWhere, this.$fclArgType.String),
@@ -499,7 +504,7 @@ export default {
             this.$fcl.script(FlowScripts.getTicketReceivers),
             this.$fcl.args([
               this.$fcl.arg(this.address, this.$fclArgType.Address),
-              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
+              this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32)
             ])
           ]
         ).then(this.$fcl.decode)
