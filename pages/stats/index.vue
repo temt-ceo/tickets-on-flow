@@ -502,7 +502,7 @@ export default {
             this.$fcl.transaction(FlowTransactions.updateStat),
             this.$fcl.args([
               this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
-              this.$fcl.arg(this.selectedIndex, this.$fclArgType.UInt32),
+              this.$fcl.arg(String(this.selectedIndex), this.$fclArgType.UInt32),
               this.$fcl.arg(this.nickname, this.$fclArgType.String),
               this.$fcl.arg(this.statTitle, this.$fclArgType.String),
               this.$fcl.arg(this.statItem1, this.$fclArgType.String),

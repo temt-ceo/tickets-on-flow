@@ -635,7 +635,7 @@ export default {
           [
             this.$fcl.transaction(FlowTransactions.updateTicketInfo),
             this.$fcl.args([
-              this.$fcl.arg(this.indexOfTicket, this.$fclArgType.UInt32),
+              this.$fcl.arg(String(this.indexOfTicket), this.$fclArgType.UInt32),
               this.$fcl.arg(registerType, this.$fclArgType.UInt8),
               this.$fcl.arg(registerName, this.$fclArgType.String),
               this.$fcl.arg(registerWhere, this.$fclArgType.String),
@@ -680,7 +680,7 @@ export default {
             this.$fcl.script(FlowScripts.getTicketReceivers),
             this.$fcl.args([
               this.$fcl.arg(this.address, this.$fclArgType.Address),
-              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
+              this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32)
             ])
           ]
         ).then(this.$fcl.decode)

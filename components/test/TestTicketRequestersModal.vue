@@ -86,7 +86,7 @@ export default {
           const dispenserList = []
           if (st > 0 && st <= 999 && ed > 0 && ed <= 999 && st < ed) {
             for (let id = st; id <= ed; id++) {
-              dispenserList.push(id)
+              dispenserList.push(String(id))
             }
             try {
               const ticketRequesters = await this.$fcl.send(

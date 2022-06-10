@@ -464,7 +464,7 @@ export default {
             const when = ticket.when_to_use.split('||')
             let datetime = ''
             if (when.length >= 2) {
-              if (ticket.type === 1) {
+              if (parseInt(ticket.type) === 1) {
                 datetime = `${this.$t('ticket_text56')} ` + new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1')
               } else {
                 datetime = new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1') + ` ${this.$t('ticket_text6')} `
@@ -483,7 +483,7 @@ export default {
                 type = this.$t('ticket_text4')
               }
               // Crowdfunding
-              if (ticket.type === 1) {
+              if (parseInt(ticket.type) === 1) {
                 type = 'Crowdfunding'
                 tool = 1
               } else {

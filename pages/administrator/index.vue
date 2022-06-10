@@ -161,7 +161,7 @@ export default {
         onConfirm: (dispenserId) => {
           let addr = null
           this.dispenserRequesters.forEach((obj) => {
-            if (obj.dispenser_id === parseInt(dispenserId)) {
+            if (parseInt(obj.dispenser_id) === parseInt(dispenserId)) {
               addr = obj.address
             }
           })

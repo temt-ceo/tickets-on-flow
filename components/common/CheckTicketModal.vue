@@ -2,8 +2,8 @@
   <div class="modal-card ticket-detail">
     <section class="modal-card-body">
       <div class="text-wrap text-title">
-        <span v-if="ticket.type == 0">{{ $t('ticket_text14') }}</span>
-        <span v-if="ticket.type == 1">{{ $t('ticket_text52') }}</span>
+        <span v-if="parseInt(ticket.type) == 0">{{ $t('ticket_text14') }}</span>
+        <span v-if="parseInt(ticket.type) == 1">{{ $t('ticket_text52') }}</span>
       </div>
       <b-table
         :data="tickets"
@@ -35,7 +35,7 @@
         </b-table-column>
 
         <b-table-column
-          v-if="ticket.type == 0"
+          v-if="parseInt(ticket.type) == 0"
           v-slot="props"
           field="type"
           :label="$t('ticket_text1')"
@@ -46,7 +46,7 @@
         <b-table-column
           v-slot="props"
           field="twitter"
-          :label="ticket.type == 0 ? $t('ticket_text17') : $t('ticket_text53')"
+          :label="parseInt(ticket.type) == 0 ? $t('ticket_text17') : $t('ticket_text53')"
         >
           <a :href="props.row.twitter" target="_blank">
             @{{ props.row.twitterAccount }}
@@ -54,7 +54,7 @@
         </b-table-column>
 
         <b-table-column
-          v-if="ticket.type == 0"
+          v-if="parseInt(ticket.type) == 0"
           v-slot="props"
           field="ticketPrice"
           :label="$t('ticket_text18')"
@@ -63,10 +63,10 @@
         </b-table-column>
 
         <b-table-column
-          v-if="ticket.type == 1"
+          v-if="parseInt(ticket.type) == 1"
           v-slot="props"
           field="ticketWhen"
-          :label="ticket.type == 0 ? $t('ticket_text19') : $t('operation_text35')"
+          :label="parseInt(ticket.type) == 0 ? $t('ticket_text19') : $t('operation_text35')"
         >
           {{ props.row.ticketWhen }}
         </b-table-column>
@@ -93,10 +93,10 @@
       always
     >
       <template #content>
-        <b v-if="ticket.type === 0 && !isScheduleDate" style="font-size: 18px;">{{ startTime }} Start</b>
-        <b v-if="ticket.type === 1 && !isScheduleDate" style="font-size: 18px;">{{ $t('operation_text70') }}</b>
-        <b v-if="ticket.type === 0 && isScheduleDate" style="font-size: 18px;">{{ $t('ticket_text19') }}</b>
-        <b v-if="ticket.type === 1 && isScheduleDate" style="font-size: 18px;">{{ $t('operation_text35') }}</b>
+        <b v-if="parseInt(ticket.type) === 0 && !isScheduleDate" style="font-size: 18px;">{{ startTime }} Start</b>
+        <b v-if="parseInt(ticket.type) === 1 && !isScheduleDate" style="font-size: 18px;">{{ $t('operation_text70') }}</b>
+        <b v-if="parseInt(ticket.type) === 0 && isScheduleDate" style="font-size: 18px;">{{ $t('ticket_text19') }}</b>
+        <b v-if="parseInt(ticket.type) === 1 && isScheduleDate" style="font-size: 18px;">{{ $t('operation_text35') }}</b>
         <b-icon v-if="!isScheduleDate" icon="thumb-up" />
         <b-icon v-if="!isScheduleDate" icon="heart" type="is-danger" />
       </template>
@@ -184,7 +184,7 @@ export default {
     ticket.ticketPrice = this.ticket.price.replace(/\.?0+$/, '')
     const when = this.ticket.when_to_use.split('||')
     if (when.length >= 2) {
-      ticket.ticketWhen = new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1') + (this.ticket.type === 1 ? '' : ` ${this.$t('ticket_text6')} `)
+      ticket.ticketWhen = new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1') + (parseInt(this.ticket.type) === 1 ? '' : ` ${this.$t('ticket_text6')} `)
       this.startTime = new Date(when[1]).toLocaleTimeString()
     }
     const where = this.ticket.where_to_use.split('||')
@@ -226,7 +226,7 @@ export default {
       this.$emit('eventname')
     },
     showSchedule () {
-      if (this.ticket.type === 0) {
+      if (parseInt(this.ticket.type) === 0) {
         // Mondayが0
         const weekdays = this.ticketWhen0.split('')
         const today = new Date()
@@ -255,7 +255,7 @@ export default {
           }
         )
       }
-      if (this.ticket.type === 1 && when.length >= 2) {
+      if (parseInt(this.ticket.type) === 1 && when.length >= 2) {
         const _today = new Date()
         const _todayTime = new Date(_today.getFullYear(), _today.getMonth(), _today.getDate(), 0, 0, 0).getTime()
         const endDateTime = new Date(when[1]).getTime()

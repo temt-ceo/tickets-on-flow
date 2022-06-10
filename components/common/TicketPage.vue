@@ -198,7 +198,7 @@ export default {
       }
       this.ticketInfo = ticketInfo
       if (this.ticketInfo) {
-        this.dispenser = ticketInfo.dispenser_id
+        this.dispenser = parseInt(ticketInfo.dispenser_id)
         const ticketName = ticketInfo.name.split('||@')
         this.ticketName = ticketName[0]
         this.price = ticketInfo.price.replace(/\.?0+$/, '')
@@ -406,7 +406,7 @@ export default {
             this.$fcl.script(FlowScripts.getTicketRequestStatus),
             this.$fcl.args([
               this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
-              this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
+              this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32)
             ])
           ]
         ).then(this.$fcl.decode)
@@ -476,7 +476,7 @@ export default {
               [
                 this.$fcl.transaction(transactionCode),
                 this.$fcl.args([
-                  this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
+                  this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32)
                 ]),
                 this.$fcl.payer(this.$fcl.authz),
                 this.$fcl.proposer(this.$fcl.authz),
@@ -510,7 +510,7 @@ export default {
               [
                 this.$fcl.transaction(FlowTransactions.useTicket),
                 this.$fcl.args([
-                  this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
+                  this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32),
                   this.$fcl.arg(this.ticketTokenId, this.$fclArgType.UInt64),
                   this.$fcl.arg(parseFloat(this.price).toFixed(2), this.$fclArgType.UFix64)
                 ]),
@@ -576,7 +576,7 @@ export default {
                     [
                       this.$fcl.transaction(FlowTransactions.crowdfunding),
                       this.$fcl.args([
-                        this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
+                        this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32),
                         this.$fcl.arg(parseFloat(fund).toFixed(2), this.$fclArgType.UFix64)
                       ]),
                       this.$fcl.payer(this.$fcl.authz),
@@ -591,7 +591,7 @@ export default {
                     [
                       this.$fcl.transaction(FlowTransactions.moreCrowdfunding),
                       this.$fcl.args([
-                        this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
+                        this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32),
                         this.$fcl.arg(parseFloat(fund).toFixed(2), this.$fclArgType.UFix64)
                       ]),
                       this.$fcl.payer(this.$fcl.authz),
@@ -633,7 +633,7 @@ export default {
           this.$fcl.script(FlowScripts.getTicketCode),
           this.$fcl.args([
             this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
-            this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
+            this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32)
           ])
         ]
       ).then(this.$fcl.decode)
@@ -687,7 +687,7 @@ export default {
                       [
                         this.$fcl.transaction(FlowTransactions.crowdfunding),
                         this.$fcl.args([
-                          this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32),
+                          this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32),
                           this.$fcl.arg(parseFloat(fund).toFixed(2), this.$fclArgType.UFix64)
                         ]),
                         this.$fcl.payer(this.$fcl.authz),
@@ -732,7 +732,7 @@ export default {
           this.$fcl.script(FlowScripts.getTicketUsedTime),
           this.$fcl.args([
             this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
-            this.$fcl.arg(this.dispenser, this.$fclArgType.UInt32)
+            this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32)
           ])
         ]
       ).then(this.$fcl.decode)

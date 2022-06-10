@@ -178,7 +178,7 @@ export default {
                   this.$fcl.script(FlowScripts.getTicketRequestStatus),
                   this.$fcl.args([
                     this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
-                    this.$fcl.arg(ret.contribution[i], this.$fclArgType.UInt32)
+                    this.$fcl.arg(String(ret.contribution[i]), this.$fclArgType.UInt32)
                   ])
                 ]
               ).then(this.$fcl.decode)

@@ -190,7 +190,7 @@ export default {
             const bcode = 'elffab' + code.toString().split('').reverse().join('') + '@tickets-on-flow.web.app'
             const addrList = []
             for (let i = 0; i < this.checkedRows.length; i++) {
-              addrList.push({ key: parseInt(this.checkedRows[i].user_id), value: this.checkedRows[i].address })
+              addrList.push({ key: String(this.checkedRows[i].user_id), value: this.checkedRows[i].address })
             }
             const transactionId = await this.$fcl.send(
               [
