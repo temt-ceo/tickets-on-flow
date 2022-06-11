@@ -3,7 +3,7 @@
     <section class="modal-card-body">
       <div class="text-wrap" style="padding-left: 36px;">
         {{ $t('operation_text76') }}
-        <b-button @click="csvDownload" class="download" type="is-light" icon-right="download" />
+        <b-button class="download" type="is-light" icon-right="download" @click="csvDownload" />
       </div>
       <div>
         <b-table
@@ -74,16 +74,15 @@
         <hr>
         <b-pagination
           v-if="isPaginate"
-          total="100"
           v-model="current"
+          total="100"
           :range-before="rangeBefore"
           :range-after="rangeAfter"
           size="is-small"
           :simple="isSimple"
           :rounded="isRounded"
           :per-page="perPage"
-        >
-        </b-pagination>
+        />
       </div>
     </section>
   </div>

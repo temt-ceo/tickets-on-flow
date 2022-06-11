@@ -3,16 +3,15 @@
     <section class="modal-card-body">
       <div class="text-wrap" style="padding-left: 36px;">
         {{ $t('operation_text75') }}
-        <b-button @click="csvDownload" class="download" type="is-light" icon-right="download" />
+        <b-button class="download" type="is-light" icon-right="download" @click="csvDownload" />
       </div>
       <div v-if="isCompleteDispense" class="text-wrap">
         <b-message type="is-success" has-icon>
-          Tickets were distributed.
-          It takes about 10 seconds to complete.
-          <b-skeleton size="is-large" :active="waitTransactionComplete" />
-          <b-skeleton size="is-large" :active="waitTransactionComplete" />
-          <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
+          {{ $t('operation_text78') }}
         </b-message>
+        <b-skeleton size="is-large" :active="waitTransactionComplete" />
+        <b-skeleton size="is-large" :active="waitTransactionComplete" />
+        <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
         <p
           v-if="transactionScanUrl !== ''"
           class="check-transaction"
@@ -90,19 +89,21 @@
         <hr>
         <b-pagination
           v-if="isPaginate"
-          total="100"
           v-model="current"
+          total="100"
           :range-before="rangeBefore"
           :range-after="rangeAfter"
           size="is-small"
           :simple="isSimple"
           :rounded="isRounded"
           :per-page="perPage"
-        >
-        </b-pagination>
-        <div class="tablewrapper">
-          <div class="table">
+        />
+        <div class="table-wrapper">
+          <div class="table_">
             <div class="row">
+              <div class="cell">
+                (Total issues: {{ latestMintedTokenId }} tickets)
+              </div>
               <div class="cell rowspanned">
                 <b-button
                   :disabled="checkedRows.length === 0"
@@ -112,16 +113,17 @@
                   {{ $t('operation_text77') }}
                 </b-button>
               </div>
-              <div class="cell">
-                (Total issues: {{ latestMintedTokenId }} tickets)
+            </div>
+            <div class="row">
+              <div v-if="peopleWaitingCount == 0" class="cell colspan">
+                (People waiting: {{ peopleWaitingCount }} person)
               </div>
+              <div v-if="peopleWaitingCount > 0" class="cell colspan">
+                (People waiting: <span style="color: #f14668; font-style: italic; font-size: 15px;">{{ peopleWaitingCount }}</span> person)
+              </div>
+              <div class="cell empty" />
             </div>
           </div>
-        </div>
-
-        <div class="button-wrap">
-          <span class="total-count"></span>
-          <span class="total-count"></span>
         </div>
       </div>
     </section>
@@ -185,8 +187,9 @@ export default {
         ]
       ).then(this.$fcl.decode)
       this.latestMintedTokenId = latestMintedTokenId || 0
-      this.peopleWaitingCount = this.ticketRequesters.filter(data => data.latest_token == null).length
-      console.log(this.peopleWaitingCount)
+      setTimeout(() => {
+        this.peopleWaitingCount = this.ticketRequesters.filter(data => data.latest_token === null).length
+      })
     } catch (e) {
     }
   },
@@ -229,10 +232,60 @@ export default {
             this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
             this.waitTransactionComplete = true
             this.isCompleteDispense = true
+            this.callToast()
+            const timerID = setInterval(async () => {
+              const newArr = []
+              const ticketRequesters = await this.$fcl.send(
+                [
+                  this.$fcl.script(FlowScripts.getTicketRequesters),
+                  this.$fcl.args([
+                    this.$fcl.arg(this.address, this.$fclArgType.Address)
+                  ])
+                ]
+              ).then(this.$fcl.decode)
+              const keys = Object.keys(ticketRequesters)
+              keys.forEach((key) => {
+                if (ticketRequesters[key].crowdfunding === false) {
+                  newArr.push(ticketRequesters[key])
+                }
+              })
+              const waitingCount = newArr.filter(data => data.latest_token === null).length
+              if (waitingCount < this.peopleWaitingCount) {
+                clearInterval(timerID)
+                newArr.forEach((obj) => {
+                  this.ticketRequesters.forEach((data) => {
+                    if (obj.user_id === data.user_id) {
+                      data.latest_token = obj.latest_token // unexpected mutation エラーを回避
+                    }
+                  })
+                })
+                this.waitTransactionComplete = false
+                this.peopleWaitingCount = waitingCount
+                const latestMintedTokenId = await this.$fcl.send(
+                  [
+                    this.$fcl.script(FlowScripts.getLatestMintedTokenId),
+                    this.$fcl.args([
+                      this.$fcl.arg(this.address, this.$fclArgType.Address)
+                    ])
+                  ]
+                ).then(this.$fcl.decode)
+                this.latestMintedTokenId = latestMintedTokenId || 0
+                this.isCompleteDispense = false
+              }
+            }, 4000)
           }
         })
       } catch (e) {
       }
+    },
+    callToast () {
+      const toast = this.$buefy.toast.open({
+        indefinite: true,
+        message: this.$t('operation_text34')
+      })
+      setTimeout(() => {
+        toast.close()
+      }, 10000)
     },
     dateThAttrs (column) {
       return column.label === 'Date' ? { class: 'has-text-success' } : null
@@ -312,12 +365,18 @@ export default {
       }
     }
 
-    .tablewrapper {
+    .table-wrapper {
       position: relative;
+      float: right;
+      min-height: 40px;
+      text-align: left;
+      font-size: 13px;
+      color: #485fc7;
     }
-    .table {
+    .table_ {
       display: table;
-      position: relative
+      position: relative;
+      width: 300px;
     }
     .row {
       display: table-row;
@@ -328,13 +387,13 @@ export default {
     .cell.empty
     {
       border: none;
-      width: 100px;
+      min-width: 120px;
     }
     .cell.rowspanned {
       position: absolute;
       top: 0;
       bottom: 0;
-      width: 100px;
+      min-width: 120px;
     }
   }
 }

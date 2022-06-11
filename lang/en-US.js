@@ -198,7 +198,7 @@ export default {
   operation_text75: 'Sales List.',
   operation_text76: 'Your Funds.',
   operation_text77: 'Distribute',
-  operation_text78: '',
+  operation_text78: 'Tickets are currently being distributed.<br>This process will take about 10 seconds.',
   operation_text79: '',
   operation_text80: '',
   operation_text81: '',

@@ -198,7 +198,7 @@ export default {
   operation_text75: '販売リスト',
   operation_text76: 'あなたのファンド',
   operation_text77: '配布する',
-  operation_text78: '',
+  operation_text78: 'チケットは現在配布中です。<br>この処理には10秒程度かかります。',
   operation_text79: '',
   operation_text80: '',
   operation_text81: '',

@@ -198,7 +198,7 @@ export default {
   operation_text75: '판매 목록',
   operation_text76: '귀하의 자금',
   operation_text77: '분배하다',
-  operation_text78: '',
+  operation_text78: '현재 티켓 배포중입니다.<br>이 프로세스는 약 10초가 소요됩니다.',
   operation_text79: '',
   operation_text80: '',
   operation_text81: '',

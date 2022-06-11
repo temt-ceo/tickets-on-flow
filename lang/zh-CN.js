@@ -198,7 +198,7 @@ export default {
   operation_text75: '销售清单',
   operation_text76: '您的资金',
   operation_text77: '分发',
-  operation_text78: '',
+  operation_text78: '目前正在分发门票。<br>这个过程将需要大约10秒钟。',
   operation_text79: '',
   operation_text80: '',
   operation_text81: '',

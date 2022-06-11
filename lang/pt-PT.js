@@ -198,7 +198,7 @@ export default {
   operation_text75: 'Lista de vendas.',
   operation_text76: 'Seus Fundos.',
   operation_text77: 'Distribua',
-  operation_text78: '',
+  operation_text78: 'Os ingressos estão sendo distribuídos atualmente.<br>Este processo levará cerca de 10 segundos.',
   operation_text79: '',
   operation_text80: '',
   operation_text81: '',

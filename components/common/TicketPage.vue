@@ -351,7 +351,7 @@ export default {
         this.bloctoWalletUser = {}
         this.ticketStatus = 0
       }
-      console.log(this.ticketStatus, parseInt(this.ticketInfo.type), 9999)
+
       switch (this.ticketStatus) {
         case 0:
           // this.noticeTitle = 'Please log in to your wallet' // 0: init
