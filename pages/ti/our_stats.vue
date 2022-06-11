@@ -187,11 +187,6 @@ export default {
       waitTransactionComplete: false
     }
   },
-  computed: {
-    ticketUsedTokenList () {
-      return this.$store.state.ticketUsedTokenList
-    }
-  },
   watch: {
     selectedContributor: {
       handler (val) {

@@ -270,7 +270,7 @@
               #navigation="{previous, next}"
             >
               <footer class="modal-card-foot">
-                <div style="width: 75%; margin-left: 30%;">
+                <div style="width: 75%; margin-left: 22%;">
                   <b-button
                     outlined
                     icon-pack="fas"
@@ -289,7 +289,7 @@
                   <b-button
                     type="is-text"
                     :label="$t('operation_text44')"
-                    style="margin-left: 10px;"
+                    style="margin-left: 18px; padding: 0;"
                     @click="isComponentModalActive = false"
                   />
                 </div>
@@ -774,6 +774,7 @@ export default {
     .price {
       margin-left: 3px;
       position: absolute;
+      min-width: 170px;
       bottom: 24px;
       left: 127px;
     }

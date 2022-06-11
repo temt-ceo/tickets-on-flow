@@ -1117,6 +1117,16 @@ input[type="number"]:disabled {
     left: 8px;
   }
 
+  .b-table .table-wrapper.has-mobile-cards thead tr th.checkbox-cell {
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-right: 0;
+  }
+
+  .b-checkbox.checkbox[disabled] {
+      opacity: 0.1;
+  }
+
   .modal {
     line-height: 1.2;
     padding-top: 8%;
@@ -1144,6 +1154,12 @@ input[type="number"]:disabled {
             a {
               color: #3e8ed0;
               text-decoration: none;
+            }
+
+            &.is-empty {
+              margin-top: 5px;
+              padding: 10px 0;
+              border-radius: 8px;
             }
 
             /* $FLOW color */

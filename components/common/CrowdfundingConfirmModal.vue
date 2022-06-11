@@ -1,8 +1,8 @@
 <template>
   <div class="modal-card user-data">
     <section class="modal-card-body">
-      <div class="text-wrap">
-        Your Funds.
+      <div class="text-wrap" style="padding-left: 36px;">
+        {{ $t('operation_text76') }}
         <b-button @click="csvDownload" class="download" type="is-light" icon-right="download" />
       </div>
       <div>
@@ -67,7 +67,7 @@
           </b-table-column>
           <template #empty>
             <div class="has-text-centered">
-              No Funds yet.
+              No funds yet.
             </div>
           </template>
         </b-table>
@@ -149,7 +149,7 @@ export default {
       const encodedUri = encodeURI(csvContent)
       const link = document.createElement('a')
       link.setAttribute('href', encodedUri)
-      link.setAttribute('download', 'funds.csv')
+      link.setAttribute('download', 'your_funds.csv')
       document.body.appendChild(link)
       link.click()
     }

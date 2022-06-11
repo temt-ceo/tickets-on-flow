@@ -1,13 +1,18 @@
 <template>
   <div class="modal-card user-data">
     <section class="modal-card-body">
+      <div class="text-wrap" style="padding-left: 36px;">
+        {{ $t('operation_text75') }}
+        <b-button @click="csvDownload" class="download" type="is-light" icon-right="download" />
+      </div>
       <div v-if="isCompleteDispense" class="text-wrap">
-        <p class="complete-register">
-          Tickets were distributed.<br>
-          It takes about 10 seconds to complete registration.<br>
-          After clicking "{{ $t('operation_text56') }}" and seeing the word SEALED on the screen,<br>
-          A button of "Use a ticket" will appear on the customer's screen.
-        </p>
+        <b-message type="is-success" has-icon>
+          Tickets were distributed.
+          It takes about 10 seconds to complete.
+          <b-skeleton size="is-large" :active="waitTransactionComplete" />
+          <b-skeleton size="is-large" :active="waitTransactionComplete" />
+          <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
+        </b-message>
         <p
           v-if="transactionScanUrl !== ''"
           class="check-transaction"
@@ -16,21 +21,10 @@
         </p>
       </div>
       <div v-if="!isCompleteDispense">
-        <div class="button-wrap">
-          <b-button
-            :disabled="checkedRows.length === 0"
-            type="is-info"
-            @click="dispenseTicket"
-          >
-            Distribute tickets
-          </b-button>
-          <span class="total-count">(Total: {{ latestMintedTokenId }} tickets)</span>
-          <b-button @click="csvDownload" class="download" type="is-light" icon-right="download" />
-        </div>
         <b-table
           :data="ticketRequesters"
           :checked-rows.sync="checkedRows"
-          :is-row-checkable="(row) => row.id !== 3 && row.id !== 4"
+          :is-row-checkable="(row) => row.latest_token == null"
           checkable
           :checkbox-position="checkboxPosition"
           :checkbox-type="checkboxType"
@@ -106,6 +100,29 @@
           :per-page="perPage"
         >
         </b-pagination>
+        <div class="tablewrapper">
+          <div class="table">
+            <div class="row">
+              <div class="cell rowspanned">
+                <b-button
+                  :disabled="checkedRows.length === 0"
+                  type="is-info"
+                  @click="dispenseTicket"
+                >
+                  {{ $t('operation_text77') }}
+                </b-button>
+              </div>
+              <div class="cell">
+                (Total issues: {{ latestMintedTokenId }} tickets)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-wrap">
+          <span class="total-count"></span>
+          <span class="total-count"></span>
+        </div>
       </div>
     </section>
   </div>
@@ -132,6 +149,7 @@ export default {
     return {
       ticketName: '',
       latestMintedTokenId: null,
+      peopleWaitingCount: 0,
       transactionScanUrl: '',
       isCompleteRegister: false,
       flowscanLink: 'https://testnet.flowscan.org/transaction',
@@ -152,7 +170,8 @@ export default {
       rangeBefore: 1,
       rangeAfter: 1,
       isSimple: false,
-      isRounded: true
+      isRounded: true,
+      waitTransactionComplete: false
     }
   },
   async mounted () {
@@ -166,6 +185,8 @@ export default {
         ]
       ).then(this.$fcl.decode)
       this.latestMintedTokenId = latestMintedTokenId || 0
+      this.peopleWaitingCount = this.ticketRequesters.filter(data => data.latest_token == null).length
+      console.log(this.peopleWaitingCount)
     } catch (e) {
     }
   },
@@ -206,6 +227,7 @@ export default {
               ]
             ).then(this.$fcl.decode)
             this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+            this.waitTransactionComplete = true
             this.isCompleteDispense = true
           }
         })
@@ -221,7 +243,6 @@ export default {
       csvContent += 'User Id, Wallet Address, Count, Amount, Datetime' + '\r\n'
 
       this.ticketRequesters.forEach((row) => {
-        console.log(row)
         const datetime = new Date(parseInt(row.time) * 1000).toLocaleDateString() + ' ' + new Date(parseInt(row.time) * 1000).toLocaleTimeString()
         const rowArray = [row.user_id, row.address, row.count, parseFloat(row.paid).toFixed(2).toString() + ' FLOW', datetime]
         csvContent += rowArray.join(',') + '\r\n'
@@ -229,7 +250,7 @@ export default {
       const encodedUri = encodeURI(csvContent)
       const link = document.createElement('a')
       link.setAttribute('href', encodedUri)
-      link.setAttribute('download', 'funds.csv')
+      link.setAttribute('download', 'sales_list.csv')
       document.body.appendChild(link)
       link.click()
     }
@@ -267,7 +288,7 @@ export default {
 
       .total-count {
         font-size: 14px;
-        padding: 10px 3px 0 0;
+        padding: 0px 3px 0 0;
       }
 
       button.download {
@@ -281,11 +302,6 @@ export default {
       margin-bottom: 0.5rem
     }
 
-    p.complete-register {
-      font-weight: bold;
-      font-size: 18px;
-    }
-
     .check-transaction {
       text-align : center;
       margin-top: 16px;
@@ -294,6 +310,31 @@ export default {
         font-size: 16px;
         text-decoration: underline;
       }
+    }
+
+    .tablewrapper {
+      position: relative;
+    }
+    .table {
+      display: table;
+      position: relative
+    }
+    .row {
+      display: table-row;
+    }
+    .cell {
+      display: table-cell;
+    }
+    .cell.empty
+    {
+      border: none;
+      width: 100px;
+    }
+    .cell.rowspanned {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100px;
     }
   }
 }

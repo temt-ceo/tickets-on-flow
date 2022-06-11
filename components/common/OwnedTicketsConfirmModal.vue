@@ -1,8 +1,8 @@
 <template>
   <div class="modal-card user-data">
     <section class="modal-card-body">
-      <div class="text-wrap">
-        Your Owned Tickets.
+      <div class="text-wrap" style="padding-left: 36px;">
+        {{ $t('operation_text73') }}
         <b-button @click="csvDownload" class="download" type="is-light" icon-right="download" />
       </div>
       <b-table
@@ -116,7 +116,7 @@ export default {
       const encodedUri = encodeURI(csvContent)
       const link = document.createElement('a')
       link.setAttribute('href', encodedUri)
-      link.setAttribute('download', 'own_tickets.csv')
+      link.setAttribute('download', 'owned_tickets.csv')
       document.body.appendChild(link)
       link.click()
     }
