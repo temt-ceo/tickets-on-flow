@@ -198,7 +198,7 @@ export default {
   operation_text75: 'Liste des ventes.',
   operation_text76: 'Vos fonds.',
   operation_text77: 'Distribuer',
-  operation_text78: 'Les billets sont en cours de distribution.<br>Ce processus prendra environ 10 secondes.',
+  operation_text78: 'Les billets sont en cours de distribution.\r\nCe processus prendra environ 10 secondes.',
   operation_text79: '',
   operation_text80: '',
   operation_text81: '',

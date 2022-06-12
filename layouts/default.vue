@@ -1176,6 +1176,15 @@ input[type="number"]:disabled {
       margin: 0.4rem 0;
     }
 
+    .datepicker-header {
+      .pagination {
+        .pagination-previous,
+        .pagination-next {
+          display: block;
+        }
+      }
+    }
+
     .pagination {
       .pagination-list {
         flex-grow: inherit !important;

@@ -198,7 +198,7 @@ export default {
   operation_text75: 'قائمة المبيعات',
   operation_text76: 'أموالك',
   operation_text77: 'نشر',
-  operation_text78: 'يتم توزيع التذاكر حاليا.<br>ستستغرق هذه العملية حوالي 10 ثوانٍ.',
+  operation_text78: 'يتم توزيع التذاكر حاليا.\r\nستستغرق هذه العملية حوالي 10 ثوانٍ.',
   operation_text79: '',
   operation_text80: '',
   operation_text81: '',

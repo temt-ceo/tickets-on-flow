@@ -38,7 +38,7 @@
           <b-table-column
             v-slot="props"
             field="user_id"
-            label="user ID"
+            label="User"
             width="40"
             numeric
           >
@@ -76,13 +76,13 @@
             :th-attrs="dateThAttrs"
             centered
           >
-            <span class="tag is-success">
+            <span class="tag is-success" @click="showSchedule">
               {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
             </span>
           </b-table-column>
           <template #empty>
             <div class="has-text-centered">
-              No request yet.
+              No applicants yet.
             </div>
           </template>
         </b-table>
@@ -127,6 +127,17 @@
         </div>
       </div>
     </section>
+    <b-datepicker
+      v-if="showCalendar"
+      v-model="date"
+      inline
+      :events="events"
+      indicators="dots"
+      style="position: absolute; width: 100%; top: 8%;"
+    />
+    <b-button v-if="showCalendar" type="is-danger" style="width: 350px; margin: 0 auto;" @click="hideSchedule">
+      Close
+    </b-button>
   </div>
 </template>
 
@@ -173,7 +184,32 @@ export default {
       rangeAfter: 1,
       isSimple: false,
       isRounded: true,
-      waitTransactionComplete: false
+      waitTransactionComplete: false,
+      showCalendar: false,
+      date: new Date(),
+      events: []
+    }
+  },
+  watch: {
+    date: {
+      handler (val) {
+        const target = new Date(val)
+        const events = this.events.filter((obj) => {
+          return obj.date.toLocaleDateString() === target.toLocaleDateString()
+        })
+        if (events.length > 0) {
+          this.showTooltip = true
+          let eventInfo = ''
+          events.forEach((data) => {
+            if (eventInfo !== '') {
+              eventInfo += '<br>'
+            }
+            const localeTime = new Date(data.data?.time * 1000).toLocaleTimeString()
+            eventInfo += `User ${data.data?.user_id}: requested at ${localeTime}`
+          })
+          this.$buefy.toast.open(eventInfo)
+        }
+      }
     }
   },
   async mounted () {
@@ -187,9 +223,11 @@ export default {
         ]
       ).then(this.$fcl.decode)
       this.latestMintedTokenId = latestMintedTokenId || 0
-      setTimeout(() => {
+      this.peopleWaitingCount = this.ticketRequesters.filter(data => data.latest_token === null).length
+      // subscribeに対応
+      setInterval(() => {
         this.peopleWaitingCount = this.ticketRequesters.filter(data => data.latest_token === null).length
-      })
+      }, 4000)
     } catch (e) {
     }
   },
@@ -286,6 +324,23 @@ export default {
       setTimeout(() => {
         toast.close()
       }, 10000)
+    },
+    showSchedule () {
+      this.events = []
+      this.ticketRequesters.forEach((obj) => {
+        const target = new Date(parseInt(obj.time) * 1000)
+        this.events.push(
+          {
+            date: new Date(target),
+            type: 'is-success',
+            data: obj
+          }
+        )
+      })
+      this.showCalendar = true
+    },
+    hideSchedule () {
+      this.showCalendar = false
     },
     dateThAttrs (column) {
       return column.label === 'Date' ? { class: 'has-text-success' } : null

@@ -198,7 +198,7 @@ export default {
   operation_text75: 'Verkaufsliste.',
   operation_text76: 'Ihre Mittel.',
   operation_text77: 'Verteilen',
-  operation_text78: 'Die Tickets werden gerade verteilt.<br>Dieser Vorgang dauert etwa 10 Sekunden.',
+  operation_text78: 'Die Tickets werden gerade verteilt.\r\nDieser Vorgang dauert etwa 10 Sekunden.',
   operation_text79: '',
   operation_text80: '',
   operation_text81: '',

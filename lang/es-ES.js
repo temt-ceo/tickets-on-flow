@@ -198,7 +198,7 @@ export default {
   operation_text75: 'Lista de ventas.',
   operation_text76: 'Sus fondos.',
   operation_text77: 'Distribuir',
-  operation_text78: 'En estos momentos se están distribuyendo las entradas.<br>Este proceso durará unos 10 segundos.',
+  operation_text78: 'En estos momentos se están distribuyendo las entradas.\r\nEste proceso durará unos 10 segundos.',
   operation_text79: '',
   operation_text80: '',
   operation_text81: '',
