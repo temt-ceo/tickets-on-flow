@@ -536,8 +536,8 @@ export default {
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1' },
-        { hid: 'description', name: 'description', content: 'The first business application on Flow blockchain for everyone. Let\'s do a business on Flow blockchain.' },
-        { hid: 'keywords', name: 'keywords', content: 'tickets, onflow, flow, blockchain, donation, tipping, community, business, web3, ticket' },
+        { hid: 'description', name: 'description', content: 'This system uses the Flow blockchain to enable business and crowdfunding worldwide. You can work worldwide through SNS and Rewards are paid instantly. Cryptocurrencies of equal value worldwide are paid as rewards, and Tickets onFlow is here to help your business!' },
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS' },
         { name: 'format-detection', content: 'telephone=no' },
         ...i18nHead.meta
       ],

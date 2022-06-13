@@ -120,6 +120,14 @@ export default {
       waitTransactionComplete: false
     }
   },
+  head () {
+    return {
+      title: 'Tickets onFlow | Tickets Setup',
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS, チケット設定' }
+      ]
+    }
+  },
   computed: {
     ticketUsedTokenList () {
       return this.$store.state.ticketUsedTokenList

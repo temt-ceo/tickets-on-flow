@@ -156,8 +156,9 @@
           >
             <option
               v-for="data in registeredPolls"
+              :key="data.time"
               :value="data.time"
-              :key="data.time">
+            >
               {{ data.title }}
             </option>
           </b-select>
@@ -293,6 +294,14 @@ export default {
       selectedPole: null,
       selectedIndex: null,
       waitTransactionComplete: false
+    }
+  },
+  head () {
+    return {
+      title: 'Tickets onFlow | Statistics Registration',
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS, Statistics' }
+      ]
     }
   },
   watch: {
@@ -476,7 +485,6 @@ export default {
           this.showInputModal = false
           this.checkTransactionComplete(0)
         } catch (e) {
-          console.log(e)
         }
       }
     },
@@ -521,7 +529,6 @@ export default {
         const expectedUpdateCount = this.registeredPolls[this.selectedIndex].update_count + 1
         this.checkTransactionComplete(expectedUpdateCount)
       } catch (e) {
-        console.log(e)
       }
     },
     callToast () {

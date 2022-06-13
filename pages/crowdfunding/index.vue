@@ -103,6 +103,14 @@ export default {
       waitTransactionComplete: false
     }
   },
+  head () {
+    return {
+      title: 'Tickets onFlow | Crowdfunding Setup',
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, Crowdfunding, work, SNS, クラウドファンディング設定' }
+      ]
+    }
+  },
   computed: {
     ticketUsedTokenList () {
       return this.$store.state.ticketUsedTokenList

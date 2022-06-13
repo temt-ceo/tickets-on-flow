@@ -95,6 +95,14 @@ export default {
       transactionScanUrl: ''
     }
   },
+  head () {
+    return {
+      title: 'Tickets onFlow | 管理者',
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS, 管理者' }
+      ]
+    }
+  },
   async mounted () {
     await this.$fcl.currentUser.subscribe(this.setupWalletInfo)
   },

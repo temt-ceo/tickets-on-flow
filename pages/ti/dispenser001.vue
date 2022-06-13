@@ -9,6 +9,14 @@ export default {
   name: 'TicketDispenser1',
   components: {
     TicketPage
+  },
+  head () {
+    return {
+      title: 'Tickets onFlow | Dispenser001\'s Web Page',
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS, Dispenser001' }
+      ]
+    }
   }
 }
 </script>

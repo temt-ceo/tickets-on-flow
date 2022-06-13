@@ -54,8 +54,9 @@
           >
             <option
               v-for="data in registeredContributors"
+              :key="data"
               :value="data"
-              :key="data">
+            >
               {{ data }}
             </option>
           </b-select>
@@ -67,12 +68,15 @@
           >
             <option
               v-for="data in registeredPolls"
+              :key="data.time"
               :value="data.time"
-              :key="data.time">
+            >
               {{ data.title }}
             </option>
           </b-select>
-          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 49px; z-index: 2;">%</div>
+          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 49px; z-index: 2;">
+            %
+          </div>
           <b-field :label="$t('operation_text61') + '(%)'">
             <b-input
               v-model="statItem1"
@@ -91,7 +95,9 @@
               disabled
             />
           </b-field>
-          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 14px; z-index: 2;">%</div>
+          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 14px; z-index: 2;">
+            %
+          </div>
           <b-field>
             <b-input
               v-model="statItem2"
@@ -110,7 +116,9 @@
               disabled
             />
           </b-field>
-          <div v-if="itemCount >= 3" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 14px; z-index: 2;">%</div>
+          <div v-if="itemCount >= 3" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 14px; z-index: 2;">
+            %
+          </div>
           <b-field v-if="itemCount >= 3">
             <b-input
               v-model="statItem3"
@@ -129,7 +137,9 @@
               disabled
             />
           </b-field>
-          <div v-if="itemCount >= 4" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 14px; z-index: 2;">%</div>
+          <div v-if="itemCount >= 4" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 14px; z-index: 2;">
+            %
+          </div>
           <b-field v-if="itemCount >= 4">
             <b-input
               v-model="statItem4"
@@ -148,7 +158,9 @@
               disabled
             />
           </b-field>
-          <b-button @click="csvDownload" class="download" type="is-info is-light" icon-right="download" style="float: right; margin-top: -15px;">CSV</b-button>
+          <b-button class="download" type="is-info is-light" icon-right="download" style="float: right; margin-top: -15px;" @click="csvDownload">
+            CSV
+          </b-button>
         </section>
       </div>
     </b-modal>
@@ -185,6 +197,14 @@ export default {
       selectedPole: null,
       selectedIndex: null,
       waitTransactionComplete: false
+    }
+  },
+  head () {
+    return {
+      title: 'Tickets onFlow | Sharing Statistics',
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS, Sharing' }
+      ]
     }
   },
   watch: {

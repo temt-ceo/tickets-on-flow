@@ -216,6 +216,10 @@ export default {
         { rel: 'stylesheet', href: 'lib/ionicons/css/ionicons.min.css' },
         { rel: 'stylesheet', href: 'lib/owlcarousel/assets/owl.carousel.min.css' },
         { rel: 'stylesheet', href: 'lib/lightbox/css/lightbox.min.css' }
+      ],
+      title: 'Tickets onFlow | About Us',
+      meta: [
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS, about us' }
       ]
     }
   }
