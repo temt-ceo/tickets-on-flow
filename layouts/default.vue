@@ -25,7 +25,7 @@
             type="is-info"
           />
         </a>
-        <a :href="url.youtube" target="_blank">
+        <nuxt-link to="/youtube-contents/">
           <b-icon
             class="navbar-item youtube"
             pack="fa-brands"
@@ -33,7 +33,7 @@
             size="medium"
             type="is-danger"
           />
-        </a>
+        </nuxt-link>
         <a :href="url.discord" target="_blank" class="discord">
           <b-icon
             class="navbar-item"

@@ -157,7 +157,7 @@
                 10 - 1 Hinode, Ichikawa, Chiba 2720135<br>
                 Japan <br>
                 <strong>Phone:</strong> +81 47 711 1656<br>
-                <strong>Email:</strong> tickets.on.flow@gmail.com<br>
+                <strong>Email:</strong> <a href="mailto:info@tokyo-em-technology.org">info@tokyo-em-technology.org</a><br>
               </p>
 
               <div class="social-links">
@@ -172,7 +172,7 @@
 
       <div class="container">
         <div class="copyright">
-          &copy; Copyright Tokyo EM Technology & Co.<br> All Rights Reserved
+          &copy; Copyright <a href="https://tokyo-em-technology.org/">Tokyo EM Technology & Co.</a><br> All Rights Reserved
         </div>
       </div>
     </footer><!-- #footer -->
