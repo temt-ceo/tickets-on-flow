@@ -1255,7 +1255,7 @@ tr {
 
 @media screen and (min-width: 1024px) {
   #__layout {
-    background-image: linear-gradient(to bottom right, #1b1c50, #973999, rgba(0,0,0,1));
+    background-image: linear-gradient(to bottom right, #973999, #f8598b, #f7bf00);
   }
 
   .navbar,
