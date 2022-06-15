@@ -269,9 +269,9 @@
             <template
               #navigation="{previous, next}"
             >
-              <div class="modal-card-link">
+              <div class="modal-card-link" v-if="next.disabled">
                 <nuxt-link to="/youtube-contents/">
-                  Let's get started!
+                  Let's get to it!
                 </nuxt-link>
               </div>
               <footer class="modal-card-foot">
@@ -391,7 +391,7 @@ export default {
             if (this.activeStep === 3) {
               this.isComponentModalActive = false
             }
-          }, 3500)
+          }, 7000)
         }
       }
     }

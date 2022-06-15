@@ -13,7 +13,7 @@
       <div class="container">
         <div class="section-header">
           <h3>Hello!</h3>
-          <p class="explanation-content">
+          <p class="explanation-content" style="padding-bottom: 0;">
             {{ $t('terms_of_use17') }}
           </p>
           <h4>
@@ -63,10 +63,10 @@
                 </div>
               </div>
               <h2 class="title">
-                <a href="https://www.youtube.com/watch?v=Xh9vk32-Bbg" target="_blank">How do I get started?(Demo)</a>
+                <a href="https://www.youtube.com/watch?v=Xh9vk32-Bbg" target="_blank">How do I get started?</a>
               </h2>
               <p class="mission">
-                Keep reading. :) I am not very good at English. :(<br>
+                Keep reading! :) I am not very good at English. :(<br>
               </p>
             </div>
           </div>
@@ -86,12 +86,11 @@
           <p class="explanation-content">
             {{ $t('terms_of_use45') }}<br>
             {{ $t('terms_of_use46') }}<br>
-            {{ $t('terms_of_use47') }}<br>
+            {{ $t('terms_of_use47') }}
           </p>
           <hr>
           <p class="explanation-content">
-            {{ $t('terms_of_use48') }}<br>
-            {{ $t('terms_of_use49') }}<br>
+            {{ $t('terms_of_use48') }} {{ $t('terms_of_use49') }}<br>
             {{ $t('terms_of_use50') }}<br>
             {{ $t('terms_of_use51') }}<br>
             {{ $t('terms_of_use52') }}<br>
@@ -114,10 +113,10 @@
                 </div>
               </div>
               <h2 class="title">
-                <a href="https://www.youtube.com/watch?v=f-7LF2XZNxk" target="_blank">About the Mechanism(Demo)</a>
+                <a href="https://www.youtube.com/watch?v=f-7LF2XZNxk" target="_blank">About the Mechanism</a>
               </h2>
               <p class="mission">
-                This is Demo video. We will update new Video soon!!<br>
+                The mechanism is simple. <br>But it is powerful!!<br>
               </p>
             </div>
           </div>
@@ -130,6 +129,10 @@
             {{ $t('terms_of_use59') }}<br>
             {{ $t('terms_of_use60') }}<br>
             {{ $t('terms_of_use61') }}<br>
+            {{ $t('terms_of_use62') }}<br>
+            {{ $t('terms_of_use63') }}<br>
+            {{ $t('terms_of_use64') }} {{ $t('terms_of_use65') }}<br>
+            {{ $t('terms_of_use66') }}
           </p>
         </div>
         <div class="row about-cols">
@@ -144,10 +147,10 @@
                 </div>
               </div>
               <h2 class="title">
-                <a href="https://www.youtube.com/watch?v=-kqmTFCrPtE" target="_blank">How do I get started?</a>
+                <a href="https://www.youtube.com/watch?v=-kqmTFCrPtE" target="_blank">How do you start a business?</a>
               </h2>
               <p class="mission">
-                This is Demo video. We will update new Video soon!!<br>
+                Thank you for reading! We look forward to seeing the variety of work that will be set up using this web system.<br>
               </p>
             </div>
           </div>
