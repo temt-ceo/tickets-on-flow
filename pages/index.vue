@@ -269,6 +269,11 @@
             <template
               #navigation="{previous, next}"
             >
+              <div class="modal-card-link">
+                <nuxt-link to="/youtube-contents/">
+                  Let's get started!
+                </nuxt-link>
+              </div>
               <footer class="modal-card-foot">
                 <div style="width: 75%; margin-left: 22%;">
                   <b-button
@@ -957,6 +962,16 @@ export default {
   transform: translateX(-50%) translateY(-50%);
   max-width: 485px;
   min-width: 350px;
+}
+
+.modal-card-link {
+  width: 100%;
+  position: absolute;
+  top: 45vh;
+  font-size: 18px;
+  text-decoration: underline;
+  text-align: center;
+  background: none;
 }
 
 .modal-card-foot {
