@@ -51,7 +51,7 @@
             {{ $t('terms_of_use38') }}
           </p>
         </div>
-        <div class="row about-cols">
+        <div class="row about-cols" style="max-width: 760px; margin: 0 auto;">
           <div class="col-md-4 wow fadeInUp">
             <div class="about-col">
               <div class="img">
@@ -66,7 +66,7 @@
                 <a href="https://www.youtube.com/watch?v=Xh9vk32-Bbg" target="_blank">How do I get started?</a>
               </h2>
               <p class="mission">
-                Keep reading! :) I am not very good at English. :(<br>
+                Keep reading! :) I am not very good at English. :(
               </p>
             </div>
           </div>
@@ -101,7 +101,7 @@
             {{ $t('terms_of_use57') }}<br>
           </p>
         </div>
-        <div class="row about-cols">
+        <div class="row about-cols" style="max-width: 760px; margin: 0 auto;">
           <div class="col-md-4 wow fadeInUp">
             <div class="about-col">
               <div class="img">
@@ -116,7 +116,7 @@
                 <a href="https://www.youtube.com/watch?v=f-7LF2XZNxk" target="_blank">About the Mechanism</a>
               </h2>
               <p class="mission">
-                The mechanism is simple. <br>But it is powerful!!<br>
+                The mechanism is simple. <br>But it is powerful!!
               </p>
             </div>
           </div>
@@ -135,7 +135,7 @@
             {{ $t('terms_of_use66') }}
           </p>
         </div>
-        <div class="row about-cols">
+        <div class="row about-cols" style="max-width: 760px; margin: 0 auto;">
           <div class="col-md-4 wow fadeInUp">
             <div class="about-col">
               <div class="img">
@@ -150,7 +150,7 @@
                 <a href="https://www.youtube.com/watch?v=-kqmTFCrPtE" target="_blank">How do you start a business?</a>
               </h2>
               <p class="mission">
-                Thank you for reading! We look forward to seeing the variety of work that will be set up using this web system.<br>
+                Thank you for reading! We look forward to seeing the variety of work that will be set up using this website.
               </p>
             </div>
           </div>
