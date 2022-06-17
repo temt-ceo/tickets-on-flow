@@ -21,15 +21,7 @@
           width="40"
           numeric
         >
-          {{ props.row.dispenser_id }}
-        </b-table-column>
-
-        <b-table-column
-          v-slot="props"
-          field="description"
-          label="Description"
-        >
-          {{ props.row.description }}
+          {{ props.row.dispenser_id }} ({{ props.row.address}})
         </b-table-column>
 
         <b-table-column
@@ -38,6 +30,14 @@
           label="Domain"
         >
           {{ props.row.domain }}
+        </b-table-column>
+
+        <b-table-column
+          v-slot="props"
+          field="description"
+          label="Description"
+        >
+          {{ props.row.description }}
         </b-table-column>
 
         <b-table-column

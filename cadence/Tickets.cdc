@@ -134,6 +134,16 @@ pub contract TicketsV20 {
       return dispenserArr
     }
 
+    // [public access]
+    pub fun getAllDispensers(): [DispenserStruct] {
+      var dispenserArr: [DispenserStruct] = []
+      for data in TicketsV20.dispenserOwners.values {
+        dispenserArr.append(data)
+      }
+
+      return dispenserArr
+    }
+
     init() {
     }
 

@@ -26,6 +26,14 @@
               Check status of requests
             </b-button>
             <b-button
+              v-if="bloctoWalletUser.addr"
+              :disabled="!isAdmin"
+              type="is-link is-light"
+              @click="showAllDispensersModal = true"
+            >
+              Confirm all dispensers
+            </b-button>
+            <b-button
               :disabled="!isAdmin"
               type="is-link is-light"
               @click="dispenseDispenser"
@@ -62,6 +70,12 @@
         @closeModal="showConfirmModal=false"
       />
     </b-modal>
+    <b-modal v-model="showAllDispensersModal">
+      <dispenser-confirm-modal
+        :requesters="allDispensers"
+        @closeModal="showConfirmModal=false"
+      />
+    </b-modal>
     <b-modal v-model="showTestModal1">
       <test-ticket-requesters-modal
         :address="address"
@@ -86,8 +100,10 @@ export default {
   data () {
     return {
       dispenserRequesters: [],
+      allDispensers: [],
       address: null,
       showConfirmModal: false,
+      showAllDispensersModal: false,
       showTestModal1: false,
       bloctoWalletUser: {},
       isAdmin: false,
@@ -131,6 +147,7 @@ export default {
         if (this.isAdmin) {
           this.address = this.bloctoWalletUser?.addr
           await this.getRequestedDispensers()
+          await this.getAllDispensers()
           this.noticeTitle = 'Tap the grant button.'
         } else {
           this.noticeTitle = 'Wrong address. Please log in with the contract administrator\'s wallet.'
@@ -230,6 +247,21 @@ export default {
           ]
         ).then(this.$fcl.decode)
         this.dispenserRequesters = dispenserRequesters
+      } catch (e) {
+      }
+    },
+    async getAllDispensers () {
+      try {
+        const dispenserRequesters = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getAllDispensers),
+            this.$fcl.args([
+              this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        dispenserRequesters.sort((a, b) => parseInt(b.dispenser_id) - parseInt(a.dispenser_id))
+        this.allDispensers = dispenserRequesters
       } catch (e) {
       }
     }

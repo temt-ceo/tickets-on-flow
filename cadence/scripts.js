@@ -33,6 +33,15 @@ pub fun main(address: Address): [TicketsV20.DispenserStruct] {
     return adminVault.getDispenserRequesters()
 }
   `,
+  getAllDispensers: `
+import TicketsV20 from 0xT
+pub fun main(address: Address): [TicketsV20.DispenserStruct] {
+  let account = getAccount(address)
+  let adminVault = account.getCapability<&TicketsV20.AdminPublic>(TicketsV20.AdminPublicPath).borrow()
+      ?? panic("Could not borrow Administrator capability.")
+  return adminVault.getAllDispensers()
+}
+  `,
   getDispenserDomains: `
 import TicketsV20 from 0xT
 pub fun main(): [String] {
