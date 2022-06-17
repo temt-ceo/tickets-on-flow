@@ -322,7 +322,7 @@
       </div>
     </b-modal>
 
-    <b-modal v-model="isI18nActive" :width="640" scroll="keep" @click="changeLang">
+    <b-modal v-model="isI18nActive" :width="640" scroll="keep">
       <div class="card">
         <b-field>
           <b-radio-button
@@ -330,7 +330,7 @@
             native-value="en"
             type="is-success"
           >
-            <span class="fi fi-gb" @click="changeLang" />
+            <span class="fi fi-gb" />
           </b-radio-button>
 
           <b-radio-button
@@ -338,7 +338,7 @@
             native-value="es"
             type="is-success"
           >
-            <span class="fi fi-es" @click="changeLang" />
+            <span class="fi fi-es" />
           </b-radio-button>
 
           <b-radio-button
@@ -346,7 +346,7 @@
             native-value="fr"
             type="is-success"
           >
-            <span class="fi fi-fr" @click="changeLang" />
+            <span class="fi fi-fr" />
           </b-radio-button>
 
           <b-radio-button
@@ -354,7 +354,7 @@
             native-value="zh"
             type="is-success"
           >
-            <span class="fi fi-cn" @click="changeLang" />
+            <span class="fi fi-cn" />
           </b-radio-button>
 
           <b-radio-button
@@ -362,7 +362,7 @@
             native-value="ar"
             type="is-success"
           >
-            <span class="fi fi-sa" @click="changeLang" />
+            <span class="fi fi-sa" />
           </b-radio-button>
 
           <b-radio-button
@@ -370,7 +370,7 @@
             native-value="pt"
             type="is-success"
           >
-            <span class="fi fi-pt" @click="changeLang" />
+            <span class="fi fi-pt" />
           </b-radio-button>
 
           <b-radio-button
@@ -378,7 +378,7 @@
             native-value="ja"
             type="is-success"
           >
-            <span class="fi fi-jp" @click="changeLang" />
+            <span class="fi fi-jp" />
           </b-radio-button>
 
           <b-radio-button
@@ -386,7 +386,7 @@
             native-value="de"
             type="is-success"
           >
-            <span class="fi fi-de" @click="changeLang" />
+            <span class="fi fi-de" />
           </b-radio-button>
 
           <b-radio-button
@@ -394,7 +394,7 @@
             native-value="ko"
             type="is-success"
           >
-            <span class="fi fi-kr" @click="changeLang" />
+            <span class="fi fi-kr" />
           </b-radio-button>
         </b-field>
       </div>
@@ -553,6 +553,11 @@ export default {
     }
   },
   watch: {
+    i18nRadioButton: {
+      handler (val) {
+        this.changeLang()
+      }
+    },
     isComponentModalActive: {
       handler (val) {
         if (val === true) {
@@ -695,6 +700,7 @@ export default {
       this.bloctoWalletUser = user
     },
     changeLang () {
+      console.log(111)
       setTimeout(() => {
         this.$i18n.setLocale(this.i18nRadioButton)
         this.isI18nActive = false

@@ -271,7 +271,7 @@
             >
               <div class="modal-card-link" v-if="next.disabled">
                 <nuxt-link to="/youtube-contents/">
-                  Let's get to it!
+                  {{ $t('terms_of_use67') }}
                 </nuxt-link>
               </div>
               <footer class="modal-card-foot">
