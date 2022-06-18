@@ -13,6 +13,19 @@
                 <b-skeleton size="is-large" :active="waitTransactionComplete" />
                 <b-skeleton size="is-large" :active="waitTransactionComplete" />
                 <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
+                <div v-if="statLinkPage != ''" class="text-wrap">
+                  {{ $t('operation_text84') }}:
+                  <small>{{ statLinkPage }}</small>
+                  <b-tooltip
+                    label="Copied!"
+                    type="is-info"
+                    :active="tooltipActive"
+                  >
+                    <b-button type="is-info is-light" @click="clickCopy">
+                      Copy
+                    </b-button>
+                  </b-tooltip>
+                </div>
               </h1>
               <p v-if="transactionScanUrl !== ''" class="check-transaction">
                 <a :href="transactionScanUrl" target="_blank">{{ $t('operation_text56') }}</a>
@@ -129,11 +142,30 @@
             />
           </b-field>
           <div>
-            <b-button v-if="itemCount < 4" type="is-danger" icon-right="plus" @click="addInputs" />
+            <b-button v-if="itemCount < 4" type="is-success is-light" icon-right="plus" @click="addInputs" />
+            <b-field style="display: inline;">
+              <b-tooltip
+                :label="$t('operation_text83')"
+                :active="switchShare == $t('operation_text82')"
+                type="is-primary is-light"
+                square
+                always
+              >
+                <b-switch
+                  v-model="switchShare"
+                  :true-value="$t('operation_text81')"
+                  :false-value="$t('operation_text82')"
+                  type="is-warning"
+                  style="padding-top: 3px;"
+                >
+                  {{ switchShare }}
+                </b-switch>
+              </b-tooltip>
+            </b-field>
             <b-button
               :disabled="!statItem1 || !statResult1 || !statItem2 || !statResult2 || !nickname"
               type="is-dark"
-              style="float: right; margin-right: 10px;"
+              style="float: right; margin-right: 3px;"
               @click="registerPoll"
             >
               {{ $t('operation_text12') }}
@@ -153,6 +185,7 @@
             v-model="selectedPole"
             rounded
             expanded
+            style="margin: 5px 0 25px;"
           >
             <option
               v-for="data in registeredPolls"
@@ -249,11 +282,30 @@
             />
           </b-field>
           <div>
-            <b-button v-if="itemCount < 4" type="is-danger" icon-right="plus" @click="addInputs" />
+            <b-button v-if="itemCount < 4" type="is-success is-light" icon-right="plus" @click="addInputs" />
+            <b-field style="display: inline;">
+              <b-tooltip
+                :label="$t('operation_text83')"
+                :active="switchShare == $t('operation_text82')"
+                type="is-primary is-light"
+                square
+                always
+              >
+                <b-switch
+                  v-model="switchShare"
+                  :true-value="$t('operation_text81')"
+                  :false-value="$t('operation_text82')"
+                  type="is-warning"
+                  style="padding-top: 3px;"
+                >
+                  {{ switchShare }}
+                </b-switch>
+              </b-tooltip>
+            </b-field>
             <b-button
               :disabled="!statItem1 || !statResult1 || !statItem2 || !statResult2 || !nickname"
               type="is-dark"
-              style="float: right; margin-right: 10px;"
+              style="float: right; margin-right: 3px;"
               @click="editPoll"
             >
               {{ $t('operation_text13') }}
@@ -293,7 +345,10 @@ export default {
       registeredPolls: [],
       selectedPole: null,
       selectedIndex: null,
-      waitTransactionComplete: false
+      waitTransactionComplete: false,
+      switchShare: this.$t('operation_text81'),
+      statLinkPage: '',
+      tooltipActive: false
     }
   },
   head () {
@@ -340,7 +395,12 @@ export default {
           this.statResult2 = parseFloat(this.registeredPolls[index].value2, 1)
           this.statResult3 = this.itemCount >= 3 ? parseFloat(this.registeredPolls[index].value3, 1) : null
           this.statResult4 = this.itemCount >= 4 ? parseFloat(this.registeredPolls[index].value4, 1) : null
-          this.nickname = this.registeredPolls[index].nickname
+          if (this.registeredPolls[index].nickname === this.registeredPolls[index].nickname.replace(/\|\|link\|\|$/, '')) {
+            this.switchShare = this.$t('operation_text81')
+          } else {
+            this.switchShare = this.$t('operation_text82')
+          }
+          this.nickname = this.registeredPolls[index].nickname.replace(/\|\|link\|\|$/, '')
           this.selectedIndex = index
         }
       }
@@ -420,6 +480,10 @@ export default {
           this.statItem4 = ''
           this.statResult4 = 0
         }
+        let nickname = this.nickname
+        if (this.switchShare === this.$t('operation_text82') && nickname === nickname.replace(/\|\|link\|\|$/, '')) {
+          nickname += '||link||'
+        }
 
         try {
           const hasStatsVault = await this.$fcl.send(
@@ -438,7 +502,7 @@ export default {
                 this.$fcl.transaction(FlowTransactions.createStat),
                 this.$fcl.args([
                   this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
-                  this.$fcl.arg(this.nickname, this.$fclArgType.String),
+                  this.$fcl.arg(nickname, this.$fclArgType.String),
                   this.$fcl.arg(this.statTitle, this.$fclArgType.String),
                   this.$fcl.arg(this.statItem1, this.$fclArgType.String),
                   this.$fcl.arg(this.statItem2, this.$fclArgType.String),
@@ -456,13 +520,22 @@ export default {
               ]
             ).then(this.$fcl.decode)
           } else {
-            this.selectedIndex = this.registeredPolls.length
+            const stats = await this.$fcl.send(
+              [
+                this.$fcl.script(FlowScripts.getStats),
+                this.$fcl.args([
+                ])
+              ]
+            ).then(this.$fcl.decode)
+            if (stats[this.bloctoWalletUser.addr] && stats[this.bloctoWalletUser.addr].length > 0) {
+              this.selectedIndex = stats[this.bloctoWalletUser.addr].length
+            }
             transactionId = await this.$fcl.send(
               [
                 this.$fcl.transaction(FlowTransactions.addStat),
                 this.$fcl.args([
                   this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
-                  this.$fcl.arg(this.nickname, this.$fclArgType.String),
+                  this.$fcl.arg(nickname, this.$fclArgType.String),
                   this.$fcl.arg(this.statTitle, this.$fclArgType.String),
                   this.$fcl.arg(this.statItem1, this.$fclArgType.String),
                   this.$fcl.arg(this.statItem2, this.$fclArgType.String),
@@ -498,6 +571,10 @@ export default {
         this.statItem4 = ''
         this.statResult4 = 0
       }
+      let nickname = this.nickname
+      if (this.switchShare === this.$t('operation_text82') && nickname === nickname.replace(/\|\|link\|\|$/, '')) {
+        nickname += '||link||'
+      }
 
       try {
         const transactionId = await this.$fcl.send(
@@ -506,7 +583,7 @@ export default {
             this.$fcl.args([
               this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
               this.$fcl.arg(String(this.selectedIndex), this.$fclArgType.UInt32),
-              this.$fcl.arg(this.nickname, this.$fclArgType.String),
+              this.$fcl.arg(nickname, this.$fclArgType.String),
               this.$fcl.arg(this.statTitle, this.$fclArgType.String),
               this.$fcl.arg(this.statItem1, this.$fclArgType.String),
               this.$fcl.arg(this.statItem2, this.$fclArgType.String),
@@ -526,7 +603,7 @@ export default {
         this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
         this.waitTransactionComplete = true
         this.showEditModal = false
-        const expectedUpdateCount = this.registeredPolls[this.selectedIndex].update_count + 1
+        const expectedUpdateCount = parseInt(this.registeredPolls[this.selectedIndex].update_count) + 1
         this.checkTransactionComplete(expectedUpdateCount)
       } catch (e) {
       }
@@ -542,7 +619,7 @@ export default {
     },
     checkTransactionComplete (expectedUpdateCount) {
       this.callToast()
-
+      this.noticeTitle = this.$t('operation_text80')
       const timerID = setInterval(async () => {
         const stats = await this.$fcl.send(
           [
@@ -554,10 +631,18 @@ export default {
         const myStat = stats[this.bloctoWalletUser.addr]
         if (myStat && myStat[this.selectedIndex] && parseInt(myStat[this.selectedIndex].update_count) === expectedUpdateCount) {
           this.noticeTitle = this.$t('operation_text65')
+          if (this.switchShare === this.$t('operation_text82')) {
+            this.statLinkPage = 'https://tickets-on-flow.web.app/ti/our_stats?link=' + this.bloctoWalletUser.addr.split('').slice(5, 15).reverse().join('')
+          }
+
           this.waitTransactionComplete = false
           clearInterval(timerID)
         }
       }, 4000)
+    },
+    async clickCopy () {
+      await navigator.clipboard.writeText(this.statLinkPage)
+      this.tooltipActive = true
     }
   }
 }
@@ -573,6 +658,10 @@ export default {
     font-size: 24px;
     text-align: center;
     padding: 0 5px;
+  }
+
+  .text-wrap {
+    margin-top: 8px;
   }
 
   .content {
@@ -609,6 +698,14 @@ export default {
         margin-top: 34px;
       }
     }
+  }
+}
+
+.modal {
+  line-height: 1.0;
+
+  .field:not(:last-child) {
+    margin-bottom: 0.10rem;
   }
 }
 

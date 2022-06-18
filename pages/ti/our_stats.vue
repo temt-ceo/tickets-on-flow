@@ -22,10 +22,30 @@
                 <b-skeleton size="is-large" :active="waitTransactionComplete" />
                 <b-skeleton size="is-large" :active="waitTransactionComplete" />
                 <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
+                <div v-if="statLinkPage != ''" class="text-wrap">
+                  {{ $t('operation_text84') }}:
+                  <small>{{ statLinkPage }}</small>
+                  <b-tooltip
+                    label="Copied!"
+                    type="is-info"
+                    :active="tooltipActive"
+                  >
+                    <b-button type="is-info is-light" @click="clickCopy">
+                      Copy
+                    </b-button>
+                  </b-tooltip>
+                </div>
               </h1>
               <p v-if="transactionScanUrl !== ''" class="check-transaction">
                 <a :href="transactionScanUrl" target="_blank">{{ $t('operation_text56') }}</a>
               </p>
+              <b-button
+                :disabled="waitTransactionComplete"
+                type="is-link is-light"
+                @click="itemCountInput = 2; showInputModal = true"
+              >
+                {{ $t('operation_text79') }}
+              </b-button>
               <b-button
                 :disabled="waitTransactionComplete"
                 type="is-link is-light"
@@ -40,14 +60,141 @@
     </div>
 
     <b-modal
+      v-model="showInputModal"
+      has-modal-card
+    >
+      <div class="modal-card" style="width: auto">
+        <section class="modal-card-body">
+          <b-field
+            :label="$t('operation_text58')"
+            :type="{ 'is-success': statTitleInput != ''}"
+          >
+            <b-input
+              v-model="statTitleInput"
+              maxlength="60"
+              :placeholder="$t('operation_text59')"
+              rounded
+            />
+          </b-field>
+          <b-field
+            :label="$t('operation_text63')"
+            :type="{ 'is-success': nicknameInput != ''}"
+          >
+            <b-input
+              v-model="nicknameInput"
+              maxlength="20"
+              placeholder="Nickname"
+              rounded
+            />
+          </b-field>
+          <b-field :label="$t('operation_text61')">
+            <b-input
+              v-model="statItem1Input"
+              maxlength="60"
+              :placeholder="$t('operation_text60') + '1.'"
+              rounded
+              expanded
+            />
+            <b-input
+              v-model="statResult1Input"
+              :placeholder="$t('operation_text61') + '(%)'"
+              type="number"
+              min="0"
+              rounded
+            />
+          </b-field>
+          <b-field>
+            <b-input
+              v-model="statItem2Input"
+              maxlength="60"
+              :placeholder="$t('operation_text60') + '2.'"
+              rounded
+              expanded
+            />
+            <b-input
+              v-model="statResult2Input"
+              :placeholder="$t('operation_text61') + '(%)'"
+              type="number"
+              min="0"
+              rounded
+            />
+          </b-field>
+          <b-field v-if="itemCountInput >= 3">
+            <b-input
+              v-model="statItem3Input"
+              maxlength="60"
+              :placeholder="$t('operation_text60') + '3.'"
+              rounded
+              expanded
+            />
+            <b-input
+              v-model="statResult3Input"
+              :placeholder="$t('operation_text61') + '(%)'"
+              type="number"
+              min="0"
+              rounded
+            />
+          </b-field>
+          <b-field v-if="itemCountInput >= 4">
+            <b-input
+              v-model="statItem4Input"
+              maxlength="60"
+              :placeholder="$t('operation_text60') + '4.'"
+              rounded
+              expanded
+            />
+            <b-input
+              v-model="statResult4Input"
+              :placeholder="$t('operation_text61') + '(%)'"
+              type="number"
+              min="0"
+              rounded
+            />
+          </b-field>
+          <div>
+            <b-button v-if="itemCountInput < 4" type="is-success is-light" icon-right="plus" @click="addInputs" />
+            <b-field style="display: inline;">
+              <b-tooltip
+                :label="$t('operation_text83')"
+                :active="switchShare == $t('operation_text82')"
+                type="is-primary is-light"
+                square
+                always
+              >
+                <b-switch
+                  v-model="switchShare"
+                  :true-value="$t('operation_text81')"
+                  :false-value="$t('operation_text82')"
+                  type="is-warning"
+                  style="padding-top: 3px;"
+                >
+                  {{ switchShare }}
+                </b-switch>
+              </b-tooltip>
+            </b-field>
+            <b-button
+              :disabled="!statItem1Input || !statResult1Input || !statItem2Input || !statResult2Input || !nicknameInput"
+              type="is-dark"
+              style="float: right; margin-right: 3px;"
+              @click="registerPoll"
+            >
+              {{ $t('operation_text12') }}
+            </b-button>
+          </div>
+        </section>
+      </div>
+    </b-modal>
+
+    <b-modal
       v-model="showModal"
       class="stats"
       has-modal-card
     >
       <div class="modal-card" style="width: auto">
         <section class="modal-card-body">
-          <b-field :label="$t('operation_text68') + ':'" />
+          <b-field v-if="linkedURLOnly == false" :label="$t('operation_text68') + ':'" />
           <b-select
+            v-if="linkedURLOnly == false"
             v-model="selectedContributor"
             rounded
             expanded
@@ -169,16 +316,17 @@
 
 <script>
 import FlowScripts from '~/cadence/scripts'
+import FlowTransactions from '~/cadence/transactions'
 
 export default {
   name: 'CrowdfundingMaintenancePage',
   data () {
     return {
       bloctoWalletUser: {},
-      address: null,
       noticeTitle: '',
       transactionScanUrl: '',
       showModal: false,
+      showInputModal: false,
       allStats: {},
       statTitle: '',
       statItem1: '',
@@ -191,12 +339,27 @@ export default {
       statResult4: null,
       nickname: '',
       itemCount: 2,
+      statTitleInput: '',
+      statItem1Input: '',
+      statItem2Input: '',
+      statItem3Input: '',
+      statItem4Input: '',
+      statResult1Input: null,
+      statResult2Input: null,
+      statResult3Input: null,
+      statResult4Input: null,
+      nicknameInput: '',
+      itemCountInput: 2,
       registeredContributors: [],
       selectedContributor: null,
       registeredPolls: [],
       selectedPole: null,
       selectedIndex: null,
-      waitTransactionComplete: false
+      waitTransactionComplete: false,
+      switchShare: this.$t('operation_text81'),
+      statLinkPage: '',
+      tooltipActive: false,
+      linkedURLOnly: false
     }
   },
   head () {
@@ -215,7 +378,13 @@ export default {
         })
         if (index > -1 && index < this.registeredContributors.length) {
           const key = Object.keys(this.allStats)[index]
-          this.registeredPolls = this.allStats[key]
+          this.registeredPolls = this.allStats[key].filter((obj) => {
+            if (this.linkedURLOnly) {
+              return obj.nickname !== obj.nickname.replace(/\|\|link\|\|$/, '')
+            } else {
+              return obj.nickname === obj.nickname.replace(/\|\|link\|\|$/, '')
+            }
+          })
           this.selectedPole = this.registeredPolls[0].time
         }
       }
@@ -242,16 +411,24 @@ export default {
           this.statResult2 = parseFloat(this.registeredPolls[index].value2, 1)
           this.statResult3 = this.itemCount >= 3 ? parseFloat(this.registeredPolls[index].value3, 1) : null
           this.statResult4 = this.itemCount >= 4 ? parseFloat(this.registeredPolls[index].value4, 1) : null
-          this.nickname = this.registeredPolls[index].nickname
-          this.selectedIndex = index
+          this.nickname = this.registeredPolls[index].nickname.replace(/\|\|link\|\|$/, '')
         }
       }
     }
   },
+  mounted () {
+    this.$fcl.currentUser.subscribe(this.setupWalletInfo)
+    if (location.search.substr(0, 6) === '?link=') {
+      this.showStatsFromLink()
+    }
+  },
   methods: {
+    setupWalletInfo (user) {
+      this.bloctoWalletUser = user
+    },
     addInputs () {
-      if (this.itemCount < 4) {
-        this.itemCount++
+      if (this.itemCountInput < 4) {
+        this.itemCountInput++
       }
     },
     async showStats () {
@@ -267,7 +444,15 @@ export default {
         this.allStats = stats
         if (Object.values(stats).length > 0) {
           Object.values(stats).forEach((data) => {
-            this.registeredContributors.push(data[data.length - 1].nickname)
+            let isPublic = false
+            data.forEach((obj) => {
+              if (obj.nickname === obj.nickname.replace(/\|\|link\|\|$/, '')) {
+                isPublic = true
+              }
+            })
+            if (isPublic) {
+              this.registeredContributors.push(data[data.length - 1].nickname.replace(/\|\|link\|\|$/, ''))
+            }
           })
           this.selectedContributor = this.registeredContributors[0]
           this.showModal = true
@@ -281,6 +466,176 @@ export default {
       } catch (e) {
       }
     },
+    async showStatsFromLink () {
+      try {
+        const stats = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getStats),
+            this.$fcl.args([
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        this.registeredContributors = []
+        this.allStats = {}
+        const addrPortion = location.search.substr(6)
+        Object.keys(stats).forEach((addr) => {
+          if (addr.split('').slice(5, 15).reverse().join('') === addrPortion) {
+            const arr = stats[addr]
+            this.allStats[addr] = arr
+            let isLinked = false
+            arr.forEach((obj) => {
+              if (obj.nickname !== obj.nickname.replace(/\|\|link\|\|$/, '')) {
+                isLinked = true
+              }
+            })
+            if (isLinked) {
+              this.registeredContributors.push(arr[arr.length - 1].nickname.replace(/\|\|link\|\|$/, ''))
+              this.linkedURLOnly = true
+            }
+            this.selectedContributor = this.registeredContributors[0]
+            this.showModal = true
+          }
+        })
+        if (this.registeredContributors.length === 0) {
+          // No information registered.
+          this.$buefy.toast.open({
+            message: this.$t('operation_text64'),
+            queue: false
+          })
+        }
+      } catch (e) {
+      }
+    },
+    async registerPoll () {
+      this.noticeTitle = ''
+      if (!this.bloctoWalletUser.addr) {
+        await this.flowWalletLogin()
+      }
+      if (this.bloctoWalletUser.addr) {
+        if (!this.statItem3Input || !this.statResult3Input) {
+          this.statItem3Input = ''
+          this.statResult3Input = 0
+        }
+        if (!this.statItem4Input || !this.statResult4Input) {
+          this.statItem4Input = ''
+          this.statResult4Input = 0
+        }
+        let nickname = this.nicknameInput
+        if (this.switchShare === this.$t('operation_text82') && nickname === nickname.replace(/\|\|link\|\|$/, '')) {
+          nickname += '||link||'
+        }
+
+        try {
+          const hasStatsVault = await this.$fcl.send(
+            [
+              this.$fcl.script(FlowScripts.hasStatsVault),
+              this.$fcl.args([
+                this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
+              ])
+            ]
+          ).then(this.$fcl.decode)
+          let transactionId = null
+          if (!hasStatsVault) {
+            this.selectedIndex = 0
+            transactionId = await this.$fcl.send(
+              [
+                this.$fcl.transaction(FlowTransactions.createStat),
+                this.$fcl.args([
+                  this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
+                  this.$fcl.arg(nickname, this.$fclArgType.String),
+                  this.$fcl.arg(this.statTitleInput, this.$fclArgType.String),
+                  this.$fcl.arg(this.statItem1Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statItem2Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statItem3Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statItem4Input, this.$fclArgType.String),
+                  this.$fcl.arg(parseFloat(this.statResult1Input).toFixed(1), this.$fclArgType.UFix64),
+                  this.$fcl.arg(parseFloat(this.statResult2Input).toFixed(1), this.$fclArgType.UFix64),
+                  this.$fcl.arg(parseFloat(this.statResult3Input).toFixed(1), this.$fclArgType.UFix64),
+                  this.$fcl.arg(parseFloat(this.statResult4Input).toFixed(1), this.$fclArgType.UFix64)
+                ]),
+                this.$fcl.payer(this.$fcl.authz),
+                this.$fcl.proposer(this.$fcl.authz),
+                this.$fcl.authorizations([this.$fcl.authz]),
+                this.$fcl.limit(9999)
+              ]
+            ).then(this.$fcl.decode)
+          } else {
+            const stats = await this.$fcl.send(
+              [
+                this.$fcl.script(FlowScripts.getStats),
+                this.$fcl.args([
+                ])
+              ]
+            ).then(this.$fcl.decode)
+            if (stats[this.bloctoWalletUser.addr] && stats[this.bloctoWalletUser.addr].length > 0) {
+              this.selectedIndex = stats[this.bloctoWalletUser.addr].length
+            }
+            transactionId = await this.$fcl.send(
+              [
+                this.$fcl.transaction(FlowTransactions.addStat),
+                this.$fcl.args([
+                  this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
+                  this.$fcl.arg(nickname, this.$fclArgType.String),
+                  this.$fcl.arg(this.statTitleInput, this.$fclArgType.String),
+                  this.$fcl.arg(this.statItem1Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statItem2Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statItem3Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statItem4Input, this.$fclArgType.String),
+                  this.$fcl.arg(parseFloat(this.statResult1Input).toFixed(1), this.$fclArgType.UFix64),
+                  this.$fcl.arg(parseFloat(this.statResult2Input).toFixed(1), this.$fclArgType.UFix64),
+                  this.$fcl.arg(parseFloat(this.statResult3Input).toFixed(1), this.$fclArgType.UFix64),
+                  this.$fcl.arg(parseFloat(this.statResult4Input).toFixed(1), this.$fclArgType.UFix64)
+                ]),
+                this.$fcl.payer(this.$fcl.authz),
+                this.$fcl.proposer(this.$fcl.authz),
+                this.$fcl.authorizations([this.$fcl.authz]),
+                this.$fcl.limit(9999)
+              ]
+            ).then(this.$fcl.decode)
+          }
+          this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+          this.waitTransactionComplete = true
+          this.showInputModal = false
+          this.checkTransactionComplete(0)
+        } catch (e) {
+        }
+      }
+    },
+    callToast () {
+      const toast = this.$buefy.toast.open({
+        indefinite: true,
+        message: this.$t('operation_text34')
+      })
+      setTimeout(() => {
+        toast.close()
+      }, 10000)
+    },
+    checkTransactionComplete (expectedUpdateCount) {
+      this.callToast()
+      this.noticeTitle = this.$t('operation_text80')
+      const timerID = setInterval(async () => {
+        const stats = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getStats),
+            this.$fcl.args([
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        const myStat = stats[this.bloctoWalletUser.addr]
+        if (myStat && myStat[this.selectedIndex] && parseInt(myStat[this.selectedIndex].update_count) === expectedUpdateCount) {
+          this.noticeTitle = this.$t('operation_text65')
+          if (this.switchShare === this.$t('operation_text82')) {
+            this.statLinkPage = 'https://tickets-on-flow.web.app/ti/our_stats?link=' + this.bloctoWalletUser.addr.split('').slice(5, 15).reverse().join('')
+          }
+          this.waitTransactionComplete = false
+          clearInterval(timerID)
+        }
+      }, 4000)
+    },
+    async clickCopy () {
+      await navigator.clipboard.writeText(this.statLinkPage)
+      this.tooltipActive = true
+    },
     async flowWalletLogout () {
       await this.$fcl.unauthenticate()
     },
@@ -290,7 +645,7 @@ export default {
 
       this.registeredPolls.forEach((row) => {
         const datetime = new Date(parseInt(row.time) * 1000).toLocaleDateString() + ' ' + new Date(parseInt(row.time) * 1000).toLocaleTimeString()
-        const rowArray = [row.nickname, datetime, row.title, row.answer1, row.answer2, row.answer3, row.answer4, parseFloat(row.value1).toFixed(1).toString() + '%', parseFloat(row.value2).toFixed(1).toString() + '%', parseFloat(row.value3).toFixed(1).toString() + '%', parseFloat(row.value4).toFixed(1).toString() + '%']
+        const rowArray = [row.nickname.replace(/\|\|link\|\|$/, ''), datetime, row.title, row.answer1, row.answer2, row.answer3, row.answer4, parseFloat(row.value1).toFixed(1).toString() + '%', parseFloat(row.value2).toFixed(1).toString() + '%', parseFloat(row.value3).toFixed(1).toString() + '%', parseFloat(row.value4).toFixed(1).toString() + '%']
         csvContent += rowArray.join(',') + '\r\n'
       })
       const encodedUri = encodeURI(csvContent)
@@ -314,6 +669,10 @@ export default {
     font-size: 24px;
     text-align: center;
     padding: 0 5px;
+  }
+
+  .text-wrap {
+    margin-top: 8px;
   }
 
   .content {
@@ -353,9 +712,13 @@ export default {
   }
 }
 
-.field:not(:last-child) {
-  margin-bottom: 0.2rem;
-  margin-top: 0.55rem;
+.modal {
+  line-height: 1.0;
+
+  .field:not(:last-child) {
+    margin-bottom: 0.3rem;
+    margin-top: 0.9rem;
+  }
 }
 
 .hero {

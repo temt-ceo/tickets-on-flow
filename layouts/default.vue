@@ -951,6 +951,12 @@ span.control-label {
   padding-left: calc(1.75em - 1px) !important;
 }
 
+.switch span.control-label {
+  position: relative;
+  padding-left: calc(0.50em - 1px) !important;
+  width: 135px;
+}
+
 .fi {
   background-size: contain;
   background-position: 50%;
