@@ -253,7 +253,7 @@ export default {
   operation_text82: 'Partager avec n\'importe qui via un lien',
   operation_text83: 'Une URL par portefeuille',
   operation_text84: 'URL de vos statistiques',
-  operation_text85: '',
+  operation_text85: 'Aucun coût ne sera encouru.',
   operation_text86: '',
   operation_text87: '',
   operation_text88: '',

@@ -253,7 +253,7 @@ export default {
   operation_text82: '通过链接与任何人分享',
   operation_text83: '每个钱包有一个URL',
   operation_text84: '你的统计资料的URL',
-  operation_text85: '',
+  operation_text85: '将不会产生任何费用。',
   operation_text86: '',
   operation_text87: '',
   operation_text88: '',

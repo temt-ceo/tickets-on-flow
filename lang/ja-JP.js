@@ -253,7 +253,7 @@ export default {
   operation_text82: 'リンクで誰とでも共有',
   operation_text83: '1ウォレットにつき1URL',
   operation_text84: '統計情報のURL',
-  operation_text85: '',
+  operation_text85: '費用は発生しません。',
   operation_text86: '',
   operation_text87: '',
   operation_text88: '',

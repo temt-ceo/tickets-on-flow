@@ -253,7 +253,7 @@ export default {
   operation_text82: 'Compartir con cualquier persona a través de un enlace',
   operation_text83: 'Una URL por cartera',
   operation_text84: 'URL de sus estadísticas',
-  operation_text85: '',
+  operation_text85: 'No se producirá ningún gasto.',
   operation_text86: '',
   operation_text87: '',
   operation_text88: '',

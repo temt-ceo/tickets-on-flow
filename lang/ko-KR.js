@@ -253,7 +253,7 @@ export default {
   operation_text82: '링크를 통해 누구와도 공유',
   operation_text83: '지갑당 하나의 URL',
   operation_text84: '통계 URL',
-  operation_text85: '',
+  operation_text85: '비용은 발생하지 않습니다.',
   operation_text86: '',
   operation_text87: '',
   operation_text88: '',

@@ -253,7 +253,7 @@ export default {
   operation_text82: 'Compartilhe com qualquer pessoa via link',
   operation_text83: 'Um URL por carteira',
   operation_text84: 'URL de suas estatísticas',
-  operation_text85: '',
+  operation_text85: 'Nenhum custo será incorrido.',
   operation_text86: '',
   operation_text87: '',
   operation_text88: '',

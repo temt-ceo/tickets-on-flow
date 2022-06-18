@@ -253,7 +253,7 @@ export default {
   operation_text82: 'شارك مع أي شخص عبر الرابط',
   operation_text83: 'عنوان URL واحد لكل محفظة',
   operation_text84: 'عنوان URL للإحصائيات الخاصة بك',
-  operation_text85: '',
+  operation_text85: 'لن يتم تكبد أي تكاليف.',
   operation_text86: '',
   operation_text87: '',
   operation_text88: '',

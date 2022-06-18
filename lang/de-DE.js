@@ -253,7 +253,7 @@ export default {
   operation_text82: 'Per Link mit anderen teilen',
   operation_text83: 'Eine URL pro Brieftasche',
   operation_text84: 'URL Ihrer Statistik',
-  operation_text85: '',
+  operation_text85: 'Es fallen keine Kosten an.',
   operation_text86: '',
   operation_text87: '',
   operation_text88: '',

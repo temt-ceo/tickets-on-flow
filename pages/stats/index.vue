@@ -13,7 +13,7 @@
                 <b-skeleton size="is-large" :active="waitTransactionComplete" />
                 <b-skeleton size="is-large" :active="waitTransactionComplete" />
                 <b-skeleton size="is-large" width="60%" :active="waitTransactionComplete" />
-                <div v-if="statLinkPage != ''" class="text-wrap">
+                <div v-if="statLinkPage != '' && !waitTransactionComplete" class="text-wrap">
                   {{ $t('operation_text84') }}:
                   <small>{{ statLinkPage }}</small>
                   <b-tooltip
@@ -303,7 +303,7 @@
               </b-tooltip>
             </b-field>
             <b-button
-              :disabled="!statItem1 || !statResult1 || !statItem2 || !statResult2 || !nickname"
+              :disabled="!statItem1 || (!statResult1 && statResult1 != 0) || !statItem2 || (!statResult2 && statResult2 != 0) || !nickname"
               type="is-dark"
               style="float: right; margin-right: 3px;"
               @click="editPoll"
@@ -470,6 +470,17 @@ export default {
       this.noticeTitle = ''
       if (!this.bloctoWalletUser.addr) {
         await this.flowWalletLogin()
+      } else {
+        this.$buefy.snackbar.open({
+          duration: 5000, // 5 seconds
+          message: this.$t('operation_text85') + '<br>' + this.$t('operation_text29'),
+          type: 'is-danger',
+          position: 'is-bottom-left',
+          actionText: null,
+          queue: false,
+          onAction: () => {
+          }
+        })
       }
       if (this.bloctoWalletUser.addr) {
         if (!this.statItem3 || !this.statResult3) {
@@ -484,6 +495,12 @@ export default {
         if (this.switchShare === this.$t('operation_text82') && nickname === nickname.replace(/\|\|link\|\|$/, '')) {
           nickname += '||link||'
         }
+
+        // loading
+        const loadingComponent = this.$buefy.loading.open({
+          container: null
+        })
+        setTimeout(() => loadingComponent.close(), 3 * 1000)
 
         try {
           const hasStatsVault = await this.$fcl.send(
@@ -575,6 +592,22 @@ export default {
       if (this.switchShare === this.$t('operation_text82') && nickname === nickname.replace(/\|\|link\|\|$/, '')) {
         nickname += '||link||'
       }
+
+      this.$buefy.snackbar.open({
+        duration: 5000, // 5 seconds
+        message: this.$t('operation_text85') + '<br>' + this.$t('operation_text29'),
+        type: 'is-danger',
+        position: 'is-bottom-left',
+        actionText: null,
+        queue: false,
+        onAction: () => {
+        }
+      })
+      // loading
+      const loadingComponent = this.$buefy.loading.open({
+        container: null
+      })
+      setTimeout(() => loadingComponent.close(), 3 * 1000)
 
       try {
         const transactionId = await this.$fcl.send(
