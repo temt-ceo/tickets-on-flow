@@ -190,7 +190,7 @@
       class="stats"
       has-modal-card
     >
-      <div class="modal-card" style="width: auto">
+      <div class="modal-card stats-list" style="width: auto">
         <section class="modal-card-body">
           <b-field v-if="linkedURLOnly == false" :label="$t('operation_text68') + ':'" />
           <b-select
@@ -221,7 +221,7 @@
               {{ data.title }}
             </option>
           </b-select>
-          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 49px; z-index: 2;">
+          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 50px; z-index: 2;">
             %
           </div>
           <b-field :label="$t('operation_text61') + '(%)'">
@@ -242,7 +242,7 @@
               disabled
             />
           </b-field>
-          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 14px; z-index: 2;">
+          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 18px; z-index: 2;">
             %
           </div>
           <b-field>
@@ -263,7 +263,7 @@
               disabled
             />
           </b-field>
-          <div v-if="itemCount >= 3" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 14px; z-index: 2;">
+          <div v-if="itemCount >= 3" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 18px; z-index: 2;">
             %
           </div>
           <b-field v-if="itemCount >= 3">
@@ -284,7 +284,7 @@
               disabled
             />
           </b-field>
-          <div v-if="itemCount >= 4" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 14px; z-index: 2;">
+          <div v-if="itemCount >= 4" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 18px; z-index: 2;">
             %
           </div>
           <b-field v-if="itemCount >= 4">
@@ -732,9 +732,13 @@ export default {
 .modal {
   line-height: 1.0;
 
+  .stats-list .field:not(:last-child) {
+    margin-bottom: 0.5rem;
+    margin-top: 0.9rem;
+  }
+
   .field:not(:last-child) {
     margin-bottom: 0.3rem;
-    margin-top: 0.9rem;
   }
 }
 
