@@ -42,7 +42,7 @@
           field="time"
           label="Used at"
         >
-          {{ props.row.used_time ? new Date(Number(props.row.used_time).toFixed(3) * 1000).toLocaleString().toLocaleString().replace(/(:\d{2}):00/, '$1') : 'unused' }}
+          {{ props.row.used_time ? new Date(Number(props.row.used_time).toFixed(3) * 1000).toLocaleString().toLocaleString().replace(/(:\d{2}):00/, '$1') : $t('operation_text91') }}
         </b-table-column>
 
         <b-table-column
@@ -50,8 +50,17 @@
           field="paid"
           label="Paid"
         >
-          {{ Number(props.row.price) > 0 ? `${new Number(props.row.price).toFixed(2)}$FLOW` : 'not yet' }}
+          {{ Number(props.row.price) > 0 ? `${new Number(props.row.price).toFixed(2)}$FLOW` : '--' }}
         </b-table-column>
+
+        <b-table-column
+          v-slot="props"
+          field="readable_code"
+          label="CODE"
+        >
+          {{ props.row.readable_code ? props.row.readable_code : '--' }}
+        </b-table-column>
+
         <template #empty>
           <div class="has-text-centered">
             No tickets yet.

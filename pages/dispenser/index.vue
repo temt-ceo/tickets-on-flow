@@ -74,7 +74,7 @@
       <ticket-input-modal
         :address="address"
         :dispenser="dispenserId"
-        :ticket-page="dispenserPage"
+        :dispenser-page="dispenserPage"
         @closeModal="showInputModal=false"
       />
     </b-modal>

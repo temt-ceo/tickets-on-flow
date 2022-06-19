@@ -8,8 +8,6 @@
       <div>
         <b-table
           :data="ticketRequesterArray"
-          :checked-rows.sync="checkedRows"
-          :is-row-checkable="(row) => row.id !== 3 && row.id !== 4"
           :bordered="isBordered"
           :striped="isStriped"
           :narrowed="isNarrowed"
@@ -61,7 +59,7 @@
             :th-attrs="dateThAttrs"
             centered
           >
-            <span class="tag is-success">
+            <span class="tag is-success" @click="showSchedule(props.row.time)">
               {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
             </span>
           </b-table-column>
@@ -85,6 +83,17 @@
         />
       </div>
     </section>
+    <b-datepicker
+      v-if="showCalendar"
+      v-model="date"
+      inline
+      :events="events"
+      indicators="dots"
+      style="position: absolute; width: 100%; top: 8%;"
+    />
+    <b-button v-if="showCalendar" type="is-danger" style="width: 350px; margin: 0 auto;" @click="hideSchedule">
+      Close
+    </b-button>
   </div>
 </template>
 
@@ -121,7 +130,36 @@ export default {
       rangeBefore: 1,
       rangeAfter: 1,
       isSimple: false,
-      isRounded: true
+      isRounded: true,
+      showCalendar: false,
+      date: new Date(),
+      events: []
+    }
+  },
+  watch: {
+    date: {
+      handler (val) {
+        const target = new Date(val)
+        const events = this.events.filter((obj) => {
+          return obj.date.toLocaleDateString() === target.toLocaleDateString()
+        })
+        if (events.length > 0) {
+          let eventInfo = ''
+          events.forEach((data) => {
+            if (eventInfo !== '') {
+              eventInfo += '<br>'
+            }
+            const date = new Date(data.data?.time * 1000)
+            const localeTime = date.toLocaleDateString() + ' ' + date.toLocaleTimeString()
+            eventInfo += `Your Contribution DateTime: ${localeTime}`
+          })
+          this.$buefy.toast.open({
+            duration: 6000,
+            message: eventInfo,
+            type: 'is-link'
+          })
+        }
+      }
     }
   },
   computed: {
@@ -150,6 +188,24 @@ export default {
     })
   },
   methods: {
+    showSchedule (date) {
+      this.date = new Date(parseInt(date) * 1000)
+      this.events = []
+      this.ticketRequesterArray.forEach((obj) => {
+        const target = new Date(parseInt(obj.time) * 1000)
+        this.events.push(
+          {
+            date: new Date(target),
+            type: 'is-success',
+            data: obj
+          }
+        )
+      })
+      this.showCalendar = true
+    },
+    hideSchedule () {
+      this.showCalendar = false
+    },
     dateThAttrs (column) {
       return column.label === 'Date' ? { class: 'has-text-success' } : null
     },

@@ -1,15 +1,16 @@
 <template>
   <div class="modal-card user-data">
     <section class="modal-card-body">
-      <div class="text-wrap" style="padding-left: 36px;">
-        {{ $t('operation_text76') }}
-        <b-button class="download" type="is-light" icon-right="download" @click="csvDownload" />
+      <div class="text-wrap" style="padding-left: 36px; text-align: center;">
+        <span v-if="owner === 0">{{ $t('operation_text76') }}</span>
+        <span v-if="owner === 1">{{ $t('hamburger_menu4') }}</span>
+        <b-button v-if="owner === 0" class="download" type="is-light" icon-right="download" @click="csvDownload" />
       </div>
       <div>
         <b-table
           :data="ticketRequesters"
           :checked-rows.sync="checkedRows"
-          :is-row-checkable="(row) => row.id !== 3 && row.id !== 4"
+          :is-row-checkable="owner == 0 ? true : false"
           :bordered="isBordered"
           :striped="isStriped"
           :narrowed="isNarrowed"
@@ -29,6 +30,7 @@
           </b-table-column>
 
           <b-table-column
+            v-if="owner === 0"
             v-slot="props"
             field="address"
             label="Wallet Address"
@@ -39,6 +41,7 @@
           </b-table-column>
 
           <b-table-column
+            v-if="owner === 0"
             v-slot="props"
             field="count"
             label="Count"
@@ -61,7 +64,10 @@
             :th-attrs="dateThAttrs"
             centered
           >
-            <span class="tag is-success">
+            <span v-if="owner === 0" class="tag is-success" @click="showSchedule(props.row.time)">
+              {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
+            </span>
+            <span v-if="owner === 1">
               {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
             </span>
           </b-table-column>
@@ -85,6 +91,17 @@
         />
       </div>
     </section>
+    <b-datepicker
+      v-if="showCalendar"
+      v-model="date"
+      inline
+      :events="events"
+      indicators="dots"
+      style="position: absolute; width: 100%; top: 8%;"
+    />
+    <b-button v-if="showCalendar" type="is-danger" style="width: 350px; margin: 0 auto;" @click="hideSchedule">
+      Close
+    </b-button>
   </div>
 </template>
 
@@ -96,6 +113,11 @@ export default {
     ticketRequesters: {
       type: Array,
       required: true
+    },
+    owner: {
+      type: Number,
+      required: true,
+      default: null
     }
   },
   data () {
@@ -120,7 +142,35 @@ export default {
       rangeBefore: 1,
       rangeAfter: 1,
       isSimple: false,
-      isRounded: true
+      isRounded: true,
+      showCalendar: false,
+      date: new Date(),
+      events: []
+    }
+  },
+  watch: {
+    date: {
+      handler (val) {
+        const target = new Date(val)
+        const events = this.events.filter((obj) => {
+          return obj.date.toLocaleDateString() === target.toLocaleDateString()
+        })
+        if (events.length > 0) {
+          let eventInfo = ''
+          events.forEach((data) => {
+            if (eventInfo !== '') {
+              eventInfo += '<br>'
+            }
+            const paid = parseFloat(data.data?.paid).toFixed(2) + ' $FLOW'
+            eventInfo += `User ${data.data?.user_id} supported ${paid}`
+          })
+          this.$buefy.toast.open({
+            duration: 6000,
+            message: eventInfo,
+            type: 'is-link'
+          })
+        }
+      }
     }
   },
   computed: {
@@ -131,6 +181,24 @@ export default {
     }
   },
   methods: {
+    showSchedule (date) {
+      this.date = new Date(parseInt(date) * 1000)
+      this.events = []
+      this.ticketRequesters.forEach((obj) => {
+        const target = new Date(parseInt(obj.time) * 1000)
+        this.events.push(
+          {
+            date: new Date(target),
+            type: 'is-success',
+            data: obj
+          }
+        )
+      })
+      this.showCalendar = true
+    },
+    hideSchedule () {
+      this.showCalendar = false
+    },
     dateThAttrs (column) {
       return column.label === 'Date' ? { class: 'has-text-success' } : null
     },

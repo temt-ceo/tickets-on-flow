@@ -35,12 +35,14 @@
             <ticket-confirm-modal
               :address="bloctoWalletUser.addr"
               :ticket-requesters="ticketSalesData"
+              :owner="0"
             />
           </b-tab-item>
 
           <b-tab-item :label="$t('modal_text4')">
             <crowdfunding-confirm-modal
               :ticket-requesters="crowdfundingData"
+              :owner="0"
             />
           </b-tab-item>
         </b-tabs>
@@ -188,7 +190,6 @@ export default {
           // チケット売上
           const hasDispenserVault = await this.hasTicketDispenserVault()
           if (hasDispenserVault) {
-            // クラウドファンディング利益分
             const ticketRequesters = await this.$fcl.send(
               [
                 this.$fcl.script(FlowScripts.getTicketRequesters),
@@ -197,18 +198,20 @@ export default {
                 ])
               ]
             ).then(this.$fcl.decode)
-            const keys = Object.keys(ticketRequesters)
-            keys.forEach((key) => {
-              // console.log(ticketRequesters[key])
-              // クラウドファンディング利益分
-              if (ticketRequesters[key].crowdfunding === true) {
-                this.crowdfundingData.push(ticketRequesters[key])
-              }
-              // チケット売上
-              if (ticketRequesters[key].crowdfunding === false) {
-                this.ticketSalesData.push(ticketRequesters[key])
-              }
-            })
+            if (ticketRequesters) {
+              const keys = Object.keys(ticketRequesters)
+              keys.forEach((key) => {
+                // console.log(ticketRequesters[key])
+                // クラウドファンディング利益分
+                if (ticketRequesters[key].crowdfunding === true) {
+                  this.crowdfundingData.push(ticketRequesters[key])
+                }
+                // チケット売上
+                if (ticketRequesters[key].crowdfunding === false) {
+                  this.ticketSalesData.push(ticketRequesters[key])
+                }
+              })
+            }
           }
           await this.getFlowBalance()
         } catch (e) {

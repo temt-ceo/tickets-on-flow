@@ -221,7 +221,7 @@
               {{ data.title }}
             </option>
           </b-select>
-          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 50px; z-index: 2;">
+          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 52px; z-index: 2;">
             %
           </div>
           <b-field :label="$t('operation_text61') + '(%)'">
@@ -242,7 +242,7 @@
               disabled
             />
           </b-field>
-          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 18px; z-index: 2;">
+          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 13px; z-index: 2;">
             %
           </div>
           <b-field>
@@ -263,7 +263,7 @@
               disabled
             />
           </b-field>
-          <div v-if="itemCount >= 3" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 18px; z-index: 2;">
+          <div v-if="itemCount >= 3" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 13px; z-index: 2;">
             %
           </div>
           <b-field v-if="itemCount >= 3">
@@ -284,7 +284,7 @@
               disabled
             />
           </b-field>
-          <div v-if="itemCount >= 4" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 18px; z-index: 2;">
+          <div v-if="itemCount >= 4" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 13px; z-index: 2;">
             %
           </div>
           <b-field v-if="itemCount >= 4">
@@ -305,7 +305,7 @@
               disabled
             />
           </b-field>
-          <b-button class="download" type="is-info is-light" icon-right="download" style="float: right; margin-top: -15px;" @click="csvDownload">
+          <b-button class="download" type="is-info is-light" icon-right="download" style="float: right; margin-top: -6px;" @click="csvDownload">
             CSV
           </b-button>
         </section>
@@ -732,13 +732,8 @@ export default {
 .modal {
   line-height: 1.0;
 
-  .stats-list .field:not(:last-child) {
-    margin-bottom: 0.5rem;
-    margin-top: 0.9rem;
-  }
-
   .field:not(:last-child) {
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.4rem;
   }
 }
 

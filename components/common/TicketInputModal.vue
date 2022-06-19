@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-card">
+  <div v-if="isTypeSame != null" class="modal-card">
     <section class="modal-card-body">
       <div class="contents">
         <div class="text-wrap title">
@@ -12,12 +12,11 @@
             </b-message>
           </div>
           <div v-if="isCompleteRegister" class="text-wrap">
-            <p class="complete-register">
-              {{ $t('operation_text15') }}
+            <div class="complete-register">
+              <div>{{ $t('operation_text15') }}</div>
               <b-skeleton size="is-large" :active="isCompleteRegister" />
-              <b-skeleton size="is-large" :active="isCompleteRegister" />
-              <b-skeleton size="is-large" :active="isCompleteRegister" />
-              {{ $t('operation_text16') }}<br>
+              <b-skeleton size="is-large" :active="isCompleteRegister" style="margin-bottom: 5px;" />
+              <p>{{ $t('operation_text16') }}</p>
               <small>{{ dispenserPage }}</small>
               <b-tooltip
                 label="Copied!"
@@ -28,7 +27,7 @@
                   Copy
                 </b-button>
               </b-tooltip>
-            </p>
+            </div>
           </div>
           <p
             v-if="transactionScanUrl !== ''"
@@ -135,7 +134,7 @@
                   @typing="getFilteredWeekdays"
                 />
               </b-field>
-              <b-field :label="'5. ' + $t('operation_text10')">
+              <b-field :label="'5. ' + $t('operation_text10')" style="margin-bottom: 1.25rem;">
                 <b-select
                   v-model="registerPrice"
                   :placeholder="$t('operation_text2')"
@@ -178,11 +177,21 @@
                   </option>
                 </b-select>
               </b-field>
+              <b-field :label="$t('operation_text87')">
+                <b-switch v-model="switchDiscloseSales"
+                  :true-value="$t('operation_text88')"
+                  :false-value="$t('operation_text89')"
+                  type="is-info"
+                >
+                  {{ switchDiscloseSales }}
+                </b-switch>
+              </b-field>
               <div class="button-wrap">
                 <b-button @click="$emit('closeModal')">
                   Close
                 </b-button>
                 <b-button
+                  type="is-info"
                   :disabled="!registerName || !registerWhere || !registerWhereType || !registerWhen || !registerPrice"
                   @click="registerTicketInfo"
                 >
@@ -191,10 +200,10 @@
               </div>
             </div>
             <div v-if="showFlag && ticketInfo && !isCompleteRegister" class="text-wrap">
-              <p class="complete-register">
-                <span class="red">
+              <p>
+                <b-message type="is-danger" has-icon>
                   {{ $t('operation_text19') }}
-                </span>
+                </b-message>
               </p>
               <b-field
                 :label="'1. '+ $t('operation_text5')"
@@ -333,7 +342,17 @@
                   </option>
                 </b-select>
               </b-field>
-              <b-field :label="'6. ' + $t('operation_text11')">
+              <b-field :label="$t('operation_text87')">
+                <b-switch v-model="switchDiscloseSales"
+                  :true-value="$t('operation_text88')"
+                  :false-value="$t('operation_text89')"
+                  type="is-info"
+                >
+                  {{ switchDiscloseSales }}
+                </b-switch>
+              </b-field>
+
+              <b-field :label="$t('operation_text11')">
                 <b-checkbox
                   v-model="registerTwitterEdit"
                   true-value="Yes"
@@ -347,20 +366,13 @@
                   Close
                 </b-button>
                 <b-button
+                  type="is-info"
                   :disabled="!registerWhere || !registerWhereType || !registerWhen || !registerPrice"
                   @click="registerTicketInfo"
                 >
                   {{ $t('operation_text13') }}
                 </b-button>
               </div>
-            </div>
-            <div v-if="isCompleteDispense" class="text-wrap">
-              <p class="complete-register">
-                {{ $t('ticket_text27') }}<br>
-                {{ $t('ticket_text28') }}<br>
-                {{ $t('ticket_text29') }}<br>
-                {{ $t('ticket_text30') }}
-              </p>
             </div>
           </div>
         </div>
@@ -386,7 +398,7 @@ export default {
       required: true,
       default: null
     },
-    ticketPage: {
+    dispenserPage: {
       type: String,
       required: true,
       default: ''
@@ -407,7 +419,6 @@ export default {
       isTypeSame: null,
       transactionScanUrl: '',
       isCompleteRegister: false,
-      isCompleteDispense: false,
       ticketRequesters: [],
       requestList: [],
       receivedList: [],
@@ -432,7 +443,8 @@ export default {
         { day: this.$t('operation_text26'), id: 6 }
       ],
       indexOfTicket: null,
-      tooltipActive: false
+      tooltipActive: false,
+      switchDiscloseSales: this.$t('operation_text88')
     }
   },
   async mounted () {
@@ -466,6 +478,7 @@ export default {
             }
             return match
           })
+          let isTypeSame = null
           if (this.ticketInfo) {
             const name = this.ticketInfo.name.split('||@')
             if (name.length === 2) {
@@ -491,7 +504,7 @@ export default {
               }
             }
             const when = this.ticketInfo.when_to_use.split('||')
-            if (when.length === 3) {
+            if (when.length >= 2) {
               const weekdays = when[0]
               for (let i = 0; i < weekdays.length; i++) {
                 const day = weekdays.substr(i, 1)
@@ -520,16 +533,22 @@ export default {
                 }
               }
               this.registerWhen = new Date(when[1])
+              if (when.length < 4 || when[3] === '') {
+                this.switchDiscloseSales = this.$t('operation_text89')
+              } else {
+                this.switchDiscloseSales = this.$t('operation_text88')
+              }
             }
             this.registerPrice = this.ticketInfo.price.replace(/\.?0+$/, '')
 
             this.registerType = parseInt(this.ticketInfo.type)
-            this.isTypeSame = !(this.registerName !== '' && this.registerType !== 0)
+            isTypeSame = !(this.registerName !== '' && this.registerType !== 0)
           } else {
-            this.isTypeSame = true
+            isTypeSame = true
             this.ticketInfo = null
           }
           await this.confirmRequesters()
+          this.isTypeSame = isTypeSame
         } catch (e) {
         }
       } else {
@@ -570,7 +589,11 @@ export default {
       const registerName = this.registerName + '||@' + this.registerTwitter
       const registerWhere = this.registerWhereType + '||' + this.registerWhere
       const registerWeekdays = this.registerWhenWeekdays.map(obj => obj.id).join('')
-      const registerWhen = registerWeekdays + '||' + this.registerWhen + '||' + navigator.language
+      let registerWhen = registerWeekdays + '||' + this.registerWhen + '||' + navigator.language + '||'
+      if (this.switchDiscloseSales === this.$t('operation_text88')) {
+        registerWhen = registerWhen + this.address
+      }
+
       try {
         // loading
         const loadingComponent = this.$buefy.loading.open({
@@ -579,8 +602,8 @@ export default {
         setTimeout(() => loadingComponent.close(), 3 * 1000)
 
         this.$buefy.snackbar.open({
-          duration: 30000, // 30 seconds
-          message: this.$t('operation_text17') + `↗︎ <a href="https://testnet.flowscan.org/account/${this.address}" target="_blank">${this.$t('operation_text31')}</a>`,
+          duration: 5000, // 5 seconds
+          message: this.$t('operation_text85') + '<br>' + this.$t('operation_text29'),
           type: 'is-danger',
           position: 'is-bottom-left',
           actionText: null,
@@ -616,7 +639,11 @@ export default {
       const registerName = this.registerName + '||@' + this.registerTwitter
       const registerWhere = this.registerWhereType + '||' + this.registerWhere
       const registerWeekdays = this.registerWhenWeekdays.map(obj => obj.id).join('')
-      const registerWhen = registerWeekdays + '||' + this.registerWhen + '||' + navigator.language
+      let registerWhen = registerWeekdays + '||' + this.registerWhen + '||' + navigator.language + '||'
+      if (this.switchDiscloseSales === this.$t('operation_text88')) {
+        registerWhen = registerWhen + this.address
+      }
+
       try {
         // loading
         const loadingComponent = this.$buefy.loading.open({
@@ -625,8 +652,8 @@ export default {
         setTimeout(() => loadingComponent.close(), 3 * 1000)
 
         this.$buefy.snackbar.open({
-          duration: 30000, // 30 seconds
-          message: this.$t('operation_text17') + `↗︎ <a href="https://testnet.flowscan.org/account/${this.address}" target="_blank">${this.$t('operation_text31')}</a>`,
+          duration: 5000, // 5 seconds
+          message: this.$t('operation_text85') + '<br>' + this.$t('operation_text29'),
           type: 'is-danger',
           position: 'is-bottom-left',
           actionText: null,
@@ -725,6 +752,10 @@ export default {
     .text-wrap {
       margin: 4px;
 
+      &.title {
+        margin-bottom: 10px;
+      }
+
       p {
         color: #222;
         margin: 8px 0;
@@ -734,10 +765,13 @@ export default {
         font-size: 18px;
       }
 
-      p.complete-register {
-        font-weight: bold;
+      .complete-register {
+        div {
+          font-weight: bold;
+        }
 
         small {
+          font-weight: bold;
           color: #485fc7;
         }
       }

@@ -64,13 +64,22 @@
                 >
                   {{ $t('ticket_text22') }}
                 </b-button>
-                <b-button
+                <b-tooltip
                   v-if="ticketStatus <= 1 && bloctoWalletUser.addr && parseInt(ticketInfo.type) == 0"
-                  type="is-danger"
-                  @click="requestTicket"
+                  :label="$t('operation_text90')"
+                  type="is-dark"
+                  position="is-bottom"
+                  always
+                  style="width: 100%; margin-bottom: 30px;"
                 >
-                  {{ $t('ticket_text23') }}
-                </b-button>
+                  <b-button
+                    type="is-danger"
+                    @click="requestTicket"
+                  >
+                    {{ $t('ticket_text23') }}
+                  </b-button>
+                </b-tooltip>
+
                 <b-button
                   v-if="bloctoWalletUser.addr && ticketStatus === 2"
                   type="is-warning is-light"
@@ -87,20 +96,19 @@
                   {{ $t('ticket_text54') }}
                 </b-button>
                 <b-button
-                  type="is-link is-light"
+                  v-if="switchDiscloseSales"
+                  type="is-primary is-light"
+                  @click="peekAtSales"
+                >
+                  {{ $t('operation_text86') }}
+                </b-button>
+                <b-button
+                  type="is-info is-light"
                   @click="showConfirmModal = true"
                 >
                   <span v-if="parseInt(ticketInfo.type) == 0">{{ $t('ticket_text7') }}</span>
                   <span v-if="parseInt(ticketInfo.type) == 1">{{ $t('ticket_text52') }}</span>
                 </b-button>
-
-                <!-- <b-button
-                  v-if="ticketName !== '' && !bloctoWalletUser.addr"
-                  type="is-success is-light"
-                  @click="walletLogin"
-                >
-                  Connect Wallet
-                </b-button> -->
                 <h1 class="notice">
                   <ticket-date-time
                     v-if="parseInt(ticketInfo.type) == 0"
@@ -141,6 +149,22 @@
         @eventname="nextEvent"
       />
     </b-modal>
+    <b-modal v-model="showSalesModal">
+      <div class="modal-body">
+        <ticket-confirm-modal
+          v-if="ticketSalesData.length > 0"
+          :address="bloctoWalletUser.addr"
+          :ticket-requesters="ticketSalesData"
+          :owner="1"
+        />
+
+        <crowdfunding-confirm-modal
+          v-if="crowdfundingData.length > 0"
+          :ticket-requesters="crowdfundingData"
+          :owner="1"
+        />
+      </div>
+    </b-modal>
   </section>
 </template>
 
@@ -149,12 +173,16 @@ import FlowScripts from '~/cadence/scripts'
 import FlowTransactions from '~/cadence/transactions'
 import CheckTicketModal from '~/components/common/CheckTicketModal'
 import TicketDateTime from '~/components/common/TicketDateTime'
+import TicketConfirmModal from '~/components/common/TicketConfirmModal'
+import CrowdfundingConfirmModal from '~/components/common/CrowdfundingConfirmModal'
 
 export default {
   name: 'TicketPage',
   components: {
     CheckTicketModal,
-    TicketDateTime
+    TicketDateTime,
+    TicketConfirmModal,
+    CrowdfundingConfirmModal
   },
   data () {
     return {
@@ -176,7 +204,12 @@ export default {
       showConfirmModal: false,
       waitTransactionComplete: false,
       totalRemittance: null,
-      tooltipActive: false
+      tooltipActive: false,
+      switchDiscloseSales: false,
+      dispenserAddress: null,
+      ticketSalesData: [],
+      crowdfundingData: [],
+      showSalesModal: false
     }
   },
   computed: {
@@ -207,6 +240,8 @@ export default {
         if (when.length >= 2) {
           this.ticketWhenWeek = when[0]
           this.ticketWhenTime = when[1]
+          this.switchDiscloseSales = when.length >= 4 && when[3].length > 10
+          this.dispenserAddress = when[3]
         }
       }
     },
@@ -451,48 +486,43 @@ export default {
       } else {
         transactionCode = FlowTransactions.requestTicket
       }
-      this.$buefy.dialog.confirm({
-        message: this.$t('ticket_text50'),
-        onConfirm: async () => {
-          try {
-            // loading
-            const loadingComponent = this.$buefy.loading.open({
-              container: null
-            })
-            setTimeout(() => loadingComponent.close(), 3 * 1000)
+      try {
+        // loading
+        const loadingComponent = this.$buefy.loading.open({
+          container: null
+        })
+        setTimeout(() => loadingComponent.close(), 3 * 1000)
 
-            this.$buefy.snackbar.open({
-              duration: 30000, // 30 seconds
-              message: this.$t('operation_text17') + `↗︎ <a href="https://testnet.flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
-              type: 'is-danger',
-              position: 'is-bottom-left',
-              actionText: null,
-              queue: false,
-              onAction: () => {
-              }
-            })
-
-            const transactionId = await this.$fcl.send(
-              [
-                this.$fcl.transaction(transactionCode),
-                this.$fcl.args([
-                  this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32)
-                ]),
-                this.$fcl.payer(this.$fcl.authz),
-                this.$fcl.proposer(this.$fcl.authz),
-                this.$fcl.authorizations([this.$fcl.authz]),
-                this.$fcl.limit(9999)
-              ]
-            ).then(this.$fcl.decode)
-            this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-            this.noticeTitle = this.$t('operation_text32').replace('<br>', '\r\n')
-            this.ticketStatus = 2
-            this.callToast()
-            return transactionId
-          } catch (e) {
+        this.$buefy.snackbar.open({
+          duration: 5000, // 5 seconds
+          message: this.$t('ticket_text50'),
+          type: 'is-danger',
+          position: 'is-bottom-left',
+          actionText: null,
+          queue: false,
+          onAction: () => {
           }
-        }
-      })
+        })
+
+        const transactionId = await this.$fcl.send(
+          [
+            this.$fcl.transaction(transactionCode),
+            this.$fcl.args([
+              this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32)
+            ]),
+            this.$fcl.payer(this.$fcl.authz),
+            this.$fcl.proposer(this.$fcl.authz),
+            this.$fcl.authorizations([this.$fcl.authz]),
+            this.$fcl.limit(9999)
+          ]
+        ).then(this.$fcl.decode)
+        this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+        this.noticeTitle = this.$t('operation_text32').replace('<br>', '\r\n')
+        this.ticketStatus = 2
+        this.callToast()
+        return transactionId
+      } catch (e) {
+      }
     },
     useTicket () {
       try {
@@ -757,6 +787,31 @@ export default {
       } catch (e) {
       }
     },
+    async peekAtSales () {
+      const ticketRequesters = await this.$fcl.send(
+        [
+          this.$fcl.script(FlowScripts.getTicketRequesters),
+          this.$fcl.args([
+            this.$fcl.arg(this.dispenserAddress, this.$fclArgType.Address)
+          ])
+        ]
+      ).then(this.$fcl.decode)
+      const keys = Object.keys(ticketRequesters)
+      this.crowdfundingData = []
+      this.ticketSalesData = []
+      keys.forEach((key) => {
+        // console.log(ticketRequesters[key])
+        // クラウドファンディング利益分
+        if (ticketRequesters[key].crowdfunding === true) {
+          this.crowdfundingData.push(ticketRequesters[key])
+        }
+        // チケット売上
+        if (ticketRequesters[key].crowdfunding === false) {
+          this.ticketSalesData.push(ticketRequesters[key])
+        }
+      })
+      this.showSalesModal = true
+    },
     async clickCopy () {
       await navigator.clipboard.writeText(this.code)
       this.tooltipActive = true
@@ -800,9 +855,13 @@ export default {
       color: white;
     }
 
-    .check-transaction a {
-      font-size: 16px;
-      text-decoration: underline;
+    .check-transaction{
+      margin-top: 5px;
+
+      a {
+        font-size: 16px;
+        text-decoration: underline;
+      }
     }
 
     .button {

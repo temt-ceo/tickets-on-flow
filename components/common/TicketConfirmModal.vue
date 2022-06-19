@@ -1,9 +1,9 @@
 <template>
   <div class="modal-card user-data">
     <section class="modal-card-body">
-      <div class="text-wrap" style="padding-left: 36px;">
+      <div class="text-wrap" style="padding-left: 36px; text-align: center;">
         {{ $t('operation_text75') }}
-        <b-button class="download" type="is-light" icon-right="download" @click="csvDownload" />
+        <b-button v-if="owner === 0" class="download" type="is-light" icon-right="download" @click="csvDownload" />
       </div>
       <div v-if="isCompleteDispense" class="text-wrap">
         <b-message type="is-success" has-icon>
@@ -23,10 +23,10 @@
         <b-table
           :data="ticketRequesters"
           :checked-rows.sync="checkedRows"
-          :is-row-checkable="(row) => row.latest_token == null"
-          checkable
+          :is-row-checkable="(row) => owner == 0 && row.latest_token == null"
           :checkbox-position="checkboxPosition"
-          :checkbox-type="checkboxType"
+          checkbox-type="is-info"
+          checkable
           :bordered="isBordered"
           :striped="isStriped"
           :narrowed="isNarrowed"
@@ -38,7 +38,7 @@
           <b-table-column
             v-slot="props"
             field="user_id"
-            label="User"
+            label="User ID"
             width="40"
             numeric
           >
@@ -62,6 +62,7 @@
           </b-table-column>
 
           <b-table-column
+            v-if="owner === 0"
             v-slot="props"
             field="latest_token"
             label="Last issued token ID"
@@ -76,7 +77,10 @@
             :th-attrs="dateThAttrs"
             centered
           >
-            <span class="tag is-success" @click="showSchedule">
+            <span v-if="owner === 0" class="tag is-success" @click="showSchedule(props.row.time)">
+              {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
+            </span>
+            <span v-if="owner === 1">
               {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
             </span>
           </b-table-column>
@@ -93,12 +97,13 @@
           total="100"
           :range-before="rangeBefore"
           :range-after="rangeAfter"
-          size="is-small"
           :simple="isSimple"
           :rounded="isRounded"
           :per-page="perPage"
+          size="is-small"
+          class="userdata-pagination"
         />
-        <div class="table-wrapper">
+        <div v-if="owner === 0" class="table-wrapper">
           <div class="table_">
             <div class="row">
               <div class="cell">
@@ -156,6 +161,11 @@ export default {
     ticketRequesters: {
       type: Array,
       required: true
+    },
+    owner: {
+      type: Number,
+      required: true,
+      default: null
     }
   },
   data () {
@@ -168,8 +178,7 @@ export default {
       flowscanLink: 'https://testnet.flowscan.org/transaction',
       isCompleteDispense: false,
       checkedRows: [],
-      checkboxPosition: 'left',
-      checkboxType: 'is-primary',
+      checkboxPosition: 'right',
       isBordered: false,
       isStriped: false,
       isNarrowed: false,
@@ -198,16 +207,19 @@ export default {
           return obj.date.toLocaleDateString() === target.toLocaleDateString()
         })
         if (events.length > 0) {
-          this.showTooltip = true
           let eventInfo = ''
           events.forEach((data) => {
             if (eventInfo !== '') {
               eventInfo += '<br>'
             }
             const localeTime = new Date(data.data?.time * 1000).toLocaleTimeString()
-            eventInfo += `User ${data.data?.user_id}: requested at ${localeTime}`
+            eventInfo += `User ${data.data?.user_id} requested at ${localeTime}`
           })
-          this.$buefy.toast.open(eventInfo)
+          this.$buefy.toast.open({
+            duration: 6000,
+            message: eventInfo,
+            type: 'is-link'
+          })
         }
       }
     }
@@ -325,7 +337,8 @@ export default {
         toast.close()
       }, 10000)
     },
-    showSchedule () {
+    showSchedule (date) {
+      this.date = new Date(parseInt(date) * 1000)
       this.events = []
       this.ticketRequesters.forEach((obj) => {
         const target = new Date(parseInt(obj.time) * 1000)

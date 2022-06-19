@@ -881,7 +881,7 @@ export default {
         }
 
         &.menu-long {
-          font-size: 13px;
+          font-size: 14px;
         }
       }
     }
@@ -957,6 +957,12 @@ span.control-label {
   width: 135px;
 }
 
+.text-wrap {
+  .switch span.control-label {
+    width: 250px;
+  }
+}
+
 .fi {
   background-size: contain;
   background-position: 50%;
@@ -974,6 +980,17 @@ span.control-label {
       border-radius: unset;
       padding: 40px 0;
     }
+  }
+}
+
+.modal .stats-list {
+  .label {
+    margin-top: 1.2rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .field:not(:last-child) {
+    margin-bottom: 0rem !important;
   }
 }
 
@@ -1196,21 +1213,21 @@ input[type="number"]:disabled {
         }
       }
     }
+  }
+}
 
-    .pagination {
-      .pagination-list {
-        flex-grow: inherit !important;
-      }
+.userdata-pagination.pagination {
+  .pagination-list {
+    flex-grow: inherit !important;
+  }
 
-      .pagination-previous,
-      .pagination-next {
-        display: none;
-      }
+  .pagination-previous,
+  .pagination-next {
+    display: none;
+  }
 
-      .pagination-link.is-current {
-        background-color: #3e8ed0;
-      }
-    }
+  .pagination-link.is-current {
+    background-color: #3e8ed0;
   }
 }
 
@@ -1283,7 +1300,7 @@ tr {
 
 @media screen and (min-width: 400px) {
   .navbar .dropdown-menu .dropdown-content .dropdown-item.menu-long {
-    font-size: 15px;
+    font-size: 16px;
   }
 }
 @media screen and (min-width: 700px) {
