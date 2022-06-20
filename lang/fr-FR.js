@@ -263,7 +263,7 @@ export default {
   operation_text92: 'Écran de démonstration',
   operation_text93: 'Vous pouvez le configurer en vous connectant au porte-monnaie.',
   operation_text94: 'Vous devez être connecté au porte-monnaie pour le configurer. Voulez-vous vous connecter ?',
-  operation_text95: '',
+  operation_text95: 'La date et l\'heure de clôture sont passées.',
   operation_text96: '',
   operation_text97: '',
   operation_text98: '',

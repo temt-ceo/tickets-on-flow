@@ -265,7 +265,7 @@ export default {
   operation_text92: 'Demo screen',
   operation_text93: 'You can set it up by connecting to the wallet.',
   operation_text94: 'You must be connected to the wallet to set it up. Do you want to connect?',
-  operation_text95: '',
+  operation_text95: 'The closing date and time has passed.',
   operation_text96: '',
   operation_text97: '',
   operation_text98: '',

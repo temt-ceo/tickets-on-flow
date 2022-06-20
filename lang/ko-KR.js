@@ -263,7 +263,7 @@ export default {
   operation_text92: '데모 화면',
   operation_text93: '지갑에 연결하여 설정할 수 있습니다.',
   operation_text94: '설정하려면 지갑에 연결해야 합니다. 연결하시겠습니까?',
-  operation_text95: '',
+  operation_text95: '마감 날짜와 시간이 지났습니다.',
   operation_text96: '',
   operation_text97: '',
   operation_text98: '',

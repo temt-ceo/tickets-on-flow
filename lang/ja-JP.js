@@ -263,7 +263,7 @@ export default {
   operation_text92: 'デモ画面です',
   operation_text93: 'ウォレットに接続することで設定できます。',
   operation_text94: '設定するには、ウォレットに接続する必要があります。接続しますか？',
-  operation_text95: '',
+  operation_text95: '締切日時を過ぎました。',
   operation_text96: '',
   operation_text97: '',
   operation_text98: '',

@@ -263,7 +263,7 @@ export default {
   operation_text92: 'Demo-Bildschirm',
   operation_text93: 'Sie können es einrichten, indem Sie sich mit der Brieftasche verbinden.',
   operation_text94: 'Sie müssen mit der Brieftasche verbunden sein, um sie einzurichten. Möchten Sie eine Verbindung herstellen?',
-  operation_text95: '',
+  operation_text95: 'Die Frist ist abgelaufen.',
   operation_text96: '',
   operation_text97: '',
   operation_text98: '',

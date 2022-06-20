@@ -263,7 +263,7 @@ export default {
   operation_text92: 'شاشة العرض',
   operation_text93: 'يمكنك إعداده عن طريق الاتصال بالمحفظة.',
   operation_text94: 'يجب أن تكون متصلاً بالمحفظة لإعدادها. هل تريد الاتصال؟',
-  operation_text95: '',
+  operation_text95: 'لقد مر تاريخ ووقت الإغلاق.',
   operation_text96: '',
   operation_text97: '',
   operation_text98: '',

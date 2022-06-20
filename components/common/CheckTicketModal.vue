@@ -64,19 +64,19 @@
         </b-table-column>
 
         <b-table-column
+          field="disclose"
+          :label="$t('operation_text88')"
+        >
+          {{ isDiscloseSales ? 'Yes' : 'No' }}
+        </b-table-column>
+
+        <b-table-column
           v-if="parseInt(ticket.type) == 1"
           v-slot="props"
           field="ticketWhen"
           :label="parseInt(ticket.type) == 0 ? $t('ticket_text19') : $t('operation_text35')"
         >
           {{ props.row.ticketWhen }}
-        </b-table-column>
-
-        <b-table-column
-          field="disclose"
-          :label="$t('operation_text88')"
-        >
-          {{ isDiscloseSales ? 'Yes' : 'No' }}
         </b-table-column>
 
         <template #empty>

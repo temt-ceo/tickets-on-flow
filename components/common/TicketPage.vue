@@ -90,6 +90,7 @@
                 </b-button>
                 <b-button
                   v-if="ticketStatus <= 2 && bloctoWalletUser.addr && parseInt(ticketInfo.type) == 1 && waitTransactionComplete == false"
+                  :disabled="termExpired"
                   type="is-warning"
                   @click="crowdfund"
                 >
@@ -210,7 +211,8 @@ export default {
       ticketSalesData: [],
       crowdfundingData: [],
       showSalesModal: false,
-      tooltipAlwaysShow: false
+      tooltipAlwaysShow: false,
+      termExpired: false
     }
   },
   computed: {
@@ -241,6 +243,9 @@ export default {
         if (when.length >= 2) {
           this.ticketWhenWeek = when[0]
           this.ticketWhenTime = when[1]
+          if (new Date(this.ticketWhenTime).getTime() < new Date().getTime()) {
+            this.termExpired = true
+          }
           this.switchDiscloseSales = when.length >= 4 && when[3].length > 10
           this.dispenserAddress = when[3]
         }
@@ -401,7 +406,11 @@ export default {
           if (parseInt(this.ticketInfo.type) === 0) {
             this.noticeTitle = this.$t('operation_text33').replace('<br>', '\r\n') // 1: can request a ticket
           } else if (parseInt(this.ticketInfo.type) === 1) {
-            this.noticeTitle = this.$t('operation_text40').replace('<br>', '\r\n') // 1: can crowdfund
+            if (this.termExpired === true) {
+              this.noticeTitle = this.$t('operation_text95')
+            } else {
+              this.noticeTitle = this.$t('operation_text40').replace('<br>', '\r\n') // 1: can crowdfund
+            }
           }
           break
         case 2:

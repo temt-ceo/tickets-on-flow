@@ -263,7 +263,7 @@ export default {
   operation_text92: 'Tela de demonstração',
   operation_text93: 'Você pode configurá-lo conectando-se à carteira.',
   operation_text94: 'Você deve estar conectado à carteira para montá-la. Você quer se conectar?',
-  operation_text95: '',
+  operation_text95: 'A data e a hora de encerramento já passaram.',
   operation_text96: '',
   operation_text97: '',
   operation_text98: '',

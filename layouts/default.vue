@@ -1368,6 +1368,21 @@ tr {
   }
 }
 
+.dialog.modal {
+  .modal-card.animation-content {
+    width: 88%;
+
+    input[type="number"] {
+      border-radius: 14px;
+      width: 55%;
+    }
+  }
+}
+
+.modal-content, .modal-card {
+    max-height: calc(100vh - 140px);
+}
+
 @keyframes typing {
   0% {
     width: 0px;

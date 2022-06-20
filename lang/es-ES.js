@@ -263,7 +263,7 @@ export default {
   operation_text92: 'Pantalla de demostración',
   operation_text93: 'Puedes configurarlo conectándote al monedero.',
   operation_text94: 'Debes estar conectado al monedero para configurarlo. ¿Quieres conectarte?',
-  operation_text95: '',
+  operation_text95: 'La fecha y la hora de cierre han pasado.',
   operation_text96: '',
   operation_text97: '',
   operation_text98: '',

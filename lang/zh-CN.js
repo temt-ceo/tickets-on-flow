@@ -263,7 +263,7 @@ export default {
   operation_text92: '演示屏幕',
   operation_text93: '你可以通过连接到钱包来设置它。',
   operation_text94: '你必须连接到钱包才能进行设置。你想连接吗？',
-  operation_text95: '',
+  operation_text95: '截止日期和时间已经过去。',
   operation_text96: '',
   operation_text97: '',
   operation_text98: '',
