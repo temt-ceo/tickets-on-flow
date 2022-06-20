@@ -18,7 +18,7 @@
 
     <b-modal v-model="showConfirmModal">
       <div class="modal-body">
-        <b-tabs v-model="activeTab">
+        <b-tabs v-model="activeTab" style="background-color: aliceblue;">
           <b-tab-item :label="$t('modal_text1')">
             <owned-tickets-confirm-modal
               :tickets="ownedTicket"
@@ -69,7 +69,7 @@
           </a>
           <b-button
             type="is-danger"
-            style="margin: 0 auto 0 30px;"
+            style="margin: 6px auto 0 20px;"
             outlined
             @click="walletLogout"
           >

@@ -14,7 +14,8 @@
         :loading="isLoading"
         :focusable="isFocusable"
         :mobile-cards="hasMobileCards"
-        style="height: 210px;"
+        class="check-ticket"
+        style="min-height: 210px;"
       >
         <b-table-column
           v-slot="props"
@@ -70,6 +71,14 @@
         >
           {{ props.row.ticketWhen }}
         </b-table-column>
+
+        <b-table-column
+          field="disclose"
+          :label="$t('operation_text88')"
+        >
+          {{ isDiscloseSales ? 'Yes' : 'No' }}
+        </b-table-column>
+
         <template #empty>
           <div class="has-text-centered">
             {{ $t('ticket_text20') }}
@@ -147,7 +156,8 @@ export default {
       date: new Date(),
       startTime: null,
       events: [],
-      isScheduleDate: false
+      isScheduleDate: false,
+      isDiscloseSales: false
     }
   },
   watch: {
@@ -186,6 +196,7 @@ export default {
     if (when.length >= 2) {
       ticket.ticketWhen = new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1') + (parseInt(this.ticket.type) === 1 ? '' : ` ${this.$t('ticket_text6')} `)
       this.startTime = new Date(when[1]).toLocaleTimeString()
+      this.isDiscloseSales = when.length >= 4 && when[3].length > 10
     }
     const where = this.ticket.where_to_use.split('||')
     let detail = ''
@@ -289,7 +300,7 @@ export default {
   .modal-card-body {
     text-align: center;
     padding: 20px 10px;
-    height: 420px;
+    min-height: 420px;
 
     .text-wrap {
       margin: 16px;

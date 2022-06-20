@@ -1,6 +1,6 @@
 <template>
   <div class="modal-card user-data">
-    <section class="modal-card-body">
+    <section class="modal-card-body ticket-confirm-modal">
       <div class="text-wrap" style="padding-left: 36px; text-align: center;">
         {{ $t('operation_text75') }}
         <b-button v-if="owner === 0" class="download" type="is-light" icon-right="download" @click="csvDownload" />
@@ -21,12 +21,12 @@
       </div>
       <div v-if="!isCompleteDispense">
         <b-table
-          :data="ticketRequesters"
+          :data="displayTicketRequesters"
           :checked-rows.sync="checkedRows"
           :is-row-checkable="(row) => owner == 0 && row.latest_token == null"
           :checkbox-position="checkboxPosition"
           checkbox-type="is-info"
-          checkable
+          :checkable="owner === 0"
           :bordered="isBordered"
           :striped="isStriped"
           :narrowed="isNarrowed"
@@ -58,7 +58,7 @@
             field="paid"
             label="Total Payments"
           >
-            {{ new Number(props.row.paid).toFixed(2) }}
+            {{ new Number(props.row.paid).toFixed(1) }} $FLOW
           </b-table-column>
 
           <b-table-column
@@ -92,14 +92,15 @@
         </b-table>
         <hr>
         <b-pagination
-          v-if="isPaginate"
+          v-if="ticketRequesters && ticketRequesters.length > this.perPage"
           v-model="current"
-          total="100"
+          :total="this.ticketRequesters.length"
           :range-before="rangeBefore"
           :range-after="rangeAfter"
           :simple="isSimple"
           :rounded="isRounded"
           :per-page="perPage"
+          order="is-centered"
           size="is-small"
           class="userdata-pagination"
         />
@@ -178,7 +179,7 @@ export default {
       flowscanLink: 'https://testnet.flowscan.org/transaction',
       isCompleteDispense: false,
       checkedRows: [],
-      checkboxPosition: 'right',
+      checkboxPosition: 'left',
       isBordered: false,
       isStriped: false,
       isNarrowed: false,
@@ -186,9 +187,9 @@ export default {
       isFocusable: false,
       isLoading: false,
       hasMobileCards: true,
-      isPaginate: false,
-      current: 10,
-      perPage: window.innerWidth < 768 ? 2 : 10,
+      perPage: window.innerWidth >= 768 ? 10 : 2,
+      displayTicketRequesters: window.innerWidth >= 768 ? this.ticketRequesters.slice(0, 10) : this.ticketRequesters.slice(0, 2),
+      current: 1,
       rangeBefore: 1,
       rangeAfter: 1,
       isSimple: false,
@@ -222,6 +223,12 @@ export default {
           })
         }
       }
+    },
+    current: {
+      handler (val) {
+        const position = this.perPage * (val - 1)
+        this.displayTicketRequesters = this.ticketRequesters.slice(position, position + this.perPage)
+      }
     }
   },
   async mounted () {
@@ -236,10 +243,12 @@ export default {
       ).then(this.$fcl.decode)
       this.latestMintedTokenId = latestMintedTokenId || 0
       this.peopleWaitingCount = this.ticketRequesters.filter(data => data.latest_token === null).length
+      this.displayTicketRequesters = this.ticketRequesters.slice(0, this.perPage)
       // subscribeに対応
       setInterval(() => {
         this.peopleWaitingCount = this.ticketRequesters.filter(data => data.latest_token === null).length
-      }, 4000)
+        this.displayTicketRequesters = this.ticketRequesters.slice(this.perPage * (this.current - 1), this.perPage * (this.current - 1) + this.perPage)
+      }, 2000)
     } catch (e) {
     }
   },
@@ -437,6 +446,7 @@ export default {
       position: relative;
       float: right;
       min-height: 40px;
+      margin-bottom: 2px;
       text-align: left;
       font-size: 13px;
       color: #485fc7;
@@ -461,6 +471,7 @@ export default {
       position: absolute;
       top: 0;
       bottom: 0;
+      right: 0;
       min-width: 120px;
     }
   }

@@ -68,7 +68,8 @@
         :address="address"
         :dispenser="dispenserId"
         :dispenser-page="dispenserPage"
-        @closeModal="showInputModal=false"
+        :demo="isDemo"
+        @closeModal="closeInputModal"
       />
     </b-modal>
   </section>
@@ -100,7 +101,8 @@ export default {
       ticketUsedMessage: '',
       showInputModal: false,
       isApplied: false,
-      waitTransactionComplete: false
+      waitTransactionComplete: false,
+      isDemo: false
     }
   },
   head () {
@@ -404,22 +406,58 @@ export default {
       } catch (e) {
       }
     },
-    async nextEvent () {
-      await this.flowWalletLogin()
-      if (this.bloctoWalletUser?.addr) {
-        setTimeout(() => {
-          if (this.hasDispenserVault && this.hasDispenser) {
-            this.showInputModal = true
+    nextEvent () {
+      this.$buefy.dialog.confirm({
+        message: this.$t('operation_text94'),
+        type: 'is-dark',
+        cancelText: 'No',
+        confirmText: 'Yes',
+        onConfirm: async () => {
+          await this.flowWalletLogin()
+          if (this.bloctoWalletUser?.addr) {
+            setTimeout(() => {
+              if (this.hasDispenserVault && this.hasDispenser) {
+                this.showInputModal = true
+              }
+              if (!this.hasDispenserVault) {
+                this.$buefy.toast.open({
+                  message: this.$t('operation_text72'),
+                  duration: 8000,
+                  queue: false
+                })
+                this.requestDispenser()
+              }
+            }, 2000)
           }
-          if (!this.hasDispenserVault) {
-            this.$buefy.toast.open({
-              message: this.$t('operation_text72'),
-              duration: 8000,
-              queue: false
-            })
-            this.requestDispenser()
-          }
-        }, 2000)
+        },
+        onCancel: () => {
+          this.isDemo = true
+          this.address = ''
+          this.dispenserId = 0
+          this.showInputModal = true
+        }
+      })
+    },
+    async closeInputModal () {
+      this.showInputModal = false
+      if (this.isDemo === true) {
+        this.isDemo = false
+        await this.flowWalletLogin()
+        if (this.bloctoWalletUser?.addr) {
+          setTimeout(() => {
+            if (this.hasDispenserVault && this.hasDispenser) {
+              this.showInputModal = true
+            }
+            if (!this.hasDispenserVault) {
+              this.$buefy.toast.open({
+                message: this.$t('operation_text72'),
+                duration: 8000,
+                queue: false
+              })
+              this.requestDispenser()
+            }
+          }, 2000)
+        }
       }
     }
   }

@@ -10,7 +10,7 @@
         <b-table
           :data="ticketRequesters"
           :checked-rows.sync="checkedRows"
-          :is-row-checkable="owner == 0 ? true : false"
+          :is-row-checkable="(row) => owner == 0 ? true : false"
           :bordered="isBordered"
           :striped="isStriped"
           :narrowed="isNarrowed"

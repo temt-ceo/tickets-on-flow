@@ -1082,6 +1082,39 @@ span.control-label {
 
   td:first-child {
     white-space: nowrap;
+    background-color: #f2effb;
+  }
+
+  td:nth-child(2) {
+    background-color: #eff1fa;
+  }
+
+  td:nth-child(3) {
+    background-color: #eff5fb;
+  }
+
+  td:nth-child(5) {
+    background-color: #fffaeb;
+  }
+
+  td:nth-child(4) {
+    background-color: #effaf5;
+  }
+
+  td:nth-child(6) {
+    background-color: #f5f5f5;
+  }
+}
+
+.check-ticket {
+  .table-wrapper table.table {
+    td {
+      border-bottom: 1px dashed #999 !important;
+    }
+
+    td:last-child {
+      border-bottom: 1px dashed whitesmoke !important;
+    }
   }
 }
 
@@ -1162,6 +1195,10 @@ input[type="number"]:disabled {
 
     .modal-body {
       padding-bottom: 10px;
+
+      .b-tabs {
+        margin-bottom: 0.2rem;
+      }
     }
 
     .tab-content {
@@ -1173,6 +1210,10 @@ input[type="number"]:disabled {
 
       .modal-content, .modal-card {
         max-height: calc(100vh - 50px);
+
+        hr {
+          height: 0
+        }
 
         .table-wrapper.has-mobile-cards {
           height: 352px;
@@ -1197,6 +1238,10 @@ input[type="number"]:disabled {
             }
           }
         }
+
+        .ticket-confirm-modal .table-wrapper.has-mobile-cards {
+          height: 312px;
+        }
       }
     }
 
@@ -1216,7 +1261,31 @@ input[type="number"]:disabled {
   }
 }
 
+.message-body {
+  .media .media-left {
+    margin-right: 0.1rem;
+  }
+}
+
+.table-wrapper {
+  table.table {
+    thead tr {
+      .checkbox-cell {
+        display: none !important;
+
+        .checkbox,
+        input {
+          display: none !important;
+        }
+      }
+    }
+  }
+}
+
 .userdata-pagination.pagination {
+  padding-bottom: 10px;
+  margin-bottom: 0;
+
   .pagination-list {
     flex-grow: inherit !important;
   }

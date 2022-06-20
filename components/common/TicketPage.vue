@@ -69,8 +69,8 @@
                   :label="$t('operation_text90')"
                   type="is-dark"
                   position="is-bottom"
-                  always
-                  style="width: 100%; margin-bottom: 30px;"
+                  :always="tooltipAlwaysShow"
+                  style="width: 100%; margin-bottom: 22px;"
                 >
                   <b-button
                     type="is-danger"
@@ -209,7 +209,8 @@ export default {
       dispenserAddress: null,
       ticketSalesData: [],
       crowdfundingData: [],
-      showSalesModal: false
+      showSalesModal: false,
+      tooltipAlwaysShow: false
     }
   },
   computed: {
@@ -341,8 +342,12 @@ export default {
       }, 10000)
     },
     async setupUserInitialInfo (user) {
+      this.tooltipAlwaysShow = false
       this.bloctoWalletUser = user
       await this.checkCurrentStatus()
+      setTimeout(() => {
+        this.tooltipAlwaysShow = true
+      })
     },
     async checkCurrentStatus () {
       if (this.bloctoWalletUser.addr) {
@@ -837,7 +842,7 @@ export default {
   }
 
   .content {
-    margin: 10px auto 20px;
+    margin: 3px auto 6px;
     padding: 16px;
     text-align: center;
     max-width: 800px;
@@ -867,7 +872,7 @@ export default {
     .button {
       width: 90%;
       border-radius: 20px;
-      margin: 17px 0 0;
+      margin: 20px 0 0;
       max-width: 400px;
     }
 

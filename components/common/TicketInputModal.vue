@@ -1,16 +1,17 @@
 <template>
-  <div v-if="isTypeSame != null" class="modal-card">
+  <div v-if="isTypeSame != null || demo" class="modal-card">
     <section class="modal-card-body">
       <div class="contents">
         <div class="text-wrap title">
           {{ $t('ticket_text32') }}
         </div>
         <div class="nft-list-container">
-          <div v-if="isTypeSame == false" class="text-wrap">
-            <b-message type="is-warning" has-icon>
-              {{ $t('operation_text18') }}
-            </b-message>
-          </div>
+          <b-message v-if="isTypeSame == false" type="is-warning" has-icon>
+            {{ $t('operation_text18') }}
+          </b-message>
+          <b-message v-if="demo == true" type="is-success" has-icon>
+            {{ $t('operation_text92') }}; {{ $t('operation_text93') }}
+          </b-message>
           <div v-if="isCompleteRegister" class="text-wrap">
             <div class="complete-register">
               <div>{{ $t('operation_text15') }}</div>
@@ -35,9 +36,9 @@
           >
             <a :href="transactionScanUrl" target="_blank" class="scanlink">{{ $t('operation_text56') }}</a>
           </p>
-          <div v-if="isTypeSame">
+          <div v-if="isTypeSame || demo">
             <div
-              v-if="showFlag && !ticketInfo && !isCompleteRegister"
+              v-if="(showFlag && !ticketInfo && !isCompleteRegister) || demo"
               class="text-wrap"
             >
               <b-field
@@ -402,6 +403,11 @@ export default {
       type: String,
       required: true,
       default: ''
+    },
+    demo: {
+      type: Boolean,
+      required: true,
+      default: false
     }
   },
   data () {
@@ -448,7 +454,9 @@ export default {
     }
   },
   async mounted () {
-    await this.getTickets()
+    if (!this.demo) {
+      await this.getTickets()
+    }
   },
   methods: {
     getFilteredWeekdays (text) {
@@ -556,6 +564,11 @@ export default {
       }
     },
     registerTicketInfo () {
+      if (this.demo) {
+        this.$emit('closeModal')
+        return
+      }
+
       if (!this.ticketInfo || this.registerTwitterEdit === 'Yes') {
         this.$buefy.dialog.prompt({
           message: this.$t('operation_text27'),
