@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav
-      class="navbar header has-shadow is-primary"
+      class="navbar header has-shadow"
       role="navigation"
       aria-label="main navigation"
     >
@@ -1307,12 +1307,22 @@ input[type="number"]:disabled {
   table.table {
     thead tr {
       .checkbox-cell {
-        display: none !important;
+        height: 0;
+        padding: 0;
 
         .checkbox,
         input {
           display: none !important;
         }
+      }
+      th:first-child {
+        white-space: nowrap;
+      }
+      th:nth-child(2) {
+        white-space: nowrap;
+      }
+      th:nth-child(4) {
+        white-space: nowrap;
       }
     }
   }
@@ -1383,6 +1393,10 @@ tr {
     max-height: calc(100vh - 140px);
 }
 
+.modal-close {
+  top: 10px;
+}
+
 @keyframes typing {
   0% {
     width: 0px;
@@ -1431,4 +1445,41 @@ tr {
     display: none;
   }
 }
+
+@media screen and (min-height: 740px) {
+  .user-data {
+    .modal {
+      .modal-content {
+        .modal-content, .modal-card {
+          .table-wrapper.has-mobile-cards {
+            height: 412px;
+          }
+
+          .ticket-confirm-modal .table-wrapper.has-mobile-cards {
+            height: 372px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-height: 840px) {
+  .user-data {
+    .modal {
+      .modal-content {
+        .modal-content, .modal-card {
+          .table-wrapper.has-mobile-cards {
+            height: 472px;
+          }
+
+          .ticket-confirm-modal .table-wrapper.has-mobile-cards {
+            height: 432px;
+          }
+        }
+      }
+    }
+  }
+}
+
 </style>

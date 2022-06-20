@@ -30,7 +30,7 @@
         <b-table-column
           v-slot="props"
           field="twitterAccount"
-          label="Contact"
+          :label="$t('ticket_text5')"
         >
           <a :href="'https://mobile.twitter.com/' + props.row.twitterAccount" target="_blank">
             @{{ props.row.twitterAccount }}
@@ -40,7 +40,7 @@
         <b-table-column
           v-slot="props"
           field="time"
-          label="Used at"
+          :label="$t('operation_text96')"
         >
           {{ props.row.used_time ? new Date(Number(props.row.used_time).toFixed(3) * 1000).toLocaleString().toLocaleString().replace(/(:\d{2}):00/, '$1') : $t('operation_text91') }}
         </b-table-column>
@@ -48,7 +48,7 @@
         <b-table-column
           v-slot="props"
           field="paid"
-          label="Paid"
+          :label="$t('operation_text97')"
         >
           {{ Number(props.row.price) > 0 ? `${new Number(props.row.price).toFixed(2)}$FLOW` : '--' }}
         </b-table-column>
@@ -56,7 +56,7 @@
         <b-table-column
           v-slot="props"
           field="readable_code"
-          label="CODE"
+          :label="$t('operation_text98')"
         >
           {{ props.row.readable_code ? props.row.readable_code : '--' }}
         </b-table-column>

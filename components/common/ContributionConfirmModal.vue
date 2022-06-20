@@ -19,7 +19,7 @@
           <b-table-column
             v-slot="props"
             field="Webpage"
-            label="Webpage"
+            :label="$t('operation_text99')"
             width="40"
             numeric
           >
@@ -28,8 +28,8 @@
 
           <b-table-column
             v-slot="props"
-            field="Name"
-            label="Twitter ID"
+            field="twitterAccount"
+            :label="$t('ticket_text5')"
             width="40"
             numeric
           >
@@ -38,16 +38,16 @@
 
           <b-table-column
             v-slot="props"
-            field="count"
-            label="Count"
+            field="endDate"
+            :label="$t('operation_text35')"
           >
-            {{ props.row.count }}
+            {{ props.row.endDate.toLocaleDateString() }} {{ props.row.endDate.toLocaleTimeString() }}
           </b-table-column>
 
           <b-table-column
             v-slot="props"
             field="paid"
-            label="Amount"
+            :label="$t('operation_text97')"
           >
             {{ new Number(props.row.paid).toFixed(2) }} $FLOW
           </b-table-column>
@@ -55,7 +55,7 @@
           <b-table-column
             v-slot="props"
             field="time"
-            label="Paid Date"
+            :label="$t('operation_text100')"
             :th-attrs="dateThAttrs"
             centered
           >
@@ -176,12 +176,14 @@ export default {
         return parseInt(ticket.dispenser_id) === parseInt(key)
       })
       const data = this.ticketRequesters[key]
+      const when = ticketData.when_to_use.split('||')
       this.ticketRequesterArray.push(
         {
           dispenser_name: ticketData ? ticketData.name.split('||@')[1] : key,
           domain: ticketData ? ticketData.domain : '',
           paid: data.paid,
           count: data.count,
+          endDate: when.length >= 2 ? new Date(when[1]) : '',
           time: data.time
         }
       )

@@ -47,7 +47,7 @@
         <b-table-column
           v-slot="props"
           field="twitter"
-          :label="parseInt(ticket.type) == 0 ? $t('ticket_text17') : $t('ticket_text53')"
+          :label="$t('ticket_text5')"
         >
           <a :href="props.row.twitter" target="_blank">
             @{{ props.row.twitterAccount }}

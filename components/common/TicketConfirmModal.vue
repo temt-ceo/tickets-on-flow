@@ -38,7 +38,7 @@
           <b-table-column
             v-slot="props"
             field="user_id"
-            label="User ID"
+            :label="$t('operation_text101')"
             width="40"
             numeric
           >
@@ -48,7 +48,7 @@
           <b-table-column
             v-slot="props"
             field="count"
-            label="Request Count"
+            :label="$t('operation_text102')"
           >
             {{ props.row.count }}
           </b-table-column>
@@ -56,16 +56,16 @@
           <b-table-column
             v-slot="props"
             field="paid"
-            label="Total Payments"
+            :label="$t('operation_text103')"
           >
-            {{ new Number(props.row.paid).toFixed(1) }} $FLOW
+            {{ new Number(props.row.paid).toFixed(2) }} $FLOW
           </b-table-column>
 
           <b-table-column
             v-if="owner === 0"
             v-slot="props"
             field="latest_token"
-            label="Last issued token ID"
+            :label="$t('operation_text104')"
           >
             {{ props.row.latest_token }}
           </b-table-column>
@@ -73,7 +73,7 @@
           <b-table-column
             v-slot="props"
             field="time"
-            label="Request Date"
+            :label="$t('operation_text105')"
             :th-attrs="dateThAttrs"
             centered
           >

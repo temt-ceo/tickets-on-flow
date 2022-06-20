@@ -22,7 +22,7 @@
           <b-table-column
             v-slot="props"
             field="user_id"
-            label="User ID"
+            :label="$t('operation_text101')"
             width="40"
             numeric
           >
@@ -52,7 +52,7 @@
           <b-table-column
             v-slot="props"
             field="paid"
-            label="Amount"
+            :label="$t('operation_text106')"
           >
             {{ new Number(props.row.paid).toFixed(2) }} $FLOW
           </b-table-column>
