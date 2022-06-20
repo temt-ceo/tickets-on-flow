@@ -64,7 +64,7 @@
       has-modal-card
     >
       <div class="modal-card" style="width: auto">
-        <section class="modal-card-body">
+        <section class="modal-card-body setting-modal">
           <b-field
             :label="$t('operation_text58')"
             :type="{ 'is-success': statTitleInput != ''}"
@@ -151,7 +151,7 @@
               rounded
             />
           </b-field>
-          <div>
+          <div style="margin: 18px 0;">
             <b-button v-if="itemCountInput < 4" type="is-success is-light" icon-right="plus" @click="addInputs" />
             <b-field style="display: inline;">
               <b-tooltip
@@ -166,7 +166,7 @@
                   :true-value="$t('operation_text81')"
                   :false-value="$t('operation_text82')"
                   type="is-warning"
-                  style="padding-top: 3px;"
+                  style="padding-top: 7px;"
                 >
                   {{ switchShare }}
                 </b-switch>

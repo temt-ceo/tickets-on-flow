@@ -1109,11 +1109,11 @@ span.control-label {
 .check-ticket {
   .table-wrapper table.table {
     td {
-      border-bottom: 1px dashed #999 !important;
+      border-bottom: 0.5px dashed #666 !important;
     }
 
     td:last-child {
-      border-bottom: 1px dashed whitesmoke !important;
+      border-bottom: 1px solid whitesmoke !important;
     }
   }
 }
@@ -1159,6 +1159,36 @@ span.control-label {
 input[type="text"]:disabled,
 input[type="number"]:disabled {
   color: black;
+}
+
+.setting-modal {
+  max-height: 78vh;
+
+  input,
+  select {
+    border-radius: 14px !important;
+  }
+
+  input[type="text"] {
+    width: 83%;
+  }
+
+  .left-input input[type="text"] {
+    width: 79%;
+  }
+
+  .control.has-icons-right .icon.is-right {
+    right: 17%;
+  }
+
+  input[type="date"] {
+    width: 92%;
+  }
+
+  .taginput .taginput-container.is-focusable {
+    width: 83%;
+    border-radius: 14px !important;
+  }
 }
 
 .stats .has-addons .control {
@@ -1261,7 +1291,13 @@ input[type="number"]:disabled {
   }
 }
 
+.navbar.is-primary .navbar-brand > a.navbar-item:focus {
+  background-color: inherit;
+}
+
 .message-body {
+  padding: 1.25em 1.5em 1.25em 1em;
+
   .media .media-left {
     margin-right: 0.1rem;
   }

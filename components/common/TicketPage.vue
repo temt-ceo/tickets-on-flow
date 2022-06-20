@@ -828,7 +828,7 @@ export default {
 <style lang="scss" scoped>
 
 .section {
-  margin-bottom: 30px;
+  margin-bottom: 45px;
   padding: 0 1.5rem;
 
   .page-title {

@@ -14,8 +14,8 @@
         >
           <b-table-column
             v-slot="props"
-            field="user_id"
-            label="user ID"
+            field="dispenser_id"
+            label="DispenserID"
             width="40"
             numeric
           >

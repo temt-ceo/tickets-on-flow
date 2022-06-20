@@ -1,6 +1,6 @@
 <template>
   <div v-if="isTypeSame != null || demo" class="modal-card">
-    <section class="modal-card-body">
+    <section class="modal-card-body setting-modal">
       <div class="contents">
         <div class="text-wrap title">
           {{ $t('ticket_text32') }}
@@ -172,6 +172,51 @@
                   </option>
                   <option value="0.05">
                     0.05 FLOW
+                  </option>
+                  <option value="1.25">
+                    1.25 FLOW
+                  </option>
+                  <option value="1.5">
+                    1.5 FLOW
+                  </option>
+                  <option value="1.75">
+                    1.75 FLOW
+                  </option>
+                  <option value="2">
+                    2 FLOW
+                  </option>
+                  <option value="2.25">
+                    2.25 FLOW
+                  </option>
+                  <option value="2.5">
+                    2.5 FLOW
+                  </option>
+                  <option value="2.75">
+                    2.75 FLOW
+                  </option>
+                  <option value="3">
+                    3 FLOW
+                  </option>
+                  <option value="3.25">
+                    3.25 FLOW
+                  </option>
+                  <option value="3.5">
+                    3.5 FLOW
+                  </option>
+                  <option value="3.75">
+                    3.75 FLOW
+                  </option>
+                  <option value="4">
+                    4 FLOW
+                  </option>
+                  <option value="4.25">
+                    4.25 FLOW
+                  </option>
+                  <option value="4.5">
+                    4.5 FLOW
+                  </option>
+                  <option value="4.75">
+                    4.75 FLOW
                   </option>
                   <option value="5">
                     5 FLOW
@@ -758,10 +803,6 @@ export default {
       text-decoration: underline;
     }
 
-    .field.register-text-input {
-      margin-bottom: 0;
-    }
-
     .text-wrap {
       margin: 4px;
 
@@ -794,12 +835,13 @@ export default {
       }
 
       .button-wrap {
-        margin-top: 15px;
+        margin: 20px;
         text-align: center;
 
         & .button {
           border-radius: 30px;
           border-color: revert;
+          margin: 0 5px;
         }
       }
 

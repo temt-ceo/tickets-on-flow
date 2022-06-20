@@ -1,6 +1,6 @@
 <template>
   <div v-if="isTypeSame != null || demo" class="modal-card">
-    <section class="modal-card-body">
+    <section class="modal-card-body setting-modal">
       <div class="contents">
         <div class="text-wrap title">
           {{ $t('ticket_text32') }}
@@ -609,12 +609,13 @@ export default {
       }
 
       .button-wrap {
-        margin-top: 15px;
+        margin: 20px;
         text-align: center;
 
         & .button {
           border-radius: 30px;
           border-color: revert;
+          margin: 0 5px;
         }
       }
 

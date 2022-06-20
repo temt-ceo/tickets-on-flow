@@ -54,7 +54,7 @@
       has-modal-card
     >
       <div class="modal-card" style="width: auto">
-        <section class="modal-card-body">
+        <section class="modal-card-body setting-modal">
           <b-field
             :label="$t('operation_text58')"
             :type="{ 'is-success': statTitle != ''}"
@@ -84,6 +84,7 @@
               :placeholder="$t('operation_text60') + '1.'"
               rounded
               expanded
+              class="left-input"
             />
             <b-input
               v-model="statResult1"
@@ -100,6 +101,7 @@
               :placeholder="$t('operation_text60') + '2.'"
               rounded
               expanded
+              class="left-input"
             />
             <b-input
               v-model="statResult2"
@@ -116,6 +118,7 @@
               :placeholder="$t('operation_text60') + '3.'"
               rounded
               expanded
+              class="left-input"
             />
             <b-input
               v-model="statResult3"
@@ -132,6 +135,7 @@
               :placeholder="$t('operation_text60') + '4.'"
               rounded
               expanded
+              class="left-input"
             />
             <b-input
               v-model="statResult4"
@@ -141,7 +145,7 @@
               rounded
             />
           </b-field>
-          <div>
+          <div style="margin: 18px 0;">
             <b-button v-if="itemCount < 4" type="is-success is-light" icon-right="plus" @click="addInputs" />
             <b-field style="display: inline;">
               <b-tooltip
@@ -156,7 +160,7 @@
                   :true-value="$t('operation_text81')"
                   :false-value="$t('operation_text82')"
                   type="is-warning"
-                  style="padding-top: 3px;"
+                  style="padding-top: 7px;"
                 >
                   {{ switchShare }}
                 </b-switch>
@@ -180,7 +184,7 @@
       has-modal-card
     >
       <div class="modal-card" style="width: auto">
-        <section class="modal-card-body">
+        <section class="modal-card-body setting-modal">
           <b-select
             v-model="selectedPole"
             rounded
@@ -224,6 +228,7 @@
               :placeholder="$t('operation_text60') + '1.'"
               rounded
               expanded
+              class="left-input"
             />
             <b-input
               v-model="statResult1"
@@ -240,6 +245,7 @@
               :placeholder="$t('operation_text60') + '2.'"
               rounded
               expanded
+              class="left-input"
             />
             <b-input
               v-model="statResult2"
@@ -256,6 +262,7 @@
               :placeholder="$t('operation_text60') + '3.'"
               rounded
               expanded
+              class="left-input"
             />
             <b-input
               v-model="statResult3"
@@ -272,6 +279,7 @@
               :placeholder="$t('operation_text60') + '4.'"
               rounded
               expanded
+              class="left-input"
             />
             <b-input
               v-model="statResult4"
@@ -281,7 +289,7 @@
               rounded
             />
           </b-field>
-          <div>
+          <div style="margin: 18px 0;">
             <b-button v-if="itemCount < 4" type="is-success is-light" icon-right="plus" @click="addInputs" />
             <b-field style="display: inline;">
               <b-tooltip
@@ -296,7 +304,7 @@
                   :true-value="$t('operation_text81')"
                   :false-value="$t('operation_text82')"
                   type="is-warning"
-                  style="padding-top: 3px;"
+                  style="padding-top: 7px;"
                 >
                   {{ switchShare }}
                 </b-switch>
@@ -736,10 +744,6 @@ export default {
 
 .modal {
   line-height: 1.0;
-
-  .field:not(:last-child) {
-    margin-bottom: 0.10rem;
-  }
 }
 
 .hero {
