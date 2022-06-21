@@ -18,11 +18,17 @@
               <h1 class="page-title">
                 {{ ticketName }}
               </h1>
-              <hr v-if="!noticeTitle" class="separator">
+              <hr v-if="!noticeTitle && !isDemo" class="separator">
               <div class="content">
                 <div>
                   <b-message v-if="noticeTitle" type="is-info" has-icon>
                     {{ noticeTitle }}
+                  </b-message>
+                  <b-message v-if="isDemo == true && parseInt(ticketInfo.type) == 0" size="is-small" type="is-warning" :closable="false">
+                    {{ $t('operation_text107') }}
+                  </b-message>
+                  <b-message v-if="isDemo == true && parseInt(ticketInfo.type) == 1" size="is-small" type="is-warning" :closable="false">
+                    {{ $t('operation_text109') }}
                   </b-message>
                   <b-skeleton size="is-large" :active="waitTransactionComplete" />
                   <b-skeleton size="is-large" :active="waitTransactionComplete" />
@@ -64,6 +70,7 @@
                 >
                   {{ $t('ticket_text22') }}
                 </b-button>
+
                 <b-tooltip
                   v-if="ticketStatus <= 1 && bloctoWalletUser.addr && parseInt(ticketInfo.type) == 0"
                   :label="$t('operation_text90')"
@@ -79,6 +86,31 @@
                     {{ $t('ticket_text23') }}
                   </b-button>
                 </b-tooltip>
+
+                <b-tooltip
+                  v-if="isDemo == true && parseInt(ticketInfo.type) == 0"
+                  :label="$t('operation_text90')"
+                  type="is-dark"
+                  position="is-bottom"
+                  :always="tooltipAlwaysShow"
+                  style="width: 100%; margin-bottom: 22px;"
+                >
+                  <b-button
+                    type="is-danger"
+                    @click="nextEvent"
+                  >
+                    {{ $t('operation_text108') }}
+                  </b-button>
+                </b-tooltip>
+
+                <b-button
+                  v-if="isDemo == true && parseInt(ticketInfo.type) == 1"
+                  :disabled="termExpired"
+                  type="is-warning"
+                  @click="nextEvent"
+                >
+                  {{ $t('operation_text110') }}
+                </b-button>
 
                 <b-button
                   v-if="bloctoWalletUser.addr && ticketStatus === 2"
@@ -147,7 +179,7 @@
         :ticket="ticketInfo"
         :ticketWhen0="ticketWhenWeek"
         @closeModal="showConfirmModal=false"
-        @eventname="nextEvent"
+        @eventname="nextMove"
       />
     </b-modal>
     <b-modal v-model="showSalesModal">
@@ -212,7 +244,8 @@ export default {
       crowdfundingData: [],
       showSalesModal: false,
       tooltipAlwaysShow: false,
-      termExpired: false
+      termExpired: false,
+      isDemo: false
     }
   },
   computed: {
@@ -251,10 +284,33 @@ export default {
         }
       }
     },
-    async nextEvent () {
+    nextMove () {
+      this.isDemo = true
       this.showConfirmModal = false
+    },
+    nextEvent () {
       const alreadyLogin = this.bloctoWalletUser?.addr
-      await this.walletLogin()
+      if (!alreadyLogin) {
+        this.$buefy.dialog.confirm({
+          message: this.$t('operation_text111'),
+          type: 'is-dark',
+          cancelText: 'No',
+          confirmText: 'Yes',
+          onConfirm: async () => {
+            await this.walletLogin()
+            setTimeout(() => {
+              this.nextStep(alreadyLogin)
+            }, 2000)
+          },
+          onCancel: () => {
+            this.isDemo = false
+          }
+        })
+      } else {
+        this.nextStep(alreadyLogin)
+      }
+    },
+    async nextStep (alreadyLogin) {
       if (this.bloctoWalletUser?.addr) {
         switch (this.ticketStatus) {
           case 0:
@@ -262,24 +318,10 @@ export default {
           case 1:
             if (parseInt(this.ticketInfo.type) === 0) {
               // 1: can request a ticket
-              this.$buefy.toast.open({
-                message: this.$t('operation_text33'),
-                duration: 8000,
-                queue: false
-              })
-              if (alreadyLogin) {
-                await this.requestTicket()
-              }
+              await this.requestTicket()
             } else if (parseInt(this.ticketInfo.type) === 1) {
               // 1: can crowdfund
-              this.$buefy.toast.open({
-                message: this.$t('operation_text40'),
-                duration: 8000,
-                queue: false
-              })
-              if (alreadyLogin) {
-                await this.crowdfund()
-              }
+              await this.crowdfund()
             }
             break
           case 2:
@@ -320,6 +362,7 @@ export default {
             }
             break
         }
+        this.isDemo = false
       }
     },
     async walletLogin () {

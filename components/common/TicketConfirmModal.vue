@@ -69,6 +69,7 @@
           </b-table-column>
 
           <b-table-column
+            v-if="owner === 0"
             v-slot="props"
             field="count"
             :label="$t('operation_text102')"
