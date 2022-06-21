@@ -529,7 +529,15 @@ export default {
         }
         // 検索リスト
         tickets.forEach((ticket) => {
-          const ticketName = ticket.name.split('||@')[0]
+          let ticketTitle = null
+          switch (ticket.domain) {
+            case 'dispenser002':
+              ticketTitle = this.$t('special_title1')
+              break
+            default:
+              break
+          }
+          const ticketName = ticketTitle || ticket.name.split('||@')[0] // 多言語対応
           if (!this.searchLists.includes(ticketName)) {
             this.searchLists.push(ticketName)
           }

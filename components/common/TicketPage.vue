@@ -36,19 +36,20 @@
                 </div>
                 <div v-if="code" class="ticket-code-display" style="position: relative;">
                   <b-message
-                    title="CODE:"
-                    type="is-dark"
+                    size="is-small"
+                    title="Event Code or Details:"
+                    type="is-success"
                     :closable="false"
                   >
                     {{ code }}
                   </b-message>
                   <b-tooltip
                     label="Copied!"
-                    type="is-link"
+                    type="is-success"
                     :active="tooltipActive"
-                    style="position: absolute; z-index: 99; top: 40px; right: 5px;"
+                    class="copy-tooltip"
                   >
-                    <b-button type="is-link" @click="clickCopy">
+                    <b-button type="is-success is-light" @click="clickCopy" class="copy-button">
                       Copy
                     </b-button>
                   </b-tooltip>
@@ -237,9 +238,9 @@ export default {
       default: null
     },
     additionalDescription: {
-      type: String,
+      type: Object,
       required: false,
-      default: null
+      default: () => {}
     }
   },
   data () {
@@ -666,7 +667,19 @@ export default {
             this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
             this.noticeTitle = `You used ${this.ticketName} ticket. <br>Request a code after 10 seconds since the transaction takes 10 seconds to complete.`.replace('<br>', '\r\n')
             this.ticketStatus = 4
+            this.waitTransactionComplete = true
             this.callToast()
+            const timerID = setInterval(async () => {
+              const data = await this.getRequestStatus(true)
+              if (data && data.latest_token) {
+                const usedTime = await this.getTicketUsedTime()
+                if (usedTime) {
+                  this.noticeTitle = this.$t('operation_text114')
+                  this.waitTransactionComplete = false
+                  clearInterval(timerID)
+                }
+              }
+            }, 4000)
             return transactionId
           }
         })
@@ -773,6 +786,8 @@ export default {
       })
     },
     async requestCode () {
+      this.isDemo = false
+      this.noticeTitle = ''
       const result = await this.$fcl.send(
         [
           this.$fcl.script(FlowScripts.getTicketCode),
@@ -786,6 +801,24 @@ export default {
         const ticketTokenId = parseInt(Object.keys(result)[0])
         if (result[ticketTokenId] !== '') {
           this.code = result[ticketTokenId].replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
+        }
+        const results = this.code.split(';')
+        if (results.length >= 2 && Object.keys(this.additionalDescription).length > 0) {
+          if (this.additionalDescription[results[0]]) {
+            this.code = this.additionalDescription[results[0]].pre
+            this.code += '\r\n' + results[1]
+            this.code += this.additionalDescription[results[0]].post
+            if (results.length >= 4 && this.additionalDescription[results[2]]) {
+              this.code += '\r\n' + this.additionalDescription[results[2]].pre
+              this.code += results[3]
+              this.code += this.additionalDescription[results[2]].post
+            }
+            if (results.length >= 6 && this.additionalDescription[results[4]]) {
+              this.code += '\r\n' + this.additionalDescription[results[4]].pre
+              this.code += results[5]
+              this.code += this.additionalDescription[results[4]].post
+            }
+          }
         }
       }
     },
@@ -986,6 +1019,20 @@ export default {
       border-radius: 20px;
       margin: 20px 0 0;
       max-width: 400px;
+      &.copy-button {
+        position: absolute;
+        min-width: 68px;
+        height: 33px;
+        right: 10px;
+        bottom: 100%;
+      }
+    }
+
+    .copy-tooltip {
+      position: absolute;
+      z-index: 99;
+      top: 33px;
+      right: 0;
     }
 
     .code {

@@ -282,7 +282,7 @@ export default {
   operation_text111: 'Pour continuer, vous devez être connecté au Wallet. Voulez-vous vous connecter ?',
   operation_text112: 'Votre demande a été complétée.',
   operation_text113: 'Le crowdfunding a déjà été effectué une fois. Si vous souhaitez nous soutenir plus d\'une fois, veuillez appuyer à nouveau sur le bouton de soutien.',
-  operation_text114: '',
+  operation_text114: 'Transaction blockchain terminée.',
   operation_text115: '',
   operation_text116: '',
   operation_text117: '',

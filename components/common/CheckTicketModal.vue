@@ -150,9 +150,9 @@ export default {
       default: null
     },
     additionalDescription: {
-      type: String,
+      type: Object,
       required: false,
-      default: null
+      default: () => {}
     }
   },
   data () {

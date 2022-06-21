@@ -282,7 +282,7 @@ export default {
   operation_text111: 'للمتابعة ، يجب أن تكون متصلاً بالمحفظة. هل تريد الاتصال؟',
   operation_text112: 'تم الانتهاء من طلبك.',
   operation_text113: 'تم بالفعل إجراء التمويل الجماعي مرة واحدة. إذا كنت ترغب في دعمنا أكثر من مرة ، فيرجى النقر فوق زر الدعم مرة أخرى.',
-  operation_text114: '',
+  operation_text114: 'اكتملت معاملة Blockchain.',
   operation_text115: '',
   operation_text116: '',
   operation_text117: '',

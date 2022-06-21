@@ -322,6 +322,10 @@ export default {
                 ).then(this.$fcl.decode)
                 this.latestMintedTokenId = latestMintedTokenId || 0
                 this.isCompleteDispense = false
+                this.$buefy.toast.open({
+                  duration: 3000,
+                  message: this.$t('operation_text114')
+                })
               }
             }, 4000)
           }

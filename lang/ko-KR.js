@@ -282,7 +282,7 @@ export default {
   operation_text111: '계속하려면 지갑에 연결되어 있어야 합니다. 연결하시겠습니까?',
   operation_text112: '귀하의 요청이 완료되었습니다.',
   operation_text113: '크라우드펀딩은 이미 한 번 이뤄졌다. 여러 번 지원을 원하시면 다시 지원 버튼을 눌러주세요.',
-  operation_text114: '',
+  operation_text114: '블록체인 거래가 완료되었습니다.',
   operation_text115: '',
   operation_text116: '',
   operation_text117: '',
