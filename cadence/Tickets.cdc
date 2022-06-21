@@ -486,6 +486,14 @@ pub contract TicketsV20 {
       if (!TicketsV20.ticketRequesters.containsKey(dispenser_id)) {
         let requestStruct = RequestStruct(time: time, user_id: self.user_id, address: address, crowdfunding: true)
         TicketsV20.ticketRequesters[dispenser_id] = {self.user_id: requestStruct}
+      } else {
+        if let data = TicketsV20.ticketRequesters[dispenser_id] {
+          if (!data.containsKey(self.user_id)) {
+            let requestStruct = RequestStruct(time: time, user_id: self.user_id, address: address, crowdfunding: true)
+            data[self.user_id] = requestStruct
+            TicketsV20.ticketRequesters[dispenser_id] = data
+          }
+        }
       }
     }
 

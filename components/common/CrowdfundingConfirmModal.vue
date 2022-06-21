@@ -8,7 +8,7 @@
       </div>
       <div>
         <b-table
-          :data="ticketRequesters"
+          :data="displayTicketRequesters"
           :checked-rows.sync="checkedRows"
           :is-row-checkable="(row) => owner == 0 ? true : false"
           :bordered="isBordered"
@@ -71,15 +71,17 @@
         </b-table>
         <hr>
         <b-pagination
-          v-if="isPaginate"
+          v-if="ticketRequesters && ticketRequesters.length > this.perPage"
           v-model="current"
-          total="100"
+          :total="this.ticketRequesters.length"
           :range-before="rangeBefore"
           :range-after="rangeAfter"
-          size="is-small"
           :simple="isSimple"
           :rounded="isRounded"
           :per-page="perPage"
+          order="is-centered"
+          size="is-small"
+          class="userdata-pagination"
         />
       </div>
     </section>
@@ -128,9 +130,9 @@ export default {
       isFocusable: false,
       isLoading: false,
       hasMobileCards: true,
-      isPaginate: false,
-      current: 10,
-      perPage: window.innerWidth < 768 ? 2 : 10,
+      current: 1,
+      perPage: window.innerWidth >= 768 ? 10 : 2,
+      displayTicketRequesters: window.innerWidth >= 768 ? this.ticketRequesters.slice(0, 10) : this.ticketRequesters.slice(0, 2),
       rangeBefore: 1,
       rangeAfter: 1,
       isSimple: false,
@@ -163,6 +165,12 @@ export default {
           })
         }
       }
+    },
+    current: {
+      handler (val) {
+        const position = this.perPage * (val - 1)
+        this.displayTicketRequesters = this.ticketRequesters.slice(position, position + this.perPage)
+      }
     }
   },
   computed: {
@@ -170,6 +178,16 @@ export default {
       get () {
         return this.$store.state.tickets
       }
+    }
+  },
+  mounted () {
+    try {
+      this.displayTicketRequesters = this.ticketRequesters.slice(0, this.perPage)
+      // subscribeに対応
+      setInterval(() => {
+        this.displayTicketRequesters = this.ticketRequesters.slice(this.perPage * (this.current - 1), this.perPage * (this.current - 1) + this.perPage)
+      }, 2000)
+    } catch (e) {
     }
   },
   methods: {

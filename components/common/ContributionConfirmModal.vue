@@ -7,7 +7,7 @@
       </div>
       <div>
         <b-table
-          :data="ticketRequesterArray"
+          :data="displayTicketRequesters"
           :bordered="isBordered"
           :striped="isStriped"
           :narrowed="isNarrowed"
@@ -38,22 +38,6 @@
 
           <b-table-column
             v-slot="props"
-            field="endDate"
-            :label="$t('operation_text35')"
-          >
-            {{ props.row.endDate.toLocaleDateString() }} {{ props.row.endDate.toLocaleTimeString() }}
-          </b-table-column>
-
-          <b-table-column
-            v-slot="props"
-            field="paid"
-            :label="$t('operation_text97')"
-          >
-            {{ new Number(props.row.paid).toFixed(2) }} $FLOW
-          </b-table-column>
-
-          <b-table-column
-            v-slot="props"
             field="time"
             :label="$t('operation_text100')"
             :th-attrs="dateThAttrs"
@@ -63,6 +47,14 @@
               {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
             </span>
           </b-table-column>
+
+          <b-table-column
+            v-slot="props"
+            field="paid"
+            :label="$t('operation_text97')"
+          >
+            {{ new Number(props.row.paid).toFixed(2) }} $FLOW
+          </b-table-column>
           <template #empty>
             <div class="has-text-centered">
               No contributions yet.
@@ -71,15 +63,17 @@
         </b-table>
         <hr>
         <b-pagination
-          v-if="isPaginate"
+          v-if="ticketRequesterArray && ticketRequesterArray.length > this.perPage"
           v-model="current"
-          total="100"
+          :total="this.ticketRequesterArray.length"
           :range-before="rangeBefore"
           :range-after="rangeAfter"
-          size="is-small"
           :simple="isSimple"
           :rounded="isRounded"
           :per-page="perPage"
+          order="is-centered"
+          size="is-small"
+          class="userdata-pagination"
         />
       </div>
     </section>
@@ -124,9 +118,9 @@ export default {
       isFocusable: false,
       isLoading: false,
       hasMobileCards: true,
-      isPaginate: false,
-      current: 10,
-      perPage: window.innerWidth < 768 ? 2 : 10,
+      current: 1,
+      perPage: window.innerWidth >= 768 ? 10 : 2,
+      displayTicketRequesters: [],
       rangeBefore: 1,
       rangeAfter: 1,
       isSimple: false,
@@ -160,6 +154,12 @@ export default {
           })
         }
       }
+    },
+    current: {
+      handler (val) {
+        const position = this.perPage * (val - 1)
+        this.displayTicketRequesters = this.ticketRequesterArray.slice(position, position + this.perPage)
+      }
     }
   },
   computed: {
@@ -188,6 +188,7 @@ export default {
         }
       )
     })
+    this.displayTicketRequesters = this.ticketRequesterArray.slice(0, this.perPage)
   },
   methods: {
     showSchedule (date) {
