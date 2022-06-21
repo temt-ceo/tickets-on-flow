@@ -183,6 +183,9 @@
       <check-ticket-modal
         :ticket="ticketInfo"
         :ticketWhen0="ticketWhenWeek"
+        :ticket-title="ticketTitle"
+        :ticket-description="ticketDescription"
+        :additional-description="additionalDescription"
         @closeModal="showConfirmModal=false"
         @eventname="nextMove"
       />
@@ -221,6 +224,23 @@ export default {
     TicketDateTime,
     TicketConfirmModal,
     CrowdfundingConfirmModal
+  },
+  props: {
+    ticketTitle: {
+      type: String,
+      required: false,
+      default: null
+    },
+    ticketDescription: {
+      type: String,
+      required: false,
+      default: null
+    },
+    additionalDescription: {
+      type: String,
+      required: false,
+      default: null
+    }
   },
   data () {
     return {
@@ -276,7 +296,7 @@ export default {
       if (this.ticketInfo) {
         this.dispenser = parseInt(ticketInfo.dispenser_id)
         const ticketName = ticketInfo.name.split('||@')
-        this.ticketName = ticketName[0]
+        this.ticketName = this.ticketTitle || ticketName[0] // 多言語対応
         this.price = ticketInfo.price.replace(/\.?0+$/, '')
         const when = ticketInfo.when_to_use.split('||')
         if (when.length >= 2) {

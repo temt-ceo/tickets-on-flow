@@ -1,5 +1,9 @@
 <template>
-  <ticket-page />
+  <ticket-page
+    :ticket-title="ticketTitle"
+    :ticket-description="ticketDescription"
+    :additional-description="additionalDescription"
+  />
 </template>
 
 <script>
@@ -9,6 +13,13 @@ export default {
   name: 'TicketDispenser2',
   components: {
     TicketPage
+  },
+  data () {
+    return {
+      ticketTitle: this.$t('special_title1'),
+      ticketDescription: this.$t('special_description1'),
+      additionalDescription: null
+    }
   },
   head () {
     return {

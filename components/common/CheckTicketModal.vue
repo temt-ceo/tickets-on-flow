@@ -138,6 +138,21 @@ export default {
       type: String,
       required: true,
       default: ''
+    },
+    ticketTitle: {
+      type: String,
+      required: false,
+      default: null
+    },
+    ticketDescription: {
+      type: String,
+      required: false,
+      default: null
+    },
+    additionalDescription: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data () {
@@ -188,7 +203,7 @@ export default {
   mounted () {
     const ticket = {}
     const ticketName = this.ticket.name.split('||@')
-    ticket.ticketName = ticketName[0]
+    ticket.ticketName = this.ticketTitle || ticketName[0] // 多言語対応
     ticket.twitter = 'https://twitter.com/' + ticketName[1]
     ticket.twitterAccount = ticketName[1]
     ticket.ticketPrice = this.ticket.price.replace(/\.?0+$/, '')
@@ -219,7 +234,7 @@ export default {
     } else if (type === 'On-site') {
       type = this.$t('ticket_text4')
     }
-    ticket.description = detail
+    ticket.description = this.ticketDescription || detail // 多言語対応
     ticket.type = type
     ticket.ticketWhereType = where[0]
     if (where.length === 2) {

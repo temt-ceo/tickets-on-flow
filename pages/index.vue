@@ -499,11 +499,22 @@ export default {
                 this.loadingTime = 1500
               }
               setTimeout(() => {
+                let ticketTitle = null
+                let ticketDescription = null
+                switch (ticket.domain) {
+                  case 'dispenser002':
+                    ticketTitle = this.$t('special_title1')
+                    ticketDescription = this.$t('special_description1')
+                    break
+                  default:
+                    break
+                }
+
                 const data = {
                   path: ticket.domain,
-                  label: ticketName[0],
+                  label: ticketTitle || ticketName[0], // 多言語対応
                   twitter: ticketName.length === 2 ? ticketName[1] : '',
-                  description: detail,
+                  description: ticketDescription || detail, // 多言語対応
                   price: ticket.price.replace(/\.?0+$/, ''),
                   datetime,
                   style: 'color' + (parseInt(tool) % 7 + 1).toString(),
@@ -556,7 +567,13 @@ export default {
               style: 'color1',
               type: 'stats'
             }
-            this.tickets.unshift(data)
+            const arr = this.tickets
+            this.tickets = []
+            this.tickets.push(data)
+            arr.forEach((obj) => {
+              this.tickets.push(obj)
+            })
+
             this.ticketsBkup.unshift(data)
           }, 3000)
         }
