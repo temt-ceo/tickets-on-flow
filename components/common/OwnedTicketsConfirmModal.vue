@@ -50,7 +50,7 @@
           field="paid"
           :label="$t('operation_text97')"
         >
-          {{ Number(props.row.price) > 0 ? `${new Number(props.row.price).toFixed(2)}$FLOW` : '--' }}
+          {{ Number(props.row.price) > 0 ? `${new Number(props.row.price).toFixed(2)} $FLOW` : '--' }}
         </b-table-column>
 
         <b-table-column

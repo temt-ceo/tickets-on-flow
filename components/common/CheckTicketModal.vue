@@ -36,15 +36,6 @@
         </b-table-column>
 
         <b-table-column
-          v-if="parseInt(ticket.type) == 0"
-          v-slot="props"
-          field="type"
-          :label="$t('ticket_text1')"
-        >
-          {{ props.row.type }}
-        </b-table-column>
-
-        <b-table-column
           v-slot="props"
           field="twitter"
           :label="$t('ticket_text5')"
@@ -61,6 +52,15 @@
           :label="$t('ticket_text18')"
         >
           {{ props.row.ticketPrice }} $FLOW
+        </b-table-column>
+
+        <b-table-column
+          v-if="parseInt(ticket.type) == 0"
+          v-slot="props"
+          field="type"
+          :label="$t('ticket_text1')"
+        >
+          {{ props.row.type }}
         </b-table-column>
 
         <b-table-column

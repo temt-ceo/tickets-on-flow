@@ -47,31 +47,6 @@
 
           <b-table-column
             v-slot="props"
-            field="count"
-            :label="$t('operation_text102')"
-          >
-            {{ props.row.count }}
-          </b-table-column>
-
-          <b-table-column
-            v-slot="props"
-            field="paid"
-            :label="$t('operation_text103')"
-          >
-            {{ new Number(props.row.paid).toFixed(2) }} $FLOW
-          </b-table-column>
-
-          <b-table-column
-            v-if="owner === 0"
-            v-slot="props"
-            field="latest_token"
-            :label="$t('operation_text104')"
-          >
-            {{ props.row.latest_token }}
-          </b-table-column>
-
-          <b-table-column
-            v-slot="props"
             field="time"
             :label="$t('operation_text105')"
             :th-attrs="dateThAttrs"
@@ -83,6 +58,22 @@
             <span v-if="owner === 1">
               {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
             </span>
+          </b-table-column>
+
+          <b-table-column
+            v-slot="props"
+            field="paid"
+            :label="$t('operation_text103')"
+          >
+            {{ new Number(props.row.paid).toFixed(2) }} $FLOW
+          </b-table-column>
+
+          <b-table-column
+            v-slot="props"
+            field="count"
+            :label="$t('operation_text102')"
+          >
+            {{ props.row.count }}
           </b-table-column>
           <template #empty>
             <div class="has-text-centered">

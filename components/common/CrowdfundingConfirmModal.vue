@@ -41,23 +41,6 @@
           </b-table-column>
 
           <b-table-column
-            v-if="owner === 0"
-            v-slot="props"
-            field="count"
-            label="Count"
-          >
-            {{ props.row.count }}
-          </b-table-column>
-
-          <b-table-column
-            v-slot="props"
-            field="paid"
-            :label="$t('operation_text106')"
-          >
-            {{ new Number(props.row.paid).toFixed(2) }} $FLOW
-          </b-table-column>
-
-          <b-table-column
             v-slot="props"
             field="time"
             label="Paid Date"
@@ -71,6 +54,15 @@
               {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
             </span>
           </b-table-column>
+
+          <b-table-column
+            v-slot="props"
+            field="paid"
+            :label="$t('operation_text106')"
+          >
+            {{ new Number(props.row.paid).toFixed(2) }} $FLOW
+          </b-table-column>
+
           <template #empty>
             <div class="has-text-centered">
               No funds yet.
