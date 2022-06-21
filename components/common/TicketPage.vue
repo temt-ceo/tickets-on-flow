@@ -91,7 +91,7 @@
                 </b-tooltip>
 
                 <b-tooltip
-                  v-if="isDemo == true && !bloctoWalletUser.addr && parseInt(ticketInfo.type) == 0"
+                  v-if="isDemo == true && (ticketStatus <= 1 || !bloctoWalletUser.addr) && parseInt(ticketInfo.type) == 0"
                   :label="$t('operation_text90')"
                   type="is-dark"
                   position="is-bottom"
@@ -108,7 +108,7 @@
                 </b-tooltip>
 
                 <b-button
-                  v-if="isDemo == true && !bloctoWalletUser.addr && parseInt(ticketInfo.type) == 1"
+                  v-if="isDemo == true && (ticketStatus <= 2 || !bloctoWalletUser.addr) && parseInt(ticketInfo.type) == 1"
                   :disabled="termExpired || waitTransactionComplete"
                   type="is-warning"
                   @click="nextEvent"
@@ -126,7 +126,7 @@
                   <span v-if="parseInt(ticketInfo.type) == 1">{{ $t('operation_text38') }}</span>
                 </b-button>
                 <b-button
-                  v-if="ticketStatus <= 2 && bloctoWalletUser.addr && parseInt(ticketInfo.type) == 1 && waitTransactionComplete == false && !isDemo"
+                  v-if="ticketStatus <= 2 && bloctoWalletUser.addr && parseInt(ticketInfo.type) == 1 && !isDemo"
                   :disabled="termExpired || waitTransactionComplete"
                   type="is-warning"
                   @click="crowdfund"
