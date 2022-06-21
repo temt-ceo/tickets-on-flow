@@ -729,7 +729,7 @@ export default {
 
                     const transactionId = await this.$fcl.send(
                       [
-                        this.$fcl.transaction(FlowTransactions.crowdfunding),
+                        this.$fcl.transaction(FlowTransactions.moreCrowdfunding),
                         this.$fcl.args([
                           this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32),
                           this.$fcl.arg(parseFloat(fund).toFixed(2), this.$fclArgType.UFix64)
