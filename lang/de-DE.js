@@ -280,7 +280,7 @@ export default {
   operation_text109: 'Sie können Geld direkt an die Organisatoren senden, indem Sie auf die Schaltfläche "Unterstützen" klicken. Die Adresse Ihres Geldbeutels wird gleichzeitig mitgeschickt, so dass Ihr Beitrag den Organisatoren eindeutig mitgeteilt wird. Sollte der Organisator beschließen, Ihr Geld in Zukunft zurückzuerstatten, wird dies sofort geschehen.',
   operation_text110: 'Unterstützen',
   operation_text111: 'Um fortzufahren, müssen Sie mit dem Wallet verbunden sein. Möchten Sie eine Verbindung herstellen?',
-  operation_text112: '',
+  operation_text112: 'Ihre Anfrage wurde abgeschlossen.',
   operation_text113: '',
   operation_text114: '',
   operation_text115: '',

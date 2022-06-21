@@ -280,7 +280,7 @@ export default {
   operation_text109: 'Você pode enviar dinheiro diretamente para os organizadores, clicando no botão "Apoio". Seu endereço de carteira será enviado ao mesmo tempo, portanto sua contribuição será claramente comunicada aos organizadores. Além disso, se o organizador decidir reembolsar seu dinheiro no futuro, isso será feito imediatamente.',
   operation_text110: 'Apoio',
   operation_text111: 'Para continuar, você deve estar conectado à Carteira. Você quer se conectar?',
-  operation_text112: '',
+  operation_text112: 'Seu pedido foi atendido.',
   operation_text113: '',
   operation_text114: '',
   operation_text115: '',

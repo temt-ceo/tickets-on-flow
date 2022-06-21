@@ -280,7 +280,7 @@ export default {
   operation_text109: '"支援する"ボタンをクリックすると、主催者に直接送金することができます。あなたのウォレットアドレスも同時に送信されますので、あなたの貢献が主催者に明確に伝わります。また、今後、主催者が返金することを決定した場合、すぐに返金されます。',
   operation_text110: '支援する',
   operation_text111: '続行するには、ウォレットに接続する必要があります。接続しますか？',
-  operation_text112: '',
+  operation_text112: 'あなたのリクエストは完了しました。',
   operation_text113: '',
   operation_text114: '',
   operation_text115: '',

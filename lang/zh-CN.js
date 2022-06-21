@@ -280,7 +280,7 @@ export default {
   operation_text109: '你可以通过点击 "支持 "按钮直接向组织者汇款。您的钱包地址将同时被发送，因此您的捐款将被清楚地传达给组织者。此外，如果组织者决定在未来退还你的钱，将立即进行。',
   operation_text110: '支持',
   operation_text111: '要继续，你必须连接到钱包。你想连接吗？',
-  operation_text112: '',
+  operation_text112: '您的请求已经完成。',
   operation_text113: '',
   operation_text114: '',
   operation_text115: '',

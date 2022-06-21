@@ -280,7 +280,7 @@ export default {
   operation_text109: '"지원" 버튼을 클릭하여 주최자에게 직접 돈을 보낼 수 있습니다. 귀하의 지갑 주소가 동시에 전송되므로 귀하의 기여는 주최자에게 명확하게 전달됩니다. 또한 주최측에서 추후 환불을 결정하면 즉시 처리됩니다.',
   operation_text110: '지원',
   operation_text111: '계속하려면 지갑에 연결되어 있어야 합니다. 연결하시겠습니까?',
-  operation_text112: '',
+  operation_text112: '귀하의 요청이 완료되었습니다.',
   operation_text113: '',
   operation_text114: '',
   operation_text115: '',

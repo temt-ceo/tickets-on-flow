@@ -282,7 +282,7 @@ export default {
   operation_text109: 'You can send money directly to the organizers by clicking on the "Support" button. Your wallet address will be sent at the same time, so your contribution will be clearly communicated to the organizers. Also, if the organizer decides to refund your money in the future, it will be done immediately.',
   operation_text110: 'Support',
   operation_text111: 'To continue, you must be connected to the Wallet. Do you want to connect?',
-  operation_text112: '',
+  operation_text112: 'Your request has been completed.',
   operation_text113: '',
   operation_text114: '',
   operation_text115: '',

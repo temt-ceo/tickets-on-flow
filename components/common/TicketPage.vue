@@ -72,7 +72,7 @@
                 </b-button>
 
                 <b-tooltip
-                  v-if="ticketStatus <= 1 && bloctoWalletUser.addr && parseInt(ticketInfo.type) == 0"
+                  v-if="ticketStatus <= 1 && bloctoWalletUser.addr && parseInt(ticketInfo.type) == 0 && !isDemo"
                   :label="$t('operation_text90')"
                   type="is-dark"
                   position="is-bottom"
@@ -104,7 +104,7 @@
                 </b-tooltip>
 
                 <b-button
-                  v-if="isDemo == true && parseInt(ticketInfo.type) == 1"
+                  v-if="isDemo == true && parseInt(ticketInfo.type) == 1 && !isDemo"
                   :disabled="termExpired"
                   type="is-warning"
                   @click="nextEvent"
@@ -401,6 +401,7 @@ export default {
       if (this.bloctoWalletUser.addr) {
         this.hasTicketVault = await this.isTicketVaultReady()
         if (this.hasTicketVault) {
+          this.noticeTitle = ''
           const data = await this.getRequestStatus(true)
           if (data) {
             // このdispenserから過去チケットをリクエストしたことがある
@@ -492,7 +493,6 @@ export default {
     },
     async getRequestStatus (checkOnly) {
       try {
-        this.noticeTitle = ''
         const result = await this.$fcl.send(
           [
             this.$fcl.script(FlowScripts.getTicketRequestStatus),
@@ -530,6 +530,20 @@ export default {
             return result
           }
         }
+      } catch (e) {
+      }
+    },
+    async getLatestMintedTokenId () {
+      try {
+        const result = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getLatestMintedTokenId),
+            this.$fcl.args([
+              this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        return result
       } catch (e) {
       }
     },
@@ -574,9 +588,24 @@ export default {
           ]
         ).then(this.$fcl.decode)
         this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-        this.noticeTitle = this.$t('operation_text32').replace('<br>', '\r\n')
-        this.ticketStatus = 2
+        this.noticeTitle = this.$t('operation_text15')
+        this.waitTransactionComplete = true
         this.callToast()
+        const timerID = setInterval(async () => {
+          if (!this.hasTicketVault) {
+            this.hasTicketVault = await this.isTicketVaultReady()
+          }
+          if (this.hasTicketVault) {
+            const data = await this.getLatestMintedTokenId()
+            console.log(data, 777)
+            if (data === null) {
+              this.noticeTitle = this.$t('operation_text112') + '\r\n' + this.$t('operation_text32').replace('<br>', '\r\n')
+              this.ticketStatus = 2
+              this.waitTransactionComplete = false
+              clearInterval(timerID)
+            }
+          }
+        }, 4000)
         return transactionId
       } catch (e) {
       }
@@ -689,7 +718,7 @@ export default {
                   ).then(this.$fcl.decode)
                   this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
                 }
-                this.noticeTitle = ''
+                this.noticeTitle = this.$t('operation_text15')
                 this.waitTransactionComplete = true
                 this.callToast()
                 const timerID = setInterval(async () => {
@@ -784,7 +813,7 @@ export default {
                       ]
                     ).then(this.$fcl.decode)
                     this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
-                    this.noticeTitle = ''
+                    this.noticeTitle = this.$t('operation_text15')
                     this.waitTransactionComplete = true
                     this.callToast()
                     const timerID = setInterval(async () => {

@@ -280,7 +280,7 @@ export default {
   operation_text109: 'Puedes enviar dinero directamente a los organizadores haciendo clic en el botón "Apoyo". La dirección de tu monedero se enviará al mismo tiempo, por lo que tu contribución se comunicará claramente a los organizadores. Además, si el organizador decide devolverte el dinero en el futuro, lo hará inmediatamente.',
   operation_text110: 'Apoyo',
   operation_text111: 'Para continuar, debe estar conectado a la Cartera. ¿Desea conectarse?',
-  operation_text112: '',
+  operation_text112: 'Su solicitud ha sido completada.',
   operation_text113: '',
   operation_text114: '',
   operation_text115: '',

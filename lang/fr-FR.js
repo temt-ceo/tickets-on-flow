@@ -280,7 +280,7 @@ export default {
   operation_text109: 'Vous pouvez envoyer de l\'argent directement aux organisateurs en cliquant sur le bouton "Soutien". L\'adresse de votre portefeuille sera envoyée en même temps, de sorte que votre contribution sera clairement communiquée aux organisateurs. En outre, si l\'organisateur décide de rembourser votre argent à l\'avenir, cela sera fait immédiatement.',
   operation_text110: 'Soutien',
   operation_text111: 'Pour continuer, vous devez être connecté au Wallet. Voulez-vous vous connecter ?',
-  operation_text112: '',
+  operation_text112: 'Votre demande a été complétée.',
   operation_text113: '',
   operation_text114: '',
   operation_text115: '',
