@@ -58,6 +58,7 @@
                 </p>
                 <b-button
                   v-if="ticketStatus === 4"
+                  :disabled="waitTransactionComplete"
                   type="is-link"
                   @click="requestCode"
                 >
@@ -65,6 +66,7 @@
                 </b-button>
                 <b-button
                   v-if="ticketStatus === 3"
+                  :disabled="waitTransactionComplete"
                   type="is-danger"
                   @click="useTicket"
                 >
@@ -80,6 +82,7 @@
                   style="width: 100%; margin-bottom: 22px;"
                 >
                   <b-button
+                    :disabled="waitTransactionComplete"
                     type="is-danger"
                     @click="requestTicket"
                   >
@@ -88,7 +91,7 @@
                 </b-tooltip>
 
                 <b-tooltip
-                  v-if="isDemo == true && parseInt(ticketInfo.type) == 0"
+                  v-if="isDemo == true && !bloctoWalletUser.addr && parseInt(ticketInfo.type) == 0"
                   :label="$t('operation_text90')"
                   type="is-dark"
                   position="is-bottom"
@@ -96,6 +99,7 @@
                   style="width: 100%; margin-bottom: 22px;"
                 >
                   <b-button
+                    :disabled="waitTransactionComplete"
                     type="is-danger"
                     @click="nextEvent"
                   >
@@ -104,8 +108,8 @@
                 </b-tooltip>
 
                 <b-button
-                  v-if="isDemo == true && parseInt(ticketInfo.type) == 1 && !isDemo"
-                  :disabled="termExpired"
+                  v-if="isDemo == true && !bloctoWalletUser.addr && parseInt(ticketInfo.type) == 1"
+                  :disabled="termExpired || waitTransactionComplete"
                   type="is-warning"
                   @click="nextEvent"
                 >
@@ -114,6 +118,7 @@
 
                 <b-button
                   v-if="bloctoWalletUser.addr && ticketStatus === 2"
+                  :disabled="waitTransactionComplete"
                   type="is-warning is-light"
                   @click="getRequestStatus"
                 >
@@ -121,8 +126,8 @@
                   <span v-if="parseInt(ticketInfo.type) == 1">{{ $t('operation_text38') }}</span>
                 </b-button>
                 <b-button
-                  v-if="ticketStatus <= 2 && bloctoWalletUser.addr && parseInt(ticketInfo.type) == 1 && waitTransactionComplete == false"
-                  :disabled="termExpired"
+                  v-if="ticketStatus <= 2 && bloctoWalletUser.addr && parseInt(ticketInfo.type) == 1 && waitTransactionComplete == false && !isDemo"
+                  :disabled="termExpired || waitTransactionComplete"
                   type="is-warning"
                   @click="crowdfund"
                 >
@@ -245,7 +250,8 @@ export default {
       showSalesModal: false,
       tooltipAlwaysShow: false,
       termExpired: false,
-      isDemo: false
+      isDemo: false,
+      currentPaidAmound: 0
     }
   },
   computed: {
@@ -335,7 +341,7 @@ export default {
             } else if (parseInt(this.ticketInfo.type) === 1) {
               // 2: crowdfunded
               this.$buefy.toast.open({
-                message: this.$t('operation_text37'),
+                message: this.$t('operation_text113'),
                 duration: 4000,
                 queue: false
               })
@@ -404,6 +410,8 @@ export default {
           this.noticeTitle = ''
           const data = await this.getRequestStatus(true)
           if (data) {
+            this.currentPaidAmound = parseInt(data.paid)
+
             // このdispenserから過去チケットをリクエストしたことがある
             if (!data.latest_token) {
               // まだチケットを配布されていない。
@@ -597,8 +605,7 @@ export default {
           }
           if (this.hasTicketVault) {
             const data = await this.getLatestMintedTokenId()
-            console.log(data, 777)
-            if (data === null) {
+            if (data === null || data === undefined) {
               this.noticeTitle = this.$t('operation_text112') + '\r\n' + this.$t('operation_text32').replace('<br>', '\r\n')
               this.ticketStatus = 2
               this.waitTransactionComplete = false
@@ -728,10 +735,12 @@ export default {
                   if (this.hasTicketVault) {
                     const data = await this.getRequestStatus(true)
                     if (data) {
-                      this.ticketStatus = 2
-                      this.noticeTitle = this.$t('operation_text37').replace('<br>', '\r\n')
-                      this.waitTransactionComplete = false
-                      clearInterval(timerID)
+                      if (this.currentPaidAmound < parseInt(data.paid)) {
+                        this.ticketStatus = 2
+                        this.noticeTitle = this.$t('operation_text37').replace('<br>', '\r\n')
+                        this.waitTransactionComplete = false
+                        clearInterval(timerID)
+                      }
                     }
                   }
                 }, 4000)
@@ -823,10 +832,12 @@ export default {
                       if (this.hasTicketVault) {
                         const data = await this.getRequestStatus(true)
                         if (data) {
-                          this.ticketStatus = 2
-                          this.noticeTitle = this.$t('operation_text37').replace('<br>', '\r\n')
-                          this.waitTransactionComplete = false
-                          clearInterval(timerID)
+                          if (this.currentPaidAmound < parseInt(data.paid)) {
+                            this.ticketStatus = 2
+                            this.noticeTitle = this.$t('operation_text37').replace('<br>', '\r\n')
+                            this.waitTransactionComplete = false
+                            clearInterval(timerID)
+                          }
                         }
                       }
                     }, 4000)

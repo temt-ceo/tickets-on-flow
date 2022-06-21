@@ -281,7 +281,7 @@ export default {
   operation_text110: 'Unterstützen',
   operation_text111: 'Um fortzufahren, müssen Sie mit dem Wallet verbunden sein. Möchten Sie eine Verbindung herstellen?',
   operation_text112: 'Ihre Anfrage wurde abgeschlossen.',
-  operation_text113: '',
+  operation_text113: 'Das Crowdfunding wurde bereits einmal durchgeführt. Wenn Sie uns mehr als einmal unterstützen möchten, tippen Sie bitte erneut auf die Schaltfläche "Unterstützung".',
   operation_text114: '',
   operation_text115: '',
   operation_text116: '',

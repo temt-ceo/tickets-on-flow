@@ -281,7 +281,7 @@ export default {
   operation_text110: 'Apoyo',
   operation_text111: 'Para continuar, debe estar conectado a la Cartera. ¿Desea conectarse?',
   operation_text112: 'Su solicitud ha sido completada.',
-  operation_text113: '',
+  operation_text113: 'El crowdfunding ya se ha realizado una vez. Si desea apoyarnos más de una vez, pulse de nuevo el botón de apoyo.',
   operation_text114: '',
   operation_text115: '',
   operation_text116: '',

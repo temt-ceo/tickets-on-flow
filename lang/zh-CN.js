@@ -281,7 +281,7 @@ export default {
   operation_text110: '支持',
   operation_text111: '要继续，你必须连接到钱包。你想连接吗？',
   operation_text112: '您的请求已经完成。',
-  operation_text113: '',
+  operation_text113: '众筹已经进行了一次。如果你想支持我们一次以上，请再次点击支持按钮。',
   operation_text114: '',
   operation_text115: '',
   operation_text116: '',

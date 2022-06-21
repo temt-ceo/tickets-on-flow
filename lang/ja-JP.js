@@ -281,7 +281,7 @@ export default {
   operation_text110: '支援する',
   operation_text111: '続行するには、ウォレットに接続する必要があります。接続しますか？',
   operation_text112: 'あなたのリクエストは完了しました。',
-  operation_text113: '',
+  operation_text113: 'クラウドファンディングはすでに1回実施されています。複数回支援される場合は、再度支援ボタンをタップしてください。',
   operation_text114: '',
   operation_text115: '',
   operation_text116: '',

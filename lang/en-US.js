@@ -283,7 +283,7 @@ export default {
   operation_text110: 'Support',
   operation_text111: 'To continue, you must be connected to the Wallet. Do you want to connect?',
   operation_text112: 'Your request has been completed.',
-  operation_text113: '',
+  operation_text113: 'Crowdfunding has already been done once. If you would like to support us more than once, please tap the support button again.',
   operation_text114: '',
   operation_text115: '',
   operation_text116: '',
