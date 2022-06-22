@@ -366,7 +366,7 @@ export default {
     return {
       title: 'Tickets onFlow | Sharing Statistics',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS, Sharing' }
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, social network, Sharing' }
       ]
     }
   },

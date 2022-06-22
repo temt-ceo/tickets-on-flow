@@ -126,7 +126,7 @@ export default {
     return {
       title: 'Tickets onFlow | Tickets Setup',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS, チケット設定' }
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, social network, チケット設定' }
       ]
     }
   },

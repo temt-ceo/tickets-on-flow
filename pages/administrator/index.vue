@@ -115,7 +115,7 @@ export default {
     return {
       title: 'Tickets onFlow | 管理者',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS, 管理者' }
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, social network, 管理者' }
       ]
     }
   },

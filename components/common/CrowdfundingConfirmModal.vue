@@ -19,6 +19,33 @@
           :focusable="isFocusable"
           :mobile-cards="hasMobileCards"
         >
+
+          <b-table-column
+            v-if="owner === 1"
+            v-slot="props"
+            field="number"
+            :label="$t('operation_text115')"
+            width="40"
+            numeric
+          >
+            {{ props.row.number }}
+          </b-table-column>
+
+          <b-table-column
+            v-slot="props"
+            field="time"
+            :label="$t('operation_text116')"
+            :th-attrs="dateThAttrs"
+            centered
+          >
+            <span v-if="owner === 0" class="tag is-success" @click="showSchedule(props.row.time)">
+              {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
+            </span>
+            <span v-if="owner === 1">
+              {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
+            </span>
+          </b-table-column>
+
           <b-table-column
             v-slot="props"
             field="user_id"
@@ -42,25 +69,10 @@
 
           <b-table-column
             v-slot="props"
-            field="time"
-            label="Paid Date"
-            :th-attrs="dateThAttrs"
-            centered
-          >
-            <span v-if="owner === 0" class="tag is-success" @click="showSchedule(props.row.time)">
-              {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
-            </span>
-            <span v-if="owner === 1">
-              {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
-            </span>
-          </b-table-column>
-
-          <b-table-column
-            v-slot="props"
             field="paid"
             :label="$t('operation_text106')"
           >
-            {{ new Number(props.row.paid).toFixed(2) }} $FLOW
+            <span style="color: #48c78e;">{{ new Number(props.row.paid).toFixed(2) }} $FLOW</span>
           </b-table-column>
 
           <template #empty>

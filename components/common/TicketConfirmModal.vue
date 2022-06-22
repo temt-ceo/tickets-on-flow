@@ -35,15 +35,6 @@
           :focusable="isFocusable"
           :mobile-cards="hasMobileCards"
         >
-          <b-table-column
-            v-slot="props"
-            field="user_id"
-            :label="$t('operation_text101')"
-            width="40"
-            numeric
-          >
-            {{ props.row.user_id }}
-          </b-table-column>
 
           <b-table-column
             v-slot="props"
@@ -62,10 +53,29 @@
 
           <b-table-column
             v-slot="props"
+            field="user_id"
+            :label="$t('operation_text101')"
+            width="40"
+            numeric
+          >
+            {{ props.row.user_id }}
+          </b-table-column>
+
+          <b-table-column
+            v-if="owner === 1"
+            v-slot="props"
+            field="count"
+            :label="$t('operation_text102')"
+          >
+            {{ props.row.count }}
+          </b-table-column>
+
+          <b-table-column
+            v-slot="props"
             field="paid"
             :label="$t('operation_text103')"
           >
-            {{ new Number(props.row.paid).toFixed(2) }} $FLOW
+            <span style="color: #48c78e;">{{ new Number(props.row.paid).toFixed(2) }} $FLOW</span>
           </b-table-column>
 
           <b-table-column

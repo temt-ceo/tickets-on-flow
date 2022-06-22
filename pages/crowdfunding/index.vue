@@ -109,7 +109,7 @@ export default {
     return {
       title: 'Tickets onFlow | Crowdfunding Setup',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, Crowdfunding, work, SNS, クラウドファンディング設定' }
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, Crowdfunding, work, social network, クラウドファンディング設定' }
       ]
     }
   },

@@ -14,7 +14,7 @@ export default {
     return {
       title: 'Tickets onFlow | Dispenser003\'s Web Page',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS, Dispenser003' }
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, social network, Dispenser003' }
       ]
     }
   }

@@ -194,7 +194,7 @@ export default {
       ],
       title: 'Tickets onFlow | About Us',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS, about us' }
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, social network, about us' }
       ]
     }
   }

@@ -363,7 +363,7 @@ export default {
     return {
       title: 'Tickets onFlow | Statistics Registration',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS, Statistics' }
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, social network, Statistics' }
       ]
     }
   },

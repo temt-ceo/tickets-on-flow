@@ -949,11 +949,14 @@ export default {
       const keys = Object.keys(ticketRequesters)
       this.crowdfundingData = []
       this.ticketSalesData = []
+      let number = 1
       keys.forEach((key) => {
         // console.log(ticketRequesters[key])
         // クラウドファンディング利益分
         if (ticketRequesters[key].crowdfunding === true) {
+          ticketRequesters[key].number = number
           this.crowdfundingData.push(ticketRequesters[key])
+          number++
         }
         // チケット売上
         if (ticketRequesters[key].crowdfunding === false) {

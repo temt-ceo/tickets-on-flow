@@ -6,7 +6,7 @@
 import TicketPage from '~/components/common/TicketPage'
 
 export default {
-  name: 'Hi',
+  name: 'TicketHi',
   components: {
     TicketPage
   },
@@ -14,7 +14,7 @@ export default {
     return {
       title: 'Tickets onFlow | Dispenser005\'s Web Page',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS, Dispenser005' }
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, social network, Dispenser005' }
       ]
     }
   }

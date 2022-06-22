@@ -536,8 +536,8 @@ export default {
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1' },
-        { hid: 'description', name: 'description', content: 'This system uses the Flow blockchain to enable business and crowdfunding worldwide. You can work worldwide through SNS and Rewards are paid instantly.' },
-        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, SNS' },
+        { hid: 'description', name: 'description', content: 'This system uses the Flow blockchain to enable business and crowdfunding worldwide. You can work worldwide through social network and Rewards are paid instantly.' },
+        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, social network' },
         { name: 'format-detection', content: 'telephone=no' },
         ...i18nHead.meta
       ],
