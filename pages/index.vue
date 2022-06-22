@@ -1029,7 +1029,7 @@ export default {
   }
   80% {
     transform: translateY(0px);
-    opacity: 0.9;
+    opacity: 1;
   }
   100% {
     transform: translateY(-150vh);

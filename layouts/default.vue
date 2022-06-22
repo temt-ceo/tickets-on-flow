@@ -857,7 +857,7 @@ export default {
       color: #f14668;
       font-size: 8px;
       position: absolute;
-      left: 226px;
+      left: 229px;
       top: 15px;
       &:before {
         font-size: 8px;
