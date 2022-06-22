@@ -9,11 +9,19 @@
         <a
           class="navbar-item"
           href="/?home"
+          style="display: block; line-height: 0;"
         >
+          <img
+            src="~assets/image/chainwork.png"
+            alt="Chain Work"
+            height="28"
+          >
+          <br>
           <img
             src="~assets/image/tickets.png"
             alt="Tickets"
             height="28"
+            style="padding-left: 20px;"
           >
         </a>
         <a :href="url.telegram" target="_blank">
@@ -154,9 +162,15 @@
     >
       <div class="modal-card" style="width: auto; background-image: radial-gradient(rgb(65,105,225), #1b1c50);">
         <img
+          src="~assets/image/chainwork.png"
+          alt="Chain Work"
+          style="width: 130px; padding-left: 10px; line-height: 0; padding-top: 9px;"
+        >
+        <br>
+        <img
           src="~assets/image/tickets.png"
           alt="Tickets"
-          style="width: 160px; padding-left: 10px;"
+          style="width: 85px; line-height: 0; top: 28px; position: absolute; left: 33px;"
         >
         <section class="modal-card-body modal-notifications">
           <b-progress format="percent" :max="100">
@@ -413,8 +427,15 @@
     >
       <div class="p-1">
         <img
+          src="~assets/image/chainwork.png"
+          alt="Chain Work"
+          style="height: 25px;"
+        >
+        <br>
+        <img
           src="~assets/image/tickets.png"
           alt="Tickets"
+          style="height: 25px;"
         >
         <b-menu>
           <b-menu-list label="Help">
@@ -819,7 +840,7 @@ export default {
   background-color: #596886 !important;
 
   .navbar-item {
-    padding: 0 0.25rem 0 0.75rem;
+    padding: 0.60rem 0.25rem 0 0.75rem;
 
     &.icon {
       height: 3.75rem;
@@ -836,7 +857,7 @@ export default {
       color: #f14668;
       font-size: 8px;
       position: absolute;
-      left: 256px;
+      left: 226px;
       top: 15px;
       &:before {
         font-size: 8px;
@@ -845,7 +866,7 @@ export default {
   }
 
   .navbar-item img {
-      max-height: 3.25rem;
+      max-height: 1.15rem;
   }
 
   .navbar-burger {

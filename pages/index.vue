@@ -134,7 +134,7 @@
         <div class="hero--content" />
       </div>
     </div>
-    <img v-if="!returnMode" class="anime-image" src="/tickets.png" :style="{display: offIcon}">
+    <img v-if="!returnMode" class="anime-image" src="/chainwork-top.png" :style="{display: offIcon}" style="width: 75%" >
     <small class="bottom-copyright">&copy; Tokyo EM Technology & Co.</small>
     <b-carousel
       v-if="showCarousel"
@@ -214,9 +214,15 @@
       <div class="modal-card" style="width: auto">
         <section class="modal-card-body">
           <img
+            src="~assets/image/chainwork.png"
+            alt="Chain Work"
+            style="width: 100px;"
+          >
+          <br>
+          <img
             src="~assets/image/tickets.png"
             alt="Tickets"
-            style="width: 70px;"
+            style="width: 70px; margin-left: 20px;"
           >
           <b-steps
             v-model="activeStep"
