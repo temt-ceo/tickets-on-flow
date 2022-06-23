@@ -20,27 +20,27 @@ export default {
       ticketDescription: this.$t('special_description1'),
       additionalDescription: {
         type1: {
-          pre: '本日の株価の予想結果はType1です。',
-          post: 'Type1は株価は前日より低く推移しますが、日中に少し高めになると予想されます。そこで底値で買ってその高値で売ると利益が出ます。'
+          pre: this.$t('special_additional1_type1_pre'),
+          post: this.$t('special_additional1_type1_post')
         },
         type2: {
-          pre: '本日の株価の予想結果はType2です。',
-          post: 'Type2は10:30 ~ 11:00ぐらいにとても株価が上昇すると予想されます。そこで9:30頃に前日比+1%未満で買うことができれば、高値で売った時に利益が出ます。'
+          pre: this.$t('special_additional1_type2_pre'),
+          post: this.$t('special_additional1_type2_post')
         },
         type3: {
-          pre: '本日の株価の予想結果はType3です。',
-          post: 'Type3は9:45 ~ 10:00ぐらいに株価が上がるが、以降は下がると予想されます。そこで9:30頃に前日比+1%未満で買うことができれば、高値で売った時に利益が出ます。'
+          pre: this.$t('special_additional1_type3_pre'),
+          post: this.$t('special_additional1_type3_post')
         },
         type4: {
-          pre: '本日の株価の予想結果はType4です。',
-          post: 'Type4は9:35ぐらいに辛うじて前日比プラスを出すが、それ以降、ガクッと落ちると考えられます。そこで、ガクッと落ちたところで買い、高めに戻った時に売ります。そうすることで利益が出ます。'
+          pre: this.$t('special_additional1_type4_pre'),
+          post: this.$t('special_additional1_type4_post')
         },
         type5: {
-          pre: '本日の株価の予想結果はType5です。',
-          post: 'Type5は市場が大変荒れています。おそらく9:30の時点が1番の高値と考えられます。日中の底値で買い、高値で売るということを考えると、買いは可能ですが、売り時はほぼないと考えられます。'
+          pre: this.$t('special_additional1_type5_pre'),
+          post: this.$t('special_additional1_type5_post')
         },
         type6: {
-          pre: '本日の株価の予想結果はType6です。',
+          pre: this.$t('special_additional1_type6_pre'),
           post: 'Type6はzoomの株価が市場で比較的安いと考えられており、午後になって株価が最も高くなると考えられます。午前中に底値で買って午後に高値で売ると利益が出ます。'
         },
         from: {

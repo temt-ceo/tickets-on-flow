@@ -112,7 +112,16 @@ pub fun main(addr: Address, dispenser_id: UInt32): {UInt64: UFix64??}? {
       ?? panic("Could not borrow TicketVault capability.")
   return ticketVault.getUsedTime(dispenser_id: dispenser_id)
 }
-`,
+  `,
+  getTicketCreatedTime: `
+import TicketsV20 from 0xT
+pub fun main(addr: Address, dispenser_id: UInt32): {UInt64: UFix64}? {
+  let account = getAccount(addr)
+  let ticketVault = account.getCapability<&TicketsV20.TicketVault{TicketsV20.ITicketPublic}>(TicketsV20.TicketVaultPublicPath).borrow()
+      ?? panic("Could not borrow TicketVault capability.")
+  return ticketVault.getCreatedTime(dispenser_id: dispenser_id)
+}
+  `,
   getTicketCode: `
 import TicketsV20 from 0xT
 pub fun main(addr: Address, dispenser_id: UInt32): {UInt64: String}? {

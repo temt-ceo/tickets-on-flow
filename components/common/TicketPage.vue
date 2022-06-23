@@ -442,6 +442,65 @@ export default {
               const usedTime = await this.getTicketUsedTime()
               if (!usedTime) {
                 // まだ未使用
+                /**
+                 * チケット未使用時の、チケット使用可否判定ここから
+                 */
+                // const weekdays = this.ticketWhenWeek.split('').sort().join('')
+                // const ticketCreatedTime = await this.getTicketCreatedTime()
+                // // チケットを配布した時
+                // const createdTime = parseInt(ticketCreatedTime.replace(/.0+$/, '')) * 1000
+                // // チケットを配布した時の曜日を取得
+                // const day = new Date(createdTime).getDay()
+                // // Mondayを0にしたので合わせる
+                // day = day - 1 < 0 ? 6 : day - 1
+                // let match = false
+                // let scheduledDay = 0
+                // while (!match) {
+                //   for (let i = 0; i < weekdays.length; i++) {
+                //     const registeredDay = parseInt(weekdays.substr(i, 1))
+                //     // チケットを配布した時の曜日が繰り返し日に含まれているか
+                //     if (registeredDay === day) {
+                //       match = true
+                //     }
+                //   }
+                //   day = day + 1 > 6 ? 0 : day + 1
+                //   if (scheduledDay > 6) {
+                //     match = true // 繰り返しがないケース
+                //   }
+                //   if (!match) {
+                //     scheduledDay++
+                //   }
+                // }
+
+                // // 繰り返しがある場合
+                // if (scheduledDay <= 6) {
+                //     /**
+                //      * チケットを配布した時から次のイベントが始まるまでの時間を足し、それが1時間を超えていれば失効
+                //      */
+                //     const nextEventDate = new Date(new Date(createdTime).getTime() + scheduledDay * 24 * 60 * 60 * 1000)
+                //     const dayEvent = new Date(this.ticketWhenTime)
+                //     const eventTime = new Date(nextEventDate.getFullYear(), nextEventDate.getMonth(), nextEventDate.getDate(), dayEvent.getHours(), dayEvent.getMinutes(), dayEvent.getSeconds())
+                //     const unixTime = parseInt((new Date(eventTime).getTime() - new Date().getTime()) / 1000)
+                //     if (unixTime < 3600) {
+                //       // 1時間以上経過
+                //       this.ticketStatus = 1 // 新しくリクエストできる
+                //     } else{
+                //       this.ticketStatus = 3 // 1時間経過まではチケットを使用可能
+                //     }
+
+                // } else {
+                //   // 繰り返しがない
+                //   const unixTime = parseInt((new Date(this.ticketWhenTime).getTime() - new Date().getTime()) / 1000)
+                //   if (unixTime < 3600) {
+                //     // 1時間以上経過
+                //     this.ticketStatus = 1 // 新しくリクエストできる
+                //   } else{
+                //     this.ticketStatus = 3 // 1時間経過まではチケットを使用可能
+                //   }
+                // }
+                /**
+                 * チケット未使用時の、チケット使用可否判定ここまで
+                 */
                 this.ticketStatus = 3
               } else {
                 // チケット使用済み

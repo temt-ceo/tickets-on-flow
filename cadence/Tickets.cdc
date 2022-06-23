@@ -319,6 +319,7 @@ pub contract TicketsV20 {
     priv var readable_code: String
     priv var price: UFix64
     priv var used_time: UFix64?
+    priv var created_time: UFix64
 
     pub fun getId(): UInt64 {
       return self.token_id
@@ -330,6 +331,10 @@ pub contract TicketsV20 {
 
     pub fun getUsedTime(): UFix64? {
       return self.used_time
+    }
+
+    pub fun getCreatedTime(): UFix64 {
+      return self.created_time
     }
 
     pub fun useTicket(price: UFix64) {
@@ -360,6 +365,7 @@ pub contract TicketsV20 {
       self.readable_code = "" // チケット枚数
       self.price = 0.0
       self.used_time = nil
+      self.created_time = getCurrentBlock().timestamp
     }
   }
 
@@ -382,6 +388,7 @@ pub contract TicketsV20 {
     pub fun getId(): UInt32
     pub fun getCode(dispenser_id: UInt32): {UInt64: String}?
     pub fun getUsedTime(dispenser_id: UInt32): {UInt64: UFix64??}?
+    pub fun getCreatedTime(dispenser_id: UInt32): {UInt64: UFix64}?
   }
 
   /*
@@ -429,6 +436,20 @@ pub contract TicketsV20 {
           }
           let token_id = data.latest_token!
           return {token_id: self.ownedTicket[token_id]?.getUsedTime()}
+        }
+      }
+      return nil
+    }
+
+    // [public access]
+    pub fun getCreatedTime(dispenser_id: UInt32): {UInt64: UFix64}? {
+      if(TicketsV20.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = TicketsV20.ticketRequesters[dispenser_id]![self.user_id] {
+          if (data.latest_token == nil) {
+            return nil
+          }
+          let token_id = data.latest_token!
+          return {token_id: self.ownedTicket[token_id]?.getCreatedTime()}
         }
       }
       return nil

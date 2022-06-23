@@ -77,43 +77,43 @@ export default {
           const hNext = Math.floor(nextEventTime / 3600)
           const mNext = Math.floor(nextEventTime / 60 % 60)
           // 保存データ
-          let previousEventTime = null
-          let hPrev = null
-          let mPrev = null
-          if (this.ticketTime[this.dispenser]) {
-            previousEventTime = parseInt(this.ticketTime[this.dispenser] - new Date().getTime()) / 1000
-            hPrev = 24 - Math.ceil(previousEventTime / 3600)
-            mPrev = 60 - Math.ceil(previousEventTime / 60 % 60)
-          }
+          // let previousEventTime = null
+          // let hPrev = null
+          // let mPrev = null
+          // if (this.ticketTime[this.dispenser]) {
+          //   previousEventTime = parseInt(this.ticketTime[this.dispenser] - new Date().getTime()) / 1000
+          //   hPrev = 24 - Math.ceil(previousEventTime / 3600)
+          //   mPrev = 60 - Math.ceil(previousEventTime / 60 % 60)
+          // }
 
-          if (!hPrev || hPrev > 4) {
-            switch (hNext) {
-              case 0:
-                this.ticketDateTime = `${this.$t('ticket_text12')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
-                break
-              case 1:
-                this.ticketDateTime = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text8')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
-                break
-              default:
-                this.ticketDateTime = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text9')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
-                break
-            }
-            this.ticketTime[this.dispenser] = nextEvent.getTime()
-            this.$store.commit('updateTicketTime', this.ticketTime)
-          } else {
-            // 過去として表示
-            switch (h) {
-              case 0:
-                this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(mPrev)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
-                break
-              case 1:
-                this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(hPrev)} ${this.$t('ticket_text8')} ${Math.abs(mPrev)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
-                break
-              default:
-                this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(hPrev)} ${this.$t('ticket_text9')} ${Math.abs(mPrev)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
-                break
-            }
+          // if (!hPrev || hPrev > 4) {
+          switch (hNext) {
+            case 0:
+              this.ticketDateTime = `${this.$t('ticket_text12')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+              break
+            case 1:
+              this.ticketDateTime = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text8')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+              break
+            default:
+              this.ticketDateTime = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text9')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+              break
           }
+          // this.ticketTime[this.dispenser] = nextEvent.getTime()
+          // this.$store.commit('updateTicketTime', this.ticketTime)
+          // } else {
+          //   // 過去として表示
+          //   switch (h) {
+          //     case 0:
+          //       this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(mPrev)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+          //       break
+          //     case 1:
+          //       this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(hPrev)} ${this.$t('ticket_text8')} ${Math.abs(mPrev)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+          //       break
+          //     default:
+          //       this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(hPrev)} ${this.$t('ticket_text9')} ${Math.abs(mPrev)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+          //       break
+          //   }
+          // }
         }
       } else {
         // 過去として表示
@@ -142,8 +142,8 @@ export default {
           this.ticketDateTime = `${this.$t('ticket_text12')} ${h} ${this.$t('ticket_text9')} ${m} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
           break
       }
-      this.ticketTime[this.dispenser] = new Date(this.ticketWhen1).getTime()
-      this.$store.commit('updateTicketTime', this.ticketTime)
+      // this.ticketTime[this.dispenser] = new Date(this.ticketWhen1).getTime()
+      // this.$store.commit('updateTicketTime', this.ticketTime)
     }
   }
 }
