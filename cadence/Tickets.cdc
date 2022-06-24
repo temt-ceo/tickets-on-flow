@@ -8,6 +8,7 @@ pub contract TicketsV20 {
   pub event TicketRequested(dispenser_id: UInt32, user_id: UInt32, address: Address)
   pub event TicketUsed(dispenser_id: UInt32, user_id: UInt32, token_id: UInt64, address: Address, price: UFix64)
   pub event CrowdFunding(dispenser_id: UInt32, user_id: UInt32, address: Address, fund: UFix64)
+  pub event Refund(dispenser_id: UInt32, user_id: UInt32, address: Address, amount: UFix64)
 
   // Paths
   pub let AdminPublicPath: PublicPath
@@ -23,6 +24,7 @@ pub contract TicketsV20 {
 
   pub let FlowTokenVault: Capability<&FlowToken.Vault{FungibleToken.Receiver}>
   pub let DispenserFlowTokenVault: {UInt32: Capability<&FlowToken.Vault{FungibleToken.Receiver}>}
+  pub let UserFlowTokenVault: {UInt32: Capability<&FlowToken.Vault{FungibleToken.Receiver}>}
 
   // Objects
   priv let dispenserOwners: {UInt32: DispenserStruct}
@@ -281,6 +283,27 @@ pub contract TicketsV20 {
       return <- self.ownedDispenser?.mintTicket(secret_code: secret_code, dispenser_id: self.dispenser_id, user_id: user_id)
     }
 
+    // [private access]
+    pub fun refund(dispenser_id: UInt32, address: addr, user_id: UInt32, repayment: @FlowToken.Vault): {
+      pre {
+        repayment.balance > 0: "refund is not set."
+        TicketsV20.UserFlowTokenVault[user_id] != nil: "The beneficiary has not yet set up the Vault."
+        TicketsV20.ticketRequesters.containsKey(user_id): "Sender has not right to refund."
+        TicketsV20.ticketRequesters[dispenser_id]!.containsKey(user_id): "Sender has not right to refund."
+        TicketsV20.ticketRequesters[dispenser_id]![user_id]!.paid >= repayment.balance: "refund is larger than paid amount."
+      }
+
+      let fund: UFix64 = repayment.balance
+      if(TicketsV20.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = TicketsV20.ticketRequesters[dispenser_id]![user_id] {
+          let ref = &TicketsV20.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
+          ref.paid = data.paid - fund // refund
+        }
+      }
+      TicketsV20.UserFlowTokenVault[user_id]!.borrow()!.deposit(from: <- repayment)
+      emit Refund(dispenser_id: dispenser_id, user_id: user_id, address: address, amount: fund)
+    }
+
     destroy() {
       destroy self.ownedDispenser
     }
@@ -302,7 +325,7 @@ pub contract TicketsV20 {
   */
   pub fun createDispenserVault(address: Address, domain: String, description: String, payment: @FlowToken.Vault): @DispenserVault {
     pre {
-      payment.balance >= 0.1: "Payment is not sufficient"
+      payment.balance >= 0.3: "Payment is not sufficient"
     }
     let paid: UFix64 = payment.balance
     TicketsV20.FlowTokenVault.borrow()!.deposit(from: <- payment)
@@ -540,6 +563,16 @@ pub contract TicketsV20 {
       self.contribution.append(dispenser_id)
     }
 
+    pub fun setRefundVault(flow_vault_receiver: Capability<&FlowToken.Vault{FungibleToken.Receiver}>) {
+      pre {
+        TicketsV20.UserFlowTokenVault[self.user_id] == nil: "You have already requested a refund once."
+      }
+
+      if (TicketsV20.UserFlowTokenVault[self.user_id] == nil) {
+        TicketsV20.UserFlowTokenVault[self.user_id] = flow_vault_receiver
+      }
+    }
+
     // [private access]
     pub fun useCrowdfundingTicket(dispenser_id: UInt32, token_id: UInt64, address: Address) {
       pre {
@@ -577,7 +610,7 @@ pub contract TicketsV20 {
   }
 
   /*
-  // [create vault] createTicketVault
+  ** [create vault] createTicketVault
   */
   pub fun createTicketVault(dispenser_id: UInt32, address: Address, crowdfunding: Bool): @TicketVault {
     return <- create TicketVault(dispenser_id, address, crowdfunding)
@@ -622,6 +655,13 @@ pub contract TicketsV20 {
   }
 
   /*
+  ** [Public Function] isSetRefundVault
+  */
+  pub fun isSetRefundVault(user_id: UInt32): Bool {
+    return TicketsV20.UserFlowTokenVault[user_id] == nil
+  }
+
+  /*
   ** init
   */
   init() {
@@ -639,6 +679,7 @@ pub contract TicketsV20 {
 
     self.FlowTokenVault = self.account.getCapability<&FlowToken.Vault{FungibleToken.Receiver}>(/public/flowTokenReceiver)
     self.DispenserFlowTokenVault = {}
+    self.UserFlowTokenVault = {}
 
     // grant admin rights
     self.account.save<@TicketsV20.Admin>( <- create Admin(), to:/storage/TicketsV20Admin)

@@ -155,7 +155,17 @@ pub fun main(address: Address): &TicketStatsV12.StatsPublic? {
   getStats: `
 import TicketStatsV12 from 0xT
 pub fun main(): {Address: [TicketStatsV12.StatsStruct]} {
-  return TicketStatsV12.stats
+    return TicketStatsV12.stats
+}
+  `,
+  isSetRefundVault: `
+import TicketsV20 from 0xT
+pub fun main(addr: Address, user_id: UInt32): Bool {
+    let account = getAccount(addr)
+    let ticketVault = account.getCapability<&TicketsV20.TicketVault{TicketsV20.ITicketPublic}>(TicketsV20.TicketVaultPublicPath).borrow()
+        ?? panic("Could not borrow TicketVault capability.")
+    let user_id = ticketVault.getId()
+    return TicketsV20.isSetRefundVault(user_id: user_id)
 }
   `
 }

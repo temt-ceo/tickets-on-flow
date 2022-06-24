@@ -118,33 +118,67 @@
             </template>
             <nuxt-link to="/dispenser/">
               <b-dropdown-item aria-role="listitem">
-                ・{{ $t('hamburger_menu1') }}
+                <b-icon
+                  pack="fa-solid"
+                  icon="pen"
+                />
+                <label>{{ $t('hamburger_menu1') }}</label>
               </b-dropdown-item>
             </nuxt-link>
             <nuxt-link to="/crowdfunding/">
               <b-dropdown-item aria-role="listitem">
-                ・{{ $t('hamburger_menu4') }}
+                <b-icon
+                  pack="fa-solid"
+                  icon="pen"
+                />
+                <label>{{ $t('hamburger_menu4') }}</label>
               </b-dropdown-item>
             </nuxt-link>
             <nuxt-link to="/stats/">
               <b-dropdown-item aria-role="listitem" class="menu-long">
-                ・{{ $t('operation_text55') }}
+                <b-icon
+                  pack="fa-solid"
+                  icon="pen"
+                  style="font-size: 17px;"
+                />
+                <label style="padding-left: 24px;">{{ $t('operation_text55') }}</label>
               </b-dropdown-item>
             </nuxt-link>
             <b-dropdown-item aria-role="listitem" class="i18n" @click="isI18nActive = !isI18nActive">
               <b-icon
                 pack="fa-solid"
+                icon="eye"
+                style="top: 6px; left: 13px;"
+              />
+              <b-icon
+                pack="fa-solid"
                 icon="language"
                 size="is-large"
+                style="padding-left: 28px;"
               />
             </b-dropdown-item>
             <nuxt-link to="/about/">
               <b-dropdown-item aria-role="listitem" class="menu-help">
-                {{ $t('hamburger_menu5') }}
+              <b-icon
+                pack="fa-solid"
+                icon="user"
+              />
+                <label>{{ $t('hamburger_menu5') }}</label>
               </b-dropdown-item>
             </nuxt-link>
-            <b-dropdown-item aria-role="listitem" class="menu-help" @click="isToUActive = !isToUActive">
-              {{ $t('hamburger_menu2') }}
+            <b-dropdown-item aria-role="listitem" class="menu-help" @click="isToSActive = !isToSActive">
+              <b-icon
+                pack="fa-solid"
+                icon="pen-clip"
+              />
+              <label>{{ $t('hamburger_menu2') }}</label>
+            </b-dropdown-item>
+            <b-dropdown-item aria-role="listitem" class="menu-help" @click="isCogActive = !isCogActive">
+              <b-icon
+                pack="fa-solid"
+                icon="cog"
+              />
+              <label>{{ $t('operation_text117') }}</label>
             </b-dropdown-item>
             <b-dropdown-item aria-role="listitem" class="menu-help" @click="showNoticeModal">
               👋 {{ $t('hamburger_menu3') }}
@@ -293,44 +327,83 @@
       </div>
     </b-modal>
 
-    <b-modal v-model="isToUActive" :width="640" scroll="keep">
+    <b-modal v-model="isToSActive" :width="640" scroll="keep">
       <div class="card">
         <div class="card-content">
           <div class="content">
             <p class="title is-4">
               {{ $t('hamburger_menu2') }}
             </p>
-            {{ $t('terms_of_use1') }}
-            <br>
-            {{ $t('terms_of_use2') }}
-            <br>
-            {{ $t('terms_of_use3') }}
-            <br>
-            {{ $t('terms_of_use4') }}
-            <br>
-            {{ $t('terms_of_use5') }}
-            <br>
-            {{ $t('terms_of_use6') }}
-            <br>
-            {{ $t('terms_of_use7') }}
-            <br>
-            {{ $t('terms_of_use8') }}
-            <br>
-            {{ $t('terms_of_use9') }}
-            <br>
-            {{ $t('terms_of_use10') }}
-            <br>
-            {{ $t('terms_of_use11') }}
-            <br>
-            {{ $t('terms_of_use12') }}
-            <br>
-            {{ $t('terms_of_use13') }}
-            <br>
-            {{ $t('terms_of_use15') }}
-            <br>
-            {{ $t('terms_of_use16') }}
-            <br><br><br>
-            <small>&copy; 05/10/2022 Tokyo EM Technology & Co.</small>
+            <p>{{ $t('terms_of_use68') }}</p>
+            <p>
+              <b>{{ $t('terms_of_use69') }}</b>
+              <br>
+              1. {{ $t('terms_of_use70') }}
+              <br>
+              2. {{ $t('terms_of_use72') }}
+              <br>
+              3. {{ $t('terms_of_use73') }}
+              <br>
+              4. {{ $t('terms_of_use74') }}
+            </p>
+            <p>
+              <b>{{ $t('terms_of_use75') }}</b>
+              <br>
+              1. {{ $t('terms_of_use76') }}
+              <br>
+              2. {{ $t('terms_of_use77') }}
+            </p>
+            <p>
+              <b>{{ $t('terms_of_use78') }}</b>
+              <br>
+              1. {{ $t('terms_of_use79') }}
+              <br>
+              2. {{ $t('terms_of_use80') }}
+            </p>
+            <p>
+              <b>{{ $t('terms_of_use81') }}</b>
+              <br>
+              1. {{ $t('terms_of_use82') }}
+              <br>
+              2. {{ $t('terms_of_use83') }}
+              <br>
+              3. {{ $t('terms_of_use84') }}
+              <br>
+              4. {{ $t('terms_of_use85') }}
+              <br>
+              5. {{ $t('terms_of_use86') }}
+              <br>
+              6. {{ $t('terms_of_use87') }}
+              <br>
+              7. {{ $t('terms_of_use88') }}
+              <br>
+              8. {{ $t('terms_of_use89') }}
+              <br>
+              9. {{ $t('terms_of_use90') }} <a href="mailto:info@tokyo-em-technology.org">info@tokyo-em-technology.org</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </b-modal>
+
+    <b-modal v-model="isCogActive" :width="640" style="padding: 0 20px" scroll="keep">
+      <div class="card">
+        <div class="card-content">
+          <div class="content">
+            <p class="title is-4">
+              {{ $t('operation_text117') }}
+            </p>
+            <hr>
+            <p class="title is-5">
+              <b-button
+                type="is-primary"
+                :loading="settingRefundLoading"
+                outlined
+                @click="refundSetting"
+              >
+                {{ $t('operation_text118') }}
+              </b-button>
+            </p>
           </div>
         </div>
       </div>
@@ -494,6 +567,8 @@
 
 <script>
 import UserData from '~/components/common/UserData'
+import FlowScripts from '~/cadence/scripts'
+import FlowTransactions from '~/cadence/transactions'
 
 export default {
   name: 'DefaultLayout',
@@ -522,7 +597,8 @@ export default {
       sidebarFullheight: false,
       sidebarFullwidth: false,
       sidebarRight: true,
-      isToUActive: false,
+      isToSActive: false,
+      isCogActive: false,
       i18nRadioButton: this.$i18n.locale || 'en',
       isI18nActive: false,
       isComponentModalActive: false,
@@ -543,7 +619,8 @@ export default {
       progress4: 0,
       showProgress2value: false,
       showProgress3value: false,
-      showProgress4value: false
+      showProgress4value: false,
+      settingRefundLoading: false
     }
   },
   head () {
@@ -827,6 +904,71 @@ export default {
     },
     showNoticeModal () {
       this.isComponentModalActive = true
+    },
+    async refundSetting () {
+      try {
+        this.settingRefundLoading = true
+        const isSet = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.isSetRefundVault),
+            this.$fcl.args([
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        this.settingRefundLoading = false
+        if (isSet) {
+          this.$buefy.dialog.alert(this.$t('operation_text122'))
+        } else {
+          this.$buefy.dialog.confirm({
+            message: this.$t('operation_text119'),
+            onConfirm: async () => {
+              // loading
+              const loadingComponent = this.$buefy.loading.open({
+                container: null
+              })
+              setTimeout(() => loadingComponent.close(), 3 * 1000)
+              this.settingRefundLoading = true
+
+              const transactionId = await this.$fcl.send(
+                [
+                  this.$fcl.transaction(FlowTransactions.setRefundVault),
+                  this.$fcl.args([
+                  ]),
+                  this.$fcl.payer(this.$fcl.authz),
+                  this.$fcl.proposer(this.$fcl.authz),
+                  this.$fcl.authorizations([this.$fcl.authz]),
+                  this.$fcl.limit(9999)
+                ]
+              ).then(this.$fcl.decode)
+              this.callToast()
+              const timerID = setInterval(async () => {
+                const isSetFinished = await this.$fcl.send(
+                  [
+                    this.$fcl.script(FlowScripts.isSetRefundVault),
+                    this.$fcl.args([
+                    ])
+                  ]
+                ).then(this.$fcl.decode)
+                if (isSetFinished) {
+                  this.settingRefundLoading = false
+                  clearInterval(timerID)
+                }
+              }, 4000)
+              return transactionId
+            }
+          })
+        }
+      } catch (e) {
+      }
+    },
+    callToast () {
+      const toast = this.$buefy.toast.open({
+        indefinite: true,
+        message: this.$t('operation_text34')
+      })
+      setTimeout(() => {
+        toast.close()
+      }, 10000)
     }
   }
 }
@@ -903,6 +1045,10 @@ export default {
 
         &.menu-long {
           font-size: 14px;
+        }
+
+        label {
+          padding-left: 26px;
         }
       }
     }

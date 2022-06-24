@@ -700,8 +700,8 @@ export default {
     useTicket () {
       try {
         this.$buefy.dialog.confirm({
-          message: `This process requires ${this.price}$FLOW. <br>Tap "Approve" on the next wallet pop-up.`,
-          confirmText: 'Agree',
+          message: `${this.$t('operation_text120')} ${this.price} $FLOW. <br>${this.$t('operation_text29')}`,
+          confirmText: this.$t('operation_text121'),
           onConfirm: async () => {
             // loading
             const loadingComponent = this.$buefy.loading.open({
