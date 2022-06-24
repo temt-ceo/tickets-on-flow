@@ -24,10 +24,10 @@
                   <b-message v-if="noticeTitle" type="is-info" has-icon>
                     {{ noticeTitle }}
                   </b-message>
-                  <b-message v-if="isDemo == true && parseInt(ticketInfo.type) == 0" size="is-small" type="is-warning" :closable="false">
+                  <b-message v-if="isDemo == true && !(ticketStatus > 1) && parseInt(ticketInfo.type) == 0" size="is-small" type="is-warning" :closable="false">
                     {{ $t('operation_text107') }}
                   </b-message>
-                  <b-message v-if="isDemo == true && parseInt(ticketInfo.type) == 1" size="is-small" type="is-warning" :closable="false">
+                  <b-message v-if="isDemo == true && !(ticketStatus > 1) && parseInt(ticketInfo.type) == 1" size="is-small" type="is-warning" :closable="false">
                     {{ $t('operation_text109') }}
                   </b-message>
                   <b-skeleton size="is-large" :active="waitTransactionComplete" />
@@ -92,7 +92,7 @@
                 </b-tooltip>
 
                 <b-tooltip
-                  v-if="isDemo == true && (ticketStatus <= 1 || !bloctoWalletUser.addr) && parseInt(ticketInfo.type) == 0"
+                  v-if="isDemo == true && !(ticketStatus > 1) && parseInt(ticketInfo.type) == 0"
                   :label="$t('operation_text90')"
                   type="is-dark"
                   position="is-bottom"
@@ -109,7 +109,7 @@
                 </b-tooltip>
 
                 <b-button
-                  v-if="isDemo == true && (ticketStatus <= 2 || !bloctoWalletUser.addr) && parseInt(ticketInfo.type) == 1"
+                  v-if="isDemo == true && !(ticketStatus > 1) && parseInt(ticketInfo.type) == 1"
                   :disabled="termExpired || waitTransactionComplete"
                   type="is-warning"
                   @click="nextEvent"

@@ -4,6 +4,15 @@
       <div class="text-wrap text-title">
         <span v-if="parseInt(ticket.type) == 0">{{ $t('ticket_text14') }}</span>
         <span v-if="parseInt(ticket.type) == 1">{{ $t('ticket_text52') }}</span>
+        <span v-if="additionalDescription && additionalDescription.info === true" style="position: absolute; left: 75vw; color: magenta;" @click="isCardModalActive = true">
+          <b-icon
+            pack="fa-solid"
+            icon="circle-info"
+            size="is-medium"
+            style="width: 1.5rem;"
+          />
+          Detail
+        </span>
       </div>
       <b-table
         :data="tickets"
@@ -122,6 +131,426 @@
     <b-button v-if="showCalendar" type="is-danger" @click="hideSchedule">
       Close
     </b-button>
+    <b-modal v-if="additionalDescription" v-model="isCardModalActive" :width="640" scroll="keep" style="z-index: 50">
+      <div class="card">
+        <div class="card-image">
+          <figure class="image is-4by3">
+            <img :src="additionalDescription.infoImage" alt="Image">
+          </figure>
+        </div>
+        <div class="card-content">
+          <div class="media">
+            <div class="media-content">
+              <p class="title is-4">{{ additionalDescription.infoDetail.title }}</p>
+              <p class="subtitle is-6">{{ additionalDescription.infoDetail.subtitle }}</p>
+            </div>
+          </div>
+
+          <div class="content">
+            <div class="block">
+              <b-radio
+                v-if="additionalDescription.infoDetail.radio1"
+                v-model="radioInfo"
+                name="name"
+                native-value="first"
+                style="min-width: 200px;"
+              >
+                {{ additionalDescription.infoDetail.radio1 }}
+              </b-radio>
+              <b-radio
+                v-if="additionalDescription.infoDetail.radio2"
+                v-model="radioInfo"
+                name="name"
+                native-value="second"
+                style="min-width: 200px;"
+              >
+                {{ additionalDescription.infoDetail.radio2 }}
+              </b-radio>
+              <b-radio
+                v-if="additionalDescription.infoDetail.radio3"
+                v-model="radioInfo"
+                name="name"
+                native-value="third"
+                style="min-width: 200px;"
+              >
+                {{ additionalDescription.infoDetail.radio3 }}
+              </b-radio>
+              <b-radio
+                v-if="additionalDescription.infoDetail.radio4"
+                v-model="radioInfo"
+                name="name"
+                native-value="fourth"
+                style="min-width: 200px;"
+              >
+                {{ additionalDescription.infoDetail.radio4 }}
+              </b-radio>
+            </div>
+
+            <b-collapse
+              v-if="additionalDescription.infoDetail.radio1"
+              v-model="isOpenCollapseFirst"
+              aria-id="contentIdForA11y2"
+              class="panel"
+              animation="slide"
+            >
+              <template #trigger>
+                <div
+                  class="panel-heading"
+                  role="button"
+                  aria-controls="contentIdForA11y2"
+                  :aria-expanded="isOpenCollapseFirst">
+                  <strong>{{ additionalDescription.infoDetail.radio1TabTitle }}</strong>
+                </div>
+              </template>
+              <b-tabs position="is-centered" class="block" style="margin: 0;">
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio1Tab1"
+                  :label="additionalDescription.infoDetail.radio1Tab1"
+                >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio1Tab1Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio1Tab1Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio1Tab2"
+                  :label="additionalDescription.infoDetail.radio1Tab2"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio1Tab2Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio1Tab2Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio1Tab3"
+                  :label="additionalDescription.infoDetail.radio1Tab3"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio1Tab3Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio1Tab3Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio1Tab4"
+                  :label="additionalDescription.infoDetail.radio1Tab4"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio1Tab4Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio1Tab4Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio1Tab5"
+                  :label="additionalDescription.infoDetail.radio1Tab5"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio1Tab5Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio1Tab5Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio1Tab6"
+                  :label="additionalDescription.infoDetail.radio1Tab6"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio1Tab6Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio1Tab6Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio1Tab7"
+                  :label="additionalDescription.infoDetail.radio1Tab7"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio1Tab7Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio1Tab7Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio1Tab7"
+                  :label="additionalDescription.infoDetail.radio1Tab7"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio1Tab8Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio1Tab8Contents }}
+                  </div>
+                </b-tab-item>              </b-tabs>
+            </b-collapse>
+            <b-collapse
+              v-if="additionalDescription.infoDetail.radio2"
+              v-model="isOpenCollapseSecond"
+              aria-id="contentIdForA11y2"
+              class="panel"
+              animation="slide"
+            >
+              <template #trigger>
+                <div
+                  class="panel-heading"
+                  role="button"
+                  aria-controls="contentIdForA11y2"
+                  :aria-expanded="isOpenCollapseSecond">
+                  <strong>{{ additionalDescription.infoDetail.radio2TabTitle }}</strong>
+                </div>
+              </template>
+              <b-tabs position="is-centered" class="block" style="margin: 0;">
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio2Tab1"
+                  :label="additionalDescription.infoDetail.radio2Tab1"
+                >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio2Tab1Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio2Tab1Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio2Tab2"
+                  :label="additionalDescription.infoDetail.radio2Tab2"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio2Tab2Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio2Tab2Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio2Tab3"
+                  :label="additionalDescription.infoDetail.radio2Tab3"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio2Tab3Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio2Tab3Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio2Tab4"
+                  :label="additionalDescription.infoDetail.radio2Tab4"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio2Tab4Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio2Tab4Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio2Tab5"
+                  :label="additionalDescription.infoDetail.radio2Tab5"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio2Tab5Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio2Tab5Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio2Tab6"
+                  :label="additionalDescription.infoDetail.radio2Tab6"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio2Tab6Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio2Tab6Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio2Tab7"
+                  :label="additionalDescription.infoDetail.radio2Tab7"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio2Tab7Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio2Tab7Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio2Tab7"
+                  :label="additionalDescription.infoDetail.radio2Tab7"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio2Tab8Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio2Tab8Contents }}
+                  </div>
+                </b-tab-item>              </b-tabs>
+            </b-collapse>
+            <b-collapse
+              v-if="additionalDescription.infoDetail.radio3"
+              v-model="isOpenCollapseThird"
+              aria-id="contentIdForA11y2"
+              class="panel"
+              animation="slide"
+            >
+              <template #trigger>
+                <div
+                  class="panel-heading"
+                  role="button"
+                  aria-controls="contentIdForA11y2"
+                  :aria-expanded="isOpenCollapseThird">
+                  <strong>{{ additionalDescription.infoDetail.radio3TabTitle }}</strong>
+                </div>
+              </template>
+              <b-tabs position="is-centered" class="block" style="margin: 0;">
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio3Tab1"
+                  :label="additionalDescription.infoDetail.radio3Tab1"
+                >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio3Tab1Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio3Tab1Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio3Tab2"
+                  :label="additionalDescription.infoDetail.radio3Tab2"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio3Tab2Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio3Tab2Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio3Tab3"
+                  :label="additionalDescription.infoDetail.radio3Tab3"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio3Tab3Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio3Tab3Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio3Tab4"
+                  :label="additionalDescription.infoDetail.radio3Tab4"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio3Tab4Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio3Tab4Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio3Tab5"
+                  :label="additionalDescription.infoDetail.radio3Tab5"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio3Tab5Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio3Tab5Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio3Tab6"
+                  :label="additionalDescription.infoDetail.radio3Tab6"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio3Tab6Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio3Tab6Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio3Tab7"
+                  :label="additionalDescription.infoDetail.radio3Tab7"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio3Tab7Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio3Tab7Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio3Tab7"
+                  :label="additionalDescription.infoDetail.radio3Tab7"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio3Tab8Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio3Tab8Contents }}
+                  </div>
+                </b-tab-item>
+              </b-tabs>
+            </b-collapse>
+            <b-collapse
+              v-if="additionalDescription.infoDetail.radio4"
+              v-model="isOpenCollapseFourth"
+              aria-id="contentIdForA11y2"
+              class="panel"
+              animation="slide"
+            >
+              <template #trigger>
+                <div
+                  class="panel-heading"
+                  role="button"
+                  aria-controls="contentIdForA11y2"
+                  :aria-expanded="isOpenCollapseFourth">
+                  <strong>{{ additionalDescription.infoDetail.radio4TabTitle }}</strong>
+                </div>
+              </template>
+              <b-tabs position="is-centered" class="block" style="margin: 0;">
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio4Tab1"
+                  :label="additionalDescription.infoDetail.radio4Tab1"
+                >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio4Tab1Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio4Tab1Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio4Tab2"
+                  :label="additionalDescription.infoDetail.radio4Tab2"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio4Tab2Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio4Tab2Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio4Tab3"
+                  :label="additionalDescription.infoDetail.radio4Tab3"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio4Tab3Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio4Tab3Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio4Tab4"
+                  :label="additionalDescription.infoDetail.radio4Tab4"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio4Tab4Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio4Tab4Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio4Tab5"
+                  :label="additionalDescription.infoDetail.radio4Tab5"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio4Tab5Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio4Tab5Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio4Tab6"
+                  :label="additionalDescription.infoDetail.radio4Tab6"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio4Tab6Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio4Tab6Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio4Tab7"
+                  :label="additionalDescription.infoDetail.radio4Tab7"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio4Tab7Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio4Tab7Contents }}
+                  </div>
+                </b-tab-item>
+                <b-tab-item
+                  v-if="additionalDescription.infoDetail.radio4Tab7"
+                  :label="additionalDescription.infoDetail.radio4Tab7"
+                  >
+                  <div class="panel-block">
+                    <h4>{{ additionalDescription.infoDetail.radio4Tab8Title }}</h4><br>
+                    {{ additionalDescription.infoDetail.radio4Tab8Contents }}
+                  </div>
+                </b-tab-item>              </b-tabs>
+            </b-collapse>
+          </div>
+        </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -172,7 +601,13 @@ export default {
       startTime: null,
       events: [],
       isScheduleDate: false,
-      isDiscloseSales: false
+      isDiscloseSales: false,
+      isCardModalActive: false,
+      radioInfo: 'fourth',
+      isOpenCollapseFirst: false,
+      isOpenCollapseSecond: false,
+      isOpenCollapseThird: false,
+      isOpenCollapseFourth: false
     }
   },
   watch: {
@@ -196,6 +631,29 @@ export default {
             this.isScheduleDate = true
             this.showTooltip = true
           }
+        }
+      }
+    },
+    radioInfo: {
+      handler (val) {
+        console.log(val, 777)
+        this.isOpenCollapseFirst = false
+        this.isOpenCollapseSecond = false
+        this.isOpenCollapseThird = false
+        this.isOpenCollapseFourth = false
+        switch (val) {
+          case 'first':
+            this.isOpenCollapseFirst = true
+            break
+          case 'second':
+            this.isOpenCollapseSecond = true
+            break
+          case 'third':
+            this.isOpenCollapseThird = true
+            break
+          case 'fourth':
+            this.isOpenCollapseFourth = true
+            break
         }
       }
     }

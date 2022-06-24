@@ -134,7 +134,7 @@
         <div class="hero--content" />
       </div>
     </div>
-    <img v-if="!returnMode" class="anime-image" src="/chainwork-top.png" :style="{display: offIcon}" style="width: 75%" >
+    <img v-if="!returnMode" class="anime-image" src="/chainwork-top.png" :style="{display: offIcon}" >
     <small class="bottom-copyright">&copy; Tokyo EM Technology & Co.</small>
     <b-carousel
       v-if="showCarousel"
@@ -659,10 +659,10 @@ export default {
     height: calc(100vh - 70px);
     margin: 0 auto;
     // background: #596470;
-    background: rgba(255, 255, 255, 0.6);
+    background: hsla(240, 100%, 50%, 0.1);
     border-radius: 30px;
     // border: 5px solid rgba(1, 1, 1, .2);
-    border: 3px solid rgba(255, 255, 5, 0.2);
+    border: 2px solid rgba(255, 255, 5, 0.7);
     position: relative;
     overflow: hidden;
   }
@@ -978,7 +978,8 @@ export default {
 
 .anime-image {
   position: absolute;
-  top: 45%;
+  width: 79%;
+  top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   margin: 0 auto;
@@ -1071,13 +1072,7 @@ export default {
     }
 
     .content.top-list {
-      top: 52px;
-      padding-top: 10px;
       margin-bottom: 1.3rem;
-    }
-
-    .searchbar {
-      transform: translateY(10px);
     }
 
     .globe-btn {

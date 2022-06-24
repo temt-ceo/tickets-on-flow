@@ -111,9 +111,9 @@
           <b-dropdown aria-role="list">
             <template #trigger>
               <div class="hamburger">
-                <span />
-                <span />
-                <span />
+                <span style="width: 19px; height: 1.5px;" />
+                <span style="width: 19px; height: 1.5px;" />
+                <span style="width: 19px; height: 1.5px;" />
               </div>
             </template>
             <nuxt-link to="/dispenser/">
@@ -121,6 +121,7 @@
                 <b-icon
                   pack="fa-solid"
                   icon="pen"
+                  style="font-size: 13px; margin-top: 4px;"
                 />
                 <label>{{ $t('hamburger_menu1') }}</label>
               </b-dropdown-item>
@@ -130,6 +131,7 @@
                 <b-icon
                   pack="fa-solid"
                   icon="pen"
+                  style="font-size: 13px; margin-top: 4px;"
                 />
                 <label>{{ $t('hamburger_menu4') }}</label>
               </b-dropdown-item>
@@ -139,7 +141,7 @@
                 <b-icon
                   pack="fa-solid"
                   icon="pen"
-                  style="font-size: 17px;"
+                  style="font-size: 13px; margin-top: 4px;"
                 />
                 <label style="padding-left: 24px;">{{ $t('operation_text55') }}</label>
               </b-dropdown-item>
@@ -148,7 +150,7 @@
               <b-icon
                 pack="fa-solid"
                 icon="eye"
-                style="top: 6px; left: 13px;"
+                style="top: 6px; left: 13px; font-size: 13px; margin-top: 4px;"
               />
               <b-icon
                 pack="fa-solid"
@@ -162,6 +164,7 @@
               <b-icon
                 pack="fa-solid"
                 icon="user"
+                style="font-size: 13px; margin-top: 4px;"
               />
                 <label>{{ $t('hamburger_menu5') }}</label>
               </b-dropdown-item>
@@ -170,6 +173,7 @@
               <b-icon
                 pack="fa-solid"
                 icon="pen-clip"
+                style="font-size: 13px; margin-top: 4px;"
               />
               <label>{{ $t('hamburger_menu2') }}</label>
             </b-dropdown-item>
@@ -177,6 +181,7 @@
               <b-icon
                 pack="fa-solid"
                 icon="cog"
+                style="font-size: 13px; margin-top: 4px;"
               />
               <label>{{ $t('operation_text117') }}</label>
             </b-dropdown-item>
@@ -981,6 +986,10 @@ export default {
   top: 0;
   background-color: #596886 !important;
 
+  .navbar-burger:hover {
+      background-color: rgba(0, 0, 0, 0);
+  }
+
   .navbar-item {
     padding: 0.60rem 0.25rem 0 0.75rem;
 
@@ -1290,7 +1299,6 @@ span.control-label {
 }
 
 .ticket-title {
-  color: #485fc7;
   text-align: center;
   // --typing-steps: 14;
   // overflow: hidden;
@@ -1546,6 +1554,19 @@ tr {
     position: fixed;
     width: 100%;
     max-width: 960px;
+  }
+
+  .tabs.is-centered ul {
+    margin: 0;
+  }
+
+  .collapse.panel:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
+  .panel-heading {
+    padding: 0.4em 0.5em;
+    font-size: 0.9em;
   }
 }
 
