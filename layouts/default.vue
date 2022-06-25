@@ -1034,11 +1034,11 @@ export default {
 
   .notice-icon {
     i {
-      color: #f14668;
+      color: #3e8ed0;
       font-size: 8px;
       position: absolute;
       left: 229px;
-      top: 15px;
+      top: 16px;
       &:before {
         font-size: 8px;
       }

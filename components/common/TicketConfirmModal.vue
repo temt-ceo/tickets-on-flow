@@ -5,7 +5,7 @@
         {{ $t('operation_text75') }}
         <b-button v-if="owner === 0" class="download" type="is-light" icon-right="download" @click="csvDownload" />
       </div>
-      <div v-if="isCompleteDispense" class="text-wrap">
+      <div v-if="isCompleteTransaction" class="text-wrap">
         <b-message type="is-success" has-icon>
           {{ $t('operation_text78') }}
         </b-message>
@@ -19,7 +19,7 @@
           <a :href="transactionScanUrl" target="_blank" class="scanlink">{{ $t('operation_text56') }}</a>
         </p>
       </div>
-      <div v-if="!isCompleteDispense">
+      <div v-if="!isCompleteTransaction">
         <b-table
           :data="displayTicketRequesters"
           :checked-rows.sync="checkedRows"
@@ -75,7 +75,7 @@
             field="paid"
             :label="$t('operation_text103')"
           >
-            <span style="color: #48c78e;">{{ new Number(props.row.paid).toFixed(2) }} $FLOW</span>
+            <span style="color: #48c78e;">{{ Number(props.row.paid).toFixed(2) }} $FLOW</span>
           </b-table-column>
 
           <b-table-column
@@ -86,6 +86,18 @@
           >
             {{ props.row.count }}
           </b-table-column>
+
+          <b-table-column
+            v-if="owner === 0"
+            v-slot="props"
+            field="refund"
+            :label="$t('operation_text127')"
+          >
+            <span v-if="Number(props.row.paid) > 0" class="tag is-warning" style="padding: 0 25px;" @click="refund(props.row.user_id, props.row.paid)">
+              {{ $t('operation_text128') }}
+            </span>
+          </b-table-column>
+
           <template #empty>
             <div class="has-text-centered">
               No applicants yet.
@@ -94,9 +106,9 @@
         </b-table>
         <hr>
         <b-pagination
-          v-if="ticketRequesters && ticketRequesters.length > this.perPage"
+          v-if="ticketRequesters && ticketRequesters.length > perPage"
           v-model="current"
-          :total="this.ticketRequesters.length"
+          :total="ticketRequesters.length"
           :range-before="rangeBefore"
           :range-after="rangeAfter"
           :simple="isSimple"
@@ -179,7 +191,7 @@ export default {
       transactionScanUrl: '',
       isCompleteRegister: false,
       flowscanLink: 'https://testnet.flowscan.org/transaction',
-      isCompleteDispense: false,
+      isCompleteTransaction: false,
       checkedRows: [],
       checkboxPosition: 'left',
       isBordered: false,
@@ -199,7 +211,9 @@ export default {
       waitTransactionComplete: false,
       showCalendar: false,
       date: new Date(),
-      events: []
+      events: [],
+      xDown: null,
+      yDown: null
     }
   },
   watch: {
@@ -253,6 +267,8 @@ export default {
       }, 2000)
     } catch (e) {
     }
+    document.addEventListener('touchstart', this.handleTouchStart, false)
+    document.addEventListener('touchmove', this.handleTouchMove, false)
   },
   methods: {
     dispenseTicket () {
@@ -261,7 +277,7 @@ export default {
           message: this.$t('operation_text125'),
           inputAttrs: {
             type: 'text',
-            placeholder: 'e.g. 100',
+            placeholder: '',
             maxlength: 100
           },
           trapFocus: true,
@@ -292,7 +308,7 @@ export default {
             ).then(this.$fcl.decode)
             this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
             this.waitTransactionComplete = true
-            this.isCompleteDispense = true
+            this.isCompleteTransaction = true
             this.callToast()
             const timerID = setInterval(async () => {
               const newArr = []
@@ -331,7 +347,7 @@ export default {
                   ]
                 ).then(this.$fcl.decode)
                 this.latestMintedTokenId = latestMintedTokenId || 0
-                this.isCompleteDispense = false
+                this.isCompleteTransaction = false
                 this.$buefy.toast.open({
                   duration: 3000,
                   message: this.$t('operation_text114')
@@ -340,6 +356,86 @@ export default {
             }, 4000)
           }
         })
+      } catch (e) {
+      }
+    },
+    refund (userId, paid) {
+      this.$buefy.dialog.prompt({
+        message: this.$t('operation_text129'),
+        inputAttrs: {
+          type: 'text',
+          placeholder: '',
+          maxlength: 5
+        },
+        trapFocus: true,
+        onConfirm: (value) => {
+          const fund = parseFloat(value).toFixed(2)
+          if (Math.abs(String(fund).length - value.length) > 3) {
+            this.$buefy.dialog.alert(this.$t('operation_text130'))
+          } else if (fund > 0 && fund <= Number(paid).toFixed(2)) {
+            this.$buefy.dialog.confirm({
+              message: String(fund) + this.$t('operation_text36'),
+              onConfirm: () => {
+                this.refundTransaction(fund, userId, paid)
+              }
+            })
+          } else if (fund > 0 && fund > Number(paid).toFixed(2)) {
+            this.$buefy.dialog.alert(this.$t('operation_text131'))
+          } else {
+            this.$buefy.dialog.alert(this.$t('operation_text130'))
+          }
+        }
+      })
+    },
+    async refundTransaction (fund, userId, totalPaid) {
+      try {
+        // loading
+        const loadingComponent = this.$buefy.loading.open({
+          container: null
+        })
+        setTimeout(() => loadingComponent.close(), 3 * 1000)
+        const transactionId = await this.$fcl.send(
+          [
+            this.$fcl.transaction(FlowTransactions.refund),
+            this.$fcl.args([
+              this.$fcl.arg(this.address, this.$fclArgType.Address),
+              this.$fcl.arg(String(userId), this.$fclArgType.UInt32),
+              this.$fcl.arg(String(fund), this.$fclArgType.UFix64)
+            ]),
+            this.$fcl.payer(this.$fcl.authz),
+            this.$fcl.proposer(this.$fcl.authz),
+            this.$fcl.authorizations([this.$fcl.authz]),
+            this.$fcl.limit(9999)
+          ]
+        ).then(this.$fcl.decode)
+        this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+        this.waitTransactionComplete = true
+        this.isCompleteTransaction = true
+        this.callToast()
+        const timerID = setInterval(async () => {
+          const ticketRequesters = await this.$fcl.send(
+            [
+              this.$fcl.script(FlowScripts.getTicketRequesters),
+              this.$fcl.args([
+                this.$fcl.arg(this.address, this.$fclArgType.Address)
+              ])
+            ]
+          ).then(this.$fcl.decode)
+          const keys = Object.keys(ticketRequesters)
+          keys.forEach((key) => {
+            if (ticketRequesters[key].crowdfunding === false && ticketRequesters[key].user_id === userId) {
+              if (parseFloat(ticketRequesters[key].paid) < parseFloat(totalPaid)) {
+                clearInterval(timerID)
+                this.waitTransactionComplete = false
+                this.isCompleteTransaction = false
+                this.$buefy.toast.open({
+                  duration: 3000,
+                  message: this.$t('operation_text114')
+                })
+              }
+            }
+          })
+        }, 4000)
       } catch (e) {
       }
     },
@@ -389,6 +485,46 @@ export default {
       link.setAttribute('download', 'sales_list.csv')
       document.body.appendChild(link)
       link.click()
+    },
+    getTouches (evt) {
+      return evt.touches || evt.originalEvent.touches // browser API || jQuery
+    },
+    handleTouchStart (evt) {
+      const firstTouch = this.getTouches(evt)[0]
+      this.xDown = firstTouch.clientX
+      this.yDown = firstTouch.clientY
+    },
+    handleTouchMove (evt) {
+      if (!this.xDown || !this.yDown) {
+        return
+      }
+
+      const xUp = evt.touches[0].clientX
+      const yUp = evt.touches[0].clientY
+
+      const xDiff = this.xDown - xUp
+      const yDiff = this.yDown - yUp
+
+      if (Math.abs(xDiff) > Math.abs(yDiff)) { /* most significant */
+        /* right swipe */
+        if (this.current * this.perPage < this.ticketRequesters.length && xDiff > 15) {
+          this.current++
+        /* left swipe */
+        } else if (this.current > 1 && xDiff < -15) {
+          this.current--
+        }
+      // } else {
+      //   if (yDiff > 0) {
+      //     /* down swipe */
+      //     console.log('down----->>>')
+      //   } else {
+      //     /* up swipe */
+      //     console.log('up----->>>')
+      //   }
+      }
+      /* reset values */
+      this.xDown = null
+      this.yDown = null
     }
   }
 }

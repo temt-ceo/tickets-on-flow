@@ -199,13 +199,13 @@ transaction() {
 import FlowToken from 0x7e60df042a9c0868
 import FungibleToken from 0x9a0766d93b6608b7
 import TicketsV22 from 0xT
-transaction(dispenser_id: UInt32, addr: Address, user_id: UInt32, fund: UFix64) {
+transaction(addr: Address, user_id: UInt32, fund: UFix64) {
     prepare(signer: AuthAccount) {
         let dispenserVault = signer.borrow<&TicketsV22.DispenserVault>(from: /storage/TicketsV22DispenserVault)
             ?? panic("Could not borrow reference to the Owner's DispenserVault.")
 
         let repayment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: fund) as! @FlowToken.Vault
-        dispenserVault.refund(dispenser_id: dispenser_id, address: addr, user_id: user_id, repayment: <- repayment)
+        dispenserVault.refund(dispenser_id: dispenserVault.getId(), address: addr, user_id: user_id, repayment: <- repayment)
   }
 
   execute {

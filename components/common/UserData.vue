@@ -13,7 +13,7 @@
       class="notice-icon"
       icon="circle"
       size="medium"
-      type="is-warning"
+      type="is-info"
     />
 
     <b-modal v-model="showConfirmModal">
@@ -265,7 +265,7 @@ export default {
         onConfirm: async () => {
           await this.$fcl.unauthenticate()
           this.$buefy.toast.open({
-            message: 'Logged out.',
+            message: 'Signed out.',
             queue: false
           })
           setTimeout(() => {
