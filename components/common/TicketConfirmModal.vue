@@ -43,10 +43,7 @@
             :th-attrs="dateThAttrs"
             centered
           >
-            <span v-if="owner === 0" class="tag is-success" @click="showSchedule(props.row.time)">
-              {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
-            </span>
-            <span v-if="owner === 1">
+            <span class="tag is-success" @click="showSchedule(props.row.time)">
               {{ new Date(parseInt(props.row.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(props.row.time) * 1000).toLocaleTimeString() }}
             </span>
           </b-table-column>
@@ -153,9 +150,9 @@
       inline
       :events="events"
       indicators="dots"
-      style="position: absolute; width: 100%; top: 8%;"
+      style="position: absolute; width: 100%; top: 8%; text-align: center;"
     />
-    <b-button v-if="showCalendar" type="is-danger" style="width: 350px; margin: 0 auto;" @click="hideSchedule">
+    <b-button v-if="showCalendar" type="is-danger" style="width: 100%; margin: 0px auto; position: absolute; bottom: 0; margin: 0 auto;" @click="hideSchedule">
       Close
     </b-button>
   </div>
@@ -507,10 +504,10 @@ export default {
 
       if (Math.abs(xDiff) > Math.abs(yDiff)) { /* most significant */
         /* right swipe */
-        if (this.current * this.perPage < this.ticketRequesters.length && xDiff > 15) {
+        if (this.current * this.perPage < this.ticketRequesters.length && xDiff > 0) {
           this.current++
         /* left swipe */
-        } else if (this.current > 1 && xDiff < -15) {
+        } else if (this.current > 1 && xDiff < 0) {
           this.current--
         }
       // } else {
@@ -535,7 +532,7 @@ export default {
 .modal-card {
   width: auto;
 
-  .modal-card-body {
+  .modal-card-body.ticket-confirm-modal {
 
     .text-wrap {
       color: #222;
@@ -618,4 +615,10 @@ export default {
     }
   }
 }
+@media screen and (min-width: 769px) {
+  .modal-card-body.ticket-confirm-modal {
+    min-height: 650px;
+  }
+}
+
 </style>

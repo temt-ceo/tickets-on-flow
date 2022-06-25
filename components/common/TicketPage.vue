@@ -459,59 +459,58 @@ export default {
                 /**
                  * チケット未使用時の、チケット使用可否判定ここから
                  */
-                // const weekdays = this.ticketWhenWeek.split('').sort().join('')
-                // const ticketCreatedTime = await this.getTicketCreatedTime()
-                // // チケットを配布した時
-                // const createdTime = parseInt(ticketCreatedTime.replace(/.0+$/, '')) * 1000
-                // // チケットを配布した時の曜日を取得
-                // const day = new Date(createdTime).getDay()
-                // // Mondayを0にしたので合わせる
-                // day = day - 1 < 0 ? 6 : day - 1
-                // let match = false
-                // let scheduledDay = 0
-                // while (!match) {
-                //   for (let i = 0; i < weekdays.length; i++) {
-                //     const registeredDay = parseInt(weekdays.substr(i, 1))
-                //     // チケットを配布した時の曜日が繰り返し日に含まれているか
-                //     if (registeredDay === day) {
-                //       match = true
-                //     }
-                //   }
-                //   day = day + 1 > 6 ? 0 : day + 1
-                //   if (scheduledDay > 6) {
-                //     match = true // 繰り返しがないケース
-                //   }
-                //   if (!match) {
-                //     scheduledDay++
-                //   }
-                // }
+                const weekdays = this.ticketWhenWeek.split('').sort().join('')
+                const ticketCreatedTime = await this.getTicketCreatedTime()
+                // チケットを配布した時
+                const createdTime = parseInt(ticketCreatedTime.replace(/.0+$/, '')) * 1000
+                // チケットを配布した時の曜日を取得
+                let day = new Date(createdTime).getDay()
+                // Mondayを0にしたので合わせる
+                day = day - 1 < 0 ? 6 : day - 1
+                let match = false
+                let scheduledDay = 0
+                while (!match) {
+                  for (let i = 0; i < weekdays.length; i++) {
+                    const registeredDay = parseInt(weekdays.substr(i, 1))
+                    // チケットを配布した時の曜日が繰り返し日に含まれているか
+                    if (registeredDay === day) {
+                      match = true
+                    }
+                  }
+                  day = day + 1 > 6 ? 0 : day + 1
+                  if (scheduledDay > 6) {
+                    match = true // 繰り返しがないケース
+                  }
+                  if (!match) {
+                    scheduledDay++
+                  }
+                }
 
-                // // 繰り返しがある場合
-                // if (scheduledDay <= 6) {
-                //     /**
-                //      * チケットを配布した時から次のイベントが始まるまでの時間を足し、それが1時間を超えていれば失効
-                //      */
-                //     const nextEventDate = new Date(new Date(createdTime).getTime() + scheduledDay * 24 * 60 * 60 * 1000)
-                //     const dayEvent = new Date(this.ticketWhenTime)
-                //     const eventTime = new Date(nextEventDate.getFullYear(), nextEventDate.getMonth(), nextEventDate.getDate(), dayEvent.getHours(), dayEvent.getMinutes(), dayEvent.getSeconds())
-                //     const unixTime = parseInt((new Date(eventTime).getTime() - new Date().getTime()) / 1000)
-                //     if (unixTime < 3600) {
-                //       // 1時間以上経過
-                //       this.ticketStatus = 1 // 新しくリクエストできる
-                //     } else{
-                //       this.ticketStatus = 3 // 1時間経過まではチケットを使用可能
-                //     }
-
-                // } else {
-                //   // 繰り返しがない
-                //   const unixTime = parseInt((new Date(this.ticketWhenTime).getTime() - new Date().getTime()) / 1000)
-                //   if (unixTime < 3600) {
-                //     // 1時間以上経過
-                //     this.ticketStatus = 1 // 新しくリクエストできる
-                //   } else{
-                //     this.ticketStatus = 3 // 1時間経過まではチケットを使用可能
-                //   }
-                // }
+                // 繰り返しがある場合
+                if (scheduledDay <= 6) {
+                  /**
+                   * チケットを配布した時から次のイベントが始まるまでの時間を足し、それが1時間を超えていれば失効
+                   */
+                  const nextEventDate = new Date(new Date(createdTime).getTime() + scheduledDay * 24 * 60 * 60 * 1000)
+                  const dayEvent = new Date(this.ticketWhenTime)
+                  const eventTime = new Date(nextEventDate.getFullYear(), nextEventDate.getMonth(), nextEventDate.getDate(), dayEvent.getHours(), dayEvent.getMinutes(), dayEvent.getSeconds())
+                  const unixTime = parseInt((new Date(eventTime).getTime() - new Date().getTime()) / 1000)
+                  if (unixTime < 3600) {
+                    // 1時間以上経過
+                    this.ticketStatus = 1 // 新しくリクエストできる
+                  } else {
+                    this.ticketStatus = 3 // 1時間経過まではチケットを使用可能
+                  }
+                } else {
+                  // 繰り返しがない
+                  const unixTime = parseInt((new Date(this.ticketWhenTime).getTime() - new Date().getTime()) / 1000)
+                  if (unixTime < 3600) {
+                    // 1時間以上経過
+                    this.ticketStatus = 1 // 新しくリクエストできる
+                  } else {
+                    this.ticketStatus = 3 // 1時間経過まではチケットを使用可能
+                  }
+                }
                 /**
                  * チケット未使用時の、チケット使用可否判定ここまで
                  */
@@ -699,6 +698,7 @@ export default {
           }
           if (this.hasTicketVault) {
             const data = await this.getLatestMintedTokenId()
+            console.log(data, 777)
             if (data === null || data === undefined) {
               this.noticeTitle = this.$t('operation_text112') + '\r\n' + this.$t('operation_text32').replace('<br>', '\r\n')
               this.ticketStatus = 2
@@ -999,6 +999,23 @@ export default {
 
       return result
     },
+    async getTicketCreatedTime () {
+      const result = await this.$fcl.send(
+        [
+          this.$fcl.script(FlowScripts.getTicketCreatedTime),
+          this.$fcl.args([
+            this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
+            this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32)
+          ])
+        ]
+      ).then(this.$fcl.decode)
+      if (result && Object.keys(result).length > 0) {
+        this.ticketTokenId = parseInt(Object.keys(result)[0])
+        return result[this.ticketTokenId]
+      }
+
+      return result
+    },
     async getTickets () {
       try {
         const tickets = await this.$fcl.send(
@@ -1032,11 +1049,13 @@ export default {
         if (ticketRequesters[key].crowdfunding === true) {
           ticketRequesters[key].number = number
           this.crowdfundingData.push(ticketRequesters[key])
+          this.crowdfundingData.sort((a, b) => parseInt(b.time) - parseInt(a.time))
           number++
         }
         // チケット売上
         if (ticketRequesters[key].crowdfunding === false) {
           this.ticketSalesData.push(ticketRequesters[key])
+          this.ticketSalesData.sort((a, b) => parseInt(b.time) - parseInt(a.time))
         }
       })
       this.showSalesModal = true

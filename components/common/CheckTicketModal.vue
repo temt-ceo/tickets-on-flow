@@ -722,6 +722,7 @@ export default {
       this.$emit('eventname')
     },
     showSchedule () {
+      this.events = []
       if (parseInt(this.ticket.type) === 0) {
         // Mondayが0
         const weekdays = this.ticketWhen0.split('')

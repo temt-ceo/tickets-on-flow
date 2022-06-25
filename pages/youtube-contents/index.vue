@@ -21,8 +21,8 @@
           </h4>
           <p class="explanation-content">
             {{ $t('terms_of_use19') }}<br>
-            {{ $t('terms_of_use20') }}<br>
             {{ $t('terms_of_use21') }}<br>
+            {{ $t('terms_of_use20') }}<br>
             {{ $t('terms_of_use22') }}<br>
             {{ $t('terms_of_use23') }}<br>
             {{ $t('terms_of_use24') }}
@@ -49,6 +49,18 @@
             {{ $t('terms_of_use36') }}<br>
             {{ $t('terms_of_use37') }}<br>
             {{ $t('terms_of_use38') }}
+          </p>
+          <hr>
+          <p class="explanation-content">
+            {{ $t('terms_of_use48') }} {{ $t('terms_of_use49') }}<br>
+            {{ $t('terms_of_use50') }}<br>
+            {{ $t('terms_of_use51') }}<br>
+            {{ $t('terms_of_use52') }}<br>
+            {{ $t('terms_of_use53') }}<br>
+            {{ $t('terms_of_use54') }}<br>
+            {{ $t('terms_of_use55') }}<br>
+            {{ $t('terms_of_use56') }}<br>
+            {{ $t('terms_of_use57') }}<br>
           </p>
         </div>
         <div class="row about-cols" style="max-width: 760px; margin: 0 auto;">
@@ -88,18 +100,6 @@
             {{ $t('terms_of_use46') }}<br>
             {{ $t('terms_of_use47') }}
           </p>
-          <hr>
-          <p class="explanation-content">
-            {{ $t('terms_of_use48') }} {{ $t('terms_of_use49') }}<br>
-            {{ $t('terms_of_use50') }}<br>
-            {{ $t('terms_of_use51') }}<br>
-            {{ $t('terms_of_use52') }}<br>
-            {{ $t('terms_of_use53') }}<br>
-            {{ $t('terms_of_use54') }}<br>
-            {{ $t('terms_of_use55') }}<br>
-            {{ $t('terms_of_use56') }}<br>
-            {{ $t('terms_of_use57') }}<br>
-          </p>
         </div>
         <div class="row about-cols" style="max-width: 760px; margin: 0 auto;">
           <div class="col-md-4 wow fadeInUp">
@@ -129,7 +129,6 @@
             {{ $t('terms_of_use59') }}<br>
             {{ $t('terms_of_use60') }}<br>
             {{ $t('terms_of_use61') }}<br>
-            {{ $t('terms_of_use62') }}<br>
             {{ $t('terms_of_use63') }}<br>
             {{ $t('terms_of_use64') }} {{ $t('terms_of_use65') }}<br>
             {{ $t('terms_of_use66') }}

@@ -205,10 +205,12 @@ export default {
                 // クラウドファンディング利益分
                 if (ticketRequesters[key].crowdfunding === true) {
                   this.crowdfundingData.push(ticketRequesters[key])
+                  this.crowdfundingData.sort((a, b) => parseInt(b.time) - parseInt(a.time))
                 }
                 // チケット売上
                 if (ticketRequesters[key].crowdfunding === false) {
                   this.ticketSalesData.push(ticketRequesters[key])
+                  this.ticketSalesData.sort((a, b) => parseInt(b.time) - parseInt(a.time))
                 }
               })
             }
