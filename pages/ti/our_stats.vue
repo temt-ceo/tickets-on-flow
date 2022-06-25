@@ -642,7 +642,7 @@ export default {
         if (myStat && myStat[this.selectedIndex] && parseInt(myStat[this.selectedIndex].update_count) === expectedUpdateCount) {
           this.noticeTitle = this.$t('operation_text65')
           if (this.switchShare === this.$t('operation_text82')) {
-            this.statLinkPage = 'https://tickets-on-flow.web.app/ti/our_stats?link=' + this.bloctoWalletUser.addr.split('').slice(5, 15).reverse().join('')
+            this.statLinkPage = 'https://chain-work.com/ti/our_stats?link=' + this.bloctoWalletUser.addr.split('').slice(5, 15).reverse().join('')
           }
           this.waitTransactionComplete = false
           clearInterval(timerID)

@@ -81,7 +81,7 @@ export default {
         file: 'ko-KR.js'
       }
     ],
-    baseUrl: 'https://tickets-on-flow.web.app/',
+    baseUrl: 'https://chain-work.com/',
     defaultLocale: 'en',
     langDir: 'lang/',
     lazy: true,

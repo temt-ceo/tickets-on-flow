@@ -164,7 +164,7 @@ export default {
             const keys = Object.keys(ownedTicket)
             keys.forEach((key) => {
               if (ownedTicket[key].readable_code) {
-                ownedTicket[key].readable_code = ownedTicket[key].readable_code.replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
+                ownedTicket[key].readable_code = ownedTicket[key].readable_code.replace(/^elffab/, '').replace(/@chain-work.com$/, '').split('').reverse().join('')
               }
               const ticketInfo = this.tickets.find(obj => obj.dispenser_id === ownedTicket[key].dispenser_id)
               const ticketName = ticketInfo.name?.split('||@')

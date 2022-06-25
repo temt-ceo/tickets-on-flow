@@ -130,7 +130,7 @@
               <i class="ion-ios-bookmarks-outline" />
             </div>
             <h4 class="title">
-              <a href="https://tickets-on-flow.web.app/?m=developer">Tickets</a>
+              <a href="https://chain-work.com/?m=developer">Tickets</a>
             </h4>
             <p class="description">
               The bussiness application built on Flow Blockchain.

@@ -508,7 +508,7 @@ export default {
                 let ticketTitle = null
                 let ticketDescription = null
                 switch (ticket.domain) {
-                  case 'dispenser002':
+                  case 'zm':
                     ticketTitle = this.$t('special_title1')
                     ticketDescription = this.$t('special_description1')
                     break
@@ -581,12 +581,12 @@ export default {
               style: 'color1',
               type: 'stats'
             }
-            const arr = this.tickets
-            this.tickets = []
-            this.tickets.push(data)
-            arr.forEach((obj) => {
-              this.tickets.push(obj)
-            })
+            // const arr = this.tickets
+            // this.tickets = []
+            this.tickets.unshift(data)
+            // arr.forEach((obj) => {
+            //   this.tickets.push(obj)
+            // })
 
             this.ticketsBkup.unshift(data)
           }, 3000)

@@ -218,7 +218,7 @@ export default {
 
       this.ticketRequesterArray.forEach((row) => {
         const datetime = new Date(parseInt(row.time) * 1000).toLocaleDateString() + ' ' + new Date(parseInt(row.time) * 1000).toLocaleTimeString()
-        const rowArray = ['https://tickets-on-flow.web.app/ti/' + row.domain, '@' + row.dispenser_name, row.count, parseFloat(row.paid).toFixed(2).toString() + ' FLOW', datetime]
+        const rowArray = ['https://chain-work.com/ti/' + row.domain, '@' + row.dispenser_name, row.count, parseFloat(row.paid).toFixed(2).toString() + ' FLOW', datetime]
         csvContent += rowArray.join(',') + '\r\n'
       })
       const encodedUri = encodeURI(csvContent)

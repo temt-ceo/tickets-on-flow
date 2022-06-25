@@ -1,7 +1,7 @@
 import FlowToken from 0x7e60df042a9c0868
 import FungibleToken from 0x9a0766d93b6608b7
 
-pub contract TicketsV20 {
+pub contract TicketsV22 {
   // Events
   pub event DispenserRequested(dispenser_id: UInt32, address: Address)
   pub event DispenserGranted(dispenser_id: UInt32, address: Address)
@@ -105,12 +105,12 @@ pub contract TicketsV20 {
   
     pub fun mintDispenser(dispenser_id: UInt32, address: Address): @Dispenser {
       pre {
-        TicketsV20.dispenserOwners[dispenser_id] != nil : "Requested address is not in previously requested list."
-        TicketsV20.dispenserOwners[dispenser_id]!.grant == false : "Requested address is already minted."
+        TicketsV22.dispenserOwners[dispenser_id] != nil : "Requested address is not in previously requested list."
+        TicketsV22.dispenserOwners[dispenser_id]!.grant == false : "Requested address is already minted."
       }
-      if let data = TicketsV20.dispenserOwners[dispenser_id] {
+      if let data = TicketsV22.dispenserOwners[dispenser_id] {
         data.grant = true
-        TicketsV20.dispenserOwners[dispenser_id] = data
+        TicketsV22.dispenserOwners[dispenser_id] = data
       }
       emit DispenserGranted(dispenser_id: dispenser_id, address: address)
       return <- create Dispenser()
@@ -127,7 +127,7 @@ pub contract TicketsV20 {
     // [public access]
     pub fun getDispenserRequesters(): [DispenserStruct] {
       var dispenserArr: [DispenserStruct] = []
-      for data in TicketsV20.dispenserOwners.values {
+      for data in TicketsV22.dispenserOwners.values {
         if (data.grant == false) {
           dispenserArr.append(data)
         }
@@ -139,7 +139,7 @@ pub contract TicketsV20 {
     // [public access]
     pub fun getAllDispensers(): [DispenserStruct] {
       var dispenserArr: [DispenserStruct] = []
-      for data in TicketsV20.dispenserOwners.values {
+      for data in TicketsV22.dispenserOwners.values {
         dispenserArr.append(data)
       }
 
@@ -151,7 +151,7 @@ pub contract TicketsV20 {
 
     // [public access]
     pub fun getTicketRequesters(dispenser_id: UInt32): {UInt32: RequestStruct}? {
-      return TicketsV20.ticketRequesters[dispenser_id]
+      return TicketsV22.ticketRequesters[dispenser_id]
     }
   }
 
@@ -168,9 +168,9 @@ pub contract TicketsV20 {
 
     pub fun mintTicket(secret_code: String, dispenser_id: UInt32, user_id: UInt32): @Ticket {
       let token <- create Ticket(secret_code: secret_code, dispenser_id: dispenser_id)
-      if(TicketsV20.ticketRequesters.containsKey(dispenser_id)) {
-        if let data = TicketsV20.ticketRequesters[dispenser_id]![user_id] {
-          let ref = &TicketsV20.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
+      if(TicketsV22.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = TicketsV22.ticketRequesters[dispenser_id]![user_id] {
+          let ref = &TicketsV22.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
           ref.latest_token = token.getId()
           self.last_token_id = token.getId()
         }
@@ -179,20 +179,20 @@ pub contract TicketsV20 {
     }
 
     pub fun addTicketInfo(dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64, flow_vault_receiver: Capability<&FlowToken.Vault{FungibleToken.Receiver}>) {
-      let domain = TicketsV20.dispenserOwners[dispenser_id]!.domain
+      let domain = TicketsV22.dispenserOwners[dispenser_id]!.domain
       let ticket = TicketStruct(dispenser_id: dispenser_id, domain: domain, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, price: price)
-      TicketsV20.ticketInfo.append(ticket)
-      if (TicketsV20.DispenserFlowTokenVault[dispenser_id] == nil) {
-        TicketsV20.DispenserFlowTokenVault[dispenser_id] = flow_vault_receiver
+      TicketsV22.ticketInfo.append(ticket)
+      if (TicketsV22.DispenserFlowTokenVault[dispenser_id] == nil) {
+        TicketsV22.DispenserFlowTokenVault[dispenser_id] = flow_vault_receiver
       }
     }
 
     pub fun updateTicketInfo(index: UInt32, dispenser_id: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64) {
-      let domain = TicketsV20.dispenserOwners[dispenser_id]!.domain
+      let domain = TicketsV22.dispenserOwners[dispenser_id]!.domain
       let ticket = TicketStruct(dispenser_id: dispenser_id, domain: domain, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, price: price)
-      let existTicket = TicketsV20.ticketInfo.remove(at: index)
+      let existTicket = TicketsV22.ticketInfo.remove(at: index)
       if (existTicket.dispenser_id == dispenser_id) {
-        TicketsV20.ticketInfo.insert(at: index, ticket)
+        TicketsV22.ticketInfo.insert(at: index, ticket)
       } else {
         panic("Something is not going right.")
       }
@@ -260,7 +260,7 @@ pub contract TicketsV20 {
 
     // [public access]
     pub fun getTicketRequesters(): {UInt32: RequestStruct}? {
-      return TicketsV20.ticketRequesters[self.dispenser_id]
+      return TicketsV22.ticketRequesters[self.dispenser_id]
     }
 
     // [public access]
@@ -284,23 +284,23 @@ pub contract TicketsV20 {
     }
 
     // [private access]
-    pub fun refund(dispenser_id: UInt32, address: addr, user_id: UInt32, repayment: @FlowToken.Vault): {
+    pub fun refund(dispenser_id: UInt32, address: Address, user_id: UInt32, repayment: @FlowToken.Vault) {
       pre {
-        repayment.balance > 0: "refund is not set."
-        TicketsV20.UserFlowTokenVault[user_id] != nil: "The beneficiary has not yet set up the Vault."
-        TicketsV20.ticketRequesters.containsKey(user_id): "Sender has not right to refund."
-        TicketsV20.ticketRequesters[dispenser_id]!.containsKey(user_id): "Sender has not right to refund."
-        TicketsV20.ticketRequesters[dispenser_id]![user_id]!.paid >= repayment.balance: "refund is larger than paid amount."
+        repayment.balance > 0.0: "refund is not set."
+        TicketsV22.UserFlowTokenVault[user_id] != nil: "The beneficiary has not yet set up the Vault."
+        TicketsV22.ticketRequesters.containsKey(user_id): "Sender has not right to refund."
+        TicketsV22.ticketRequesters[dispenser_id]!.containsKey(user_id): "Sender has not right to refund."
+        TicketsV22.ticketRequesters[dispenser_id]![user_id]!.paid >= repayment.balance: "refund is larger than paid amount."
       }
 
       let fund: UFix64 = repayment.balance
-      if(TicketsV20.ticketRequesters.containsKey(dispenser_id)) {
-        if let data = TicketsV20.ticketRequesters[dispenser_id]![user_id] {
-          let ref = &TicketsV20.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
+      if(TicketsV22.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = TicketsV22.ticketRequesters[dispenser_id]![user_id] {
+          let ref = &TicketsV22.ticketRequesters[dispenser_id]![user_id]! as &RequestStruct
           ref.paid = data.paid - fund // refund
         }
       }
-      TicketsV20.UserFlowTokenVault[user_id]!.borrow()!.deposit(from: <- repayment)
+      TicketsV22.UserFlowTokenVault[user_id]!.borrow()!.deposit(from: <- repayment)
       emit Refund(dispenser_id: dispenser_id, user_id: user_id, address: address, amount: fund)
     }
 
@@ -310,13 +310,13 @@ pub contract TicketsV20 {
 
     init(_ address: Address, _ domain: String, _ description: String, _ paid: UFix64) {
       // TotalSupply
-      self.dispenser_id = TicketsV20.totalDispenserVaultSupply + 1
-      TicketsV20.totalDispenserVaultSupply = TicketsV20.totalDispenserVaultSupply + 1
+      self.dispenser_id = TicketsV22.totalDispenserVaultSupply + 1
+      TicketsV22.totalDispenserVaultSupply = TicketsV22.totalDispenserVaultSupply + 1
 
       // Event, Data
       emit DispenserRequested(dispenser_id: self.dispenser_id, address: address)
       self.ownedDispenser <- nil
-      TicketsV20.dispenserOwners[self.dispenser_id] = DispenserStruct(dispenser_id: self.dispenser_id, address: address, domain: domain, description: description, paid: paid, grant: false)
+      TicketsV22.dispenserOwners[self.dispenser_id] = DispenserStruct(dispenser_id: self.dispenser_id, address: address, domain: domain, description: description, paid: paid, grant: false)
     }
   }
 
@@ -328,7 +328,7 @@ pub contract TicketsV20 {
       payment.balance >= 0.3: "Payment is not sufficient"
     }
     let paid: UFix64 = payment.balance
-    TicketsV20.FlowTokenVault.borrow()!.deposit(from: <- payment)
+    TicketsV22.FlowTokenVault.borrow()!.deposit(from: <- payment)
     return <- create DispenserVault(address, domain, description, paid)
   }
 
@@ -379,8 +379,8 @@ pub contract TicketsV20 {
 
     init(secret_code: String, dispenser_id: UInt32) {
       // TotalSupply
-      self.token_id = TicketsV20.totalTicketSupply + 1
-      TicketsV20.totalTicketSupply = TicketsV20.totalTicketSupply + 1
+      self.token_id = TicketsV22.totalTicketSupply + 1
+      TicketsV22.totalTicketSupply = TicketsV22.totalTicketSupply + 1
 
       // Event, Data
       self.dispenser_id = dispenser_id
@@ -411,7 +411,7 @@ pub contract TicketsV20 {
     pub fun getId(): UInt32
     pub fun getCode(dispenser_id: UInt32): {UInt64: String}?
     pub fun getUsedTime(dispenser_id: UInt32): {UInt64: UFix64??}?
-    pub fun getCreatedTime(dispenser_id: UInt32): {UInt64: UFix64}?
+    pub fun getCreatedTime(dispenser_id: UInt32): {UInt64: UFix64?}?
   }
 
   /*
@@ -438,8 +438,8 @@ pub contract TicketsV20 {
 
     // [public access]
     pub fun getCode(dispenser_id: UInt32): {UInt64: String}? {
-      if(TicketsV20.ticketRequesters.containsKey(dispenser_id)) {
-        if let data = TicketsV20.ticketRequesters[dispenser_id]![self.user_id] {
+      if(TicketsV22.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = TicketsV22.ticketRequesters[dispenser_id]![self.user_id] {
           if (data.latest_token == nil) {
             return nil
           }
@@ -452,8 +452,8 @@ pub contract TicketsV20 {
 
     // [public access]
     pub fun getUsedTime(dispenser_id: UInt32): {UInt64: UFix64??}? {
-      if(TicketsV20.ticketRequesters.containsKey(dispenser_id)) {
-        if let data = TicketsV20.ticketRequesters[dispenser_id]![self.user_id] {
+      if(TicketsV22.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = TicketsV22.ticketRequesters[dispenser_id]![self.user_id] {
           if (data.latest_token == nil) {
             return nil
           }
@@ -465,9 +465,9 @@ pub contract TicketsV20 {
     }
 
     // [public access]
-    pub fun getCreatedTime(dispenser_id: UInt32): {UInt64: UFix64}? {
-      if(TicketsV20.ticketRequesters.containsKey(dispenser_id)) {
-        if let data = TicketsV20.ticketRequesters[dispenser_id]![self.user_id] {
+    pub fun getCreatedTime(dispenser_id: UInt32): {UInt64: UFix64?}? {
+      if(TicketsV22.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = TicketsV22.ticketRequesters[dispenser_id]![self.user_id] {
           if (data.latest_token == nil) {
             return nil
           }
@@ -481,9 +481,9 @@ pub contract TicketsV20 {
     // [private access]
     pub fun requestTicket(dispenser_id: UInt32, address: Address) {
       let time = getCurrentBlock().timestamp
-      if (TicketsV20.ticketRequesters.containsKey(dispenser_id)) {
-        if let data = TicketsV20.ticketRequesters[dispenser_id]![self.user_id] {
-          let ref = &TicketsV20.ticketRequesters[dispenser_id]![self.user_id]! as &RequestStruct
+      if (TicketsV22.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = TicketsV22.ticketRequesters[dispenser_id]![self.user_id] {
+          let ref = &TicketsV22.ticketRequesters[dispenser_id]![self.user_id]! as &RequestStruct
           ref.count = data.count + 1
           ref.time = time
           ref.latest_token = nil
@@ -491,14 +491,14 @@ pub contract TicketsV20 {
           emit TicketRequested(dispenser_id: dispenser_id, user_id: self.user_id, address: address)
         } else {
           let requestStruct = RequestStruct(time: time, user_id: self.user_id, address: address, crowdfunding: false)
-          if let data = TicketsV20.ticketRequesters[dispenser_id] {
+          if let data = TicketsV22.ticketRequesters[dispenser_id] {
             data[self.user_id] = requestStruct
-            TicketsV20.ticketRequesters[dispenser_id] = data
+            TicketsV22.ticketRequesters[dispenser_id] = data
           }
         }
       } else {
         let requestStruct = RequestStruct(time: time, user_id: self.user_id, address: address, crowdfunding: false)
-        TicketsV20.ticketRequesters[dispenser_id] = {self.user_id: requestStruct}
+        TicketsV22.ticketRequesters[dispenser_id] = {self.user_id: requestStruct}
       }
     }
 
@@ -506,36 +506,36 @@ pub contract TicketsV20 {
     pub fun useTicket(dispenser_id: UInt32, token_id: UInt64, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault) {
       pre {
         fee.balance > (fee.balance + payment.balance) * 0.024: "fee is less than 2.5%."
-        TicketsV20.DispenserFlowTokenVault[dispenser_id] != nil: "Receiver is not set."
-        TicketsV20.ticketRequesters.containsKey(dispenser_id): "Ticket is not requested."
-        TicketsV20.ticketRequesters[dispenser_id]![self.user_id]!.crowdfunding == false : "crowdfunding cannot use ticket with fee."
+        TicketsV22.DispenserFlowTokenVault[dispenser_id] != nil: "Receiver is not set."
+        TicketsV22.ticketRequesters.containsKey(dispenser_id): "Ticket is not requested."
+        TicketsV22.ticketRequesters[dispenser_id]![self.user_id]!.crowdfunding == false : "crowdfunding cannot use ticket with fee."
       }
 
       let price: UFix64 = payment.balance + fee.balance
-      if(TicketsV20.ticketRequesters.containsKey(dispenser_id)) {
-        if let data = TicketsV20.ticketRequesters[dispenser_id]![self.user_id] {
-          let ref = &TicketsV20.ticketRequesters[dispenser_id]![self.user_id]! as &RequestStruct
+      if(TicketsV22.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = TicketsV22.ticketRequesters[dispenser_id]![self.user_id] {
+          let ref = &TicketsV22.ticketRequesters[dispenser_id]![self.user_id]! as &RequestStruct
           ref.paid = data.paid + price
         }
       }
       self.ownedTicket[token_id]?.useTicket(price: price)
-      TicketsV20.FlowTokenVault.borrow()!.deposit(from: <- fee)
-      TicketsV20.DispenserFlowTokenVault[dispenser_id]!.borrow()!.deposit(from: <- payment)
+      TicketsV22.FlowTokenVault.borrow()!.deposit(from: <- fee)
+      TicketsV22.DispenserFlowTokenVault[dispenser_id]!.borrow()!.deposit(from: <- payment)
       emit TicketUsed(dispenser_id: dispenser_id, user_id: self.user_id, token_id: token_id, address: address, price: price)
     }
 
     // [private access]
     pub fun prepareCrowdfund(dispenser_id: UInt32, address: Address) {
       let time = getCurrentBlock().timestamp
-      if (!TicketsV20.ticketRequesters.containsKey(dispenser_id)) {
+      if (!TicketsV22.ticketRequesters.containsKey(dispenser_id)) {
         let requestStruct = RequestStruct(time: time, user_id: self.user_id, address: address, crowdfunding: true)
-        TicketsV20.ticketRequesters[dispenser_id] = {self.user_id: requestStruct}
+        TicketsV22.ticketRequesters[dispenser_id] = {self.user_id: requestStruct}
       } else {
-        if let data = TicketsV20.ticketRequesters[dispenser_id] {
+        if let data = TicketsV22.ticketRequesters[dispenser_id] {
           if (!data.containsKey(self.user_id)) {
             let requestStruct = RequestStruct(time: time, user_id: self.user_id, address: address, crowdfunding: true)
             data[self.user_id] = requestStruct
-            TicketsV20.ticketRequesters[dispenser_id] = data
+            TicketsV22.ticketRequesters[dispenser_id] = data
           }
         }
       }
@@ -545,40 +545,40 @@ pub contract TicketsV20 {
     pub fun crowdfunding(dispenser_id: UInt32, address: Address, payment: @FlowToken.Vault, fee: @FlowToken.Vault) {
       pre {
         fee.balance > (fee.balance + payment.balance) * 0.024: "fee is less than 2.5%."
-        TicketsV20.DispenserFlowTokenVault[dispenser_id] != nil: "Receiver is not set."
-        TicketsV20.ticketRequesters.containsKey(dispenser_id): "crowdfunding registration info is not set."
-        TicketsV20.ticketRequesters[dispenser_id]![self.user_id]!.crowdfunding == true : "this ticket requester is not asking crowdfunding."
+        TicketsV22.DispenserFlowTokenVault[dispenser_id] != nil: "Receiver is not set."
+        TicketsV22.ticketRequesters.containsKey(dispenser_id): "crowdfunding registration info is not set."
+        TicketsV22.ticketRequesters[dispenser_id]![self.user_id]!.crowdfunding == true : "this ticket requester is not asking crowdfunding."
       }
 
       let fund: UFix64 = payment.balance + fee.balance
-      if(TicketsV20.ticketRequesters.containsKey(dispenser_id)) {
-        if let data = TicketsV20.ticketRequesters[dispenser_id]![self.user_id] {
-          let ref = &TicketsV20.ticketRequesters[dispenser_id]![self.user_id]! as &RequestStruct
+      if(TicketsV22.ticketRequesters.containsKey(dispenser_id)) {
+        if let data = TicketsV22.ticketRequesters[dispenser_id]![self.user_id] {
+          let ref = &TicketsV22.ticketRequesters[dispenser_id]![self.user_id]! as &RequestStruct
           ref.paid = data.paid + fund
         }
       }
-      TicketsV20.FlowTokenVault.borrow()!.deposit(from: <- fee)
-      TicketsV20.DispenserFlowTokenVault[dispenser_id]!.borrow()!.deposit(from: <- payment)
+      TicketsV22.FlowTokenVault.borrow()!.deposit(from: <- fee)
+      TicketsV22.DispenserFlowTokenVault[dispenser_id]!.borrow()!.deposit(from: <- payment)
       emit CrowdFunding(dispenser_id: dispenser_id, user_id: self.user_id, address: address, fund: fund)
       self.contribution.append(dispenser_id)
     }
 
     pub fun setRefundVault(flow_vault_receiver: Capability<&FlowToken.Vault{FungibleToken.Receiver}>) {
       pre {
-        TicketsV20.UserFlowTokenVault[self.user_id] == nil: "You have already requested a refund once."
+        TicketsV22.UserFlowTokenVault[self.user_id] == nil: "You have already requested a refund once."
       }
 
-      if (TicketsV20.UserFlowTokenVault[self.user_id] == nil) {
-        TicketsV20.UserFlowTokenVault[self.user_id] = flow_vault_receiver
+      if (TicketsV22.UserFlowTokenVault[self.user_id] == nil) {
+        TicketsV22.UserFlowTokenVault[self.user_id] = flow_vault_receiver
       }
     }
 
     // [private access]
     pub fun useCrowdfundingTicket(dispenser_id: UInt32, token_id: UInt64, address: Address) {
       pre {
-        TicketsV20.DispenserFlowTokenVault[dispenser_id] != nil: "Receiver is not set."
-        TicketsV20.ticketRequesters.containsKey(dispenser_id): "Ticket is not requested."
-        TicketsV20.ticketRequesters[dispenser_id]![self.user_id]!.crowdfunding == true : "this ticket is not for crowdfunding."
+        TicketsV22.DispenserFlowTokenVault[dispenser_id] != nil: "Receiver is not set."
+        TicketsV22.ticketRequesters.containsKey(dispenser_id): "Ticket is not requested."
+        TicketsV22.ticketRequesters[dispenser_id]![self.user_id]!.crowdfunding == true : "this ticket is not for crowdfunding."
       }
 
       self.ownedTicket[token_id]?.useCrowdfundingTicket()
@@ -591,19 +591,19 @@ pub contract TicketsV20 {
 
     init(_ dispenser_id: UInt32, _ address: Address, _ crowdfunding: Bool) {
       // TotalSupply
-      self.user_id = TicketsV20.totalTicketVaultSupply + 1
-      TicketsV20.totalTicketVaultSupply = TicketsV20.totalTicketVaultSupply + 1
+      self.user_id = TicketsV22.totalTicketVaultSupply + 1
+      TicketsV22.totalTicketVaultSupply = TicketsV22.totalTicketVaultSupply + 1
 
       // Event, Data
       self.ownedTicket <- {}
       self.contribution = []
       let time = getCurrentBlock().timestamp
       let requestStruct = RequestStruct(time: time, user_id: self.user_id, address: address, crowdfunding: crowdfunding)
-      if let data = TicketsV20.ticketRequesters[dispenser_id] {
+      if let data = TicketsV22.ticketRequesters[dispenser_id] {
         data[self.user_id] = requestStruct
-        TicketsV20.ticketRequesters[dispenser_id] = data
+        TicketsV22.ticketRequesters[dispenser_id] = data
       } else {
-        TicketsV20.ticketRequesters[dispenser_id] = {self.user_id: requestStruct}
+        TicketsV22.ticketRequesters[dispenser_id] = {self.user_id: requestStruct}
       }
       emit TicketRequested(dispenser_id: dispenser_id, user_id: self.user_id, address: address)
     }
@@ -621,7 +621,7 @@ pub contract TicketsV20 {
   */
   pub fun getDispenserDomains(): [String] {
     var dispenserArr: [String] = []
-    for data in TicketsV20.dispenserOwners.values {
+    for data in TicketsV22.dispenserOwners.values {
       dispenserArr.append(data.domain)
     }
     return dispenserArr
@@ -632,7 +632,7 @@ pub contract TicketsV20 {
   */
   pub fun getDispenserInfo(address: Address): {UInt32: String}? {
     var dispenserArr: [DispenserStruct] = []
-    for data in TicketsV20.dispenserOwners.values {
+    for data in TicketsV22.dispenserOwners.values {
       if (data.address == address) {
         return {data.dispenser_id: data.domain}
       }
@@ -644,32 +644,32 @@ pub contract TicketsV20 {
   ** [Public Function] getTickets
   */
   pub fun getTickets(): [TicketStruct] {
-    return TicketsV20.ticketInfo
+    return TicketsV22.ticketInfo
   }
 
   /*
   ** [Public Function] getTicketRequestStatus
   */
   pub fun getTicketRequestStatus(dispenser_id: UInt32, user_id: UInt32): RequestStruct? {
-    return TicketsV20.ticketRequesters[dispenser_id]![user_id]
+    return TicketsV22.ticketRequesters[dispenser_id]![user_id]
   }
 
   /*
   ** [Public Function] isSetRefundVault
   */
   pub fun isSetRefundVault(user_id: UInt32): Bool {
-    return TicketsV20.UserFlowTokenVault[user_id] == nil
+    return TicketsV22.UserFlowTokenVault[user_id] != nil
   }
 
   /*
   ** init
   */
   init() {
-    self.AdminPublicPath = /public/TicketsV20AdminPublic
-    self.DispenserVaultPublicPath = /public/TicketsV20DispenserVault
-    self.TicketVaultPublicPath = /public/TicketsV20Vault
-    self.DispenserVaultPrivatePath = /private/TicketsV20DispenserVault
-    self.TicketVaultPrivatePath = /private/TicketsV20Vault
+    self.AdminPublicPath = /public/TicketsV22AdminPublic
+    self.DispenserVaultPublicPath = /public/TicketsV22DispenserVault
+    self.TicketVaultPublicPath = /public/TicketsV22Vault
+    self.DispenserVaultPrivatePath = /private/TicketsV22DispenserVault
+    self.TicketVaultPrivatePath = /private/TicketsV22Vault
     self.totalDispenserVaultSupply = 0
     self.totalTicketSupply = 0
     self.totalTicketVaultSupply = 0
@@ -682,8 +682,8 @@ pub contract TicketsV20 {
     self.UserFlowTokenVault = {}
 
     // grant admin rights
-    self.account.save<@TicketsV20.Admin>( <- create Admin(), to:/storage/TicketsV20Admin)
-    self.account.save<@TicketsV20.AdminPublic>(<- create AdminPublic(), to: /storage/TicketsV20AdminPublic)
-    self.account.link<&TicketsV20.AdminPublic>(TicketsV20.AdminPublicPath, target:/storage/TicketsV20AdminPublic)
+    self.account.save<@TicketsV22.Admin>( <- create Admin(), to:/storage/TicketsV22Admin)
+    self.account.save<@TicketsV22.AdminPublic>(<- create AdminPublic(), to: /storage/TicketsV22AdminPublic)
+    self.account.link<&TicketsV22.AdminPublic>(TicketsV22.AdminPublicPath, target:/storage/TicketsV22AdminPublic)
   }
 }

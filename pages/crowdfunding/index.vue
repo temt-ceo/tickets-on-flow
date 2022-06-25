@@ -203,7 +203,7 @@ export default {
         ).then(this.$fcl.decode)
         if (dispenserInfo) {
           this.dispenserId = parseInt(Object.keys(dispenserInfo)[0])
-          this.dispenserPage = 'https://tickets-on-flow.web.app/ti/' + dispenserInfo[this.dispenserId]
+          this.dispenserPage = 'https://chain-work.com/ti/' + dispenserInfo[this.dispenserId]
         } else {
           this.dispenserPage = ''
         }
@@ -255,7 +255,7 @@ export default {
             }
             toast1 = this.$buefy.toast.open({
               indefinite: true,
-              message: `${this.$t('ticket_text43')} https://tickets-on-flow.web.app/ti/${domain}`
+              message: `${this.$t('ticket_text43')} https://chain-work.com/ti/${domain}`
             })
             this.$buefy.dialog.confirm({
               message: this.$t('ticket_text46'),
@@ -287,7 +287,7 @@ export default {
                     this.$fcl.args([
                       this.$fcl.arg(domain, this.$fclArgType.String),
                       this.$fcl.arg(description, this.$fclArgType.String),
-                      this.$fcl.arg(0.1, this.$fclArgType.UFix64)
+                      this.$fcl.arg(0.3, this.$fclArgType.UFix64)
                     ]),
                     this.$fcl.payer(this.$fcl.authz),
                     this.$fcl.proposer(this.$fcl.authz),

@@ -187,6 +187,7 @@
         :ticket-title="ticketTitle"
         :ticket-description="ticketDescription"
         :additional-description="additionalDescription"
+        :no-login="notLoginUser"
         @closeModal="showConfirmModal=false"
         @eventname="nextMove"
       />
@@ -272,7 +273,8 @@ export default {
       tooltipAlwaysShow: false,
       termExpired: false,
       isDemo: false,
-      currentPaidAmound: 0
+      currentPaidAmound: 0,
+      notLoginUser: false
     }
   },
   computed: {
@@ -282,9 +284,21 @@ export default {
       }
     }
   },
+  watch: {
+    showConfirmModal: {
+      handler (val) {
+        if (val === false) {
+          this.notLoginUser = false
+        }
+      }
+    }
+  },
   async mounted () {
     this.getTicketInfo(location.pathname)
     await this.$fcl.currentUser.subscribe(this.setupUserInitialInfo)
+    if (!this.bloctoWalletUser.addr) {
+      this.notLoginUser = true
+    }
   },
   methods: {
     async getTicketInfo (pathname) {
@@ -859,10 +873,13 @@ export default {
       if (result && Object.keys(result).length > 0) {
         const ticketTokenId = parseInt(Object.keys(result)[0])
         if (result[ticketTokenId] !== '') {
-          this.code = result[ticketTokenId].replace(/^elffab/, '').replace(/@tickets-on-flow.web.app$/, '').split('').reverse().join('')
+          this.code = result[ticketTokenId].replace(/^elffab/, '').replace(/@chain-work.com$/, '').split('').reverse().join('')
         }
         const results = this.code.split(';')
         if (results.length >= 2 && Object.keys(this.additionalDescription).length > 0) {
+          // 追加設定がある場合は、';'で分割された0番目がどの情報を示すか示し、そのpreとpostの間に1番目が表示され、
+          // 2番目がどの情報を示すか示し、そのpreとpostの間に3番目が表示され、
+          // 4番目がどの情報を示すか示し、そのpreとpostの間に5番目が表示される。
           if (this.additionalDescription[results[0]]) {
             this.code = this.additionalDescription[results[0]].pre
             this.code += '\r\n' + results[1]

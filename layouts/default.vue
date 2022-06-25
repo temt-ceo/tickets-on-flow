@@ -200,17 +200,19 @@
       :can-cancel="false"
     >
       <div class="modal-card" style="width: auto; background-image: radial-gradient(rgb(65,105,225), #1b1c50);">
-        <img
-          src="~assets/image/chainwork.png"
-          alt="Chain Work"
-          style="width: 130px; padding-left: 10px; line-height: 0; padding-top: 9px;"
-        >
-        <br>
-        <img
-          src="~assets/image/tickets.png"
-          alt="Tickets"
-          style="width: 85px; line-height: 0; top: 28px; position: absolute; left: 33px;"
-        >
+        <a href="/?home">
+          <img
+            src="~assets/image/chainwork.png"
+            alt="Chain Work"
+            style="width: 130px; padding-left: 10px; line-height: 0; padding-top: 9px;"
+          >
+          <br>
+          <img
+            src="~assets/image/tickets.png"
+            alt="Tickets"
+            style="width: 85px; line-height: 0; top: 28px; position: absolute; left: 33px;"
+          >
+        </a>
         <section class="modal-card-body modal-notifications">
           <b-progress format="percent" :max="100">
             <template #bar>
@@ -392,7 +394,7 @@
     </b-modal>
 
     <b-modal v-model="isCogActive" :width="640" style="padding: 0 20px" scroll="keep">
-      <div class="card">
+      <div class="card user-settings">
         <div class="card-content">
           <div class="content">
             <p class="title is-4">
@@ -408,6 +410,9 @@
               >
                 {{ $t('operation_text118') }}
               </b-button>
+            </p>
+            <p v-if="transactionScanUrl !== ''" class="check-transaction">
+              <a :href="transactionScanUrl" target="_blank">{{ $t('operation_text56') }}</a>
             </p>
           </div>
         </div>
@@ -590,7 +595,7 @@ export default {
         github: {
           transaction: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/transactions.js',
           script: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/scripts.js',
-          contract1: 'https://flow-view-source.com/testnet/account/0x39899237382f2a8a/contract/TicketsV20',
+          contract1: 'https://flow-view-source.com/testnet/account/0x39899237382f2a8a/contract/TicketsV22',
           contract2: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/Tickets.cdc',
           playground: 'https://play.onflow.org/d9b1cb97-b54c-4d49-8187-258d6c2eab41?type=account&id=0e075014-fb30-4594-96d5-d13d94383399&storage=none'
         },
@@ -625,7 +630,8 @@ export default {
       showProgress2value: false,
       showProgress3value: false,
       showProgress4value: false,
-      settingRefundLoading: false
+      settingRefundLoading: false,
+      transactionScanUrl: ''
     }
   },
   head () {
@@ -911,12 +917,32 @@ export default {
       this.isComponentModalActive = true
     },
     async refundSetting () {
+      if (!this.bloctoWalletUser?.addr) {
+        this.$buefy.dialog.alert(this.$t('operation_text123'))
+        this.isCogActive = false
+        return
+      } else {
+        const ticketVault = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.hasTicketResource),
+            this.$fcl.args([
+              this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        if (ticketVault === null) {
+          this.$buefy.dialog.alert(this.$t('operation_text124'))
+          return
+        }
+      }
+
       try {
         this.settingRefundLoading = true
         const isSet = await this.$fcl.send(
           [
             this.$fcl.script(FlowScripts.isSetRefundVault),
             this.$fcl.args([
+              this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
             ])
           ]
         ).then(this.$fcl.decode)
@@ -945,16 +971,19 @@ export default {
                   this.$fcl.limit(9999)
                 ]
               ).then(this.$fcl.decode)
-              this.callToast()
+              this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+              this.callToast(this.$t('operation_text34'))
               const timerID = setInterval(async () => {
                 const isSetFinished = await this.$fcl.send(
                   [
                     this.$fcl.script(FlowScripts.isSetRefundVault),
                     this.$fcl.args([
+                      this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
                     ])
                   ]
                 ).then(this.$fcl.decode)
                 if (isSetFinished) {
+                  this.callToast(this.$t('operation_text114'))
                   this.settingRefundLoading = false
                   clearInterval(timerID)
                 }
@@ -966,10 +995,10 @@ export default {
       } catch (e) {
       }
     },
-    callToast () {
+    callToast (message) {
       const toast = this.$buefy.toast.open({
         indefinite: true,
-        message: this.$t('operation_text34')
+        message
       })
       setTimeout(() => {
         toast.close()
@@ -1367,6 +1396,17 @@ input[type="number"]:disabled {
   .taginput .taginput-container.is-focusable {
     width: 83%;
     border-radius: 14px !important;
+  }
+}
+
+.user-settings {
+  .check-transaction{
+    margin-top: 5px;
+
+    a {
+      font-size: 16px;
+      text-decoration: underline;
+    }
   }
 }
 

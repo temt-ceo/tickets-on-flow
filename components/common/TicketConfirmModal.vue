@@ -258,11 +258,11 @@ export default {
     dispenseTicket () {
       try {
         this.$buefy.dialog.prompt({
-          message: 'Enter the information you want to put on the screen for the customer who used the ticket.',
+          message: this.$t('operation_text125'),
           inputAttrs: {
             type: 'text',
             placeholder: 'e.g. 100',
-            maxlength: 50
+            maxlength: 100
           },
           trapFocus: true,
           onConfirm: async (code) => {
@@ -272,7 +272,7 @@ export default {
             })
             setTimeout(() => loadingComponent.close(), 3 * 1000)
 
-            const bcode = 'elffab' + code.toString().split('').reverse().join('') + '@tickets-on-flow.web.app'
+            const bcode = 'elffab' + code.toString().split('').reverse().join('') + '@chain-work.com'
             const addrList = []
             for (let i = 0; i < this.checkedRows.length; i++) {
               addrList.push({ key: String(this.checkedRows[i].user_id), value: this.checkedRows[i].address })

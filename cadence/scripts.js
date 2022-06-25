@@ -11,135 +11,135 @@ pub fun main(address: Address): UFix64 {
 }
   `,
   isAdmin: `
-import TicketsV20 from 0xT
-pub fun main(address: Address): &TicketsV20.AdminPublic? {
+import TicketsV22 from 0xT
+pub fun main(address: Address): &TicketsV22.AdminPublic? {
     let account = getAccount(address)
-    return account.getCapability<&TicketsV20.AdminPublic>(TicketsV20.AdminPublicPath).borrow()
+    return account.getCapability<&TicketsV22.AdminPublic>(TicketsV22.AdminPublicPath).borrow()
 }
   `,
   hasDispenserVault: `
-import TicketsV20 from 0xT
-pub fun main(address: Address): &TicketsV20.DispenserVault{TicketsV20.IDispenserPublic}? {
+import TicketsV22 from 0xT
+pub fun main(address: Address): &TicketsV22.DispenserVault{TicketsV22.IDispenserPublic}? {
     let account = getAccount(address)
-    return account.getCapability<&TicketsV20.DispenserVault{TicketsV20.IDispenserPublic}>(TicketsV20.DispenserVaultPublicPath).borrow()
+    return account.getCapability<&TicketsV22.DispenserVault{TicketsV22.IDispenserPublic}>(TicketsV22.DispenserVaultPublicPath).borrow()
 }
   `,
   getRequestedDispensers: `
-import TicketsV20 from 0xT
-pub fun main(address: Address): [TicketsV20.DispenserStruct] {
+import TicketsV22 from 0xT
+pub fun main(address: Address): [TicketsV22.DispenserStruct] {
     let account = getAccount(address)
-    let adminVault = account.getCapability<&TicketsV20.AdminPublic>(TicketsV20.AdminPublicPath).borrow()
+    let adminVault = account.getCapability<&TicketsV22.AdminPublic>(TicketsV22.AdminPublicPath).borrow()
         ?? panic("Could not borrow Administrator capability.")
     return adminVault.getDispenserRequesters()
 }
   `,
   getAllDispensers: `
-import TicketsV20 from 0xT
-pub fun main(address: Address): [TicketsV20.DispenserStruct] {
+import TicketsV22 from 0xT
+pub fun main(address: Address): [TicketsV22.DispenserStruct] {
   let account = getAccount(address)
-  let adminVault = account.getCapability<&TicketsV20.AdminPublic>(TicketsV20.AdminPublicPath).borrow()
+  let adminVault = account.getCapability<&TicketsV22.AdminPublic>(TicketsV22.AdminPublicPath).borrow()
       ?? panic("Could not borrow Administrator capability.")
   return adminVault.getAllDispensers()
 }
   `,
   getDispenserDomains: `
-import TicketsV20 from 0xT
+import TicketsV22 from 0xT
 pub fun main(): [String] {
-  return TicketsV20.getDispenserDomains()
+  return TicketsV22.getDispenserDomains()
 }
   `,
   hasDispenser: `
-import TicketsV20 from 0xT
+import TicketsV22 from 0xT
 pub fun main(address: Address): Bool {
     let account = getAccount(address)
-    let dispenserVault = account.getCapability<&TicketsV20.DispenserVault{TicketsV20.IDispenserPublic}>(TicketsV20.DispenserVaultPublicPath).borrow()
+    let dispenserVault = account.getCapability<&TicketsV22.DispenserVault{TicketsV22.IDispenserPublic}>(TicketsV22.DispenserVaultPublicPath).borrow()
         ?? panic("Could not borrow DispenserVault capability.")
     return dispenserVault.hasDispenser()
 }
   `,
   getDispenserInfo: `
-import TicketsV20 from 0xT
+import TicketsV22 from 0xT
 pub fun main(address: Address): {UInt32: String}? {
-    return TicketsV20.getDispenserInfo(address: address)
+    return TicketsV22.getDispenserInfo(address: address)
 }
   `,
   getTickets: `
-import TicketsV20 from 0xT
-pub fun main(): [TicketsV20.TicketStruct] {
-    return TicketsV20.getTickets()
+import TicketsV22 from 0xT
+pub fun main(): [TicketsV22.TicketStruct] {
+    return TicketsV22.getTickets()
 }
   `,
   getTicketRequestStatus: `
-import TicketsV20 from 0xT
-pub fun main(addr: Address, dispenser_id: UInt32): TicketsV20.RequestStruct? {
+import TicketsV22 from 0xT
+pub fun main(addr: Address, dispenser_id: UInt32): TicketsV22.RequestStruct? {
     let account = getAccount(addr)
-    let ticketVault = account.getCapability<&TicketsV20.TicketVault{TicketsV20.ITicketPublic}>(TicketsV20.TicketVaultPublicPath).borrow()
+    let ticketVault = account.getCapability<&TicketsV22.TicketVault{TicketsV22.ITicketPublic}>(TicketsV22.TicketVaultPublicPath).borrow()
         ?? panic("Could not borrow TicketVault capability.")
     let user_id = ticketVault.getId()
-    return TicketsV20.getTicketRequestStatus(dispenser_id: dispenser_id, user_id: user_id)
+    return TicketsV22.getTicketRequestStatus(dispenser_id: dispenser_id, user_id: user_id)
 }
   `,
   getLatestMintedTokenId: `
-import TicketsV20 from 0xT
+import TicketsV22 from 0xT
 pub fun main(addr: Address): UInt64? {
   let account = getAccount(addr)
-  let dispenserVault = account.getCapability<&TicketsV20.DispenserVault{TicketsV20.IDispenserPublic}>(TicketsV20.DispenserVaultPublicPath).borrow()
+  let dispenserVault = account.getCapability<&TicketsV22.DispenserVault{TicketsV22.IDispenserPublic}>(TicketsV22.DispenserVaultPublicPath).borrow()
       ?? panic("Could not borrow DispenserVault capability.")
   return dispenserVault.getLatestMintedTokenId()
 }
   `,
   getTicketRequesters: `
-import TicketsV20 from 0xT
-pub fun main(addr: Address): {UInt32: TicketsV20.RequestStruct}? {
+import TicketsV22 from 0xT
+pub fun main(addr: Address): {UInt32: TicketsV22.RequestStruct}? {
     let account = getAccount(addr)
-    let dispenserVault = account.getCapability<&TicketsV20.DispenserVault{TicketsV20.IDispenserPublic}>(TicketsV20.DispenserVaultPublicPath).borrow()
+    let dispenserVault = account.getCapability<&TicketsV22.DispenserVault{TicketsV22.IDispenserPublic}>(TicketsV22.DispenserVaultPublicPath).borrow()
         ?? panic("Could not borrow DispenserVault capability.")
     return dispenserVault.getTicketRequesters()
 }
   `,
   hasTicketResource: `
-import TicketsV20 from 0xT
-pub fun main(addr: Address): &TicketsV20.TicketVault{TicketsV20.ITicketPublic}? {
+import TicketsV22 from 0xT
+pub fun main(addr: Address): &TicketsV22.TicketVault{TicketsV22.ITicketPublic}? {
     let account = getAccount(addr)
-    return account.getCapability<&TicketsV20.TicketVault{TicketsV20.ITicketPublic}>(TicketsV20.TicketVaultPublicPath).borrow()
+    return account.getCapability<&TicketsV22.TicketVault{TicketsV22.ITicketPublic}>(TicketsV22.TicketVaultPublicPath).borrow()
 }
   `,
   getTicketUsedTime: `
-import TicketsV20 from 0xT
+import TicketsV22 from 0xT
 pub fun main(addr: Address, dispenser_id: UInt32): {UInt64: UFix64??}? {
   let account = getAccount(addr)
-  let ticketVault = account.getCapability<&TicketsV20.TicketVault{TicketsV20.ITicketPublic}>(TicketsV20.TicketVaultPublicPath).borrow()
+  let ticketVault = account.getCapability<&TicketsV22.TicketVault{TicketsV22.ITicketPublic}>(TicketsV22.TicketVaultPublicPath).borrow()
       ?? panic("Could not borrow TicketVault capability.")
   return ticketVault.getUsedTime(dispenser_id: dispenser_id)
 }
   `,
   getTicketCreatedTime: `
-import TicketsV20 from 0xT
-pub fun main(addr: Address, dispenser_id: UInt32): {UInt64: UFix64}? {
+import TicketsV22 from 0xT
+pub fun main(addr: Address, dispenser_id: UInt32): {UInt64: UFix64?}? {
   let account = getAccount(addr)
-  let ticketVault = account.getCapability<&TicketsV20.TicketVault{TicketsV20.ITicketPublic}>(TicketsV20.TicketVaultPublicPath).borrow()
+  let ticketVault = account.getCapability<&TicketsV22.TicketVault{TicketsV22.ITicketPublic}>(TicketsV22.TicketVaultPublicPath).borrow()
       ?? panic("Could not borrow TicketVault capability.")
   return ticketVault.getCreatedTime(dispenser_id: dispenser_id)
 }
   `,
   getTicketCode: `
-import TicketsV20 from 0xT
+import TicketsV22 from 0xT
 pub fun main(addr: Address, dispenser_id: UInt32): {UInt64: String}? {
   let account = getAccount(addr)
-  let ticketVault = account.getCapability<&TicketsV20.TicketVault{TicketsV20.ITicketPublic}>(TicketsV20.TicketVaultPublicPath).borrow()
+  let ticketVault = account.getCapability<&TicketsV22.TicketVault{TicketsV22.ITicketPublic}>(TicketsV22.TicketVaultPublicPath).borrow()
       ?? panic("Could not borrow TicketVault capability.")
   return ticketVault.getCode(dispenser_id: dispenser_id)
 }
   `,
   examinTicketRequesters: `
-import TicketsV20 from 0xT
-pub fun main(address: Address, idList: [UInt32]): {UInt32: {UInt32: TicketsV20.RequestStruct}?} {
+import TicketsV22 from 0xT
+pub fun main(address: Address, idList: [UInt32]): {UInt32: {UInt32: TicketsV22.RequestStruct}?} {
   let account = getAccount(address)
-  let adminVault = account.getCapability<&TicketsV20.AdminPublic>(TicketsV20.AdminPublicPath).borrow()
+  let adminVault = account.getCapability<&TicketsV22.AdminPublic>(TicketsV22.AdminPublicPath).borrow()
       ?? panic("Could not borrow Administrator capability.")
-  let ticketRequester: {UInt32: {UInt32: TicketsV20.RequestStruct}?} = {}
+  let ticketRequester: {UInt32: {UInt32: TicketsV22.RequestStruct}?} = {}
   for dispenser_id in idList {
-    let obj: {UInt32: TicketsV20.RequestStruct}? = adminVault.getTicketRequesters(dispenser_id: dispenser_id)
+    let obj: {UInt32: TicketsV22.RequestStruct}? = adminVault.getTicketRequesters(dispenser_id: dispenser_id)
     ticketRequester[dispenser_id] = obj
   }
   return ticketRequester
@@ -159,13 +159,19 @@ pub fun main(): {Address: [TicketStatsV12.StatsStruct]} {
 }
   `,
   isSetRefundVault: `
-import TicketsV20 from 0xT
-pub fun main(addr: Address, user_id: UInt32): Bool {
+import TicketsV22 from 0xT
+pub fun main(addr: Address): Bool {
     let account = getAccount(addr)
-    let ticketVault = account.getCapability<&TicketsV20.TicketVault{TicketsV20.ITicketPublic}>(TicketsV20.TicketVaultPublicPath).borrow()
+    let ticketVault = account.getCapability<&TicketsV22.TicketVault{TicketsV22.ITicketPublic}>(TicketsV22.TicketVaultPublicPath).borrow()
         ?? panic("Could not borrow TicketVault capability.")
     let user_id = ticketVault.getId()
-    return TicketsV20.isSetRefundVault(user_id: user_id)
+    return TicketsV22.isSetRefundVault(user_id: user_id)
+}
+  `,
+  isThisUserSetRefundVault: `
+import TicketsV22 from 0xT
+pub fun main(user_id: UInt32): Bool {
+    return TicketsV22.isSetRefundVault(user_id: user_id)
 }
   `
 }

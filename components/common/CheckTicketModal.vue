@@ -582,6 +582,11 @@ export default {
       type: Object,
       required: false,
       default: () => {}
+    },
+    noLogin: {
+      type: Boolean,
+      required: true,
+      default: false
     }
   },
   data () {
@@ -704,6 +709,13 @@ export default {
       }
     }
     this.tickets.push(ticket)
+    if (this.noLogin) {
+      this.$buefy.toast.open({
+        message: this.$t('operation_text126'),
+        duration: 4000,
+        queue: false
+      })
+    }
   },
   methods: {
     nextEvent () {

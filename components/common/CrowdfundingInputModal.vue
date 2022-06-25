@@ -47,7 +47,7 @@
               >
                 <b-input
                   v-model="registerName"
-                  maxlength="40"
+                  maxlength="50"
                   :placeholder="$t('operation_text1')"
                 />
               </b-field>
@@ -122,7 +122,7 @@
               >
                 <b-input
                   v-model="registerName"
-                  maxlength="40"
+                  maxlength="50"
                   :placeholder="$t('operation_text1')"
                 />
               </b-field>
@@ -395,7 +395,7 @@ export default {
           inputAttrs: {
             type: 'text',
             placeholder: `${this.$t('ticket_text40')} @official_twitter`,
-            maxlength: 40
+            maxlength: 50
           },
           confirmText: 'Next',
           trapFocus: true,
