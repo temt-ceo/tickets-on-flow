@@ -148,7 +148,7 @@ export default {
             eventInfo += `Your Contribution DateTime: ${localeTime}`
           })
           this.$buefy.toast.open({
-            duration: 6000,
+            duration: 3000,
             message: eventInfo,
             type: 'is-link'
           })

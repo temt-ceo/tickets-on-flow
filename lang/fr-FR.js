@@ -323,7 +323,7 @@ export default {
   operation_text129: 'Voulez-vous traiter un remboursement pour cet utilisateur ? Si oui, veuillez saisir le montant à rembourser.',
   operation_text130: 'Veuillez saisir le montant à rembourser en valeurs numériques.',
   operation_text131: 'Le montant remboursé est supérieur au montant payé.',
-  operation_text132: '',
+  operation_text132: 'Cet utilisateur n\'a pas encore configuré de remboursement. Cet utilisateur peut configurer un remboursement en cliquant sur "Paramètres" dans le menu situé dans le coin supérieur droit. Cet utilisateur n\'a pas encore terminé ce processus, le bouton de remboursement n\'est donc pas disponible pour le moment.',
   operation_text133: '',
   operation_text134: '',
   operation_text135: '',

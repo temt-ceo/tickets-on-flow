@@ -323,7 +323,7 @@ export default {
   operation_text129: '您是否要为该用户处理退款？如果是，请输入要退还的金额。',
   operation_text130: '请以数字形式输入要退还的金额。',
   operation_text131: '退还的金额超过了已支付的金额。',
-  operation_text132: '',
+  operation_text132: '这个用户还没有设置退款。该用户可以通过点击右上角菜单中的 "设置 "来设置退款。这个用户还没有完成这个过程，所以退款按钮在这个时候还不能用。',
   operation_text133: '',
   operation_text134: '',
   operation_text135: '',

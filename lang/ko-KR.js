@@ -323,7 +323,7 @@ export default {
   operation_text129: '이 사용자에 대한 환불을 처리하시겠습니까? 그렇다면 환불할 금액을 입력하십시오.',
   operation_text130: '환불할 금액을 숫자로 입력하세요.',
   operation_text131: '환불된 금액이 지불한 금액을 초과합니다.',
-  operation_text132: '',
+  operation_text132: '이 사용자는 아직 환불을 설정하지 않았습니다. 이 사용자는 오른쪽 상단의 메뉴에서 \'설정\'을 클릭하여 환불을 설정할 수 있습니다. 이 사용자는 아직 해당 프로세스를 완료하지 않았으므로 현재 환불 버튼을 사용할 수 없습니다.',
   operation_text133: '',
   operation_text134: '',
   operation_text135: '',

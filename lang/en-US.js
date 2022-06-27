@@ -323,7 +323,7 @@ export default {
   operation_text129: 'Do you want to process a refund for this user? If yes, please enter the amount to be refunded.',
   operation_text130: 'Please enter the amount to be refunded in numerical values.',
   operation_text131: 'The amount refunded exceeds the amount paid.',
-  operation_text132: '',
+  operation_text132: 'This user has not yet set up a refund. This user can set up a refund by clicking on \'Settings\' in the menu in the top right-hand corner. This user has not yet completed that process, so the refund button is not available at this time.',
   operation_text133: '',
   operation_text134: '',
   operation_text135: '',

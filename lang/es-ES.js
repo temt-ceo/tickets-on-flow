@@ -323,7 +323,7 @@ export default {
   operation_text129: '¿Desea procesar un reembolso para este usuario? En caso afirmativo, introduzca el importe a reembolsar.',
   operation_text130: 'Introduzca el importe a devolver en valores numéricos.',
   operation_text131: 'El importe reembolsado es superior al pagado.',
-  operation_text132: '',
+  operation_text132: 'Este usuario aún no ha configurado un reembolso. Este usuario puede configurar un reembolso haciendo clic en "Configuración" en el menú de la esquina superior derecha. Este usuario aún no ha completado ese proceso, por lo que el botón de reembolso no está disponible en este momento.',
   operation_text133: '',
   operation_text134: '',
   operation_text135: '',

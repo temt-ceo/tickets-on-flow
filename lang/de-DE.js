@@ -323,7 +323,7 @@ export default {
   operation_text129: 'Möchten Sie eine Erstattung für diesen Benutzer vornehmen? Wenn ja, geben Sie bitte den zu erstattenden Betrag ein.',
   operation_text130: 'Bitte geben Sie den zu erstattenden Betrag in Zahlenwerten an.',
   operation_text131: 'Der erstattete Betrag übersteigt den gezahlten Betrag.',
-  operation_text132: '',
+  operation_text132: 'Dieser Benutzer hat noch keine Erstattung eingerichtet. Dieser Benutzer kann eine Erstattung einrichten, indem er im Menü oben rechts auf "Einstellungen" klickt. Dieser Benutzer hat diesen Vorgang noch nicht abgeschlossen, daher ist die Schaltfläche "Erstattung" derzeit nicht verfügbar.',
   operation_text133: '',
   operation_text134: '',
   operation_text135: '',

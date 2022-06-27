@@ -203,6 +203,7 @@
 
         <crowdfunding-confirm-modal
           v-if="crowdfundingData.length > 0"
+          :address="bloctoWalletUser.addr"
           :ticket-requesters="crowdfundingData"
           :owner="1"
         />

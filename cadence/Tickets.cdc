@@ -288,7 +288,7 @@ pub contract TicketsV22 {
       pre {
         repayment.balance > 0.0: "refund is not set."
         TicketsV22.UserFlowTokenVault[user_id] != nil: "The beneficiary has not yet set up the Vault."
-        TicketsV22.ticketRequesters.containsKey(user_id): "Sender has not right to refund."
+        TicketsV22.ticketRequesters.containsKey(dispenser_id): "Sender has not right to refund."
         TicketsV22.ticketRequesters[dispenser_id]!.containsKey(user_id): "Sender has not right to refund."
         TicketsV22.ticketRequesters[dispenser_id]![user_id]!.paid >= repayment.balance: "refund is larger than paid amount."
       }

@@ -5,9 +5,12 @@
         {{ $t('operation_text75') }}
         <b-button v-if="owner === 0" class="download" type="is-light" icon-right="download" @click="csvDownload" />
       </div>
-      <div v-if="isCompleteTransaction" class="text-wrap">
-        <b-message type="is-success" has-icon>
+      <div v-if="isOngoingTransaction || isRefundTransaction" class="text-wrap">
+        <b-message v-if="isOngoingTransaction" type="is-success" has-icon>
           {{ $t('operation_text78') }}
+        </b-message>
+        <b-message v-if="isRefundTransaction" type="is-success" has-icon>
+          {{ $t('operation_text80') }}
         </b-message>
         <b-skeleton size="is-large" :active="waitTransactionComplete" />
         <b-skeleton size="is-large" :active="waitTransactionComplete" />
@@ -19,7 +22,7 @@
           <a :href="transactionScanUrl" target="_blank" class="scanlink">{{ $t('operation_text56') }}</a>
         </p>
       </div>
-      <div v-if="!isCompleteTransaction">
+      <div v-if="!isOngoingTransaction && !isRefundTransaction">
         <b-table
           :data="displayTicketRequesters"
           :checked-rows.sync="checkedRows"
@@ -188,7 +191,8 @@ export default {
       transactionScanUrl: '',
       isCompleteRegister: false,
       flowscanLink: 'https://testnet.flowscan.org/transaction',
-      isCompleteTransaction: false,
+      isOngoingTransaction: false,
+      isRefundTransaction: false,
       checkedRows: [],
       checkboxPosition: 'left',
       isBordered: false,
@@ -230,7 +234,7 @@ export default {
             eventInfo += `User ${data.data?.user_id} requested at ${localeTime}`
           })
           this.$buefy.toast.open({
-            duration: 6000,
+            duration: 3000,
             message: eventInfo,
             type: 'is-link'
           })
@@ -305,7 +309,7 @@ export default {
             ).then(this.$fcl.decode)
             this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
             this.waitTransactionComplete = true
-            this.isCompleteTransaction = true
+            this.isOngoingTransaction = true
             this.callToast()
             const timerID = setInterval(async () => {
               const newArr = []
@@ -344,7 +348,7 @@ export default {
                   ]
                 ).then(this.$fcl.decode)
                 this.latestMintedTokenId = latestMintedTokenId || 0
-                this.isCompleteTransaction = false
+                this.isOngoingTransaction = false
                 this.$buefy.toast.open({
                   duration: 3000,
                   message: this.$t('operation_text114')
@@ -356,7 +360,19 @@ export default {
       } catch (e) {
       }
     },
-    refund (userId, paid) {
+    async refund (userId, paid) {
+      const isSet = await this.$fcl.send(
+        [
+          this.$fcl.script(FlowScripts.isThisUserSetRefundVault),
+          this.$fcl.args([
+            this.$fcl.arg(userId, this.$fclArgType.UInt32)
+          ])
+        ]
+      ).then(this.$fcl.decode)
+      if (!isSet) {
+        this.$buefy.dialog.alert(this.$t('operation_text132'))
+        return
+      }
       this.$buefy.dialog.prompt({
         message: this.$t('operation_text129'),
         inputAttrs: {
@@ -407,7 +423,7 @@ export default {
         ).then(this.$fcl.decode)
         this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
         this.waitTransactionComplete = true
-        this.isCompleteTransaction = true
+        this.isRefundTransaction = true
         this.callToast()
         const timerID = setInterval(async () => {
           const ticketRequesters = await this.$fcl.send(
@@ -424,10 +440,15 @@ export default {
               if (parseFloat(ticketRequesters[key].paid) < parseFloat(totalPaid)) {
                 clearInterval(timerID)
                 this.waitTransactionComplete = false
-                this.isCompleteTransaction = false
+                this.isRefundTransaction = false
                 this.$buefy.toast.open({
                   duration: 3000,
                   message: this.$t('operation_text114')
+                })
+                this.ticketRequesters.forEach((data) => {
+                  if (ticketRequesters[key].user_id === data.user_id) {
+                    data.paid = ticketRequesters[key].paid
+                  }
                 })
               }
             }

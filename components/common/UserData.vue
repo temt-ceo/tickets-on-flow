@@ -41,6 +41,7 @@
 
           <b-tab-item :label="$t('modal_text4')">
             <crowdfunding-confirm-modal
+              :address="bloctoWalletUser.addr"
               :ticket-requesters="crowdfundingData"
               :owner="0"
             />
