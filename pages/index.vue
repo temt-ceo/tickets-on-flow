@@ -477,9 +477,9 @@ export default {
             let datetime = ''
             if (when.length >= 2) {
               if (parseInt(ticket.type) === 1) {
-                datetime = `${this.$t('ticket_text56')} ` + new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1')
+                datetime = `${this.$t('ticket_text56')} ` + new Date(parseInt(when[1])).toLocaleString().replace(/(:\d{2}):00/, '$1')
               } else {
-                datetime = new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1') + ` ${this.$t('ticket_text6')} `
+                datetime = new Date(parseInt(when[1])).toLocaleString().replace(/(:\d{2}):00/, '$1') + ` ${this.$t('ticket_text6')} `
               }
             }
 

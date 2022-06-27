@@ -314,9 +314,10 @@ export default {
         this.ticketName = this.ticketTitle || ticketName[0] // 多言語対応
         this.price = ticketInfo.price.replace(/\.?0+$/, '')
         const when = ticketInfo.when_to_use.split('||')
+
         if (when.length >= 2) {
           this.ticketWhenWeek = when[0]
-          this.ticketWhenTime = when[1]
+          this.ticketWhenTime = parseInt(when[1])
           if (new Date(this.ticketWhenTime).getTime() < new Date().getTime()) {
             this.termExpired = true
           }

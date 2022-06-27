@@ -4,7 +4,7 @@
       <div class="text-wrap text-title">
         <span v-if="parseInt(ticket.type) == 0">{{ $t('ticket_text14') }}</span>
         <span v-if="parseInt(ticket.type) == 1">{{ $t('ticket_text52') }}</span>
-        <span v-if="additionalDescription && additionalDescription.info === true" style="position: absolute; left: 75vw; color: magenta;" @click="isCardModalActive = true">
+        <span v-if="additionalDescription && additionalDescription.info === true" style="position: absolute; right: 25px; color: magenta;" @click="isCardModalActive = true">
           <b-icon
             pack="fa-solid"
             icon="circle-info"
@@ -626,7 +626,7 @@ export default {
         this.showTooltip = hasEvent
         const when = this.ticket.when_to_use.split('||')
         if (when.length >= 2) {
-          const scheduleDate = new Date(when[1])
+          const scheduleDate = new Date(parseInt(when[1]))
           const targetDate = new Date(val)
           if (
             scheduleDate.getYear() === targetDate.getYear() &&
@@ -672,8 +672,8 @@ export default {
     ticket.ticketPrice = this.ticket.price.replace(/\.?0+$/, '')
     const when = this.ticket.when_to_use.split('||')
     if (when.length >= 2) {
-      ticket.ticketWhen = new Date(when[1]).toLocaleString().replace(/(:\d{2}):00/, '$1') + (parseInt(this.ticket.type) === 1 ? '' : ` ${this.$t('ticket_text6')} `)
-      this.startTime = new Date(when[1]).toLocaleTimeString()
+      ticket.ticketWhen = new Date(parseInt(when[1])).toLocaleString().replace(/(:\d{2}):00/, '$1') + (parseInt(this.ticket.type) === 1 ? '' : ` ${this.$t('ticket_text6')} `)
+      this.startTime = new Date(parseInt(when[1])).toLocaleTimeString()
       this.isDiscloseSales = when.length >= 4 && when[3].length > 10
     }
     const where = this.ticket.where_to_use.split('||')
@@ -747,7 +747,7 @@ export default {
       if (when.length >= 2) {
         this.events.push(
           {
-            date: new Date(when[1]),
+            date: new Date(parseInt(when[1])),
             type: 'is-link'
           }
         )
@@ -755,7 +755,7 @@ export default {
       if (parseInt(this.ticket.type) === 1 && when.length >= 2) {
         const _today = new Date()
         const _todayTime = new Date(_today.getFullYear(), _today.getMonth(), _today.getDate(), 0, 0, 0).getTime()
-        const endDateTime = new Date(when[1]).getTime()
+        const endDateTime = new Date(parseInt(when[1])).getTime()
         for (let i = 0; i < 365; i++) {
           const target = new Date(_todayTime + (i * 86400000))
           if (target.getTime() < endDateTime) {

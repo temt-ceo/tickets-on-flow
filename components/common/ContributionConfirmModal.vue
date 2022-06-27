@@ -183,7 +183,7 @@ export default {
           domain: ticketData ? ticketData.domain : '',
           paid: data.paid,
           count: data.count,
-          endDate: when.length >= 2 ? new Date(when[1]) : '',
+          endDate: when.length >= 2 ? new Date(parseInt(when[1])) : '',
           time: data.time
         }
       )

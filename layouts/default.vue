@@ -1035,12 +1035,12 @@ export default {
   .notice-icon {
     i {
       color: #3e8ed0;
-      font-size: 8px;
+      font-size: 11px;
       position: absolute;
       left: 229px;
-      top: 16px;
+      top: 14px;
       &:before {
-        font-size: 8px;
+        font-size: 11px;
       }
     }
   }

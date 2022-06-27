@@ -42,7 +42,7 @@
             {{ $t('terms_of_use30') }}<br>
             {{ $t('terms_of_use31') }}<br>
             {{ $t('terms_of_use32') }}<br>
-            <b>https://t-blockchain.com/ti/XXXXX/</b><br>
+            <b>https://chain-work.com/ti/XXXXX/</b><br>
             {{ $t('terms_of_use33') }}<br>
             {{ $t('terms_of_use34') }}<br>
             {{ $t('terms_of_use35') }}<br>

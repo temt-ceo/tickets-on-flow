@@ -360,7 +360,7 @@ export default {
                     break
                 }
               }
-              this.registerWhen = new Date(when[1])
+              this.registerWhen = new Date(parseInt(when[1]))
               if (when.length < 4 || when[3] === '') {
                 this.switchDiscloseSales = this.$t('operation_text89')
               } else {
@@ -422,7 +422,7 @@ export default {
       const registerName = this.registerName + '||@' + this.registerTwitter
       const registerWhere = this.registerWhereType + '||' + this.registerWhere
       const registerWeekdays = this.registerWhenWeekdays.map(obj => obj.id).join('')
-      let registerWhen = registerWeekdays + '||' + this.registerWhen + '||' + navigator.language + '||'
+      let registerWhen = registerWeekdays + '||' + this.registerWhen.getTime() + '||' + navigator.language + '||'
       if (this.switchDiscloseSales === this.$t('operation_text88')) {
         registerWhen = registerWhen + this.address
       }
@@ -471,7 +471,7 @@ export default {
       const registerName = this.registerName + '||@' + this.registerTwitter
       const registerWhere = this.registerWhereType + '||' + this.registerWhere
       const registerWeekdays = this.registerWhenWeekdays.map(obj => obj.id).join('')
-      let registerWhen = registerWeekdays + '||' + this.registerWhen + '||' + navigator.language + '||'
+      let registerWhen = registerWeekdays + '||' + this.registerWhen.getTime() + '||' + navigator.language + '||'
       if (this.switchDiscloseSales === this.$t('operation_text88')) {
         registerWhen = registerWhen + this.address
       }

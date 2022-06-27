@@ -15,9 +15,9 @@ export default {
       default: ''
     },
     ticketWhen1: {
-      type: String,
+      type: Number,
       required: true,
-      default: ''
+      default: null
     },
     dispenser: {
       type: Number,
