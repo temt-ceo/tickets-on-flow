@@ -324,7 +324,7 @@ export default {
   operation_text130: 'Please enter the amount to be refunded in numerical values.',
   operation_text131: 'The amount refunded exceeds the amount paid.',
   operation_text132: 'This user has not yet set up a refund. This user can set up a refund by clicking on \'Settings\' in the menu in the top right-hand corner. This user has not yet completed that process, so the refund button is not available at this time.',
-  operation_text133: '',
+  operation_text133: 'The ticket you have previously applied for has expired. Please apply again.',
   operation_text134: '',
   operation_text135: '',
   operation_text136: '',

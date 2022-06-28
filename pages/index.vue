@@ -1069,6 +1069,7 @@ export default {
   .section {
     .ticket-list {
       border: 4px solid rgba(255, 255, 255, 0.2);
+      background: hsla(0, 0, 0, 0.2);
     }
 
     .content.top-list {

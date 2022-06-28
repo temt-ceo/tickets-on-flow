@@ -5,9 +5,9 @@
       <div class="hero--overlay">
         <div class="hero--content">
           <b-breadcrumb>
-            <b-breadcrumb-item href="/?home">
+            <b-breadcrumb-item @click="reload">
               <b-icon
-                icon="rotate-left"
+                icon="rotate-right"
                 size="is-large"
               />
             </b-breadcrumb-item>
@@ -479,11 +479,11 @@ export default {
                       match = true
                     }
                   }
-                  day = day + 1 > 6 ? 0 : day + 1
-                  if (scheduledDay > 6) {
-                    match = true // 繰り返しがないケース
-                  }
                   if (!match) {
+                    day = day + 1 > 6 ? 0 : day + 1
+                    if (scheduledDay > 6) {
+                      match = true // 繰り返しがないケース
+                    }
                     scheduledDay++
                   }
                 }
@@ -497,18 +497,28 @@ export default {
                   const dayEvent = new Date(this.ticketWhenTime)
                   const eventTime = new Date(nextEventDate.getFullYear(), nextEventDate.getMonth(), nextEventDate.getDate(), dayEvent.getHours(), dayEvent.getMinutes(), dayEvent.getSeconds())
                   const unixTime = parseInt((new Date(eventTime).getTime() - new Date().getTime()) / 1000)
-                  if (unixTime < 3600) {
+                  if (unixTime < -3600) {
                     // 1時間以上経過
                     this.ticketStatus = 1 // 新しくリクエストできる
+                    this.$buefy.toast.open({
+                      message: this.$t('operation_text133'),
+                      duration: 4000,
+                      queue: false
+                    })
                   } else {
                     this.ticketStatus = 3 // 1時間経過まではチケットを使用可能
                   }
                 } else {
                   // 繰り返しがない
                   const unixTime = parseInt((new Date(this.ticketWhenTime).getTime() - new Date().getTime()) / 1000)
-                  if (unixTime < 3600) {
+                  if (unixTime < -3600) {
                     // 1時間以上経過
                     this.ticketStatus = 1 // 新しくリクエストできる
+                    this.$buefy.toast.open({
+                      message: this.$t('operation_text133'),
+                      duration: 4000,
+                      queue: false
+                    })
                   } else {
                     this.ticketStatus = 3 // 1時間経過まではチケットを使用可能
                   }
@@ -516,7 +526,6 @@ export default {
                 /**
                  * チケット未使用時の、チケット使用可否判定ここまで
                  */
-                this.ticketStatus = 3
               } else {
                 // チケット使用済み
                 const lastUsedTime = parseInt(usedTime.replace(/.0+$/, '')) * 1000
@@ -609,7 +618,7 @@ export default {
           if (checkOnly !== true) {
             const latestRequestTime = parseInt(result.time.replace(/.0+$/, '')) * 1000
             this.latestRequest = new Date(latestRequestTime)
-            const mo = this.latestRequest.getMonth().toString()
+            const mo = (this.latestRequest.getMonth() + 1).toString()
             const d = this.latestRequest.getDate().toString()
             const requestDate = `${this.latestRequest.getFullYear()}/${mo.length > 1 ? mo : '0' + mo}/${d.length > 1 ? d : '0' + d}`
             const h = this.latestRequest.getHours().toString()
@@ -633,20 +642,6 @@ export default {
             return result
           }
         }
-      } catch (e) {
-      }
-    },
-    async getLatestMintedTokenId () {
-      try {
-        const result = await this.$fcl.send(
-          [
-            this.$fcl.script(FlowScripts.getLatestMintedTokenId),
-            this.$fcl.args([
-              this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
-            ])
-          ]
-        ).then(this.$fcl.decode)
-        return result
       } catch (e) {
       }
     },
@@ -699,8 +694,7 @@ export default {
             this.hasTicketVault = await this.isTicketVaultReady()
           }
           if (this.hasTicketVault) {
-            const data = await this.getLatestMintedTokenId()
-            console.log(data, 777)
+            const data = await this.getTicketCreatedTime()
             if (data === null || data === undefined) {
               this.noticeTitle = this.$t('operation_text112') + '\r\n' + this.$t('operation_text32').replace('<br>', '\r\n')
               this.ticketStatus = 2
@@ -1065,6 +1059,9 @@ export default {
     async clickCopy () {
       await navigator.clipboard.writeText(this.code)
       this.tooltipActive = true
+    },
+    reload () {
+      location.reload()
     }
   }
 }
@@ -1106,7 +1103,8 @@ export default {
     }
 
     .check-transaction{
-      margin-top: 5px;
+      margin-top: 10px;
+      margin-bottom: 10px;
 
       a {
         font-size: 16px;
@@ -1121,10 +1119,12 @@ export default {
       max-width: 400px;
       &.copy-button {
         position: absolute;
-        min-width: 68px;
-        height: 33px;
-        right: 10px;
+        min-width: 58px;
+        height: 23px;
+        right: 5px;
         bottom: 100%;
+        font-size: 10px;
+        margin: 5px;
       }
     }
 

@@ -324,7 +324,7 @@ export default {
   operation_text130: 'Favor inserir o valor a ser reembolsado em valores numéricos.',
   operation_text131: 'O valor reembolsado excede o valor pago.',
   operation_text132: 'Este usuário ainda não efetuou um reembolso. Este usuário pode configurar um reembolso clicando em \'Configurações\' no menu no canto superior direito. Este usuário ainda não completou este processo, portanto o botão de reembolso não está disponível neste momento.',
-  operation_text133: '',
+  operation_text133: 'O bilhete que você solicitou anteriormente expirou. Por favor, solicite novamente.',
   operation_text134: '',
   operation_text135: '',
   operation_text136: '',

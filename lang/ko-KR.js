@@ -324,7 +324,7 @@ export default {
   operation_text130: '환불할 금액을 숫자로 입력하세요.',
   operation_text131: '환불된 금액이 지불한 금액을 초과합니다.',
   operation_text132: '이 사용자는 아직 환불을 설정하지 않았습니다. 이 사용자는 오른쪽 상단의 메뉴에서 \'설정\'을 클릭하여 환불을 설정할 수 있습니다. 이 사용자는 아직 해당 프로세스를 완료하지 않았으므로 현재 환불 버튼을 사용할 수 없습니다.',
-  operation_text133: '',
+  operation_text133: '이전에 신청한 티켓이 만료되었습니다. 다시 신청해주세요.',
   operation_text134: '',
   operation_text135: '',
   operation_text136: '',

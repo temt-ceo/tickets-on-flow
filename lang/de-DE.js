@@ -324,7 +324,7 @@ export default {
   operation_text130: 'Bitte geben Sie den zu erstattenden Betrag in Zahlenwerten an.',
   operation_text131: 'Der erstattete Betrag übersteigt den gezahlten Betrag.',
   operation_text132: 'Dieser Benutzer hat noch keine Erstattung eingerichtet. Dieser Benutzer kann eine Erstattung einrichten, indem er im Menü oben rechts auf "Einstellungen" klickt. Dieser Benutzer hat diesen Vorgang noch nicht abgeschlossen, daher ist die Schaltfläche "Erstattung" derzeit nicht verfügbar.',
-  operation_text133: '',
+  operation_text133: 'Das Ticket, das Sie zuvor beantragt haben, ist abgelaufen. Bitte beantragen Sie es erneut.',
   operation_text134: '',
   operation_text135: '',
   operation_text136: '',

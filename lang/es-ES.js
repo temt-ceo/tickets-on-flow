@@ -324,7 +324,7 @@ export default {
   operation_text130: 'Introduzca el importe a devolver en valores numéricos.',
   operation_text131: 'El importe reembolsado es superior al pagado.',
   operation_text132: 'Este usuario aún no ha configurado un reembolso. Este usuario puede configurar un reembolso haciendo clic en "Configuración" en el menú de la esquina superior derecha. Este usuario aún no ha completado ese proceso, por lo que el botón de reembolso no está disponible en este momento.',
-  operation_text133: '',
+  operation_text133: 'El billete que ha solicitado anteriormente ha caducado. Por favor, solicítelo de nuevo.',
   operation_text134: '',
   operation_text135: '',
   operation_text136: '',

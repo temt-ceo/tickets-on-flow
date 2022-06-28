@@ -53,7 +53,7 @@ export default {
         nextDay = nextDay - 1 < 0 ? 6 : nextDay - 1
         const weekdays = this.ticketWhen0.split('').sort().join('')
         let match = false
-        let nextDate = 0
+        let scheduledDay = 0
         while (!match) {
           for (let i = 0; i < weekdays.length; i++) {
             const registeredDay = parseInt(weekdays.substr(i, 1))
@@ -61,21 +61,21 @@ export default {
               match = true
             }
           }
-          nextDay = nextDay + 1 > 6 ? 0 : nextDay + 1
-          if (nextDate > 6) {
-            match = true // 繰り返しなし
-          }
           if (!match) {
-            nextDate++
+            nextDay = nextDay + 1 > 6 ? 0 : nextDay + 1
+            if (scheduledDay > 6) {
+              match = true // 繰り返しなし
+            }
+            scheduledDay++
           }
         }
-        if (nextDate <= 6) {
-          const nextEventDate = new Date(new Date().getTime() + nextDate * 24 * 60 * 60 * 1000)
+        if (scheduledDay <= 6) {
+          const nextEventDate = new Date(new Date().getTime() + scheduledDay * 24 * 60 * 60 * 1000)
           // ↓↓↓ nextEventが次のイベントの開始日
           const nextEvent = new Date(nextEventDate.getFullYear(), nextEventDate.getMonth(), nextEventDate.getDate(), dayEvent.getHours(), dayEvent.getMinutes(), dayEvent.getSeconds())
           const nextEventTime = parseInt(nextEvent.getTime() - new Date().getTime()) / 1000
-          const hNext = Math.floor(nextEventTime / 3600)
-          const mNext = Math.floor(nextEventTime / 60 % 60)
+          const hNext = nextEventTime < 0 ? Math.ceil(nextEventTime / 3600) : Math.floor(nextEventTime / 3600)
+          const mNext = nextEventTime < 0 ? Math.ceil(nextEventTime / 60 % 60) : Math.floor(nextEventTime / 60 % 60)
           // 保存データ
           // let previousEventTime = null
           // let hPrev = null
@@ -86,34 +86,34 @@ export default {
           //   mPrev = 60 - Math.ceil(previousEventTime / 60 % 60)
           // }
 
-          // if (!hPrev || hPrev > 4) {
-          switch (hNext) {
-            case 0:
-              this.ticketDateTime = `${this.$t('ticket_text12')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
-              break
-            case 1:
-              this.ticketDateTime = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text8')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
-              break
-            default:
-              this.ticketDateTime = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text9')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
-              break
-          }
+          if (nextEventTime > 0) {
+            switch (hNext) {
+              case 0:
+                this.ticketDateTime = `${this.$t('ticket_text12')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                break
+              case 1:
+                this.ticketDateTime = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text8')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                break
+              default:
+                this.ticketDateTime = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text9')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                break
+            }
           // this.ticketTime[this.dispenser] = nextEvent.getTime()
           // this.$store.commit('updateTicketTime', this.ticketTime)
-          // } else {
-          //   // 過去として表示
-          //   switch (h) {
-          //     case 0:
-          //       this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(mPrev)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
-          //       break
-          //     case 1:
-          //       this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(hPrev)} ${this.$t('ticket_text8')} ${Math.abs(mPrev)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
-          //       break
-          //     default:
-          //       this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(hPrev)} ${this.$t('ticket_text9')} ${Math.abs(mPrev)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
-          //       break
-          //   }
-          // }
+          } else {
+            // 過去として表示
+            switch (hNext) {
+              case 0:
+                this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(mNext)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                break
+              case 1:
+                this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(hNext)} ${this.$t('ticket_text8')} ${Math.abs(mNext)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                break
+              default:
+                this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(hNext)} ${this.$t('ticket_text9')} ${Math.abs(mNext)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                break
+            }
+          }
         }
       } else {
         // 過去として表示
