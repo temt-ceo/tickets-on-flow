@@ -5,6 +5,12 @@
       <div class="hero--overlay">
         <div class="hero--content">
           <b-breadcrumb>
+            <b-breadcrumb-item href="/?home">
+              <b-icon
+                icon="rotate-left"
+                size="is-large"
+              />
+            </b-breadcrumb-item>
             <b-breadcrumb-item @click="reload">
               <b-icon
                 icon="rotate-right"

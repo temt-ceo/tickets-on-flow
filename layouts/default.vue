@@ -1579,6 +1579,19 @@ tr {
       margin: 4px 0;
     }
   }
+
+  .breadcrumb li > a {
+    padding: 0;
+
+    > span.icon {
+      margin: 0;
+    }
+  }
+
+  .breadcrumb li + li::before {
+    color: cadetblue;
+    content: "|";
+  }
 }
 
 .ticket-detail {
