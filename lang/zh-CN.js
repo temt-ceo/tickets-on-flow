@@ -130,6 +130,8 @@ export default {
   ticket_text11_2: '',
   ticket_text12: '',
   ticket_text13: '后开始',
+  ticket_text13_2: '',
+  ticket_text13_3: '开始。',
   ticket_text14: '票务信息',
   ticket_text15: '命名',
   ticket_text16: '概述',

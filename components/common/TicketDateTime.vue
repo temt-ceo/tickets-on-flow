@@ -104,13 +104,13 @@ export default {
             // 過去として表示
             switch (hNext) {
               case 0:
-                this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(mNext)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                this.ticketDateTime = `${this.$t('ticket_text13_2')} ${this.$t('ticket_text11_2')} ${Math.abs(mNext)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}${this.$t('ticket_text13_3')}`
                 break
               case 1:
-                this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(hNext)} ${this.$t('ticket_text8')} ${Math.abs(mNext)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                this.ticketDateTime = `${this.$t('ticket_text13_2')} ${this.$t('ticket_text11_2')} ${Math.abs(hNext)} ${this.$t('ticket_text8')} ${Math.abs(mNext)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}${this.$t('ticket_text13_3')}`
                 break
               default:
-                this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(hNext)} ${this.$t('ticket_text9')} ${Math.abs(mNext)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+                this.ticketDateTime = `${this.$t('ticket_text13_2')} ${this.$t('ticket_text11_2')} ${Math.abs(hNext)} ${this.$t('ticket_text9')} ${Math.abs(mNext)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}${this.$t('ticket_text13_3')}`
                 break
             }
           }
@@ -119,13 +119,13 @@ export default {
         // 過去として表示
         switch (h) {
           case 0:
-            this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(m)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+            this.ticketDateTime = `${this.$t('ticket_text13_2')} ${this.$t('ticket_text11_2')} ${Math.abs(m)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}${this.$t('ticket_text13_3')}`
             break
           case 1:
-            this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(h)} ${this.$t('ticket_text8')} ${Math.abs(m)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+            this.ticketDateTime = `${this.$t('ticket_text13_2')} ${this.$t('ticket_text11_2')} ${Math.abs(h)} ${this.$t('ticket_text8')} ${Math.abs(m)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}${this.$t('ticket_text13_3')}`
             break
           default:
-            this.ticketDateTime = `${this.$t('ticket_text11_2')} ${Math.abs(h)} ${this.$t('ticket_text9')} ${Math.abs(m)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}`
+            this.ticketDateTime = `${this.$t('ticket_text13_2')} ${this.$t('ticket_text11_2')} ${Math.abs(h)} ${this.$t('ticket_text9')} ${Math.abs(m)} ${this.$t('ticket_text10')} ${this.$t('ticket_text11')}${this.$t('ticket_text13_3')}`
             break
         }
       }

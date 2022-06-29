@@ -130,6 +130,8 @@ export default {
   ticket_text11_2: '',
   ticket_text12: '',
   ticket_text13: '後にスタート',
+  ticket_text13_2: '',
+  ticket_text13_3: '開始しました。',
   ticket_text14: 'チケット情報',
   ticket_text15: '名称',
   ticket_text16: '概要',

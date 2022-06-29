@@ -130,6 +130,8 @@ export default {
   ticket_text11_2: '',
   ticket_text12: '',
   ticket_text13: '후에 시작됩니다',
+  ticket_text13_2: '',
+  ticket_text13_3: '시작됨.',
   ticket_text14: '티켓 정보',
   ticket_text15: '이름',
   ticket_text16: '개요',

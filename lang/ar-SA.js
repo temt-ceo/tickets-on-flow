@@ -130,6 +130,8 @@ export default {
   ticket_text11_2: '',
   ticket_text12: '',
   ticket_text13: 'يبدأ بعد',
+  ticket_text13_2: '',
+  ticket_text13_3: 'بدأت',
   ticket_text14: 'معلومات البطاقة',
   ticket_text15: 'اسم',
   ticket_text16: 'ملخص',
