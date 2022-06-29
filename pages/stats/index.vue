@@ -149,7 +149,7 @@
             <b-input
               v-model="statItem5"
               maxlength="60"
-              :placeholder="$t('operation_text60') + '4.'"
+              :placeholder="$t('operation_text60') + '5.'"
               rounded
               expanded
               class="left-input"
@@ -166,7 +166,7 @@
             <b-input
               v-model="statItem6"
               maxlength="60"
-              :placeholder="$t('operation_text60') + '4.'"
+              :placeholder="$t('operation_text60') + '6.'"
               rounded
               expanded
               class="left-input"
@@ -327,7 +327,7 @@
             <b-input
               v-model="statItem5"
               maxlength="60"
-              :placeholder="$t('operation_text60') + '4.'"
+              :placeholder="$t('operation_text60') + '5.'"
               rounded
               expanded
               class="left-input"
@@ -344,7 +344,7 @@
             <b-input
               v-model="statItem6"
               maxlength="60"
-              :placeholder="$t('operation_text60') + '4.'"
+              :placeholder="$t('operation_text60') + '6.'"
               rounded
               expanded
               class="left-input"
@@ -814,7 +814,7 @@ export default {
     }
 
     .notice {
-      font-size: 18px;
+      font-size: 16px;
       color: white;
     }
 

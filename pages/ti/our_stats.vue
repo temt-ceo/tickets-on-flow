@@ -155,7 +155,7 @@
             <b-input
               v-model="statItem5Input"
               maxlength="60"
-              :placeholder="$t('operation_text60') + '4.'"
+              :placeholder="$t('operation_text60') + '5.'"
               rounded
               expanded
             />
@@ -171,7 +171,7 @@
             <b-input
               v-model="statItem6Input"
               maxlength="60"
-              :placeholder="$t('operation_text60') + '4.'"
+              :placeholder="$t('operation_text60') + '6.'"
               rounded
               expanded
             />
@@ -344,7 +344,7 @@
             <b-input
               v-model="statItem4"
               maxlength="60"
-              :placeholder="$t('operation_text60') + '4.'"
+              :placeholder="$t('operation_text60') + '5.'"
               rounded
               expanded
               disabled
@@ -365,7 +365,7 @@
             <b-input
               v-model="statItem6"
               maxlength="60"
-              :placeholder="$t('operation_text60') + '4.'"
+              :placeholder="$t('operation_text60') + '6.'"
               rounded
               expanded
               disabled
@@ -379,7 +379,7 @@
               disabled
             />
           </b-field>
-          <b-button class="download" type="is-info is-light" icon-right="download" style="float: right; margin-top: -6px;" @click="csvDownload">
+          <b-button class="download" type="is-info is-light" icon-right="download" style="position: absolute; top: 13px; right: 20px; height: 2.3rem; padding: 4px 12px;" @click="csvDownload">
             CSV
           </b-button>
         </section>
@@ -767,7 +767,9 @@ export default {
           row.answer1, parseFloat(row.value1).toFixed(1).toString() + '%',
           row.answer2, parseFloat(row.value2).toFixed(1).toString() + '%',
           row.answer3, parseFloat(row.value3).toFixed(1).toString() + '%',
-          row.answer4, parseFloat(row.value4).toFixed(1).toString() + '%'
+          row.answer4, parseFloat(row.value4).toFixed(1).toString() + '%',
+          row.answer5, parseFloat(row.value5).toFixed(1).toString() + '%',
+          row.answer6, parseFloat(row.value6).toFixed(1).toString() + '%'
         ]
         csvContent += rowArray.join(',') + '\r\n'
       })
@@ -813,7 +815,7 @@ export default {
     }
 
     .notice {
-      font-size: 18px;
+      font-size: 16px;
       color: white;
     }
 

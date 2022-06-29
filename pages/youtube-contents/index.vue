@@ -45,10 +45,10 @@
             <b>https://chain-work.com/ti/XXXXX/</b><br>
             {{ $t('terms_of_use33') }}<br>
             {{ $t('terms_of_use34') }}<br>
-            {{ $t('terms_of_use35') }}<br>
             {{ $t('terms_of_use36') }}<br>
             {{ $t('terms_of_use37') }}<br>
-            {{ $t('terms_of_use38') }}
+            {{ $t('terms_of_use38') }}<br>
+            {{ $t('terms_of_use35') }}
           </p>
           <hr>
           <p class="explanation-content">
@@ -58,8 +58,6 @@
             {{ $t('terms_of_use52') }}<br>
             {{ $t('terms_of_use53') }}<br>
             {{ $t('terms_of_use54') }}<br>
-            {{ $t('terms_of_use55') }}<br>
-            {{ $t('terms_of_use56') }}<br>
             {{ $t('terms_of_use57') }}<br>
           </p>
         </div>
@@ -98,6 +96,8 @@
           <p class="explanation-content">
             {{ $t('terms_of_use45') }}<br>
             {{ $t('terms_of_use46') }}<br>
+            {{ $t('terms_of_use55') }}<br>
+            {{ $t('terms_of_use56') }}<br>
             {{ $t('terms_of_use47') }}
           </p>
         </div>

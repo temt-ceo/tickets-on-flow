@@ -1635,7 +1635,7 @@ tr {
 }
 
 .modal-content, .modal-card {
-    max-height: calc(100vh - 140px);
+    max-height: calc(100vh - 90px);
 }
 
 .modal-close {
