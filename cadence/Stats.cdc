@@ -1,7 +1,7 @@
 import FlowToken from 0x7e60df042a9c0868
 import FungibleToken from 0x9a0766d93b6608b7
 
-pub contract TicketStatsV12 {
+pub contract TicketStatsV13 {
   // Events
   pub event StatsCreated(user_id: UInt32, address: Address)
   pub event Tipping(amount: UFix64, address: Address)
@@ -28,13 +28,17 @@ pub contract TicketStatsV12 {
     pub let answer2: String
     pub let answer3: String
     pub let answer4: String
+    pub let answer5: String
+    pub let answer6: String
     pub let value1: UFix64
     pub let value2: UFix64
     pub let value3: UFix64
     pub let value4: UFix64
+    pub let value5: UFix64
+    pub let value6: UFix64
     pub let update_count: UInt8
 
-    init(nickname: String, time: UFix64, title: String, answer1: String, answer2: String, answer3: String, answer4: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64, update_count: UInt8) {
+    init(nickname: String, time: UFix64, title: String, answer1: String, answer2: String, answer3: String, answer4: String, answer5: String, answer6: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64, value5: UFix64, value6: UFix64, update_count: UInt8) {
       self.nickname = nickname
       self.time = time
       self.title = title
@@ -42,10 +46,14 @@ pub contract TicketStatsV12 {
       self.answer2 = answer2
       self.answer3 = answer3
       self.answer4 = answer4
+      self.answer5 = answer5
+      self.answer6 = answer6
       self.value1 = value1
       self.value2 = value2
       self.value3 = value3
       self.value4 = value4
+      self.value5 = value5
+      self.value6 = value6
       self.update_count = update_count
     }
   }
@@ -55,8 +63,8 @@ pub contract TicketStatsV12 {
   */
   pub resource interface IStatsPrivate {
     pub var user_id: UInt32
-    pub fun addStats(addr: Address, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64)
-    pub fun updateStats(addr: Address, index: UInt32, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64)
+    pub fun addStats(addr: Address, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, answer5: String, answer6: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64, value5: UFix64, value6: UFix64)
+    pub fun updateStats(addr: Address, index: UInt32, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, answer5: String, answer6: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64, value5: UFix64, value6: UFix64)
   }
 
   /*
@@ -73,35 +81,35 @@ pub contract TicketStatsV12 {
     }
 
     // [private access]
-    pub fun addStats(addr: Address, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64) {
+    pub fun addStats(addr: Address, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, answer5: String, answer6: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64, value5: UFix64, value6: UFix64) {
       let time = getCurrentBlock().timestamp
-      let stat = StatsStruct(nickname: nickname, time: time, title: title, answer1: answer1, answer2: answer2, answer3: answer3, answer4: answer4, value1: value1, value2: value2, value3: value3, value4: value4, update_count: 0)
-      if let data = TicketStatsV12.stats[addr] {
-        TicketStatsV12.stats[addr]!.append(stat)
+      let stat = StatsStruct(nickname: nickname, time: time, title: title, answer1: answer1, answer2: answer2, answer3: answer3, answer4: answer4, answer5: answer5, answer6: answer6, value1: value1, value2: value2, value3: value3, value4: value4, value5: value5, value6: value6, update_count: 0)
+      if let data = TicketStatsV13.stats[addr] {
+        TicketStatsV13.stats[addr]!.append(stat)
       }
       emit StatsCreated(user_id: self.user_id, address: addr)
     }
 
     // [private access]
-    pub fun updateStats(addr: Address, index: UInt32, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64) {
-      let existStat = TicketStatsV12.stats[addr]!.remove(at: index)
-      let stat = StatsStruct(nickname: nickname, time: existStat.time, title: title, answer1: answer1, answer2: answer2, answer3: answer3, answer4: answer4, value1: value1, value2: value2, value3: value3, value4: value4, update_count: existStat.update_count + 1)
-      TicketStatsV12.stats[addr]!.insert(at: index, stat)
+    pub fun updateStats(addr: Address, index: UInt32, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, answer5: String, answer6: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64, value5: UFix64, value6: UFix64) {
+      let existStat = TicketStatsV13.stats[addr]!.remove(at: index)
+      let stat = StatsStruct(nickname: nickname, time: existStat.time, title: title, answer1: answer1, answer2: answer2, answer3: answer3, answer4: answer4, answer5: answer5, answer6: answer6, value1: value1, value2: value2, value3: value3, value4: value4, value5: value5, value6: value6, update_count: existStat.update_count + 1)
+      TicketStatsV13.stats[addr]!.insert(at: index, stat)
     }
 
-    init(addr: Address, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64, flow_vault_receiver: Capability<&FlowToken.Vault{FungibleToken.Receiver}>) {
+    init(addr: Address, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, answer5: String, answer6: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64, value5: UFix64, value6: UFix64, flow_vault_receiver: Capability<&FlowToken.Vault{FungibleToken.Receiver}>) {
       // TotalSupply
-      self.user_id = TicketStatsV12.totalStatsVaultSupply + 1
-      TicketStatsV12.totalStatsVaultSupply = TicketStatsV12.totalStatsVaultSupply + 1
+      self.user_id = TicketStatsV13.totalStatsVaultSupply + 1
+      TicketStatsV13.totalStatsVaultSupply = TicketStatsV13.totalStatsVaultSupply + 1
 
       // Event, Data
       emit StatsCreated(user_id: self.user_id, address: addr)
       let time = getCurrentBlock().timestamp
-      let stat = StatsStruct(nickname: nickname, time: time, title: title, answer1: answer1, answer2: answer2, answer3: answer3, answer4: answer4, value1: value1, value2: value2, value3: value3, value4: value4, update_count: 0)
-      TicketStatsV12.stats[addr] = [stat]
+      let stat = StatsStruct(nickname: nickname, time: time, title: title, answer1: answer1, answer2: answer2, answer3: answer3, answer4: answer4, answer5: answer5, answer6: answer6, value1: value1, value2: value2, value3: value3, value4: value4, value5: value5, value6: value6, update_count: 0)
+      TicketStatsV13.stats[addr] = [stat]
 
-      if (TicketStatsV12.FlowTokenVaults[addr] == nil) {
-        TicketStatsV12.FlowTokenVaults[addr] = flow_vault_receiver
+      if (TicketStatsV13.FlowTokenVaults[addr] == nil) {
+        TicketStatsV13.FlowTokenVaults[addr] = flow_vault_receiver
       }
     }
   }
@@ -115,11 +123,11 @@ pub contract TicketStatsV12 {
   /*
   ** [create vault] createStatsVault
   */
-  pub fun createStatsVault(addr: Address, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64, flow_vault_receiver: Capability<&FlowToken.Vault{FungibleToken.Receiver}>): @StatsVault {
+  pub fun createStatsVault(addr: Address, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, answer5: String, answer6: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64, value5: UFix64, value6: UFix64, flow_vault_receiver: Capability<&FlowToken.Vault{FungibleToken.Receiver}>): @StatsVault {
     pre {
-      TicketStatsV12.stats[addr] == nil: "This address already has account"
+      TicketStatsV13.stats[addr] == nil: "This address already has account"
     }
-    return <- create StatsVault(addr: addr, nickname: nickname, title: title, answer1: answer1, answer2: answer2, answer3: answer3, answer4: answer4, value1: value1, value2: value2, value3: value3, value4: value4, flow_vault_receiver: flow_vault_receiver)
+    return <- create StatsVault(addr: addr, nickname: nickname, title: title, answer1: answer1, answer2: answer2, answer3: answer3, answer4: answer4, answer5: answer5, answer6: answer6, value1: value1, value2: value2, value3: value3, value4: value4, value5: value5, value6: value6, flow_vault_receiver: flow_vault_receiver)
   }
 
   /*
@@ -140,8 +148,8 @@ pub contract TicketStatsV12 {
 
     let amount = payment.balance + fee.balance
 
-    TicketStatsV12.FlowTokenVault.borrow()!.deposit(from: <- fee)
-    TicketStatsV12.FlowTokenVaults[addr]!.borrow()!.deposit(from: <- payment)
+    TicketStatsV13.FlowTokenVault.borrow()!.deposit(from: <- fee)
+    TicketStatsV13.FlowTokenVaults[addr]!.borrow()!.deposit(from: <- payment)
     emit Tipping(amount: amount, address: addr)
   }
 
@@ -149,7 +157,7 @@ pub contract TicketStatsV12 {
   ** init
   */
   init() {
-    self.StatsVaultPublicPath = /public/TicketStatsV12Vault
+    self.StatsVaultPublicPath = /public/TicketStatsV13Vault
     self.totalStatsVaultSupply = 0
     self.FlowTokenVault = self.account.getCapability<&FlowToken.Vault{FungibleToken.Receiver}>(/public/flowTokenReceiver)
     self.FlowTokenVaults = {}

@@ -151,8 +151,40 @@
               rounded
             />
           </b-field>
+          <b-field v-if="itemCountInput >= 5">
+            <b-input
+              v-model="statItem5Input"
+              maxlength="60"
+              :placeholder="$t('operation_text60') + '4.'"
+              rounded
+              expanded
+            />
+            <b-input
+              v-model="statResult5Input"
+              :placeholder="$t('operation_text61') + '(%)'"
+              type="number"
+              min="0"
+              rounded
+            />
+          </b-field>
+          <b-field v-if="itemCountInput >= 6">
+            <b-input
+              v-model="statItem6Input"
+              maxlength="60"
+              :placeholder="$t('operation_text60') + '4.'"
+              rounded
+              expanded
+            />
+            <b-input
+              v-model="statResult6Input"
+              :placeholder="$t('operation_text61') + '(%)'"
+              type="number"
+              min="0"
+              rounded
+            />
+          </b-field>
           <div style="margin: 18px 0;">
-            <b-button v-if="itemCountInput < 4" type="is-success is-light" icon-right="plus" @click="addInputs" />
+            <b-button v-if="itemCountInput < 6" type="is-success is-light" icon-right="plus" @click="addInputs" />
             <b-field style="display: inline;">
               <b-tooltip
                 :label="$t('operation_text83')"
@@ -305,6 +337,48 @@
               disabled
             />
           </b-field>
+          <div v-if="itemCount >= 5" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 13px; z-index: 2;">
+            %
+          </div>
+          <b-field v-if="itemCount >= 5">
+            <b-input
+              v-model="statItem4"
+              maxlength="60"
+              :placeholder="$t('operation_text60') + '4.'"
+              rounded
+              expanded
+              disabled
+            />
+            <b-input
+              v-model="statResult5"
+              :placeholder="$t('operation_text61') + '(%)'"
+              type="number"
+              min="0"
+              rounded
+              disabled
+            />
+          </b-field>
+          <div v-if="itemCount >= 6" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 13px; z-index: 2;">
+            %
+          </div>
+          <b-field v-if="itemCount >= 6">
+            <b-input
+              v-model="statItem6"
+              maxlength="60"
+              :placeholder="$t('operation_text60') + '4.'"
+              rounded
+              expanded
+              disabled
+            />
+            <b-input
+              v-model="statResult6"
+              :placeholder="$t('operation_text61') + '(%)'"
+              type="number"
+              min="0"
+              rounded
+              disabled
+            />
+          </b-field>
           <b-button class="download" type="is-info is-light" icon-right="download" style="float: right; margin-top: -6px;" @click="csvDownload">
             CSV
           </b-button>
@@ -333,10 +407,14 @@ export default {
       statItem2: '',
       statItem3: '',
       statItem4: '',
+      statItem5: '',
+      statItem6: '',
       statResult1: null,
       statResult2: null,
       statResult3: null,
       statResult4: null,
+      statResult5: null,
+      statResult6: null,
       nickname: '',
       itemCount: 2,
       statTitleInput: '',
@@ -344,10 +422,14 @@ export default {
       statItem2Input: '',
       statItem3Input: '',
       statItem4Input: '',
+      statItem5Input: '',
+      statItem6Input: '',
       statResult1Input: null,
       statResult2Input: null,
       statResult3Input: null,
       statResult4Input: null,
+      statResult5Input: null,
+      statResult6Input: null,
       nicknameInput: '',
       itemCountInput: 2,
       registeredContributors: [],
@@ -405,12 +487,22 @@ export default {
           if (this.registeredPolls[index].answer4 && this.registeredPolls[index].answer4.length > 0) {
             this.itemCount = 4
           }
+          if (this.registeredPolls[index].answer5 && this.registeredPolls[index].answer5.length > 0) {
+            this.itemCount = 5
+          }
+          if (this.registeredPolls[index].answer6 && this.registeredPolls[index].answer6.length > 0) {
+            this.itemCount = 6
+          }
           this.statItem3 = this.registeredPolls[index].answer3
           this.statItem4 = this.registeredPolls[index].answer4
+          this.statItem5 = this.registeredPolls[index].answer5
+          this.statItem6 = this.registeredPolls[index].answer6
           this.statResult1 = parseFloat(this.registeredPolls[index].value1, 1)
           this.statResult2 = parseFloat(this.registeredPolls[index].value2, 1)
           this.statResult3 = this.itemCount >= 3 ? parseFloat(this.registeredPolls[index].value3, 1) : null
           this.statResult4 = this.itemCount >= 4 ? parseFloat(this.registeredPolls[index].value4, 1) : null
+          this.statResult5 = this.itemCount >= 5 ? parseFloat(this.registeredPolls[index].value5, 1) : null
+          this.statResult6 = this.itemCount >= 6 ? parseFloat(this.registeredPolls[index].value6, 1) : null
           this.nickname = this.registeredPolls[index].nickname.replace(/\|\|link\|\|$/, '')
         }
       }
@@ -427,7 +519,7 @@ export default {
       this.bloctoWalletUser = user
     },
     addInputs () {
-      if (this.itemCountInput < 4) {
+      if (this.itemCountInput < 6) {
         this.itemCountInput++
       }
     },
@@ -565,10 +657,14 @@ export default {
                   this.$fcl.arg(this.statItem2Input, this.$fclArgType.String),
                   this.$fcl.arg(this.statItem3Input, this.$fclArgType.String),
                   this.$fcl.arg(this.statItem4Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statItem5Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statItem6Input, this.$fclArgType.String),
                   this.$fcl.arg(parseFloat(this.statResult1Input).toFixed(1), this.$fclArgType.UFix64),
                   this.$fcl.arg(parseFloat(this.statResult2Input).toFixed(1), this.$fclArgType.UFix64),
                   this.$fcl.arg(parseFloat(this.statResult3Input).toFixed(1), this.$fclArgType.UFix64),
-                  this.$fcl.arg(parseFloat(this.statResult4Input).toFixed(1), this.$fclArgType.UFix64)
+                  this.$fcl.arg(parseFloat(this.statResult4Input).toFixed(1), this.$fclArgType.UFix64),
+                  this.$fcl.arg(parseFloat(this.statResult5Input).toFixed(1), this.$fclArgType.UFix64),
+                  this.$fcl.arg(parseFloat(this.statResult6Input).toFixed(1), this.$fclArgType.UFix64)
                 ]),
                 this.$fcl.payer(this.$fcl.authz),
                 this.$fcl.proposer(this.$fcl.authz),
@@ -598,10 +694,14 @@ export default {
                   this.$fcl.arg(this.statItem2Input, this.$fclArgType.String),
                   this.$fcl.arg(this.statItem3Input, this.$fclArgType.String),
                   this.$fcl.arg(this.statItem4Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statItem5Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statItem6Input, this.$fclArgType.String),
                   this.$fcl.arg(parseFloat(this.statResult1Input).toFixed(1), this.$fclArgType.UFix64),
                   this.$fcl.arg(parseFloat(this.statResult2Input).toFixed(1), this.$fclArgType.UFix64),
                   this.$fcl.arg(parseFloat(this.statResult3Input).toFixed(1), this.$fclArgType.UFix64),
-                  this.$fcl.arg(parseFloat(this.statResult4Input).toFixed(1), this.$fclArgType.UFix64)
+                  this.$fcl.arg(parseFloat(this.statResult4Input).toFixed(1), this.$fclArgType.UFix64),
+                  this.$fcl.arg(parseFloat(this.statResult5Input).toFixed(1), this.$fclArgType.UFix64),
+                  this.$fcl.arg(parseFloat(this.statResult6Input).toFixed(1), this.$fclArgType.UFix64)
                 ]),
                 this.$fcl.payer(this.$fcl.authz),
                 this.$fcl.proposer(this.$fcl.authz),
@@ -658,11 +758,17 @@ export default {
     },
     csvDownload () {
       let csvContent = 'data:text/csv;charset=utf-8,'
-      csvContent += 'Nickname, Date, Title, Item1, Item2, Item3, Item4, Result1, Result2, Result3, Result4' + '\r\n'
+      csvContent += 'Nickname, Date, Title, Item1, Result1, Item2, Result2, Item3, Result3, Item4, Result4, Item5, Result5, Item6, Result6' + '\r\n'
 
       this.registeredPolls.forEach((row) => {
         const datetime = new Date(parseInt(row.time) * 1000).toLocaleDateString() + ' ' + new Date(parseInt(row.time) * 1000).toLocaleTimeString()
-        const rowArray = [row.nickname.replace(/\|\|link\|\|$/, ''), datetime, row.title, row.answer1, row.answer2, row.answer3, row.answer4, parseFloat(row.value1).toFixed(1).toString() + '%', parseFloat(row.value2).toFixed(1).toString() + '%', parseFloat(row.value3).toFixed(1).toString() + '%', parseFloat(row.value4).toFixed(1).toString() + '%']
+        const rowArray = [
+          row.nickname.replace(/\|\|link\|\|$/, ''), datetime, row.title,
+          row.answer1, parseFloat(row.value1).toFixed(1).toString() + '%',
+          row.answer2, parseFloat(row.value2).toFixed(1).toString() + '%',
+          row.answer3, parseFloat(row.value3).toFixed(1).toString() + '%',
+          row.answer4, parseFloat(row.value4).toFixed(1).toString() + '%'
+        ]
         csvContent += rowArray.join(',') + '\r\n'
       })
       const encodedUri = encodeURI(csvContent)
