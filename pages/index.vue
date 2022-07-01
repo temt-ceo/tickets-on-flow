@@ -154,7 +154,6 @@
       :indicator="carouselIndicator"
       :indicator-inside="carouselInside"
       :indicator-style="carouselIndicatorStyle"
-      @change="carouselChange($event)"
     >
       <b-carousel-item v-for="(carousel, i) in carousels" :key="i">
         <section :class="`hero is-medium is-${carousel.color}`">
@@ -188,7 +187,6 @@
       :indicator="carouselIndicator"
       :indicator-inside="carouselInside"
       :indicator-style="carouselIndicatorStyle"
-      @change="carouselChange2($event)"
     >
       <b-carousel-item v-for="(carousel, i) in carousels2" :key="i">
         <section :class="`hero is-medium is-${carousel.color}`">
@@ -222,7 +220,6 @@
       :indicator="carouselIndicator"
       :indicator-inside="carouselInside"
       :indicator-style="carouselIndicatorStyle"
-      @change="carouselChange3($event)"
     >
       <b-carousel-item v-for="(carousel, i) in carousels3" :key="i">
         <section :class="`hero is-medium is-${carousel.color}`">
@@ -381,7 +378,11 @@ export default {
       carouselInside: true,
       carouselIndicatorStyle: 'is-lines',
       carousels: [
-        { text: `Step 1. ${this.$t('ticket_text58')}`, image: '/image/help_slide_1_en.png', color: 'primary' }
+        { text: `Step 1. ${this.$t('ticket_text58')}`, image: '/image/help_slide_1_en.png', color: 'success' }
+        // { text: `Step 2. ${this.$t('ticket_text72')}`, image: '/image/help_slide_15_en.png', color: 'danger' },
+        // { text: `Step 3. ${this.$t('ticket_text73')}`, image: '/image/help_slide_16_en.png', color: 'primary' },
+        // { text: `Step 4. ${this.$t('ticket_text74')}`, image: '/image/help_slide_17_en.png', color: 'info' },
+        // { text: `Step 5. ${this.$t('ticket_text75')}`, image: '/image/help_slide_18_en.png', color: 'success' }
       ],
       carousels2: [
         { text: `Step 1. ${this.$t('ticket_text59')}`, image: '/image/help_slide_2_en.png', color: 'info' },
@@ -392,17 +393,13 @@ export default {
         { text: `Step 6. ${this.$t('ticket_text64')}`, image: '/image/help_slide_7_en.png', color: 'info' },
         { text: `Step 7. ${this.$t('ticket_text65')}`, image: '/image/help_slide_8_en.png', color: 'info' },
         { text: `Step 8. ${this.$t('ticket_text66')}`, image: '/image/help_slide_9_en.png', color: 'info' },
-        { text: `Step 9. ${this.$t('ticket_text67')}`, image: '/image/help_slide_10_en.png', color: 'info' }
+        { text: `Step 9. ${this.$t('ticket_text67')}`, image: '/image/help_slide_10_en.png', color: 'info' },
+        { text: `Step 10. ${this.$t('ticket_text68')}`, image: '/image/help_slide_11_en.png', color: 'success' }
       ],
       carousels3: [
-        { text: `Step 1. ${this.$t('ticket_text68')}`, image: '/image/help_slide_11_en.png', color: 'success' },
-        { text: `Step 2. ${this.$t('ticket_text69')}`, image: '/image/help_slide_12_en.png', color: 'success' },
-        { text: `Step 3. ${this.$t('ticket_text70')}`, image: '/image/help_slide_13_en.png', color: 'success' },
-        { text: `Step 4. ${this.$t('ticket_text71')}`, image: '/image/help_slide_14_en.png', color: 'warning' },
-        { text: `Step 5. ${this.$t('ticket_text72')}`, image: '/image/help_slide_15_en.png', color: 'danger' },
-        { text: `Step 6. ${this.$t('ticket_text73')}`, image: '/image/help_slide_16_en.png', color: 'primary' },
-        { text: `Step 7. ${this.$t('ticket_text74')}`, image: '/image/help_slide_17_en.png', color: 'info' },
-        { text: `Step 8. ${this.$t('ticket_text75')}`, image: '/image/help_slide_18_en.png', color: 'success' }
+        { text: `Step 1. ${this.$t('ticket_text69')}`, image: '/image/help_slide_12_en.png', color: 'warning' },
+        { text: `Step 2. ${this.$t('ticket_text70')}`, image: '/image/help_slide_13_en.png', color: 'success' },
+        { text: `Step 3. ${this.$t('ticket_text71')}`, image: '/image/help_slide_14_en.png', color: 'warning' }
       ],
       searchLists: [],
       searchValue: '',
@@ -477,27 +474,6 @@ export default {
       this.isTappedReset = setTimeout(() => {
         this.isTapped = false
       }, 2000)
-    },
-    carouselChange (value) {
-      if (value >= 9) {
-        setTimeout(() => {
-          this.showCarousel = false
-        }, 7500)
-      }
-    },
-    carouselChange2 (value) {
-      if (value >= 7) {
-        setTimeout(() => {
-          this.showCarousel2 = false
-        }, 7500)
-      }
-    },
-    carouselChange3 (value) {
-      if (value >= 7) {
-        setTimeout(() => {
-          this.showCarousel3 = false
-        }, 7500)
-      }
     },
     async getTickets () {
       try {

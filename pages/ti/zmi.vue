@@ -16,8 +16,8 @@ export default {
   },
   data () {
     return {
-      ticketTitle: this.$t('special_title1'),
-      ticketDescription: this.$t('special_description1'),
+      ticketTitle: this.$t('special_title2'),
+      ticketDescription: this.$t('special_description2'),
       additionalDescription: {
         info: true,
         infoImage: '/img/stock-img.jpeg',
