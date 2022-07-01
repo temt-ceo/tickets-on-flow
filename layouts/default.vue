@@ -1350,11 +1350,13 @@ span.control-label {
     }
 
     .media-content {
-      color: #3e8ed0;
+      color: #48c78e;
       font-size: large;
-      h3 {
-        text-shadow: 0 0.2px 0.8px #0000ff;
-      }
+      font-size: 11px;
+      padding-top: 5px;
+      // h3 {
+      //   text-shadow: 0 0.2px 0.8px #257953;
+      // }
     }
   }
 }
@@ -1727,4 +1729,9 @@ tr {
   }
 }
 
+@media screen and (max-width: 1023px) {
+  .dropdown.is-mobile-modal > .dropdown-menu > .dropdown-content > .dropdown-item {
+    padding: 1rem 0.5rem 1rem 1.2rem
+  }
+}
 </style>

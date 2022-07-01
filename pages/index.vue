@@ -115,7 +115,7 @@
           <div class="media">
             <b-icon class="media-left" icon="information" />
             <div class="media-content">
-              <h3>New! How to start crowdfunding!</h3>
+              <h3>{{ $t('ticket_text76') }} Ⅰ</h3>
             </div>
           </div>
         </b-dropdown-item>
@@ -123,7 +123,15 @@
           <div class="media">
             <b-icon class="media-left" icon="information" />
             <div class="media-content">
-              <h3>How to proceed with crowdfunding</h3>
+              <h3>{{ $t('ticket_text76') }} Ⅱ</h3>
+            </div>
+          </div>
+        </b-dropdown-item>
+        <b-dropdown-item aria-role="listitem" @click="showCarousel3 = true">
+          <div class="media">
+            <b-icon class="media-left" icon="information" />
+            <div class="media-content">
+              <h3>{{ $t('ticket_text77') }}</h3>
             </div>
           </div>
         </b-dropdown-item>
@@ -151,9 +159,9 @@
       <b-carousel-item v-for="(carousel, i) in carousels" :key="i">
         <section :class="`hero is-medium is-${carousel.color}`">
           <div class="hero-body has-text-centered">
-            <h1 class="title">
+            <h2 style="margin-bottom: 10px;">
               {{ carousel.text }}
-            </h1>
+            </h2>
             <img
               :src="carousel.image"
               alt="Tickets Manual"
@@ -185,9 +193,9 @@
       <b-carousel-item v-for="(carousel, i) in carousels2" :key="i">
         <section :class="`hero is-medium is-${carousel.color}`">
           <div class="hero-body has-text-centered">
-            <h1 class="title">
+            <h2 style="margin-bottom: 10px;">
               {{ carousel.text }}
-            </h1>
+            </h2>
             <img
               :src="carousel.image"
               alt="Tickets Manual"
@@ -195,6 +203,40 @@
             >
           </div>
           <div class="close-icon" @click="showCarousel2 = false">
+            <b-icon
+              pack="fa-solid"
+              icon="xmark"
+              size="is-large"
+            />
+          </div>
+        </section>
+      </b-carousel-item>
+    </b-carousel>
+    <b-carousel
+      v-if="showCarousel3"
+      :arrow="carouselArrow"
+      :arrow-hover="carouselArrowHover"
+      :autoplay="carouselAutoPlay"
+      :repeat="carouselRepeat"
+      :interval="carouselInterval"
+      :indicator="carouselIndicator"
+      :indicator-inside="carouselInside"
+      :indicator-style="carouselIndicatorStyle"
+      @change="carouselChange3($event)"
+    >
+      <b-carousel-item v-for="(carousel, i) in carousels3" :key="i">
+        <section :class="`hero is-medium is-${carousel.color}`">
+          <div class="hero-body has-text-centered">
+            <h2 style="margin-bottom: 10px;">
+              {{ carousel.text }}
+            </h2>
+            <img
+              :src="carousel.image"
+              alt="Tickets Manual"
+              style="max-height: 400px;"
+            >
+          </div>
+          <div class="close-icon" @click="showCarousel3 = false">
             <b-icon
               pack="fa-solid"
               icon="xmark"
@@ -329,6 +371,7 @@ export default {
       isTappedReset: null,
       showCarousel: false,
       showCarousel2: false,
+      showCarousel3: false,
       carouselArrow: true,
       carouselArrowHover: false,
       carouselAutoPlay: true,
@@ -338,20 +381,22 @@ export default {
       carouselInside: true,
       carouselIndicatorStyle: 'is-lines',
       carousels: [
-        { text: `Step 1. ${this.$t('ticket_text58')}`, image: '/image/help_slide_1_en.png', color: 'primary' },
-        { text: `Step 2. ${this.$t('ticket_text59')}`, image: '/image/help_slide_2_en.png', color: 'info' },
-        { text: `Step 3. ${this.$t('ticket_text60')}`, image: '/image/help_slide_3_en.png', color: 'success' },
-        { text: `Step 4. ${this.$t('ticket_text61')}`, image: '/image/help_slide_4_en.png', color: 'warning' },
-        { text: `Step 5. ${this.$t('ticket_text62')}`, image: '/image/help_slide_5_en.png', color: 'danger' },
-        { text: `Step 6. ${this.$t('ticket_text63')}`, image: '/image/help_slide_6_en.png', color: 'primary' },
-        { text: `Step 7. ${this.$t('ticket_text64')}`, image: '/image/help_slide_7_en.png', color: 'info' },
-        { text: `Step 8. ${this.$t('ticket_text65')}`, image: '/image/help_slide_8_en.png', color: 'success' },
-        { text: `Step 9. ${this.$t('ticket_text66')}`, image: '/image/help_slide_9_en.png', color: 'warning' },
-        { text: `Step 10. ${this.$t('ticket_text67')}`, image: '/image/help_slide_10_en.png', color: 'danger' }
+        { text: `Step 1. ${this.$t('ticket_text58')}`, image: '/image/help_slide_1_en.png', color: 'primary' }
       ],
       carousels2: [
-        { text: `Step 1. ${this.$t('ticket_text68')}`, image: '/image/help_slide_11_en.png', color: 'primary' },
-        { text: `Step 2. ${this.$t('ticket_text69')}`, image: '/image/help_slide_12_en.png', color: 'info' },
+        { text: `Step 1. ${this.$t('ticket_text59')}`, image: '/image/help_slide_2_en.png', color: 'info' },
+        { text: `Step 2. ${this.$t('ticket_text60')}`, image: '/image/help_slide_3_en.png', color: 'info' },
+        { text: `Step 3. ${this.$t('ticket_text61')}`, image: '/image/help_slide_4_en.png', color: 'info' },
+        { text: `Step 4. ${this.$t('ticket_text62')}`, image: '/image/help_slide_5_en.png', color: 'info' },
+        { text: `Step 5. ${this.$t('ticket_text63')}`, image: '/image/help_slide_6_en.png', color: 'info' },
+        { text: `Step 6. ${this.$t('ticket_text64')}`, image: '/image/help_slide_7_en.png', color: 'info' },
+        { text: `Step 7. ${this.$t('ticket_text65')}`, image: '/image/help_slide_8_en.png', color: 'info' },
+        { text: `Step 8. ${this.$t('ticket_text66')}`, image: '/image/help_slide_9_en.png', color: 'info' },
+        { text: `Step 9. ${this.$t('ticket_text67')}`, image: '/image/help_slide_10_en.png', color: 'info' }
+      ],
+      carousels3: [
+        { text: `Step 1. ${this.$t('ticket_text68')}`, image: '/image/help_slide_11_en.png', color: 'success' },
+        { text: `Step 2. ${this.$t('ticket_text69')}`, image: '/image/help_slide_12_en.png', color: 'success' },
         { text: `Step 3. ${this.$t('ticket_text70')}`, image: '/image/help_slide_13_en.png', color: 'success' },
         { text: `Step 4. ${this.$t('ticket_text71')}`, image: '/image/help_slide_14_en.png', color: 'warning' },
         { text: `Step 5. ${this.$t('ticket_text72')}`, image: '/image/help_slide_15_en.png', color: 'danger' },
@@ -444,6 +489,13 @@ export default {
       if (value >= 7) {
         setTimeout(() => {
           this.showCarousel2 = false
+        }, 7500)
+      }
+    },
+    carouselChange3 (value) {
+      if (value >= 7) {
+        setTimeout(() => {
+          this.showCarousel3 = false
         }, 7500)
       }
     },
