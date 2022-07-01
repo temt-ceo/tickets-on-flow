@@ -111,25 +111,33 @@
             type="is-info"
           />
         </template>
+        <b-dropdown-item aria-role="listitem" @click="showCarousel4 = true">
+          <div class="media">
+            <b-icon class="media-left" size="is-small" pack="fad" icon="question" />
+            <div class="media-content">
+              <h3>{{ $t('ticket_text79') }}</h3>
+            </div>
+          </div>
+        </b-dropdown-item>
         <b-dropdown-item aria-role="listitem" @click="showCarousel = true">
           <div class="media">
-            <b-icon class="media-left" icon="information" />
+            <b-icon class="media-left" size="is-small" pack="fad" icon="question" />
             <div class="media-content">
-              <h3>{{ $t('ticket_text76') }} Ⅰ</h3>
+              <h3>{{ $t('ticket_text78') }}</h3>
             </div>
           </div>
         </b-dropdown-item>
         <b-dropdown-item aria-role="listitem" @click="showCarousel2 = true">
           <div class="media">
-            <b-icon class="media-left" icon="information" />
+            <b-icon class="media-left" size="is-small" pack="fad" icon="question" />
             <div class="media-content">
-              <h3>{{ $t('ticket_text76') }} Ⅱ</h3>
+              <h3>{{ $t('ticket_text76') }}</h3>
             </div>
           </div>
         </b-dropdown-item>
         <b-dropdown-item aria-role="listitem" @click="showCarousel3 = true">
           <div class="media">
-            <b-icon class="media-left" icon="information" />
+            <b-icon class="media-left" size="is-small" pack="fad" icon="question" />
             <div class="media-content">
               <h3>{{ $t('ticket_text77') }}</h3>
             </div>
@@ -234,6 +242,39 @@
             >
           </div>
           <div class="close-icon" @click="showCarousel3 = false">
+            <b-icon
+              pack="fa-solid"
+              icon="xmark"
+              size="is-large"
+            />
+          </div>
+        </section>
+      </b-carousel-item>
+    </b-carousel>
+    <b-carousel
+      v-if="showCarousel4"
+      :arrow="carouselArrow"
+      :arrow-hover="carouselArrowHover"
+      :autoplay="carouselAutoPlay"
+      :repeat="carouselRepeat"
+      :interval="carouselInterval"
+      :indicator="carouselIndicator"
+      :indicator-inside="carouselInside"
+      :indicator-style="carouselIndicatorStyle"
+    >
+      <b-carousel-item v-for="(carousel, i) in carousels4" :key="i">
+        <section :class="`hero is-medium is-${carousel.color}`">
+          <div class="hero-body has-text-centered">
+            <h2 style="margin-bottom: 10px;">
+              {{ carousel.text }}
+            </h2>
+            <img
+              :src="carousel.image"
+              alt="Tickets Manual"
+              style="max-height: 400px;"
+            >
+          </div>
+          <div class="close-icon" @click="showCarousel4 = false">
             <b-icon
               pack="fa-solid"
               icon="xmark"
@@ -369,20 +410,18 @@ export default {
       showCarousel: false,
       showCarousel2: false,
       showCarousel3: false,
+      showCarousel4: false,
       carouselArrow: true,
       carouselArrowHover: false,
       carouselAutoPlay: true,
       carouselRepeat: false,
-      carouselInterval: 7500,
+      carouselInterval: 15000,
       carouselIndicator: true,
       carouselInside: true,
       carouselIndicatorStyle: 'is-lines',
       carousels: [
-        { text: `Step 1. ${this.$t('ticket_text58')}`, image: '/image/help_slide_1_en.png', color: 'success' }
-        // { text: `Step 2. ${this.$t('ticket_text72')}`, image: '/image/help_slide_15_en.png', color: 'danger' },
-        // { text: `Step 3. ${this.$t('ticket_text73')}`, image: '/image/help_slide_16_en.png', color: 'primary' },
-        // { text: `Step 4. ${this.$t('ticket_text74')}`, image: '/image/help_slide_17_en.png', color: 'info' },
-        // { text: `Step 5. ${this.$t('ticket_text75')}`, image: '/image/help_slide_18_en.png', color: 'success' }
+        { text: `Step 1. ${this.$t('ticket_text58')}`, image: '/image/help_slide_1_en.png', color: 'success' },
+        { text: `Step 2. ${this.$t('ticket_text72')}`, image: '/image/help_slide_15_en.png', color: 'success' }
       ],
       carousels2: [
         { text: `Step 1. ${this.$t('ticket_text59')}`, image: '/image/help_slide_2_en.png', color: 'info' },
@@ -400,6 +439,11 @@ export default {
         { text: `Step 1. ${this.$t('ticket_text69')}`, image: '/image/help_slide_12_en.png', color: 'warning' },
         { text: `Step 2. ${this.$t('ticket_text70')}`, image: '/image/help_slide_13_en.png', color: 'success' },
         { text: `Step 3. ${this.$t('ticket_text71')}`, image: '/image/help_slide_14_en.png', color: 'warning' }
+      ],
+      carousels4: [
+        { text: `Step 1. ${this.$t('ticket_text73')}`, image: '/image/help_slide_16_en.png', color: 'primary' },
+        { text: `Step 2. ${this.$t('ticket_text74')}`, image: '/image/help_slide_17_en.png', color: 'info' },
+        { text: `Step 3. ${this.$t('ticket_text75')}`, image: '/image/help_slide_18_en.png', color: 'success' }
       ],
       searchLists: [],
       searchValue: '',

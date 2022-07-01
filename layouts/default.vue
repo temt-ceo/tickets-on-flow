@@ -1353,7 +1353,6 @@ span.control-label {
       color: #48c78e;
       font-size: large;
       font-size: 11px;
-      padding-top: 5px;
       // h3 {
       //   text-shadow: 0 0.2px 0.8px #257953;
       // }
