@@ -22,7 +22,7 @@ export default {
         info: true,
         infoImage: '/img/stock-img.jpeg',
         infoDetail: {
-          title: 'チケット概要',
+          title: this.$t('operation_text134'),
           subtitle: '以下の項目を読み込みます。',
           radio1: 'Type',
           radio2: '買う時の値段',

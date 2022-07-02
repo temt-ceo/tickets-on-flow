@@ -141,8 +141,12 @@
         <div class="card-content">
           <div class="media">
             <div class="media-content">
-              <p class="title is-4">{{ additionalDescription.infoDetail.title }}</p>
-              <p class="subtitle is-6">{{ additionalDescription.infoDetail.subtitle }}</p>
+              <p class="title is-4">
+                {{ additionalDescription.infoDetail.title }}
+              </p>
+              <p class="subtitle is-6">
+                {{ additionalDescription.infoDetail.subtitle }}
+              </p>
             </div>
           </div>
 
@@ -198,7 +202,8 @@
                   class="panel-heading"
                   role="button"
                   aria-controls="contentIdForA11y2"
-                  :aria-expanded="isOpenCollapseFirst">
+                  :aria-expanded="isOpenCollapseFirst"
+                >
                   <strong>{{ additionalDescription.infoDetail.radio1TabTitle }}</strong>
                 </div>
               </template>
@@ -215,7 +220,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio1Tab2"
                   :label="additionalDescription.infoDetail.radio1Tab2"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio1Tab2Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio1Tab2Contents }}
@@ -224,7 +229,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio1Tab3"
                   :label="additionalDescription.infoDetail.radio1Tab3"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio1Tab3Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio1Tab3Contents }}
@@ -233,7 +238,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio1Tab4"
                   :label="additionalDescription.infoDetail.radio1Tab4"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio1Tab4Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio1Tab4Contents }}
@@ -242,7 +247,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio1Tab5"
                   :label="additionalDescription.infoDetail.radio1Tab5"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio1Tab5Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio1Tab5Contents }}
@@ -251,7 +256,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio1Tab6"
                   :label="additionalDescription.infoDetail.radio1Tab6"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio1Tab6Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio1Tab6Contents }}
@@ -260,21 +265,22 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio1Tab7"
                   :label="additionalDescription.infoDetail.radio1Tab7"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio1Tab7Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio1Tab7Contents }}
                   </div>
                 </b-tab-item>
                 <b-tab-item
-                  v-if="additionalDescription.infoDetail.radio1Tab7"
-                  :label="additionalDescription.infoDetail.radio1Tab7"
-                  >
+                  v-if="additionalDescription.infoDetail.radio1Tab8"
+                  :label="additionalDescription.infoDetail.radio1Tab8"
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio1Tab8Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio1Tab8Contents }}
                   </div>
-                </b-tab-item>              </b-tabs>
+                </b-tab-item>
+              </b-tabs>
             </b-collapse>
             <b-collapse
               v-if="additionalDescription.infoDetail.radio2"
@@ -288,7 +294,8 @@
                   class="panel-heading"
                   role="button"
                   aria-controls="contentIdForA11y2"
-                  :aria-expanded="isOpenCollapseSecond">
+                  :aria-expanded="isOpenCollapseSecond"
+                >
                   <strong>{{ additionalDescription.infoDetail.radio2TabTitle }}</strong>
                 </div>
               </template>
@@ -305,7 +312,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio2Tab2"
                   :label="additionalDescription.infoDetail.radio2Tab2"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio2Tab2Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio2Tab2Contents }}
@@ -314,7 +321,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio2Tab3"
                   :label="additionalDescription.infoDetail.radio2Tab3"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio2Tab3Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio2Tab3Contents }}
@@ -323,7 +330,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio2Tab4"
                   :label="additionalDescription.infoDetail.radio2Tab4"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio2Tab4Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio2Tab4Contents }}
@@ -332,7 +339,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio2Tab5"
                   :label="additionalDescription.infoDetail.radio2Tab5"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio2Tab5Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio2Tab5Contents }}
@@ -341,7 +348,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio2Tab6"
                   :label="additionalDescription.infoDetail.radio2Tab6"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio2Tab6Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio2Tab6Contents }}
@@ -350,21 +357,22 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio2Tab7"
                   :label="additionalDescription.infoDetail.radio2Tab7"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio2Tab7Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio2Tab7Contents }}
                   </div>
                 </b-tab-item>
                 <b-tab-item
-                  v-if="additionalDescription.infoDetail.radio2Tab7"
-                  :label="additionalDescription.infoDetail.radio2Tab7"
-                  >
+                  v-if="additionalDescription.infoDetail.radio2Tab8"
+                  :label="additionalDescription.infoDetail.radio2Tab8"
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio2Tab8Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio2Tab8Contents }}
                   </div>
-                </b-tab-item>              </b-tabs>
+                </b-tab-item>
+              </b-tabs>
             </b-collapse>
             <b-collapse
               v-if="additionalDescription.infoDetail.radio3"
@@ -378,7 +386,8 @@
                   class="panel-heading"
                   role="button"
                   aria-controls="contentIdForA11y2"
-                  :aria-expanded="isOpenCollapseThird">
+                  :aria-expanded="isOpenCollapseThird"
+                >
                   <strong>{{ additionalDescription.infoDetail.radio3TabTitle }}</strong>
                 </div>
               </template>
@@ -395,7 +404,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio3Tab2"
                   :label="additionalDescription.infoDetail.radio3Tab2"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio3Tab2Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio3Tab2Contents }}
@@ -404,7 +413,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio3Tab3"
                   :label="additionalDescription.infoDetail.radio3Tab3"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio3Tab3Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio3Tab3Contents }}
@@ -413,7 +422,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio3Tab4"
                   :label="additionalDescription.infoDetail.radio3Tab4"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio3Tab4Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio3Tab4Contents }}
@@ -422,7 +431,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio3Tab5"
                   :label="additionalDescription.infoDetail.radio3Tab5"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio3Tab5Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio3Tab5Contents }}
@@ -431,7 +440,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio3Tab6"
                   :label="additionalDescription.infoDetail.radio3Tab6"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio3Tab6Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio3Tab6Contents }}
@@ -440,16 +449,16 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio3Tab7"
                   :label="additionalDescription.infoDetail.radio3Tab7"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio3Tab7Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio3Tab7Contents }}
                   </div>
                 </b-tab-item>
                 <b-tab-item
-                  v-if="additionalDescription.infoDetail.radio3Tab7"
-                  :label="additionalDescription.infoDetail.radio3Tab7"
-                  >
+                  v-if="additionalDescription.infoDetail.radio3Tab8"
+                  :label="additionalDescription.infoDetail.radio3Tab8"
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio3Tab8Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio3Tab8Contents }}
@@ -469,7 +478,8 @@
                   class="panel-heading"
                   role="button"
                   aria-controls="contentIdForA11y2"
-                  :aria-expanded="isOpenCollapseFourth">
+                  :aria-expanded="isOpenCollapseFourth"
+                >
                   <strong>{{ additionalDescription.infoDetail.radio4TabTitle }}</strong>
                 </div>
               </template>
@@ -486,7 +496,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio4Tab2"
                   :label="additionalDescription.infoDetail.radio4Tab2"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio4Tab2Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio4Tab2Contents }}
@@ -495,7 +505,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio4Tab3"
                   :label="additionalDescription.infoDetail.radio4Tab3"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio4Tab3Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio4Tab3Contents }}
@@ -504,7 +514,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio4Tab4"
                   :label="additionalDescription.infoDetail.radio4Tab4"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio4Tab4Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio4Tab4Contents }}
@@ -513,7 +523,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio4Tab5"
                   :label="additionalDescription.infoDetail.radio4Tab5"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio4Tab5Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio4Tab5Contents }}
@@ -522,7 +532,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio4Tab6"
                   :label="additionalDescription.infoDetail.radio4Tab6"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio4Tab6Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio4Tab6Contents }}
@@ -531,7 +541,7 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio4Tab7"
                   :label="additionalDescription.infoDetail.radio4Tab7"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio4Tab7Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio4Tab7Contents }}
@@ -540,12 +550,13 @@
                 <b-tab-item
                   v-if="additionalDescription.infoDetail.radio4Tab7"
                   :label="additionalDescription.infoDetail.radio4Tab7"
-                  >
+                >
                   <div class="panel-block">
                     <h4>{{ additionalDescription.infoDetail.radio4Tab8Title }}</h4><br>
                     {{ additionalDescription.infoDetail.radio4Tab8Contents }}
                   </div>
-                </b-tab-item>              </b-tabs>
+                </b-tab-item>
+              </b-tabs>
             </b-collapse>
           </div>
         </div>
@@ -641,7 +652,6 @@ export default {
     },
     radioInfo: {
       handler (val) {
-        console.log(val, 777)
         this.isOpenCollapseFirst = false
         this.isOpenCollapseSecond = false
         this.isOpenCollapseThird = false
@@ -659,6 +669,46 @@ export default {
           case 'fourth':
             this.isOpenCollapseFourth = true
             break
+        }
+      }
+    },
+    isOpenCollapseFirst: {
+      handler (val) {
+        if (val === true) {
+          this.isOpenCollapseSecond = false
+          this.isOpenCollapseThird = false
+          this.isOpenCollapseFourth = false
+          this.radioInfo = 'first'
+        }
+      }
+    },
+    isOpenCollapseSecond: {
+      handler (val) {
+        if (val === true) {
+          this.isOpenCollapseFirst = false
+          this.isOpenCollapseThird = false
+          this.isOpenCollapseFourth = false
+          this.radioInfo = 'second'
+        }
+      }
+    },
+    isOpenCollapseThird: {
+      handler (val) {
+        if (val === true) {
+          this.isOpenCollapseFirst = false
+          this.isOpenCollapseSecond = false
+          this.isOpenCollapseFourth = false
+          this.radioInfo = 'third'
+        }
+      }
+    },
+    isOpenCollapseFourth: {
+      handler (val) {
+        if (val === true) {
+          this.isOpenCollapseFirst = false
+          this.isOpenCollapseSecond = false
+          this.isOpenCollapseThird = false
+          this.radioInfo = 'fourth'
         }
       }
     }

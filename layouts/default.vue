@@ -1511,6 +1511,23 @@ input[type="number"]:disabled {
   }
 }
 
+.b-tabs {
+  .tabs li.is-active a {
+    border-bottom-color: #48c78e;
+    color: #48c78e;
+  }
+}
+
+.content {
+  .panel-block {
+    padding: 0.5em 0;
+
+    h4 {
+      margin-right: 10px;
+    }
+  }
+}
+
 .navbar.is-primary .navbar-brand > a.navbar-item:focus {
   background-color: inherit;
 }
