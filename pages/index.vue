@@ -522,7 +522,7 @@ export default {
       this.isTapped = true
       this.isTappedReset = setTimeout(() => {
         this.isTapped = false
-      }, 2000)
+      }, 5000)
       const language = this.languageList[this.language]
       this.$i18n.setLocale(language)
       await this.getTickets(true)
@@ -591,7 +591,7 @@ export default {
               } else {
                 tool = 4 // チケットも色固定
               }
-              if (this.returnMode === true) {
+              if (this.returnMode === true || withoutApi === true) {
                 this.loadingTime = 1500
               }
               setTimeout(() => {
@@ -714,7 +714,7 @@ export default {
 
   .lang-gage {
     position: absolute;
-    top: 100px;
+    top: 112px;
     z-index: 1;
     width: 0;
     left: 24px;

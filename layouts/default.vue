@@ -1239,7 +1239,6 @@ span.control-label {
     }
 
     i.fa-globe {
-      background-color: #454545;
       border-radius: 5px;
       padding: 3px;
     }
