@@ -39,8 +39,8 @@ export default {
   },
   mounted () {
     const unixTime = parseInt((new Date(this.ticketWhen1).getTime() - new Date().getTime()) / 1000)
-    const h = Math.floor(unixTime / 3600)
-    const m = Math.floor(unixTime / 60 % 60)
+    const h = unixTime < 0 ? Math.ceil(unixTime / 3600) : Math.floor(unixTime / 3600)
+    const m = unixTime < 0 ? Math.ceil(unixTime / 60 % 60) : Math.floor(unixTime / 60 % 60)
     const day = new Date().getDay()
     const dayEvent = new Date(this.ticketWhen1)
     const dayEventDay = dayEvent.getDay()

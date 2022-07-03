@@ -457,7 +457,8 @@ export default {
       isComponentModalActive: false,
       activeStep: 0,
       defaultLang: this.$i18n.locale,
-      langStatClearTimeoutID: null
+      langStatClearTimeoutID: null,
+      statsInfo: null
     }
   },
   computed: {
@@ -528,8 +529,6 @@ export default {
       const language = this.languageList[this.language]
       this.$i18n.setLocale(language)
       await this.getTickets(true)
-      clearTimeout(this.langStatClearTimeoutID)
-      await this.getStats()
     },
     async getTickets (withoutApi) {
       try {
@@ -539,6 +538,12 @@ export default {
           this.tickets = []
           this.ticketsBkup = []
           this.searchLists = []
+          if (this.statsInfo) {
+            setTimeout(() => {
+              this.tickets.push(this.statsInfo)
+              this.ticketsBkup.push(this.statsInfo)
+            }, 60)
+          }
         } else {
           tickets = await this.$fcl.send(
             [
@@ -639,7 +644,7 @@ export default {
                 if (i === tickets.length - 1 && withoutApi) {
                   this.$i18n.setLocale(this.defaultLang) // 言語を元に戻す
                 }
-              }, 60 * i + (1500 - this.loadingTime))
+              }, 60 * (i + 2) + (1500 - this.loadingTime))
             }
           }
         }
@@ -667,14 +672,9 @@ export default {
               style: 'color1',
               type: 'stats'
             }
-            // const arr = this.tickets
-            // this.tickets = []
-            this.tickets.unshift(data)
-            // arr.forEach((obj) => {
-            //   this.tickets.push(obj)
-            // })
-
-            this.ticketsBkup.unshift(data)
+            // this.tickets.unshift(data)
+            this.statsInfo = data
+            this.getTickets(true)
           }, 3000)
         }
       } catch (e) {
