@@ -584,6 +584,10 @@ export default {
                     ticketTitle = this.$t('special_title1')
                     ticketDescription = this.$t('special_description1')
                     break
+                  case 'zmi':
+                    ticketTitle = this.$t('special_title2')
+                    ticketDescription = this.$t('special_description2')
+                    break
                   default:
                     break
                 }
@@ -601,34 +605,17 @@ export default {
                 this.tickets.push(data)
                 this.ticketsBkup.push(data)
                 this.offIcon = 'none'
+                // 検索リスト
+                if (!this.searchLists.includes(data.label)) {
+                  this.searchLists.push(data.label)
+                }
+                if (!this.searchLists.includes(data.twitter)) {
+                  this.searchLists.push(data.twitter)
+                }
               }, 60 * i + (1500 - this.loadingTime))
             }
           }
         }
-        // 検索リスト
-        tickets.forEach((ticket) => {
-          let ticketTitle = null
-          switch (ticket.domain) {
-            case 'dispenser002':
-              ticketTitle = this.$t('special_title1')
-              break
-            default:
-              break
-          }
-          const ticketName = ticketTitle || ticket.name.split('||@')[0] // 多言語対応
-          if (!this.searchLists.includes(ticketName)) {
-            this.searchLists.push(ticketName)
-          }
-        })
-        tickets.forEach((ticket) => {
-          const ticketName = ticket.name.split('||@')
-          if (ticketName.length === 2) {
-            const twitterAccount = '@' + ticketName[1]
-            if (!this.searchLists.includes(twitterAccount)) {
-              this.searchLists.push(twitterAccount)
-            }
-          }
-        })
       } catch (e) {
       }
     },
@@ -671,6 +658,8 @@ export default {
         this.tickets = []
         this.ticketsBkup.forEach((ticket) => {
           if (ticket.label === selected) {
+            this.tickets.push(ticket)
+          } else if (ticket.label_search === selected) {
             this.tickets.push(ticket)
           } else if (ticket.twitter === selected.substr(1)) {
             this.tickets.push(ticket)

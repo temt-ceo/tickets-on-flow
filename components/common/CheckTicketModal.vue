@@ -157,7 +157,7 @@
                 v-model="radioInfo"
                 name="name"
                 native-value="first"
-                style="min-width: 200px;"
+                style="min-width: 90vw;"
               >
                 {{ additionalDescription.infoDetail.radio1 }}
               </b-radio>
@@ -166,7 +166,7 @@
                 v-model="radioInfo"
                 name="name"
                 native-value="second"
-                style="min-width: 200px;"
+                style="min-width: 90vw;"
               >
                 {{ additionalDescription.infoDetail.radio2 }}
               </b-radio>
@@ -175,7 +175,7 @@
                 v-model="radioInfo"
                 name="name"
                 native-value="third"
-                style="min-width: 200px;"
+                style="min-width: 90vw;"
               >
                 {{ additionalDescription.infoDetail.radio3 }}
               </b-radio>
@@ -184,7 +184,7 @@
                 v-model="radioInfo"
                 name="name"
                 native-value="fourth"
-                style="min-width: 200px;"
+                style="min-width: 90vw;"
               >
                 {{ additionalDescription.infoDetail.radio4 }}
               </b-radio>
