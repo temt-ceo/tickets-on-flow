@@ -54,8 +54,10 @@
               target="_blank"
               :class="{ long: ticket.twitter.length > 15, too_long: ticket.twitter.length > 19 }"
               class="twitter-label"
+              style="line-height: 0.9;"
             >
-              @{{ ticket.twitter }}
+              <span style="font-size: 9px;">{{ $t('ticket_text5') }}:</span><br>
+              <span>@{{ ticket.twitter }}</span>
             </a>
           </div>
         </div>
@@ -686,7 +688,7 @@ export default {
             this.tickets.push(ticket)
           } else if (ticket.label_search === selected) {
             this.tickets.push(ticket)
-          } else if (ticket.twitter === selected.substr(1)) {
+          } else if (ticket.twitter === selected) {
             this.tickets.push(ticket)
           }
         })
@@ -923,7 +925,7 @@ export default {
       min-width: 100px;
       max-width: 129px;
       border-radius: 5px;
-      padding: 1px 3px 3px 3px;
+      padding: 1px 3px 3px 5px;
       margin-top: 4px;
 
       &.color1 {

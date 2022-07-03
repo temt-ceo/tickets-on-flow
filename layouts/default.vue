@@ -24,47 +24,39 @@
             style="padding-left: 20px;"
           >
         </a>
-        <a :href="url.telegram" target="_blank">
-          <b-icon
-            class="navbar-item telegram"
-            pack="fab"
-            icon="telegram"
-            size="medium"
-            type="is-info"
-          />
-        </a>
-        <nuxt-link to="/youtube-contents/">
-          <b-icon
-            class="navbar-item youtube"
-            pack="fa-brands"
-            icon="youtube"
-            size="medium"
-            type="is-danger"
-          />
-        </nuxt-link>
-        <a :href="url.discord" target="_blank" class="discord">
-          <b-icon
-            class="navbar-item"
-            pack="fa-brands"
-            icon="discord"
-            size="medium"
-            type="is-success"
-          />
-        </a>
-        <user-data />
-
         <b-dropdown
           aria-role="list"
-          class="is-pulled-right"
+          class="is-pulled-right telegram"
           position="is-bottom-left"
         >
           <template #trigger>
             <b-icon
-              class="navbar-item"
-              icon="github"
+              class="navbar-item telegram"
+              pack="fab"
+              icon="telegram"
               size="medium"
+              type="is-info"
             />
           </template>
+          <b-dropdown-item aria-role="listitem">
+            <a
+              :href="url.discord"
+              target="_blank"
+            >
+              {{ $t('ticket_text81') }}(Discord)
+            </a>
+          </b-dropdown-item>
+          <b-dropdown-item aria-role="listitem">
+            <a
+              :href="url.telegram"
+              target="_blank"
+            >
+              {{ $t('ticket_text81') }}(Telegram)
+            </a>
+          </b-dropdown-item>
+          <b-dropdown-item aria-role="listitem">
+            {{ $t('ticket_text80') }}
+          </b-dropdown-item>
           <b-dropdown-item aria-role="listitem">
             <a
               :href="url.github.transaction"
@@ -107,6 +99,26 @@
             (*{{ $t('develop_menu4') }})
           </b-dropdown-item>
         </b-dropdown>
+        <nuxt-link to="/youtube-contents/">
+          <b-icon
+            class="navbar-item youtube"
+            pack="fa-brands"
+            icon="youtube"
+            size="medium"
+            type="is-danger"
+          />
+        </nuxt-link>
+        <a :href="url.discord" target="_blank" class="discord">
+          <b-icon
+            class="navbar-item"
+            pack="fa-brands"
+            icon="discord"
+            size="medium"
+            type="is-success"
+          />
+        </a>
+        <user-data />
+
         <div class="navbar-burger">
           <b-dropdown aria-role="list">
             <template #trigger>
@@ -1090,6 +1102,10 @@ export default {
         }
       }
     }
+  }
+
+  .telegram .dropdown-menu .dropdown-content .dropdown-item {
+    font-size: 15px;
   }
 
   .hamburger {
