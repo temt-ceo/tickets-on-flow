@@ -453,7 +453,9 @@ export default {
       returnMode: location.search === '?home',
       offIcon: null,
       isComponentModalActive: false,
-      activeStep: 0
+      activeStep: 0,
+      defaultLang: this.$i18n.locale,
+      langStatClearTimeoutID: null
     }
   },
   computed: {
@@ -490,6 +492,9 @@ export default {
   },
   async mounted () {
     this.language = this.languageList.indexOf(this.$i18n.locale)
+    if (this.language < 0) {
+      this.language = 9 // リストの中に無ければallを選択
+    }
 
     // animation
     if (!this.returnMode) {
@@ -509,7 +514,7 @@ export default {
     sliderFormatter (val) {
       return this.languageList[val] || 'en'
     },
-    changeLang () {
+    async changeLang () {
       clearTimeout(this.isTappedReset)
       if (this.isTapped === true) {
         this.language = this.language > 8 ? 0 : this.language + 1
@@ -518,17 +523,30 @@ export default {
       this.isTappedReset = setTimeout(() => {
         this.isTapped = false
       }, 2000)
+      const language = this.languageList[this.language]
+      this.$i18n.setLocale(language)
+      await this.getTickets(true)
+      clearTimeout(this.langStatClearTimeoutID)
+      await this.getStats()
     },
-    async getTickets () {
+    async getTickets (withoutApi) {
       try {
-        const tickets = await this.$fcl.send(
-          [
-            this.$fcl.script(FlowScripts.getTickets),
-            this.$fcl.args([
-            ])
-          ]
-        ).then(this.$fcl.decode)
-        this.$store.commit('updateTickets', tickets) // save tickets
+        let tickets = []
+        if (withoutApi) {
+          tickets = this.$store.state.tickets
+          this.tickets = []
+          this.ticketsBkup = []
+          this.searchLists = []
+        } else {
+          tickets = await this.$fcl.send(
+            [
+              this.$fcl.script(FlowScripts.getTickets),
+              this.$fcl.args([
+              ])
+            ]
+          ).then(this.$fcl.decode)
+          this.$store.commit('updateTickets', tickets) // save tickets
+        }
         for (let i = 0; i < tickets.length; i++) {
           const ticket = tickets[i]
           if (ticket.name) {
@@ -595,6 +613,7 @@ export default {
                 const data = {
                   path: ticket.domain,
                   label: ticketTitle || ticketName[0], // 多言語対応
+                  is_multilingual: ticketTitle !== null,
                   twitter: ticketName.length === 2 ? ticketName[1] : '',
                   description: ticketDescription || detail, // 多言語対応
                   price: ticket.price.replace(/\.?0+$/, ''),
@@ -602,8 +621,11 @@ export default {
                   style: 'color' + (parseInt(tool) % 7 + 1).toString(),
                   type
                 }
-                this.tickets.push(data)
-                this.ticketsBkup.push(data)
+                const language = this.languageList[this.language]
+                if (language === when[2] || data.is_multilingual || language === 'all') {
+                  this.tickets.push(data)
+                  this.ticketsBkup.push(data)
+                }
                 this.offIcon = 'none'
                 // 検索リスト
                 if (!this.searchLists.includes(data.label)) {
@@ -611,6 +633,9 @@ export default {
                 }
                 if (!this.searchLists.includes(data.twitter)) {
                   this.searchLists.push(data.twitter)
+                }
+                if (i === tickets.length - 1 && withoutApi) {
+                  this.$i18n.setLocale(this.defaultLang) // 言語を元に戻す
                 }
               }, 60 * i + (1500 - this.loadingTime))
             }
@@ -629,7 +654,7 @@ export default {
           ]
         ).then(this.$fcl.decode)
         if (Object.keys(stats).length > 0) {
-          setTimeout(() => {
+          this.langStatClearTimeoutID = setTimeout(() => {
             const data = {
               path: 'our_stats',
               label: this.$t('operation_text55'),
