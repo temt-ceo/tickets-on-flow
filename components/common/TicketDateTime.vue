@@ -89,13 +89,13 @@ export default {
           if (nextEventTime > 0) {
             switch (hNext) {
               case 0:
-                this.ticketDateTime = `${this.$t('ticket_text12')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                this.ticketDateTime = `${this.$t('ticket_text12')} ${mNext} ${this.$t('ticket_text10')}${this.$t('ticket_text13')}`
                 break
               case 1:
-                this.ticketDateTime = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text8')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                this.ticketDateTime = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text8')} ${mNext} ${this.$t('ticket_text10')}${this.$t('ticket_text13')}`
                 break
               default:
-                this.ticketDateTime = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text9')} ${mNext} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+                this.ticketDateTime = `${this.$t('ticket_text12')} ${hNext} ${this.$t('ticket_text9')} ${mNext} ${this.$t('ticket_text10')}${this.$t('ticket_text13')}`
                 break
             }
           // this.ticketTime[this.dispenser] = nextEvent.getTime()
@@ -133,13 +133,13 @@ export default {
       // もうすぐ始まる
       switch (h) {
         case 0:
-          this.ticketDateTime = `${this.$t('ticket_text12')} ${m} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+          this.ticketDateTime = `${this.$t('ticket_text12')} ${m} ${this.$t('ticket_text10')}${this.$t('ticket_text13')}`
           break
         case 1:
-          this.ticketDateTime = `${this.$t('ticket_text12')} ${h} ${this.$t('ticket_text8')} ${m} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+          this.ticketDateTime = `${this.$t('ticket_text12')} ${h} ${this.$t('ticket_text8')} ${m} ${this.$t('ticket_text10')}${this.$t('ticket_text13')}`
           break
         default:
-          this.ticketDateTime = `${this.$t('ticket_text12')} ${h} ${this.$t('ticket_text9')} ${m} ${this.$t('ticket_text10')} ${this.$t('ticket_text13')}`
+          this.ticketDateTime = `${this.$t('ticket_text12')} ${h} ${this.$t('ticket_text9')} ${m} ${this.$t('ticket_text10')}${this.$t('ticket_text13')}`
           break
       }
       // this.ticketTime[this.dispenser] = new Date(this.ticketWhen1).getTime()
