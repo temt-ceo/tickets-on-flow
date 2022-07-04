@@ -773,19 +773,19 @@ export default {
           this.showTutorialPopup('man')
           break
         case 6:
-          this.tutorial.manActive = false
-          this.tutorial.messageMan = this.$t('ticket_text88')
-          this.showTutorialPopup('man')
-          break
-        case 7:
           this.tutorial.womanActive = false
-          this.tutorial.messageWoman = this.$t('ticket_text89')
+          this.tutorial.messageWoman = this.$t('ticket_text88')
           this.showTutorialPopup('woman')
           break
-        case 8:
+        case 7:
           this.tutorial.manActive = false
-          this.tutorial.messageMan = this.$t('ticket_text90')
+          this.tutorial.messageMan = this.$t('ticket_text89')
           this.showTutorialPopup('man')
+          break
+        case 8:
+          this.tutorial.womanActive = false
+          this.tutorial.messageWoman = this.$t('ticket_text90')
+          this.showTutorialPopup('woman')
           break
         case 9:
           this.tutorial.manActive = false
@@ -812,47 +812,32 @@ export default {
           this.tutorial.messageMan = this.$t('ticket_text95')
           this.showTutorialPopup('man')
           break
-        case 14:
+        case 16:
           this.tutorial.womanActive = false
           this.tutorial.messageWoman = this.$t('ticket_text96')
           this.showTutorialPopup('woman')
           break
-        case 15:
+        case 17:
           this.tutorial.manActive = false
           this.tutorial.messageMan = this.$t('ticket_text97')
           this.showTutorialPopup('man')
           break
-        case 16:
+        case 18:
           this.tutorial.manActive = false
           this.tutorial.messageMan = this.$t('ticket_text98')
           this.showTutorialPopup('man')
           break
-        case 17:
-          this.tutorial.womanActive = false
-          this.tutorial.messageWoman = this.$t('ticket_text99')
-          this.showTutorialPopup('woman')
-          break
-        case 18:
-          this.tutorial.manActive = false
-          this.tutorial.messageMan = this.$t('ticket_text100')
-          this.showTutorialPopup('man')
-          break
         case 19:
           this.tutorial.manActive = false
-          this.tutorial.messageMan = this.$t('ticket_text101')
+          this.tutorial.messageMan = this.$t('ticket_text99')
           this.showTutorialPopup('man')
           break
         case 20:
-          this.tutorial.manActive = false
-          this.tutorial.messageMan = this.$t('ticket_text102')
-          this.showTutorialPopup('man')
-          break
-        case 21:
           this.tutorial.womanActive = false
-          this.tutorial.messageWoman = this.$t('ticket_text103')
+          this.tutorial.messageWoman = this.$t('ticket_text100')
           this.showTutorialPopup('woman')
           break
-        case 22:
+        case 21:
         default:
           this.tutorial.messageCnt = 0
           this.showTutorial = false
@@ -921,18 +906,18 @@ export default {
     z-index: 1;
     bottom: 380px;
     left: -11px;
-    color: #48c78e;
+    color: #3e8ed0;
   }
 
   .tutorial-man-text {
     position: absolute;
     z-index: 1;
     width: 83vw;
-    height: 202px;
+    height: 212px;
     bottom: 292px;
     left: 46px;
-    color: #48c78e;
-    font-size: 12px;
+    color: #3e8ed0;
+    font-size: 12.5px;
     padding-right: 1rem;
   }
 
@@ -952,7 +937,7 @@ export default {
     bottom: 145px;
     left: 46px;
     color: #f14668;
-    font-size: 12px;
+    font-size: 12.5px;
     padding-right: 1rem;
   }
 
