@@ -201,7 +201,7 @@ export default {
   ticket_text80: '"Flow" Developer Information',
   ticket_text81: 'Please give us your feedback.',
   ticket_text82: 'Have you heard of a service called Tickets?',
-  ticket_text83: 'Lovely. What service is this?',
+  ticket_text83: "It's kind of cute, isn't it? What service is this?",
   ticket_text84: "This is a service that allows people to follow each other's work around the world connected by blockchain, which is sure to boom in the future. You can sell your strengths as tickets or have them crowdfunded. We can follow each other's work on the Internet!",
   ticket_text85: "Is it like selling your skills? Blockchain is something that is becoming more and more amazing and I can't keep up with understanding it...",
   ticket_text86: 'Yes, it is. This is a service to earn cryptocurrency (tokens) called FLOW tokens. You can sell your skills across borders if the crypto assets are equal in value around the world. The consideration is FLOW tokens.',

@@ -156,6 +156,7 @@
         :closable="false"
         class="tutorial-man-text"
         :message="tutorial.messageMan"
+        :type="tutorial.messageTypeMan"
       />
     </div>
     <div v-if="showTutorial === true" class="fa-3x tutorial-woman">
@@ -167,8 +168,13 @@
         :closable="false"
         class="tutorial-woman-text"
         :message="tutorial.messageWoman"
+        :type="tutorial.messageTypeWoman"
       />
     </div>
+    <div v-if="showTutorial === true && tutorial.showArrow === true" class="fa-3x tutorial-arrow">
+      <i class="uil uil-location-arrow"></i>
+    </div>
+
     <div class="fa-2x" style="position: absolute; bottom: 16px; left: 4px;">
       <i
         class="fa-solid fa-heart fa-beat"
@@ -177,8 +183,7 @@
       />
       <i
         v-if="showTutorial === true"
-        class="uil uil-skip-forward"
-        style="margin-left: 74vw; color: #f14668;"
+        class="uil uil-skip-forward turorial-next"
         @click="forwardTutorial"
       />
     </div>
@@ -500,7 +505,10 @@ export default {
         manActive: true,
         messageWoman: this.$t('operation_text45'),
         womanActive: false,
-        messageCnt: 0
+        messageCnt: 0,
+        messageTypeMan: 'is-info is-light',
+        messageTypeWoman: '',
+        showArrow: false
       }
     }
   },
@@ -742,6 +750,9 @@ export default {
       this.tutorial.messageMan = this.$t('ticket_text82')
       this.tutorial.manActive = true
       this.tutorial.womanActive = false
+      this.tutorial.showArrow = false
+      this.tutorial.messageTypeMan = 'is-info is-light'
+      this.tutorial.messageTypeWoman = ''
       this.showTutorial = !this.showTutorial
     },
     forwardTutorial () {
@@ -775,11 +786,13 @@ export default {
         case 6:
           this.tutorial.womanActive = false
           this.tutorial.messageWoman = this.$t('ticket_text88')
+          this.tutorial.messageTypeWoman = 'is-warning is-light'
           this.showTutorialPopup('woman')
           break
         case 7:
           this.tutorial.manActive = false
           this.tutorial.messageMan = this.$t('ticket_text89')
+          this.tutorial.messageTypeMan = 'is-success is-light'
           this.showTutorialPopup('man')
           break
         case 8:
@@ -812,33 +825,34 @@ export default {
           this.tutorial.messageMan = this.$t('ticket_text95')
           this.showTutorialPopup('man')
           break
-        case 16:
+        case 14:
           this.tutorial.womanActive = false
           this.tutorial.messageWoman = this.$t('ticket_text96')
           this.showTutorialPopup('woman')
           break
-        case 17:
+        case 15:
           this.tutorial.manActive = false
           this.tutorial.messageMan = this.$t('ticket_text97')
+          this.tutorial.showArrow = true
           this.showTutorialPopup('man')
           break
-        case 18:
+        case 16:
           this.tutorial.manActive = false
           this.tutorial.messageMan = this.$t('ticket_text98')
           this.showTutorialPopup('man')
           break
-        case 19:
+        case 17:
           this.tutorial.manActive = false
           this.tutorial.messageMan = this.$t('ticket_text99')
+          this.tutorial.showArrow = false
           this.showTutorialPopup('man')
           break
-        case 20:
+        case 18:
           this.tutorial.womanActive = false
           this.tutorial.messageWoman = this.$t('ticket_text100')
           this.showTutorialPopup('woman')
           break
-        case 21:
-        default:
+        case 19:
           this.tutorial.messageCnt = 0
           this.showTutorial = false
           break
@@ -919,6 +933,7 @@ export default {
     color: #3e8ed0;
     font-size: 12.5px;
     padding-right: 1rem;
+    border-radius: 30px;
   }
 
   .tutorial-woman {
@@ -939,6 +954,20 @@ export default {
     color: #f14668;
     font-size: 12.5px;
     padding-right: 1rem;
+    border-radius: 30px;
+  }
+
+  .turorial-next {
+    margin-left: 74vw;
+    color: #f14668;
+  }
+
+  .tutorial-arrow {
+    position: absolute;
+    z-index: 100;
+    top: -35px;
+    left: 76vw;
+    color: #cc0f35;
   }
 
   .ticket-list {
@@ -1370,6 +1399,22 @@ export default {
 
     .info-btn {
       top: 35px;
+    }
+
+    .turorial-next {
+      margin-left: 53vw;
+    }
+
+    .tutorial-man-text {
+      width: 33vw;
+    }
+
+    .tutorial-woman-text {
+      width: 33vw;
+    }
+
+    .tutorial-arrow {
+      left: 53vw;
     }
   }
 }

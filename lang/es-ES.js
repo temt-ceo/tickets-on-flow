@@ -201,7 +201,7 @@ export default {
   ticket_text80: 'Información para desarrolladores de "Flow"',
   ticket_text81: 'Por favor, danos tu opinión.',
   ticket_text82: '¿Ha oído hablar de un servicio llamado Tickets?',
-  ticket_text83: 'Es muy bonito. ¿Qué servicio es este?',
+  ticket_text83: 'Es bastante bonito, ¿no? ¿Qué servicio es este?',
   ticket_text84: 'Se trata de un servicio que permite a la gente seguir el trabajo de los demás en todo el mundo conectados por blockchain, lo que seguramente será un boom en el futuro. Puedes vender tus fuerzas en forma de entradas o hacer que se financien por crowdfunding. ¡Podemos seguir el trabajo de los demás en Internet!',
   ticket_text85: '¿Es como vender tus habilidades? Blockchain es algo cada vez más sorprendente y no puedo seguir el ritmo para entenderlo...',
   ticket_text86: 'Sí, lo es. Se trata de un servicio para ganar criptodivisas (tokens) llamado FLOW tokens. Puedes vender tus habilidades a través de las fronteras si los criptoactivos tienen el mismo valor en todo el mundo. La contrapartida son los tokens FLOW.',

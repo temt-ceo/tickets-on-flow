@@ -201,7 +201,7 @@ export default {
   ticket_text80: 'Informations pour les développeurs "Flow"',
   ticket_text81: 'Veuillez nous donner votre avis.',
   ticket_text82: "Avez-vous entendu parler d'un service appelé Tickets ?",
-  ticket_text83: 'Charmant. Quel est ce service ?',
+  ticket_text83: "C'est plutôt mignon, n'est-ce pas ? Quel est ce service ?",
   ticket_text84: "Il s'agit d'un service qui permet aux gens de suivre le travail des autres dans le monde entier, connecté par la blockchain, qui va certainement connaître un grand essor à l'avenir. On peut vendre ses forces comme des billets ou les faire financer par le crowdfunding. Nous pouvons suivre le travail des autres sur Internet !",
   ticket_text85: "Est-ce comme vendre ses compétences ? Blockchain est quelque chose qui devient de plus en plus étonnant et je n'arrive pas à suivre pour le comprendre...",
   ticket_text86: "Oui, c'est bien cela. Il s'agit d'un service permettant de gagner des crypto-monnaies (jetons) appelées jetons FLOW. Vous pouvez vendre vos compétences au-delà des frontières si les crypto-actifs ont une valeur égale dans le monde entier. La contrepartie, ce sont les jetons FLOW.",

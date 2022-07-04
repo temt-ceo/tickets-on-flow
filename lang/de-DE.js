@@ -201,7 +201,7 @@ export default {
   ticket_text80: '"Flow" Informationen für Entwickler',
   ticket_text81: 'Bitte geben Sie uns Ihr Feedback.',
   ticket_text82: 'Haben Sie schon von einem Dienst namens Tickets gehört?',
-  ticket_text83: 'Wunderbar. Was ist das für ein Dienst?',
+  ticket_text83: 'Irgendwie niedlich, nicht wahr? Was ist das für ein Dienst?',
   ticket_text84: 'Es handelt sich um einen Dienst, der es den Menschen ermöglicht, die Arbeit der anderen auf der ganzen Welt zu verfolgen, verbunden durch die Blockchain, die in der Zukunft sicherlich boomen wird. Sie können Ihre Stärken als Tickets verkaufen oder sie per Crowdfunding finanzieren lassen. Wir können die Arbeit der anderen im Internet verfolgen!',
   ticket_text85: 'Ist es so, als würde man seine Fähigkeiten verkaufen? Blockchain ist etwas, das immer erstaunlicher wird, und ich kann nicht mithalten, wenn ich es verstehe...',
   ticket_text86: 'Ja, das ist es. Dies ist ein Dienst, mit dem Sie Kryptowährung (Token) namens FLOW-Token verdienen können. Sie können Ihre Fähigkeiten grenzüberschreitend verkaufen, wenn die Kryptowährungen weltweit gleich viel wert sind. Die Gegenleistung sind FLOW-Token.',
