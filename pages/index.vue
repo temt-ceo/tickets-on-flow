@@ -24,7 +24,7 @@
               <div class="identity_block fa-3x">
                 <label>{{ ticket.label }}</label>
                 <i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s;" /><br>
-                <span>{{ ticket.description }}</span>
+                <span style="padding-top: 2px">{{ ticket.description }}</span>
               </div>
               <div
                 v-if="ticket.type === 'Crowdfunding'"
@@ -146,6 +146,41 @@
           </div>
         </b-dropdown-item>
       </b-dropdown>
+    </div>
+    <div v-if="showTutorial === true" class="fa-3x tutorial-man">
+      <i class="uil uil-user"></i>
+    </div>
+    <div v-if="showTutorial === true">
+      <b-notification
+        v-model="tutorial.manActive"
+        :closable="false"
+        class="tutorial-man-text"
+        :message="tutorial.messageMan"
+      />
+    </div>
+    <div v-if="showTutorial === true" class="fa-3x tutorial-woman">
+      <i class="uil uil-user"></i>
+    </div>
+    <div v-if="showTutorial === true">
+      <b-notification
+        v-model="tutorial.womanActive"
+        :closable="false"
+        class="tutorial-woman-text"
+        :message="tutorial.messageWoman"
+      />
+    </div>
+    <div class="fa-2x" style="position: absolute; bottom: 16px; left: 4px;">
+      <i
+        class="fa-solid fa-heart fa-beat"
+        style="color: #feecf0; --fa-beat-scale: 0.9; --fa-animation-duration: 1.2s;"
+        @click="startTutorial"
+      />
+      <i
+        v-if="showTutorial === true"
+        class="uil uil-skip-forward"
+        style="margin-left: 74vw; color: #f14668;"
+        @click="forwardTutorial"
+      />
     </div>
     <div v-if="!returnMode" class="hero2">
       <div class="hero--overlay">
@@ -458,7 +493,15 @@ export default {
       activeStep: 0,
       defaultLang: this.$i18n.locale,
       langStatClearTimeoutID: null,
-      statsInfo: null
+      statsInfo: null,
+      showTutorial: false,
+      tutorial: {
+        messageMan: this.$t('operation_text45'),
+        manActive: true,
+        messageWoman: this.$t('operation_text45'),
+        womanActive: false,
+        messageCnt: 0
+      }
     }
   },
   computed: {
@@ -693,11 +736,143 @@ export default {
           }
         })
       }
+    },
+    startTutorial () {
+      this.tutorial.messageCnt = 0
+      this.tutorial.messageMan = this.$t('ticket_text82')
+      this.tutorial.manActive = true
+      this.tutorial.womanActive = false
+      this.showTutorial = !this.showTutorial
+    },
+    forwardTutorial () {
+      this.tutorial.messageCnt++
+      switch (this.tutorial.messageCnt) {
+        case 1:
+          this.tutorial.womanActive = false
+          this.tutorial.messageWoman = this.$t('ticket_text83')
+          this.showTutorialPopup('woman')
+          break
+        case 2:
+          this.tutorial.manActive = false
+          this.tutorial.messageMan = this.$t('ticket_text84')
+          this.showTutorialPopup('man')
+          break
+        case 3:
+          this.tutorial.womanActive = false
+          this.tutorial.messageWoman = this.$t('ticket_text85')
+          this.showTutorialPopup('woman')
+          break
+        case 4:
+          this.tutorial.manActive = false
+          this.tutorial.messageMan = this.$t('ticket_text86')
+          this.showTutorialPopup('man')
+          break
+        case 5:
+          this.tutorial.manActive = false
+          this.tutorial.messageMan = this.$t('ticket_text87')
+          this.showTutorialPopup('man')
+          break
+        case 6:
+          this.tutorial.manActive = false
+          this.tutorial.messageMan = this.$t('ticket_text88')
+          this.showTutorialPopup('man')
+          break
+        case 7:
+          this.tutorial.womanActive = false
+          this.tutorial.messageWoman = this.$t('ticket_text89')
+          this.showTutorialPopup('woman')
+          break
+        case 8:
+          this.tutorial.manActive = false
+          this.tutorial.messageMan = this.$t('ticket_text90')
+          this.showTutorialPopup('man')
+          break
+        case 9:
+          this.tutorial.manActive = false
+          this.tutorial.messageMan = this.$t('ticket_text91')
+          this.showTutorialPopup('man')
+          break
+        case 10:
+          this.tutorial.womanActive = false
+          this.tutorial.messageWoman = this.$t('ticket_text92')
+          this.showTutorialPopup('woman')
+          break
+        case 11:
+          this.tutorial.manActive = false
+          this.tutorial.messageMan = this.$t('ticket_text93')
+          this.showTutorialPopup('man')
+          break
+        case 12:
+          this.tutorial.womanActive = false
+          this.tutorial.messageWoman = this.$t('ticket_text94')
+          this.showTutorialPopup('woman')
+          break
+        case 13:
+          this.tutorial.manActive = false
+          this.tutorial.messageMan = this.$t('ticket_text95')
+          this.showTutorialPopup('man')
+          break
+        case 14:
+          this.tutorial.womanActive = false
+          this.tutorial.messageWoman = this.$t('ticket_text96')
+          this.showTutorialPopup('woman')
+          break
+        case 15:
+          this.tutorial.manActive = false
+          this.tutorial.messageMan = this.$t('ticket_text97')
+          this.showTutorialPopup('man')
+          break
+        case 16:
+          this.tutorial.manActive = false
+          this.tutorial.messageMan = this.$t('ticket_text98')
+          this.showTutorialPopup('man')
+          break
+        case 17:
+          this.tutorial.womanActive = false
+          this.tutorial.messageWoman = this.$t('ticket_text99')
+          this.showTutorialPopup('woman')
+          break
+        case 18:
+          this.tutorial.manActive = false
+          this.tutorial.messageMan = this.$t('ticket_text100')
+          this.showTutorialPopup('man')
+          break
+        case 19:
+          this.tutorial.manActive = false
+          this.tutorial.messageMan = this.$t('ticket_text101')
+          this.showTutorialPopup('man')
+          break
+        case 20:
+          this.tutorial.manActive = false
+          this.tutorial.messageMan = this.$t('ticket_text102')
+          this.showTutorialPopup('man')
+          break
+        case 21:
+          this.tutorial.womanActive = false
+          this.tutorial.messageWoman = this.$t('ticket_text103')
+          this.showTutorialPopup('woman')
+          break
+        case 22:
+        default:
+          this.tutorial.messageCnt = 0
+          this.showTutorial = false
+          break
+      }
+    },
+    showTutorialPopup (which) {
+      setTimeout(() => {
+        if (which === 'man') {
+          this.tutorial.manActive = true
+        } else if (which === 'woman') {
+          this.tutorial.womanActive = true
+        }
+      }, 250)
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+@import "https://unicons.iconscout.com/release/v2.1.11/css/unicons.css";
 
 * {
   box-sizing: border-box;
@@ -739,6 +914,46 @@ export default {
       color: aliceblue !important;
       background-color: inherit;
     }
+  }
+
+  .tutorial-man {
+    position: absolute;
+    z-index: 1;
+    bottom: 380px;
+    left: -11px;
+    color: #48c78e;
+  }
+
+  .tutorial-man-text {
+    position: absolute;
+    z-index: 1;
+    width: 83vw;
+    height: 202px;
+    bottom: 292px;
+    left: 46px;
+    color: #48c78e;
+    font-size: 12px;
+    padding-right: 1rem;
+  }
+
+  .tutorial-woman {
+    position: absolute;
+    z-index: 1;
+    bottom: 200px;
+    left: -11px;
+    color: #f14668;
+  }
+
+  .tutorial-woman-text {
+    position: absolute;
+    z-index: 1;
+    width: 83vw;
+    height: 145px;
+    bottom: 145px;
+    left: 46px;
+    color: #f14668;
+    font-size: 12px;
+    padding-right: 1rem;
   }
 
   .ticket-list {
@@ -926,7 +1141,7 @@ export default {
       max-width: 129px;
       border-radius: 5px;
       padding: 1px 3px 3px 5px;
-      margin-top: 4px;
+      margin-top: 2px;
 
       &.color1 {
         background-color: rgb(135, 67, 86);
