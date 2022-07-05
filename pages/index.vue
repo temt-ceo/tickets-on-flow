@@ -1414,7 +1414,7 @@ export default {
     }
 
     .tutorial-arrow {
-      left: 53vw;
+      left: 63vw;
     }
   }
 }
