@@ -16,17 +16,17 @@ export default {
   },
   data () {
     return {
-      ticketTitle: this.$t('special_title1'),
-      ticketDescription: this.$t('special_description1'),
+      ticketTitle: this.$t('special_title3'),
+      ticketDescription: this.$t('special_description3'),
       additionalDescription: {
         info: true,
         infoImage: '/img/stock-img.jpeg',
         infoDetail: {
           title: this.$t('operation_text134'),
-          subtitle: this.$t('special_subtitle2'),
+          subtitle: this.$t('special_subtitle3'),
           radio1: 'Type',
-          radio2: this.$t('special_additional1_description1'),
-          radio3: this.$t('special_additional1_description2'),
+          radio2: this.$t('special_additional3_description1'),
+          radio3: this.$t('special_additional3_description2'),
           radio1TabTitle: 'Type',
           radio1Tab1: 'Type1',
           radio1Tab2: 'Type2',
@@ -40,13 +40,13 @@ export default {
           radio1Tab4Title: 'Type4 ?',
           radio1Tab5Title: 'Type5 ?',
           radio1Tab6Title: 'Type6 ?',
-          radio1Tab1Contents: this.$t('special_additional1_type1_post'),
-          radio1Tab2Contents: this.$t('special_additional1_type2_post'),
-          radio1Tab3Contents: this.$t('special_additional1_type3_post'),
-          radio1Tab4Contents: this.$t('special_additional1_type4_post'),
-          radio1Tab5Contents: this.$t('special_additional1_type5_post'),
-          radio1Tab6Contents: this.$t('special_additional1_type6_post'),
-          radio2TabTitle: this.$t('special_additional1_description1'),
+          radio1Tab1Contents: this.$t('special_additional3_type1_post'),
+          radio1Tab2Contents: this.$t('special_additional3_type2_post'),
+          radio1Tab3Contents: this.$t('special_additional3_type3_post'),
+          radio1Tab4Contents: this.$t('special_additional3_type4_post'),
+          radio1Tab5Contents: this.$t('special_additional3_type5_post'),
+          radio1Tab6Contents: this.$t('special_additional3_type6_post'),
+          radio2TabTitle: this.$t('special_additional3_description1'),
           radio2Tab1: '-5.8%',
           radio2Tab2: '-4.4%',
           radio2Tab3: '-3.2%',
@@ -63,15 +63,15 @@ export default {
           radio2Tab6Title: '-0.8% ?',
           radio2Tab7Title: '0.2% ?',
           radio2Tab8Title: '1.0% ?',
-          radio2Tab1Contents: this.$t('special_additional1_bottom_1'),
-          radio2Tab2Contents: this.$t('special_additional1_bottom_2'),
-          radio2Tab3Contents: this.$t('special_additional1_bottom_3'),
-          radio2Tab4Contents: this.$t('special_additional1_bottom_4'),
-          radio2Tab5Contents: this.$t('special_additional1_bottom_5'),
-          radio2Tab6Contents: this.$t('special_additional1_bottom_6'),
-          radio2Tab7Contents: this.$t('special_additional1_bottom_7'),
-          radio2Tab8Contents: this.$t('special_additional1_bottom_8'),
-          radio3TabTitle: this.$t('special_additional1_description2'),
+          radio2Tab1Contents: this.$t('special_additional3_bottom_1'),
+          radio2Tab2Contents: this.$t('special_additional3_bottom_2'),
+          radio2Tab3Contents: this.$t('special_additional3_bottom_3'),
+          radio2Tab4Contents: this.$t('special_additional3_bottom_4'),
+          radio2Tab5Contents: this.$t('special_additional3_bottom_5'),
+          radio2Tab6Contents: this.$t('special_additional3_bottom_6'),
+          radio2Tab7Contents: this.$t('special_additional3_bottom_7'),
+          radio2Tab8Contents: this.$t('special_additional3_bottom_8'),
+          radio3TabTitle: this.$t('special_additional3_description2'),
           radio3Tab1: '-2.5%',
           radio3Tab2: '-1.2%',
           radio3Tab3: '-0.5%',
@@ -88,46 +88,46 @@ export default {
           radio3Tab6Title: '3.3% ?',
           radio3Tab7Title: '4.5% ?',
           radio3Tab8Title: '5.6% ?',
-          radio3Tab1Contents: this.$t('special_additional1_high_1'),
-          radio3Tab2Contents: this.$t('special_additional1_high_2'),
-          radio3Tab3Contents: this.$t('special_additional1_high_3'),
-          radio3Tab4Contents: this.$t('special_additional1_high_4'),
-          radio3Tab5Contents: this.$t('special_additional1_high_5'),
-          radio3Tab6Contents: this.$t('special_additional1_high_6'),
-          radio3Tab7Contents: this.$t('special_additional1_high_7'),
-          radio3Tab8Contents: this.$t('special_additional1_high_8')
+          radio3Tab1Contents: this.$t('special_additional3_high_1'),
+          radio3Tab2Contents: this.$t('special_additional3_high_2'),
+          radio3Tab3Contents: this.$t('special_additional3_high_3'),
+          radio3Tab4Contents: this.$t('special_additional3_high_4'),
+          radio3Tab5Contents: this.$t('special_additional3_high_5'),
+          radio3Tab6Contents: this.$t('special_additional3_high_6'),
+          radio3Tab7Contents: this.$t('special_additional3_high_7'),
+          radio3Tab8Contents: this.$t('special_additional3_high_8')
         },
         type1: {
-          pre: this.$t('special_additional1_type1_pre'),
-          post: this.$t('special_additional1_type1_post')
+          pre: this.$t('special_additional3_type1_pre'),
+          post: this.$t('special_additional3_type1_post')
         },
         type2: {
-          pre: this.$t('special_additional1_type2_pre'),
-          post: this.$t('special_additional1_type2_post')
+          pre: this.$t('special_additional3_type2_pre'),
+          post: this.$t('special_additional3_type2_post')
         },
         type3: {
-          pre: this.$t('special_additional1_type3_pre'),
-          post: this.$t('special_additional1_type3_post')
+          pre: this.$t('special_additional3_type3_pre'),
+          post: this.$t('special_additional3_type3_post')
         },
         type4: {
-          pre: this.$t('special_additional1_type4_pre'),
-          post: this.$t('special_additional1_type4_post')
+          pre: this.$t('special_additional3_type4_pre'),
+          post: this.$t('special_additional3_type4_post')
         },
         type5: {
-          pre: this.$t('special_additional1_type5_pre'),
-          post: this.$t('special_additional1_type5_post')
+          pre: this.$t('special_additional3_type5_pre'),
+          post: this.$t('special_additional3_type5_post')
         },
         type6: {
-          pre: this.$t('special_additional1_type6_pre'),
-          post: this.$t('special_additional1_type6_post')
+          pre: this.$t('special_additional3_type6_pre'),
+          post: this.$t('special_additional3_type6_post')
         },
         from: {
-          pre: this.$t('special_additional1_from_pre'),
-          post: this.$t('special_additional1_from_post')
+          pre: this.$t('special_additional3_from_pre'),
+          post: this.$t('special_additional3_from_post')
         },
         to: {
-          pre: this.$t('special_additional1_to_pre'),
-          post: this.$t('special_additional1_to_post')
+          pre: this.$t('special_additional3_to_pre'),
+          post: this.$t('special_additional3_to_post')
         }
       }
     }

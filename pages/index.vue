@@ -585,7 +585,10 @@ export default {
       try {
         let tickets = []
         if (withoutApi) {
-          tickets = this.$store.state.tickets
+          tickets = JSON.parse(JSON.stringify(this.$store.state.tickets))
+          tickets.sort(() => {
+            return Math.random() - 0.5
+          })
           this.tickets = []
           this.ticketsBkup = []
           this.searchLists = []
@@ -675,6 +678,10 @@ export default {
                   case 'zmi':
                     ticketTitle = this.$t('special_title2')
                     ticketDescription = this.$t('special_description2')
+                    break
+                  case 'multi':
+                    ticketTitle = this.$t('special_title3')
+                    ticketDescription = this.$t('special_description3')
                     break
                   default:
                     break
