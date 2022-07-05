@@ -577,8 +577,6 @@ export default {
       this.isTappedReset = setTimeout(() => {
         this.isTapped = false
       }, 5000)
-      const language = this.languageList[this.language]
-      this.$i18n.setLocale(language)
       await this.getTickets(true)
     },
     async getTickets (withoutApi) {
@@ -710,9 +708,6 @@ export default {
                 }
                 if (!this.searchLists.includes(data.twitter)) {
                   this.searchLists.push(data.twitter)
-                }
-                if (i === tickets.length - 1 && withoutApi) {
-                  this.$i18n.setLocale(this.defaultLang) // 言語を元に戻す
                 }
               }, 60 * (i + 2) + (1500 - this.loadingTime))
             }
