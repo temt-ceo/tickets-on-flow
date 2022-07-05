@@ -92,3 +92,5 @@ sw.*
 # Firebase
 .firebase/
 .firebaserc
+
+flow.json

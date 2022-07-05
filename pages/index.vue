@@ -603,6 +603,18 @@ export default {
               ])
             ]
           ).then(this.$fcl.decode)
+          tickets.sort((ticketA, ticketB) => {
+            if (ticketA.domain === 'zm') {
+              return Math.random() - 0.75
+            } else if (ticketA.domain === 'multi') {
+              return Math.random() - 0.6
+            } else if (ticketB.domain === 'zm') {
+              return Math.random() - 0.25
+            } else if (ticketB.domain === 'multi') {
+              return Math.random() - 0.4
+            }
+            return Math.random() - 0.5
+          })
           this.$store.commit('updateTickets', tickets) // save tickets
         }
         for (let i = 0; i < tickets.length; i++) {
