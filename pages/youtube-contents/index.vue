@@ -39,12 +39,12 @@
             Ⅱ. {{ $t('terms_of_use39') }}
           </h4>
           <p class="explanation-content">
-            {{ $t('terms_of_use30') }}<br>
             {{ $t('terms_of_use31') }}<br>
             {{ $t('terms_of_use32') }}<br>
             <b>https://chain-work.com/ti/XXXXX/</b><br>
             {{ $t('terms_of_use33') }}<br>
             {{ $t('terms_of_use34') }}<br>
+            {{ $t('terms_of_use30') }}<br>
             {{ $t('terms_of_use36') }}<br>
             {{ $t('terms_of_use37') }}<br>
             {{ $t('terms_of_use38') }}<br>
