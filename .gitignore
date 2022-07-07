@@ -94,3 +94,4 @@ sw.*
 .firebaserc
 
 flow.json
+.env

@@ -173,11 +173,11 @@
             </b-dropdown-item>
             <nuxt-link to="/about/">
               <b-dropdown-item aria-role="listitem" class="menu-help">
-              <b-icon
-                pack="fa-solid"
-                icon="user"
-                style="font-size: 13px; margin-top: 4px;"
-              />
+                <b-icon
+                  pack="fa-solid"
+                  icon="user"
+                  style="font-size: 13px; margin-top: 4px;"
+                />
                 <label>{{ $t('hamburger_menu5') }}</label>
               </b-dropdown-item>
             </nuxt-link>
@@ -607,7 +607,7 @@ export default {
         github: {
           transaction: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/transactions.js',
           script: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/scripts.js',
-          contract1: 'https://flow-view-source.com/testnet/account/0x39899237382f2a8a/contract/TicketsV22',
+          contract1: 'https://flow-view-source.com/mainnet/account/0x24466f7fc36e3388/contract/TicketsBeta',
           contract2: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/Tickets.cdc',
           playground: 'https://play.onflow.org/d9b1cb97-b54c-4d49-8187-258d6c2eab41?type=account&id=0e075014-fb30-4594-96d5-d13d94383399&storage=none'
         },
@@ -983,7 +983,7 @@ export default {
                   this.$fcl.limit(9999)
                 ]
               ).then(this.$fcl.decode)
-              this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+              this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
               this.callToast(this.$t('operation_text34'))
               const timerID = setInterval(async () => {
                 const isSetFinished = await this.$fcl.send(

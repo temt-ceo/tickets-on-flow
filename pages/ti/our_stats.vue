@@ -710,7 +710,7 @@ export default {
               ]
             ).then(this.$fcl.decode)
           }
-          this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+          this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
           this.waitTransactionComplete = true
           this.showInputModal = false
           this.checkTransactionComplete(0)

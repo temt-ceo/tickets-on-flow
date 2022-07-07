@@ -668,7 +668,7 @@ export default {
               ]
             ).then(this.$fcl.decode)
           }
-          this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+          this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
           this.waitTransactionComplete = true
           this.showInputModal = false
           this.checkTransactionComplete(0)
@@ -735,7 +735,7 @@ export default {
             this.$fcl.limit(9999)
           ]
         ).then(this.$fcl.decode)
-        this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+        this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
         this.waitTransactionComplete = true
         this.showEditModal = false
         const expectedUpdateCount = parseInt(this.registeredPolls[this.selectedIndex].update_count) + 1

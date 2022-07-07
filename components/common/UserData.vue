@@ -48,7 +48,7 @@
           </b-tab-item>
         </b-tabs>
         <div>
-          <a :href="`https://testnet.flowscan.org/account/${bloctoWalletUser.addr}`" target="_blank" style="display: inline-block; padding-right: 25px;">
+          <a :href="`https://flowscan.org/account/${bloctoWalletUser.addr}`" target="_blank" style="display: inline-block; padding-right: 25px;">
             <b-icon
               class="navbar-item"
               pack="fa-solid"

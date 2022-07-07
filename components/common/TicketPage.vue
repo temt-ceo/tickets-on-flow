@@ -691,7 +691,7 @@ export default {
             this.$fcl.limit(9999)
           ]
         ).then(this.$fcl.decode)
-        this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+        this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
         this.noticeTitle = this.$t('operation_text15')
         this.waitTransactionComplete = true
         this.callToast()
@@ -739,7 +739,7 @@ export default {
                 this.$fcl.limit(9999)
               ]
             ).then(this.$fcl.decode)
-            this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+            this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
             this.noticeTitle = `You used ${this.ticketName} ticket. <br>Request a code after 10 seconds since the transaction takes 10 seconds to complete.`.replace('<br>', '\r\n')
             this.ticketStatus = 4
             this.waitTransactionComplete = true
@@ -793,7 +793,7 @@ export default {
 
                 this.$buefy.snackbar.open({
                   duration: 120000, // 2 minutes
-                  message: this.$t('operation_text30') + ` <a href="https://testnet.flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
+                  message: this.$t('operation_text30') + ` <a href="https://flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
                   type: 'is-danger',
                   position: 'is-bottom-left',
                   actionText: null,
@@ -816,7 +816,7 @@ export default {
                       this.$fcl.limit(9999)
                     ]
                   ).then(this.$fcl.decode)
-                  this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+                  this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
                 } else {
                   const transactionId = await this.$fcl.send(
                     [
@@ -831,7 +831,7 @@ export default {
                       this.$fcl.limit(9999)
                     ]
                   ).then(this.$fcl.decode)
-                  this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+                  this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
                 }
                 this.noticeTitle = this.$t('operation_text15')
                 this.waitTransactionComplete = true
@@ -930,7 +930,7 @@ export default {
 
                     this.$buefy.snackbar.open({
                       duration: 120000, // 2 minutes
-                      message: this.$t('operation_text30') + ` <a href="https://testnet.flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
+                      message: this.$t('operation_text30') + ` <a href="https://flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
                       type: 'is-danger',
                       position: 'is-bottom-left',
                       actionText: null,
@@ -952,7 +952,7 @@ export default {
                         this.$fcl.limit(9999)
                       ]
                     ).then(this.$fcl.decode)
-                    this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+                    this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
                     this.noticeTitle = this.$t('operation_text15')
                     this.waitTransactionComplete = true
                     this.callToast()

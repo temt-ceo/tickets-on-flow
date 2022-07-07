@@ -686,7 +686,7 @@ export default {
             this.$fcl.limit(9999)
           ]
         ).then(this.$fcl.decode)
-        this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+        this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
         this.isCompleteRegister = true
         return transactionId
       } catch (e) {
@@ -737,7 +737,7 @@ export default {
             this.$fcl.limit(9999)
           ]
         ).then(this.$fcl.decode)
-        this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+        this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
         this.isCompleteRegister = true
         return transactionId
       } catch (e) {

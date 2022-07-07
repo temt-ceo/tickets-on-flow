@@ -60,6 +60,13 @@
             >
               Log out from Wallet
             </b-button>
+            <b-button
+              v-if="bloctoWalletUser.addr"
+              :disabled="isAdmin"
+              @click="getCapabilityReceiverVault"
+            >
+              Create CapabilityVault
+            </b-button>
           </div>
         </div>
       </div>
@@ -108,7 +115,8 @@ export default {
       bloctoWalletUser: {},
       isAdmin: false,
       noticeTitle: '',
-      transactionScanUrl: ''
+      transactionScanUrl: '',
+      capabilityReceiver: null
     }
   },
   head () {
@@ -144,8 +152,14 @@ export default {
 
       if (this.bloctoWalletUser?.addr) {
         this.isAdmin = await this.isAdminWallet()
+        if (!this.isAdmin) {
+          this.capabilityReceiver = await this.isAdminProxyWallet()
+          if (this.capabilityReceiver && this.capabilityReceiver.address) {
+            this.isAdmin = true
+          }
+        }
         if (this.isAdmin) {
-          this.address = this.bloctoWalletUser?.addr
+          this.address = this.capabilityReceiver && this.capabilityReceiver.address ? this.capabilityReceiver.address : this.bloctoWalletUser?.addr
           await this.getRequestedDispensers()
           await this.getAllDispensers()
           this.noticeTitle = 'Tap the grant button.'
@@ -170,6 +184,24 @@ export default {
           return true
         } else {
           return false
+        }
+      } catch (e) {
+      }
+    },
+    async isAdminProxyWallet () {
+      try {
+        const adminProxyVault = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.isAdminProxy),
+            this.$fcl.args([
+              this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        if (adminProxyVault && adminProxyVault.proxyCapabilityReceiver) {
+          return adminProxyVault.proxyCapabilityReceiver
+        } else {
+          return null
         }
       } catch (e) {
       }
@@ -205,20 +237,35 @@ export default {
                   container: null
                 })
                 setTimeout(() => loadingComponent.close(), 3 * 1000)
-
-                const transactionId = await this.$fcl.send(
-                  [
-                    this.$fcl.transaction(FlowTransactions.dispenseDispenser),
-                    this.$fcl.args([
-                      this.$fcl.arg(addr, this.$fclArgType.Address)
-                    ]),
-                    this.$fcl.payer(this.$fcl.authz),
-                    this.$fcl.proposer(this.$fcl.authz),
-                    this.$fcl.authorizations([this.$fcl.authz]),
-                    this.$fcl.limit(9999)
-                  ]
-                ).then(this.$fcl.decode)
-                this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+                let transactionId = null
+                if (this.capabilityReceiver) {
+                  transactionId = await this.$fcl.send(
+                    [
+                      this.$fcl.transaction(FlowTransactions.dispenseDispenserOverProxy),
+                      this.$fcl.args([
+                        this.$fcl.arg(addr, this.$fclArgType.Address)
+                      ]),
+                      this.$fcl.payer(this.$fcl.authz),
+                      this.$fcl.proposer(this.$fcl.authz),
+                      this.$fcl.authorizations([this.$fcl.authz]),
+                      this.$fcl.limit(9999)
+                    ]
+                  ).then(this.$fcl.decode)
+                } else {
+                  transactionId = await this.$fcl.send(
+                    [
+                      this.$fcl.transaction(FlowTransactions.dispenseDispenser),
+                      this.$fcl.args([
+                        this.$fcl.arg(addr, this.$fclArgType.Address)
+                      ]),
+                      this.$fcl.payer(this.$fcl.authz),
+                      this.$fcl.proposer(this.$fcl.authz),
+                      this.$fcl.authorizations([this.$fcl.authz]),
+                      this.$fcl.limit(9999)
+                    ]
+                  ).then(this.$fcl.decode)
+                }
+                this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
                 const toast = this.$buefy.toast.open({
                   indefinite: true,
                   message: `Ticket distribution functionality has been added to ${addr}.`
@@ -238,33 +285,125 @@ export default {
     },
     async getRequestedDispensers () {
       try {
-        const dispenserRequesters = await this.$fcl.send(
-          [
-            this.$fcl.script(FlowScripts.getRequestedDispensers),
-            this.$fcl.args([
-              this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
-            ])
-          ]
-        ).then(this.$fcl.decode)
-        this.dispenserRequesters = dispenserRequesters
+        if (this.capabilityReceiver) {
+          const dispenserRequesters = await this.$fcl.send(
+            [
+              this.$fcl.script(FlowScripts.getRequestedDispensers),
+              this.$fcl.args([
+                this.$fcl.arg(this.capabilityReceiver.address, this.$fclArgType.Address)
+              ])
+            ]
+          ).then(this.$fcl.decode)
+          this.dispenserRequesters = dispenserRequesters
+        } else {
+          const dispenserRequesters = await this.$fcl.send(
+            [
+              this.$fcl.script(FlowScripts.getRequestedDispensers),
+              this.$fcl.args([
+                this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
+              ])
+            ]
+          ).then(this.$fcl.decode)
+          this.dispenserRequesters = dispenserRequesters
+        }
       } catch (e) {
       }
     },
     async getAllDispensers () {
       try {
-        const dispenserRequesters = await this.$fcl.send(
-          [
-            this.$fcl.script(FlowScripts.getAllDispensers),
-            this.$fcl.args([
-              this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
-            ])
-          ]
-        ).then(this.$fcl.decode)
-        dispenserRequesters.sort((a, b) => parseInt(b.dispenser_id) - parseInt(a.dispenser_id))
-        this.allDispensers = dispenserRequesters
+        if (this.capabilityReceiver) {
+          const dispenserRequesters = await this.$fcl.send(
+            [
+              this.$fcl.script(FlowScripts.getAllDispensers),
+              this.$fcl.args([
+                this.$fcl.arg(this.capabilityReceiver.address, this.$fclArgType.Address)
+              ])
+            ]
+          ).then(this.$fcl.decode)
+          dispenserRequesters.sort((a, b) => parseInt(b.dispenser_id) - parseInt(a.dispenser_id))
+          this.allDispensers = dispenserRequesters
+        } else {
+          const dispenserRequesters = await this.$fcl.send(
+            [
+              this.$fcl.script(FlowScripts.getAllDispensers),
+              this.$fcl.args([
+                this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
+              ])
+            ]
+          ).then(this.$fcl.decode)
+          dispenserRequesters.sort((a, b) => parseInt(b.dispenser_id) - parseInt(a.dispenser_id))
+          this.allDispensers = dispenserRequesters
+        }
       } catch (e) {
       }
+    },
+    async getCapabilityReceiverVault () {
+      try {
+        // loading
+        const loadingComponent = this.$buefy.loading.open({
+          container: null
+        })
+        setTimeout(() => loadingComponent.close(), 3 * 1000)
+        const transactionId = await this.$fcl.send(
+          [
+            this.$fcl.transaction(FlowTransactions.createCapabilityReceiver),
+            this.$fcl.args([
+            ]),
+            this.$fcl.payer(this.$fcl.authz),
+            this.$fcl.proposer(this.$fcl.authz),
+            this.$fcl.authorizations([this.$fcl.authz]),
+            this.$fcl.limit(9999)
+          ]
+        ).then(this.$fcl.decode)
+        this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
+        const toast = this.$buefy.toast.open({
+          indefinite: true,
+          message: 'Capability Vault has been added to the wallet.'
+        })
+        setTimeout(() => {
+          toast.close()
+        }, 10000)
+        this.noticeTitle = 'Capability Vault has been added to the wallet.'
+        return transactionId
+      } catch (e) {
+        this.noticeTitle = `Error: ${e}`
+      }
     }
+    // async addCapabilityReceiverDebug () {
+    //   try {
+    //     // loading
+    //     const loadingComponent = this.$buefy.loading.open({
+    //       container: null
+    //     })
+    //     setTimeout(() => loadingComponent.close(), 3 * 1000)
+
+    //     const addr = '0x02a0b991d9254827'
+    //     const transactionId = await this.$fcl.send(
+    //       [
+    //         this.$fcl.transaction(FlowTransactions.addCapabilityReceiverDebug),
+    //         this.$fcl.args([
+    //           this.$fcl.arg(addr, this.$fclArgType.Address)
+    //         ]),
+    //         this.$fcl.payer(this.$fcl.authz),
+    //         this.$fcl.proposer(this.$fcl.authz),
+    //         this.$fcl.authorizations([this.$fcl.authz]),
+    //         this.$fcl.limit(9999)
+    //       ]
+    //     ).then(this.$fcl.decode)
+    //     this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
+    //     const toast = this.$buefy.toast.open({
+    //       indefinite: true,
+    //       message: 'Capability Vault has been added to the wallet.'
+    //     })
+    //     setTimeout(() => {
+    //       toast.close()
+    //     }, 10000)
+    //     this.noticeTitle = 'Capability Vault has been added to the wallet.'
+    //     return transactionId
+    //   } catch (e) {
+    //     this.noticeTitle = `Error: ${e}`
+    //   }
+    // }
   }
 }
 </script>

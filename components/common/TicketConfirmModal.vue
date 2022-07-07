@@ -190,7 +190,7 @@ export default {
       peopleWaitingCount: 0,
       transactionScanUrl: '',
       isCompleteRegister: false,
-      flowscanLink: 'https://testnet.flowscan.org/transaction',
+      flowscanLink: 'https://flowscan.org/transaction',
       isOngoingTransaction: false,
       isRefundTransaction: false,
       checkedRows: [],
@@ -307,7 +307,7 @@ export default {
                 this.$fcl.limit(9999)
               ]
             ).then(this.$fcl.decode)
-            this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+            this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
             this.waitTransactionComplete = true
             this.isOngoingTransaction = true
             this.callToast()
@@ -421,7 +421,7 @@ export default {
             this.$fcl.limit(9999)
           ]
         ).then(this.$fcl.decode)
-        this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+        this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
         this.waitTransactionComplete = true
         this.isRefundTransaction = true
         this.callToast()

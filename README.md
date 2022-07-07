@@ -100,3 +100,27 @@ More information about the usage of this directory in [the documentation](https:
 This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
 
 More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+
+### main net procedure
+```
+flow version # Version: v0.37.2
+
+flow keys generate --network=mainnet
+
+1. access to prot flow : port.onflow.org
+2. click "Advanced"
+3. click "Create New Account"
+4. Copy your public key, paste public key.
+#5. access to flow-view-source : flow-view-source.com/mainnet
+6. From port.onflow.org send a few FLOW tokens to mainnet-account address.
+
+flow init # Configuration initialized
+> Start emulator by running: 'flow emulator'
+> Reset configuration using: 'flow init --reset'
+
+
+flow project deploy --network=mainnet
+
+# add capability receiver to an account
+node addCap.js
+```

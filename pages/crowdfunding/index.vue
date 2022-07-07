@@ -272,7 +272,7 @@ export default {
 
                 this.$buefy.snackbar.open({
                   duration: 120000, // 2 minutes
-                  message: this.$t('operation_text30') + ` <a href="https://testnet.flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
+                  message: this.$t('operation_text30') + ` <a href="https://flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
                   type: 'is-danger',
                   position: 'is-bottom-left',
                   actionText: null,
@@ -299,7 +299,7 @@ export default {
                   indefinite: true,
                   message: this.$t('operation_text34')
                 })
-                this.transactionScanUrl = `https://testnet.flowscan.org/transaction/${transactionId}`
+                this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
                 this.noticeTitle = this.$t('ticket_text48')
                 this.waitTransactionComplete = true
                 this.isApplied = true

@@ -109,7 +109,7 @@ export default {
       latestMintedTokenId: null,
       transactionScanUrl: '',
       isCompleteRegister: false,
-      flowscanLink: 'https://testnet.flowscan.org/transaction',
+      flowscanLink: 'https://flowscan.org/transaction',
       checkedRows: [],
       isBordered: false,
       isStriped: false,

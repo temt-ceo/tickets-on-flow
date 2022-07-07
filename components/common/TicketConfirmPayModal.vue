@@ -81,7 +81,7 @@ export default {
       ticketUsedList: [],
       latestBlockHeight: null,
       isCompleteRegister: false,
-      flowscanLink: 'https://testnet.flowscan.org/transaction'
+      flowscanLink: 'https://flowscan.org/transaction'
     }
   },
   computed: {
