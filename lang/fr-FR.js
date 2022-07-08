@@ -8,6 +8,7 @@ export default {
   develop_menu2: 'Tous les scripts',
   develop_menu3: 'Contrat intelligent',
   develop_menu4: 'Veuillez ne pas modifier.',
+  terms_of_use0: "Nous avons pensé que nous voulions permettre aux personnes touchées par la guerre en Ukraine de faire des affaires et de gagner de l'argent avec leurs seuls smartphones.",
   terms_of_use1: 'Il y a 6 milliards de personnes dans le monde.',
   terms_of_use2: 'L\'internet est connecté au monde entier, et il serait merveilleux que nous puissions faire des affaires en utilisant uniquement nos smartphones.',
   terms_of_use3: 'En réalité, cependant, les transferts d\'argent internationaux prennent beaucoup de temps. En outre, les frais liés aux transferts d\'argent internationaux peuvent parfois atteindre 30 %.',

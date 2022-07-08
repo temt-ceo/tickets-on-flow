@@ -8,6 +8,7 @@ export default {
   develop_menu2: 'All Scripts',
   develop_menu3: 'Smart Contract',
   develop_menu4: 'Please do not edit.',
+  terms_of_use0: 'We thought, we want to make it possible for the war-afflicted people in Ukraine to somehow do business and make money with just their smartphones.',
   terms_of_use1: 'There are 6 billion people in the world.',
   terms_of_use2: 'The Internet is connected to the world, and it would be wonderful if we could do business using only our smartphones.',
   terms_of_use3: 'In reality, however, international money transfers are very time-consuming. In addition, the fees for international money transfers can sometimes be as high as 30%.',

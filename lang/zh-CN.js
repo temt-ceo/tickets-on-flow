@@ -8,6 +8,7 @@ export default {
   develop_menu2: '所有脚本',
   develop_menu3: '智能合约',
   develop_menu4: '请不要编辑。',
+  terms_of_use0: '我们想，我们想让乌克兰受战争影响的人们能够以某种方式做生意，只用他们的智能手机就能挣钱。',
   terms_of_use1: '世界上有60亿人。',
   terms_of_use2: '互联网与世界相连，如果我们只用智能手机就能做生意，那就太好了。',
   terms_of_use3: '然而，在现实中，国际汇款非常耗费时间。此外，国际汇款的费用有时可高达30%。',

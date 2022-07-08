@@ -17,6 +17,7 @@
         <header class="section-header">
           <h3>About Us</h3>
           <p class="about-title-content">
+            {{ $t('terms_of_use0') }}<br><br>
             {{ $t('terms_of_use1') }}<br><br>
             {{ $t('terms_of_use2') }}<br><br>
             {{ $t('terms_of_use3') }}<br><br>

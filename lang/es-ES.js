@@ -8,6 +8,7 @@ export default {
   develop_menu2: 'Todos los guiones',
   develop_menu3: 'Contrato inteligente',
   develop_menu4: 'Por favor, no edite.',
+  terms_of_use0: 'Pensamos que queremos hacer posible que las personas afectadas por la guerra en Ucrania puedan de alguna manera hacer negocios y ganar dinero sólo con sus teléfonos inteligentes.',
   terms_of_use1: 'Hay 6.000 millones de personas en el mundo.',
   terms_of_use2: 'Internet está conectado al mundo, y sería maravilloso que pudiéramos hacer negocios utilizando sólo nuestros smartphones.',
   terms_of_use3: 'En realidad, sin embargo, las transferencias internacionales de dinero requieren mucho tiempo. Además, las comisiones de las transferencias internacionales pueden llegar a ser del 30%.',

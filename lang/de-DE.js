@@ -8,6 +8,7 @@ export default {
   develop_menu2: 'Alle Skripte',
   develop_menu3: 'Intelligenter Vertrag',
   develop_menu4: 'Bitte nicht bearbeiten.',
+  terms_of_use0: 'Wir dachten, wir wollen es den vom Krieg betroffenen Menschen in der Ukraine ermöglichen, mit ihren Smartphones Geschäfte zu machen und Geld zu verdienen.',
   terms_of_use1: 'Es gibt 6 Milliarden Menschen auf der Welt.',
   terms_of_use2: 'Das Internet ist mit der Welt verbunden, und es wäre wunderbar, wenn wir Geschäfte nur mit unseren Smartphones abwickeln könnten.',
   terms_of_use3: 'In der Realität sind internationale Geldüberweisungen jedoch sehr zeitaufwändig. Außerdem können die Gebühren für internationale Geldüberweisungen manchmal bis zu 30 % betragen.',

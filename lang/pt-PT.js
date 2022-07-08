@@ -8,6 +8,7 @@ export default {
   develop_menu2: 'Todos os Scripts',
   develop_menu3: 'Contrato inteligente',
   develop_menu4: 'Por favor, não edite.',
+  terms_of_use0: 'Pensamos, queremos tornar possível para as pessoas atingidas pela guerra na Ucrânia fazer negócios e ganhar dinheiro apenas com seus smartphones.',
   terms_of_use1: 'Existem 6 bilhões de pessoas no mundo.',
   terms_of_use2: 'A Internet está conectada ao mundo, e seria maravilhoso se pudéssemos fazer negócios usando apenas nossos smartphones.',
   terms_of_use3: 'Na realidade, porém, as transferências internacionais de dinheiro consomem muito tempo. Além disso, as taxas para transferências internacionais de dinheiro podem, às vezes, chegar a 30%.',
