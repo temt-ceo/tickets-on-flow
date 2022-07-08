@@ -58,6 +58,92 @@
     </section><!-- #about -->
 
     <!--==========================
+      News Section
+    ============================-->
+    <section id="portfolio" class="section-bg">
+      <div class="container">
+        <header class="section-header">
+          <h3 class="section-title" style="font-size: 24px;">
+            {{ $t('operation_text135') }}
+          </h3>
+        </header>
+
+        <div class="row portfolio-container">
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app wow fadeInUp">
+            <div class="portfolio-wrap" style="max-width: 350px;">
+              <figure>
+                <img src="/img/news-1.png" class="img-fluid" alt="">
+                <a href="https://flow-view-source.com/mainnet/account/0x24466f7fc36e3388/contract/TicketsBeta" target="_blank" class="link-details" title="More Details">
+                  <i class="fa-solid fa-arrow-up-right-from-square" />
+                </a>
+              </figure>
+
+              <div class="portfolio-info" style="padding: 12px 30px 20px; height: 110px;">
+                <p>2022-07-07</p>
+                <h4 style="line-height: inherit;">
+                  {{ $t('operation_text136') }}
+                </h4>
+              </div>
+            </div>
+          </div>
+
+        <!--
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app wow fadeInUp">
+            <div class="portfolio-wrap" style="max-width: 350px;">
+              <figure>
+                <img src="/img/news-1.png" class="img-fluid" alt="">
+                <a href="https://flow-view-source.com/mainnet/account/0x24466f7fc36e3388/contract/TicketsBeta" target="_blank" class="link-details" title="More Details"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+              </figure>
+
+              <div class="portfolio-info" style="padding: 12px 30px 20px; height: 110px;">
+                <p>2022-07-07</p>
+                <h4 style="line-height: inherit;">{{ $t('operation_text136') }}</h4>
+              </div>
+            </div>
+          </div>
+        -->
+        </div>
+      </div>
+    </section><!-- #News -->
+
+    <!--==========================
+      Services Section
+    ============================-->
+    <section id="services">
+      <div class="container">
+        <header class="section-header wow fadeInUp">
+          <h3>Services</h3>
+          <p>We are working hard to develop systems that can be said to be indispensable in our daily lives with cutting-edge technology.</p>
+        </header>
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6 box wow bounceInUp" data-wow-duration="1.4s">
+            <div class="icon">
+              <i class="ion-ios-analytics-outline" />
+            </div>
+            <h4 class="title">
+              <a href="https://www.kaggle.com/code/takashitahara/stock-expected-move-analysis" target="_blank">Stock Expected Move Analysis</a>
+            </h4>
+            <p class="description">
+              Prediction results are calculated using AI model.
+            </p>
+          </div>
+          <div class="col-lg-4 col-md-6 box wow bounceInUp" data-wow-duration="1.4s">
+            <div class="icon">
+              <i class="ion-ios-bookmarks-outline" />
+            </div>
+            <h4 class="title">
+              <a href="https://chain-work.com/?m=developer">Tickets</a>
+            </h4>
+            <p class="description">
+              The bussiness application built on Flow Blockchain.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section><!-- #services -->
+
+    <!--==========================
       Team Section
     ============================-->
     <section id="team">
@@ -103,43 +189,6 @@
         </div>
       </div>
     </section><!-- #team -->
-
-    <!--==========================
-      Services Section
-    ============================-->
-    <section id="services">
-      <div class="container">
-        <header class="section-header wow fadeInUp">
-          <h3>Services</h3>
-          <p>We are working hard to develop systems that can be said to be indispensable in our daily lives with cutting-edge technology.</p>
-        </header>
-
-        <div class="row">
-          <div class="col-lg-4 col-md-6 box wow bounceInUp" data-wow-duration="1.4s">
-            <div class="icon">
-              <i class="ion-ios-analytics-outline" />
-            </div>
-            <h4 class="title">
-              <a href="https://www.kaggle.com/code/takashitahara/stock-expected-move-analysis" target="_blank">Stock Expected Move Analysis</a>
-            </h4>
-            <p class="description">
-              Prediction results are calculated using AI model.
-            </p>
-          </div>
-          <div class="col-lg-4 col-md-6 box wow bounceInUp" data-wow-duration="1.4s">
-            <div class="icon">
-              <i class="ion-ios-bookmarks-outline" />
-            </div>
-            <h4 class="title">
-              <a href="https://chain-work.com/?m=developer">Tickets</a>
-            </h4>
-            <p class="description">
-              The bussiness application built on Flow Blockchain.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section><!-- #services -->
 
     <!--==========================
       Footer
@@ -1106,7 +1155,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 #portfolio .portfolio-item figure:hover .link-details {
   opacity: 1;
-  right: calc(50% - 44px);
+  right: calc(50% - 22px);
 }
 
 #portfolio .portfolio-item .portfolio-info {
