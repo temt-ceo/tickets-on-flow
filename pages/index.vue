@@ -1359,9 +1359,13 @@ export default {
     transform: translateY(0px);
     opacity: 1;
   }
-  80% {
+  50% {
     transform: translateY(0px);
     opacity: 1;
+  }
+  92% {
+    transform: translateY(0px);
+    opacity: 0.93;
   }
   100% {
     transform: translateY(-150vh);
@@ -1373,10 +1377,10 @@ export default {
   0% {
     opacity: 0;
   }
-  8% {
+  6% {
     opacity: 0;
   }
-  10% {
+  8% {
     opacity: 1;
   }
   80% {
