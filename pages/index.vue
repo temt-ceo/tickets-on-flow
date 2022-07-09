@@ -584,7 +584,12 @@ export default {
         let tickets = []
         if (withoutApi) {
           tickets = JSON.parse(JSON.stringify(this.$store.state.tickets))
-          tickets.sort(() => {
+          tickets.sort((ticketA, ticketB) => {
+            if (ticketA.domain === 'zm' && ticketB.domain === 'zmi') {
+              return -1
+            } else if (ticketA.domain === 'zmi' && ticketB.domain === 'zm') {
+              return 1
+            }
             return Math.random() - 0.5
           })
           this.tickets = []
@@ -605,14 +610,10 @@ export default {
             ]
           ).then(this.$fcl.decode)
           tickets.sort((ticketA, ticketB) => {
-            if (ticketA.domain === 'zm') {
-              return Math.random() - 0.75
-            } else if (ticketA.domain === 'multi') {
-              return Math.random() - 0.6
-            } else if (ticketB.domain === 'zm') {
-              return Math.random() - 0.25
-            } else if (ticketB.domain === 'multi') {
-              return Math.random() - 0.4
+            if (ticketA.domain === 'zm' && ticketB.domain === 'zmi') {
+              return -1
+            } else if (ticketA.domain === 'zmi' && ticketB.domain === 'zm') {
+              return 1
             }
             return Math.random() - 0.5
           })
