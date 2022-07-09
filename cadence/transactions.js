@@ -1,24 +1,24 @@
 export default {
   addCapabilityReceiverDebug: `
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction(address: Address) {
     prepare(signer: AuthAccount) {
-        let capabilityReceiver: Capability<&TicketsBeta.Admin> = signer.getCapability<&TicketsBeta.Admin>(TicketsBeta.AdminPrivatePath)
+        let capabilityReceiver: Capability<&Tickets.Admin> = signer.getCapability<&Tickets.Admin>(Tickets.AdminPrivatePath)
 
         let account = getAccount(address)
-        let capReceiverVault = account.getCapability<&TicketsBeta.CapabilityReceiverVault{TicketsBeta.IProxyCapabilityReceiverPublic}>(TicketsBeta.CapabilityReceiverVaultPublicPath).borrow()
+        let capReceiverVault = account.getCapability<&Tickets.CapabilityReceiverVault{Tickets.IProxyCapabilityReceiverPublic}>(Tickets.CapabilityReceiverVaultPublicPath).borrow()
             ?? panic("Could not borrow CapabilityReceiverVault Capability.")
         capReceiverVault.deposit(cap: capabilityReceiver)
     }
 }
   `,
   createCapabilityReceiver: `
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction() {
     prepare(signer: AuthAccount) {
-        signer.save<@TicketsBeta.CapabilityReceiverVault>(<- TicketsBeta.createCapabilityReceiverVault(), to: /storage/TicketsBetaCapabilityReceiverVault)
+        signer.save<@Tickets.CapabilityReceiverVault>(<- Tickets.createCapabilityReceiverVault(), to: /storage/TicketsCapabilityReceiverVault)
         // public path
-        signer.link<&TicketsBeta.CapabilityReceiverVault{TicketsBeta.IProxyCapabilityReceiverPublic}>(TicketsBeta.CapabilityReceiverVaultPublicPath, target: /storage/TicketsBetaCapabilityReceiverVault)
+        signer.link<&Tickets.CapabilityReceiverVault{Tickets.IProxyCapabilityReceiverPublic}>(Tickets.CapabilityReceiverVaultPublicPath, target: /storage/TicketsCapabilityReceiverVault)
     }
 
     execute {
@@ -29,15 +29,15 @@ transaction() {
   requestDispenser: `
 import FlowToken from 0x1654653399040a61
 import FungibleToken from 0xf233dcee88fe0abe
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction(domain: String, description: String, paid: UFix64) {
     prepare(signer: AuthAccount) {
         let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: paid) as! @FlowToken.Vault
-        signer.save<@TicketsBeta.DispenserVault>(<- TicketsBeta.createDispenserVault(address: signer.address, domain: domain, description: description, payment: <- payment), to: /storage/TicketsBetaDispenserVault)
+        signer.save<@Tickets.DispenserVault>(<- Tickets.createDispenserVault(address: signer.address, domain: domain, description: description, payment: <- payment), to: /storage/TicketsDispenserVault)
         // public path
-        signer.link<&TicketsBeta.DispenserVault{TicketsBeta.IDispenserPublic}>(TicketsBeta.DispenserVaultPublicPath, target: /storage/TicketsBetaDispenserVault)
+        signer.link<&Tickets.DispenserVault{Tickets.IDispenserPublic}>(Tickets.DispenserVaultPublicPath, target: /storage/TicketsDispenserVault)
         // private path
-        signer.link<&TicketsBeta.DispenserVault>(TicketsBeta.DispenserVaultPrivatePath, target: /storage/TicketsBetaDispenserVault)
+        signer.link<&Tickets.DispenserVault>(Tickets.DispenserVaultPrivatePath, target: /storage/TicketsDispenserVault)
     }
 
     execute {
@@ -46,14 +46,14 @@ transaction(domain: String, description: String, paid: UFix64) {
 }
   `,
   dispenseDispenser: `
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction(address: Address) {
     prepare(signer: AuthAccount) {
-        let admin = signer.borrow<&TicketsBeta.Admin>(from: /storage/TicketsBetaAdmin)
+        let admin = signer.borrow<&Tickets.Admin>(from: /storage/TicketsAdmin)
             ?? panic("Could not borrow reference to the Administrator Resource.")
 
         let account = getAccount(address)
-        let dispenserVault = account.getCapability<&TicketsBeta.DispenserVault{TicketsBeta.IDispenserPublic}>(TicketsBeta.DispenserVaultPublicPath).borrow()
+        let dispenserVault = account.getCapability<&Tickets.DispenserVault{Tickets.IDispenserPublic}>(Tickets.DispenserVaultPublicPath).borrow()
             ?? panic("Could not borrow DispenserVault Capability.")
         dispenserVault.deposit(minter: <- admin.mintDispenser(dispenser_id: dispenserVault.getId(), address: address))
     }
@@ -64,15 +64,15 @@ transaction(address: Address) {
 }
   `,
   dispenseDispenserOverProxy: `
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction(address: Address) {
     prepare(signer: AuthAccount) {
-        let capabilityReceiverVault = signer.borrow<&TicketsBeta.CapabilityReceiverVault>(from: /storage/TicketsBetaCapabilityReceiverVault)
+        let capabilityReceiverVault = signer.borrow<&Tickets.CapabilityReceiverVault>(from: /storage/TicketsCapabilityReceiverVault)
             ?? panic("Could not borrow reference to the Administrator Capability Resource.")
         let adminRef = capabilityReceiverVault.proxyCapabilityReceiver!.borrow()
 
         let account = getAccount(address)
-        let dispenserVault = account.getCapability<&TicketsBeta.DispenserVault{TicketsBeta.IDispenserPublic}>(TicketsBeta.DispenserVaultPublicPath).borrow()
+        let dispenserVault = account.getCapability<&Tickets.DispenserVault{Tickets.IDispenserPublic}>(Tickets.DispenserVaultPublicPath).borrow()
             ?? panic("Could not borrow DispenserVault Capability.")
         dispenserVault.deposit(minter: <- adminRef!.mintDispenser(dispenser_id: dispenserVault.getId(), address: address))
     }
@@ -85,11 +85,11 @@ transaction(address: Address) {
   addTicketInfo: `
 import FlowToken from 0x1654653399040a61
 import FungibleToken from 0xf233dcee88fe0abe
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction(type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64) {
     prepare(signer: AuthAccount) {
         let FlowTokenReceiver = signer.getCapability<&FlowToken.Vault{FungibleToken.Receiver}>(/public/flowTokenReceiver)
-        let dispenserVault = signer.borrow<&TicketsBeta.DispenserVault>(from: /storage/TicketsBetaDispenserVault)
+        let dispenserVault = signer.borrow<&Tickets.DispenserVault>(from: /storage/TicketsDispenserVault)
             ?? panic("Could not borrow reference to the Owner's DispenserVault.")
         dispenserVault.addTicketInfo(type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, price: price, flow_vault_receiver: FlowTokenReceiver)
     }
@@ -100,10 +100,10 @@ transaction(type: UInt8, name: String, where_to_use: String, when_to_use: String
 }
   `,
   updateTicketInfo: `
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction(index: UInt32, type: UInt8, name: String, where_to_use: String, when_to_use: String, price: UFix64) {
     prepare(signer: AuthAccount) {
-        let dispenserVault = signer.borrow<&TicketsBeta.DispenserVault>(from: /storage/TicketsBetaDispenserVault)
+        let dispenserVault = signer.borrow<&Tickets.DispenserVault>(from: /storage/TicketsDispenserVault)
             ?? panic("Could not borrow reference to the Owner's DispenserVault.")
         dispenserVault.updateTicketInfo(index: index, type: type, name: name, where_to_use: where_to_use, when_to_use: when_to_use, price: price)
     }
@@ -114,12 +114,12 @@ transaction(index: UInt32, type: UInt8, name: String, where_to_use: String, when
 }
   `,
   requestTicket: `
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction(dispenser_id: UInt32) {
     prepare(signer: AuthAccount) {
-        signer.save<@TicketsBeta.TicketVault>(<- TicketsBeta.createTicketVault(dispenser_id: dispenser_id, address: signer.address, crowdfunding: false), to: /storage/TicketsBetaTicketVault)
+        signer.save<@Tickets.TicketVault>(<- Tickets.createTicketVault(dispenser_id: dispenser_id, address: signer.address, crowdfunding: false), to: /storage/TicketsTicketVault)
         // public path
-        signer.link<&TicketsBeta.TicketVault{TicketsBeta.ITicketPublic}>(TicketsBeta.TicketVaultPublicPath, target: /storage/TicketsBetaTicketVault)
+        signer.link<&Tickets.TicketVault{Tickets.ITicketPublic}>(Tickets.TicketVaultPublicPath, target: /storage/TicketsTicketVault)
     }
 
     execute {
@@ -128,10 +128,10 @@ transaction(dispenser_id: UInt32) {
 }
   `,
   requestMoreTicket: `
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction(dispenser_id: UInt32) {
     prepare(signer: AuthAccount) {
-        let ticketVault = signer.borrow<&TicketsBeta.TicketVault>(from: /storage/TicketsBetaTicketVault)
+        let ticketVault = signer.borrow<&Tickets.TicketVault>(from: /storage/TicketsTicketVault)
             ?? panic("Could not borrow reference to the Owner's TicketVault.")
         ticketVault.requestTicket(dispenser_id: dispenser_id, address: signer.address)
     }
@@ -142,14 +142,14 @@ transaction(dispenser_id: UInt32) {
 }
   `,
   dispenseTicket: `
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction(addrList: {UInt32: Address}, secret_code: String) {
     prepare(signer: AuthAccount) {
-        let dispenserVault = signer.borrow<&TicketsBeta.DispenserVault>(from: /storage/TicketsBetaDispenserVault)
+        let dispenserVault = signer.borrow<&Tickets.DispenserVault>(from: /storage/TicketsDispenserVault)
             ?? panic("Could not borrow reference to the Owner's DispenserVault.")
         for user_id in addrList.keys {
             let account = getAccount(addrList[user_id]!)
-            let ticketVault = account.getCapability<&TicketsBeta.TicketVault{TicketsBeta.ITicketPublic}>(TicketsBeta.TicketVaultPublicPath).borrow()
+            let ticketVault = account.getCapability<&Tickets.TicketVault{Tickets.ITicketPublic}>(Tickets.TicketVaultPublicPath).borrow()
                 ?? panic("Could not borrow TicketVault capability.")
             ticketVault.deposit(token: <- dispenserVault.mintTicket(secret_code: secret_code, user_id: user_id)!)
         }
@@ -163,13 +163,13 @@ transaction(addrList: {UInt32: Address}, secret_code: String) {
   useTicket: `
 import FlowToken from 0x1654653399040a61
 import FungibleToken from 0xf233dcee88fe0abe
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction(dispenser_id: UInt32, token_id: UInt64, price: UFix64) {
     prepare(signer: AuthAccount) {
         let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: price * 0.975) as! @FlowToken.Vault
         let charge_fee = price - payment.balance
         let commission <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: charge_fee) as! @FlowToken.Vault
-        let ticketVault = signer.borrow<&TicketsBeta.TicketVault>(from: /storage/TicketsBetaTicketVault)
+        let ticketVault = signer.borrow<&Tickets.TicketVault>(from: /storage/TicketsTicketVault)
             ?? panic("Could not borrow reference to the Owner's TicketVault.")
         ticketVault.useTicket(dispenser_id: dispenser_id, token_id: token_id, address: signer.address, payment: <- payment, fee: <- commission)
     }
@@ -182,14 +182,14 @@ transaction(dispenser_id: UInt32, token_id: UInt64, price: UFix64) {
   crowdfunding: `
 import FlowToken from 0x1654653399040a61
 import FungibleToken from 0xf233dcee88fe0abe
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction(dispenser_id: UInt32, fund: UFix64) {
     prepare(signer: AuthAccount) {
-        signer.save<@TicketsBeta.TicketVault>(<- TicketsBeta.createTicketVault(dispenser_id: dispenser_id, address: signer.address, crowdfunding: true), to: /storage/TicketsBetaTicketVault)
+        signer.save<@Tickets.TicketVault>(<- Tickets.createTicketVault(dispenser_id: dispenser_id, address: signer.address, crowdfunding: true), to: /storage/TicketsTicketVault)
         // public path
-        signer.link<&TicketsBeta.TicketVault{TicketsBeta.ITicketPublic}>(TicketsBeta.TicketVaultPublicPath, target: /storage/TicketsBetaTicketVault)
+        signer.link<&Tickets.TicketVault{Tickets.ITicketPublic}>(Tickets.TicketVaultPublicPath, target: /storage/TicketsTicketVault)
 
-        let ticketVault = signer.borrow<&TicketsBeta.TicketVault>(from: /storage/TicketsBetaTicketVault)
+        let ticketVault = signer.borrow<&Tickets.TicketVault>(from: /storage/TicketsTicketVault)
             ?? panic("Could not borrow reference to the Owner's TicketVault.")
 
         let payment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: fund * 0.975) as! @FlowToken.Vault
@@ -206,10 +206,10 @@ transaction(dispenser_id: UInt32, fund: UFix64) {
   moreCrowdfunding: `
 import FlowToken from 0x1654653399040a61
 import FungibleToken from 0xf233dcee88fe0abe
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction(dispenser_id: UInt32, fund: UFix64) {
     prepare(signer: AuthAccount) {
-        let ticketVault = signer.borrow<&TicketsBeta.TicketVault>(from: /storage/TicketsBetaTicketVault)
+        let ticketVault = signer.borrow<&Tickets.TicketVault>(from: /storage/TicketsTicketVault)
             ?? panic("Could not borrow reference to the Owner's TicketVault.")
         ticketVault.prepareCrowdfund(dispenser_id: dispenser_id, address: signer.address)
 
@@ -227,11 +227,11 @@ transaction(dispenser_id: UInt32, fund: UFix64) {
   setRefundVault: `
 import FlowToken from 0x1654653399040a61
 import FungibleToken from 0xf233dcee88fe0abe
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction() {
     prepare(signer: AuthAccount) {
         let FlowTokenReceiver = signer.getCapability<&FlowToken.Vault{FungibleToken.Receiver}>(/public/flowTokenReceiver)
-        let ticketVault = signer.borrow<&TicketsBeta.TicketVault>(from: /storage/TicketsBetaTicketVault)
+        let ticketVault = signer.borrow<&Tickets.TicketVault>(from: /storage/TicketsTicketVault)
             ?? panic("Could not borrow reference to the Owner's TicketVault.")
         ticketVault.setRefundVault(flow_vault_receiver: FlowTokenReceiver)
     }
@@ -244,10 +244,10 @@ transaction() {
   refund: `
 import FlowToken from 0x1654653399040a61
 import FungibleToken from 0xf233dcee88fe0abe
-import TicketsBeta from 0xT
+import Tickets from 0xT
 transaction(addr: Address, user_id: UInt32, fund: UFix64) {
     prepare(signer: AuthAccount) {
-        let dispenserVault = signer.borrow<&TicketsBeta.DispenserVault>(from: /storage/TicketsBetaDispenserVault)
+        let dispenserVault = signer.borrow<&Tickets.DispenserVault>(from: /storage/TicketsDispenserVault)
             ?? panic("Could not borrow reference to the Owner's DispenserVault.")
 
         let repayment <- signer.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)!.withdraw(amount: fund) as! @FlowToken.Vault

@@ -384,7 +384,7 @@ export default {
   modal_text3: 'Sales',
   modal_text4: 'Fund',
   special_title1: 'AIモデルによる株価予測',
-  special_description1: 'zoomの株価の日中の動きを予測し、買い時を表示します。',
+  special_description1: 'Zoomの株価の日中の動きを予測し、買い時を表示します。',
   special_additional1_type1_pre: '本日の株価予想の結果は、タイプ1です。',
   special_additional1_type1_post: 'タイプ1では、株価は前日より低くなりますが、日中は少し高くなると予想されます。したがって、底値で買い、その高値で売れば利益が出ます。',
   special_additional1_type2_pre: '本日の株価予想の結果は、タイプ2です。',

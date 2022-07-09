@@ -607,7 +607,7 @@ export default {
         github: {
           transaction: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/transactions.js',
           script: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/scripts.js',
-          contract1: 'https://flow-view-source.com/mainnet/account/0x24466f7fc36e3388/contract/TicketsBeta',
+          contract1: 'https://flow-view-source.com/mainnet/account/0x24466f7fc36e3388/contract/Tickets',
           contract2: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/Tickets.cdc',
           playground: 'https://play.onflow.org/d9b1cb97-b54c-4d49-8187-258d6c2eab41?type=account&id=0e075014-fb30-4594-96d5-d13d94383399&storage=none'
         },

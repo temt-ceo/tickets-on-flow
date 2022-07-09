@@ -51,13 +51,13 @@ async function performTransaction() {
   const addr = process.env.RECIPIENT_ADDRESS
   const transactionId = await fcl.mutate({
     cadence: `
-    import TicketsBeta from 0x24466f7fc36e3388
+    import Tickets from 0x24466f7fc36e3388
     transaction(address: Address) {
       prepare(signer: AuthAccount) {
-        let capabilityReceiver: Capability<&TicketsBeta.Admin> = signer.getCapability<&TicketsBeta.Admin>(TicketsBeta.AdminPrivatePath)
+        let capabilityReceiver: Capability<&Tickets.Admin> = signer.getCapability<&Tickets.Admin>(Tickets.AdminPrivatePath)
       
         let account = getAccount(address)
-        let capReceiverVault = account.getCapability<&TicketsBeta.CapabilityReceiverVault{TicketsBeta.IProxyCapabilityReceiverPublic}>(TicketsBeta.CapabilityReceiverVaultPublicPath).borrow()
+        let capReceiverVault = account.getCapability<&Tickets.CapabilityReceiverVault{Tickets.IProxyCapabilityReceiverPublic}>(Tickets.CapabilityReceiverVaultPublicPath).borrow()
             ?? panic("Could not borrow CapabilityReceiverVault Capability.")
         capReceiverVault.deposit(cap: capabilityReceiver)
       }

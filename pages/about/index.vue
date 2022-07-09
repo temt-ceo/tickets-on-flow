@@ -73,7 +73,7 @@
             <div class="portfolio-wrap" style="max-width: 350px;">
               <figure>
                 <img src="/img/news-1.png" class="img-fluid" alt="">
-                <a href="https://flow-view-source.com/mainnet/account/0x24466f7fc36e3388/contract/TicketsBeta" target="_blank" class="link-details" title="More Details">
+                <a href="https://flow-view-source.com/mainnet/account/0x24466f7fc36e3388/contract/Tickets" target="_blank" class="link-details" title="More Details">
                   <i class="fa-solid fa-arrow-up-right-from-square" />
                 </a>
               </figure>
@@ -92,7 +92,7 @@
             <div class="portfolio-wrap" style="max-width: 350px;">
               <figure>
                 <img src="/img/news-1.png" class="img-fluid" alt="">
-                <a href="https://flow-view-source.com/mainnet/account/0x24466f7fc36e3388/contract/TicketsBeta" target="_blank" class="link-details" title="More Details"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                <a href="https://flow-view-source.com/mainnet/account/0x24466f7fc36e3388/contract/Tickets" target="_blank" class="link-details" title="More Details"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
               </figure>
 
               <div class="portfolio-info" style="padding: 12px 30px 20px; height: 110px;">

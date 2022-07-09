@@ -1,5 +1,9 @@
 <template>
   <div class="modal-card user-data">
+    <div style="position: absolute; top: 5px; z-index: 10;" @click="reload"><b-icon
+      icon="rotate-right"
+      size="is-large"
+    /></div>
     <section class="modal-card-body ticket-confirm-modal">
       <div class="text-wrap" style="padding-left: 36px; text-align: center;">
         {{ $t('operation_text75') }}
@@ -543,6 +547,9 @@ export default {
       /* reset values */
       this.xDown = null
       this.yDown = null
+    },
+    reload () {
+      location.reload()
     }
   }
 }
