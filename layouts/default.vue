@@ -1669,6 +1669,7 @@ tr {
 
 .modal-content, .modal-card {
     max-height: calc(100vh - 90px);
+    min-height: 410px;
 }
 
 .modal-close {

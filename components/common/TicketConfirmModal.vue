@@ -1,6 +1,6 @@
 <template>
   <div class="modal-card user-data">
-    <div style="position: absolute; top: 5px; z-index: 10;" @click="reload"><b-icon
+    <div v-if="owner === 0" style="position: absolute; top: 5px; z-index: 10;" @click="reload"><b-icon
       icon="rotate-right"
       size="is-large"
     /></div>
