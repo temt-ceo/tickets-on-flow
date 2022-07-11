@@ -558,6 +558,10 @@
                 </b-tab-item>
               </b-tabs>
             </b-collapse>
+            <p class="link_frame">
+              <h5>{{ additionalDescription.infoDetail.linkTitle }}</h5>
+              <a :href="additionalDescription.infoDetail.linkUrl" target="_blank">{{ additionalDescription.infoDetail.linkUrl }}</a>
+            </p>
           </div>
         </div>
       </div>
@@ -937,6 +941,10 @@ export default {
         }
       }
     }
+  }
+
+  p.link_frame {
+    margin-top: 40px;
   }
 }
 </style>
