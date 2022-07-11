@@ -649,7 +649,7 @@ export default {
   head () {
     const i18nHead = this.$nuxtI18nHead({ addSeoAttributes: true })
     return {
-      title: 'Tickets built on Flow Blockchain',
+      title: 'Chain Work Tickets',
       htmlAttrs: {
         author: 'tokyo em technology',
         ...i18nHead.htmlAttrs
@@ -657,8 +657,8 @@ export default {
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1' },
-        { hid: 'description', name: 'description', content: 'This system uses the Flow blockchain to enable business and crowdfunding worldwide. You can work worldwide through social network and Rewards are paid instantly.' },
-        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, social network' },
+        { hid: 'description', name: 'description', content: "Tickets (Chain Work) is a payment management service that makes it easy to make payments using social media.Flow Blckchain's $FLOW can be earned without QR codes." },
+        { hid: 'keywords', name: 'keywords', content: 'Chain Work, Tickets, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' },
         { name: 'format-detection', content: 'telephone=no' },
         ...i18nHead.meta
       ],
@@ -821,7 +821,6 @@ export default {
       this.bloctoWalletUser = user
     },
     changeLang () {
-      console.log(111)
       setTimeout(() => {
         this.$i18n.setLocale(this.i18nRadioButton)
         this.isI18nActive = false
@@ -1669,7 +1668,11 @@ tr {
 
 .modal-content, .modal-card {
     max-height: calc(100vh - 90px);
-    min-height: 410px;
+
+    /* カレンダー対応 */
+    .ticket-confirm-modal {
+      min-height: 410px;
+    }
 }
 
 .modal-close {

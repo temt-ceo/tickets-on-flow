@@ -55,7 +55,7 @@
                     :active="tooltipActive"
                     class="copy-tooltip"
                   >
-                    <b-button type="is-success is-light" @click="clickCopy" class="copy-button">
+                    <b-button type="is-success is-light" class="copy-button" @click="clickCopy">
                       Copy
                     </b-button>
                   </b-tooltip>
@@ -257,6 +257,7 @@ export default {
       hasTicketVault: false,
       dispenser: null,
       code: null,
+      balance: null,
       ticketInfo: null,
       ticketTokenId: null,
       ticketName: '',
@@ -723,39 +724,47 @@ export default {
             const loadingComponent = this.$buefy.loading.open({
               container: null
             })
-            setTimeout(() => loadingComponent.close(), 3 * 1000)
 
-            const transactionId = await this.$fcl.send(
-              [
-                this.$fcl.transaction(FlowTransactions.useTicket),
-                this.$fcl.args([
-                  this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32),
-                  this.$fcl.arg(this.ticketTokenId, this.$fclArgType.UInt64),
-                  this.$fcl.arg(parseFloat(this.price).toFixed(2), this.$fclArgType.UFix64)
-                ]),
-                this.$fcl.payer(this.$fcl.authz),
-                this.$fcl.proposer(this.$fcl.authz),
-                this.$fcl.authorizations([this.$fcl.authz]),
-                this.$fcl.limit(9999)
-              ]
-            ).then(this.$fcl.decode)
-            this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
-            this.noticeTitle = `You used ${this.ticketName} ticket. <br>Request a code after 10 seconds since the transaction takes 10 seconds to complete.`.replace('<br>', '\r\n')
-            this.ticketStatus = 4
-            this.waitTransactionComplete = true
-            this.callToast()
-            const timerID = setInterval(async () => {
-              const data = await this.getRequestStatus(true)
-              if (data && data.latest_token) {
-                const usedTime = await this.getTicketUsedTime()
-                if (usedTime) {
-                  this.noticeTitle = this.$t('operation_text114')
-                  this.waitTransactionComplete = false
-                  clearInterval(timerID)
+            // 残高確認
+            await this.getFlowBalance()
+            if (!this.balance || this.balance < parseFloat(this.price)) {
+              loadingComponent.close()
+              this.noticeTitle = this.$t('operation_text137') + ' ( Balance: ' + this.balance + 'FLOW )'
+            } else {
+              setTimeout(() => loadingComponent.close(), 3 * 1000)
+
+              const transactionId = await this.$fcl.send(
+                [
+                  this.$fcl.transaction(FlowTransactions.useTicket),
+                  this.$fcl.args([
+                    this.$fcl.arg(String(this.dispenser), this.$fclArgType.UInt32),
+                    this.$fcl.arg(this.ticketTokenId, this.$fclArgType.UInt64),
+                    this.$fcl.arg(parseFloat(this.price).toFixed(2), this.$fclArgType.UFix64)
+                  ]),
+                  this.$fcl.payer(this.$fcl.authz),
+                  this.$fcl.proposer(this.$fcl.authz),
+                  this.$fcl.authorizations([this.$fcl.authz]),
+                  this.$fcl.limit(9999)
+                ]
+              ).then(this.$fcl.decode)
+              this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
+              this.noticeTitle = this.$t('operation_text80') + '\r\n' + this.$t('operation_text138')
+              this.ticketStatus = 4
+              this.waitTransactionComplete = true
+              this.callToast()
+              const timerID = setInterval(async () => {
+                const data = await this.getRequestStatus(true)
+                if (data && data.latest_token) {
+                  const usedTime = await this.getTicketUsedTime()
+                  if (usedTime) {
+                    this.noticeTitle = this.$t('operation_text114')
+                    this.waitTransactionComplete = false
+                    clearInterval(timerID)
+                  }
                 }
-              }
-            }, 4000)
-            return transactionId
+              }, 4000)
+              return transactionId
+            }
           }
         })
       } catch (e) {
@@ -853,7 +862,6 @@ export default {
                   }
                 }, 4000)
               } catch (e) {
-                console.log(e)
               }
             }
           })
@@ -975,7 +983,6 @@ export default {
 
                     return transactionId
                   } catch (e) {
-                    console.log(e)
                   }
                 }
               })
@@ -1066,6 +1073,22 @@ export default {
       await navigator.clipboard.writeText(this.code)
       this.tooltipActive = true
     },
+    async getFlowBalance () {
+      try {
+        const balance = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getBalance),
+            this.$fcl.args([
+              this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        if (balance !== null) {
+          this.balance = parseFloat(balance)
+        }
+      } catch (e) {
+      }
+    },
     reload () {
       location.reload()
     }
@@ -1123,6 +1146,7 @@ export default {
       border-radius: 20px;
       margin: 20px 0 0;
       max-width: 400px;
+      min-width: 265.5px;
       &.copy-button {
         position: absolute;
         min-width: 58px;

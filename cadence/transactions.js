@@ -262,13 +262,13 @@ transaction(addr: Address, user_id: UInt32, fund: UFix64) {
   createStat: `
 import FlowToken from 0x1654653399040a61
 import FungibleToken from 0xf233dcee88fe0abe
-import TicketStatsV13 from 0xT
-transaction(addr: Address, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, answer5: String, answer6: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64, value5: UFix64, value6: UFix64) {
+import StatsString from 0xT
+transaction(addr: Address, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, answer5: String, answer6: String, value1: String, value2: String, value3: String, value4: String, value5: String, value6: String) {
     prepare(signer: AuthAccount) {
         let FlowTokenReceiver = signer.getCapability<&FlowToken.Vault{FungibleToken.Receiver}>(/public/flowTokenReceiver)
-        signer.save<@TicketStatsV13.StatsVault>(<- TicketStatsV13.createStatsVault(addr: addr, nickname: nickname, title: title, answer1: answer1, answer2: answer2, answer3: answer3, answer4: answer4, answer5: answer5, answer6: answer6, value1: value1, value2: value2, value3: value3, value4: value4, value5: value5, value6: value6, flow_vault_receiver: FlowTokenReceiver), to: /storage/TicketStatsV13Vault)
-        signer.save<@TicketStatsV13.StatsPublic>(<- TicketStatsV13.createStatsPublic(), to: /storage/TicketStatsV13VaultPublic)
-        signer.link<&TicketStatsV13.StatsPublic>(TicketStatsV13.StatsVaultPublicPath, target:/storage/TicketStatsV13VaultPublic)
+        signer.save<@StatsString.StatsVault>(<- StatsString.createStatsVault(addr: addr, nickname: nickname, title: title, answer1: answer1, answer2: answer2, answer3: answer3, answer4: answer4, answer5: answer5, answer6: answer6, value1: value1, value2: value2, value3: value3, value4: value4, value5: value5, value6: value6, flow_vault_receiver: FlowTokenReceiver), to: /storage/StatsStringVault)
+        signer.save<@StatsString.StatsPublic>(<- StatsString.createStatsPublic(), to: /storage/StatsStringVaultPublic)
+        signer.link<&StatsString.StatsPublic>(StatsString.StatsVaultPublicPath, target:/storage/StatsStringVaultPublic)
     }
 
     execute {
@@ -277,11 +277,11 @@ transaction(addr: Address, nickname: String, title: String, answer1: String, ans
 }
   `,
   addStat: `
-import TicketStatsV13 from 0xT
-transaction(addr: Address, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, answer5: String, answer6: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64, value5: UFix64, value6: UFix64) {
+import StatsString from 0xT
+transaction(addr: Address, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, answer5: String, answer6: String, value1: String, value2: String, value3: String, value4: String, value5: String, value6: String) {
     prepare(signer: AuthAccount) {
-        let statsVault = signer.borrow<&TicketStatsV13.StatsVault>(from: /storage/TicketStatsV13Vault)
-            ?? panic("Could not borrow reference to the Owner's StatsVault.")
+        let statsVault = signer.borrow<&StatsString.StatsVault>(from: /storage/StatsStringVault)
+            ?? panic("Could not borrow reference to the Owner's StatsStringVault.")
         statsVault.addStats(addr: addr, nickname: nickname, title: title, answer1: answer1, answer2: answer2, answer3: answer3, answer4: answer4, answer5: answer5, answer6: answer6, value1: value1, value2: value2, value3: value3, value4: value4, value5: value5, value6: value6)
     }
 
@@ -291,11 +291,11 @@ transaction(addr: Address, nickname: String, title: String, answer1: String, ans
 }
   `,
   updateStat: `
-import TicketStatsV13 from 0xT
-transaction(addr: Address, index: UInt32, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, answer5: String, answer6: String, value1: UFix64, value2: UFix64, value3: UFix64, value4: UFix64, value5: UFix64, value6: UFix64) {
+import StatsString from 0xT
+transaction(addr: Address, index: UInt32, nickname: String, title: String, answer1: String, answer2: String, answer3: String, answer4: String, answer5: String, answer6: String, value1: String, value2: String, value3: String, value4: String, value5: String, value6: String) {
   prepare(signer: AuthAccount) {
-      let statsVault = signer.borrow<&TicketStatsV13.StatsVault>(from: /storage/TicketStatsV13Vault)
-          ?? panic("Could not borrow reference to the Owner's StatsVault.")
+      let statsVault = signer.borrow<&StatsString.StatsVault>(from: /storage/StatsStringVault)
+          ?? panic("Could not borrow reference to the Owner's StatsStringVault.")
           statsVault.updateStats(addr: addr, index: index, nickname: nickname, title: title, answer1: answer1, answer2: answer2, answer3: answer3, answer4: answer4, answer5: answer5, answer6: answer6, value1: value1, value2: value2, value3: value3, value4: value4, value5: value5, value6: value6)
   }
 

@@ -68,7 +68,7 @@ async function performTransaction() {
     }
     `,
     args: (arg, t) => [
-      arg(0.5, t.UFix64),
+      arg(0.499, t.UFix64),
       arg(addr, t.Address)
     ],
     payer: authorizationFunction,

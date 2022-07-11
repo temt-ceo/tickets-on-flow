@@ -148,7 +148,7 @@
       </b-dropdown>
     </div>
     <div v-if="showTutorial === true" class="fa-3x tutorial-man">
-      <i class="uil uil-user"></i>
+      <i class="uil uil-user" />
     </div>
     <div v-if="showTutorial === true">
       <b-notification
@@ -160,7 +160,7 @@
       />
     </div>
     <div v-if="showTutorial === true" class="fa-3x tutorial-woman">
-      <i class="uil uil-user"></i>
+      <i class="uil uil-user" />
     </div>
     <div v-if="showTutorial === true">
       <b-notification
@@ -172,7 +172,7 @@
       />
     </div>
     <div v-if="showTutorial === true && tutorial.showArrow === true" class="fa-3x tutorial-arrow">
-      <i class="uil uil-location-arrow"></i>
+      <i class="uil uil-location-arrow" />
     </div>
 
     <div class="fa-2x" style="position: absolute; bottom: 16px; left: 4px;">
@@ -192,7 +192,7 @@
         <div class="hero--content" />
       </div>
     </div>
-    <img v-if="!returnMode" class="anime-image" src="/chainwork-top.png" :style="{display: offIcon}" >
+    <img v-if="!returnMode" class="anime-image" src="/chainwork-top.png" :style="{display: offIcon}">
     <small class="bottom-copyright">&copy; Tokyo EM Technology & Co.</small>
     <b-carousel
       v-if="showCarousel"
@@ -397,7 +397,7 @@
             <template
               #navigation="{previous, next}"
             >
-              <div class="modal-card-link" v-if="next.disabled">
+              <div v-if="next.disabled" class="modal-card-link">
                 <nuxt-link to="/youtube-contents/">
                   {{ $t('terms_of_use67') }}
                 </nuxt-link>
@@ -681,6 +681,10 @@ export default {
                   case 'multi':
                     ticketTitle = this.$t('special_title3')
                     ticketDescription = this.$t('special_description3')
+                    break
+                  case 'detail':
+                    ticketTitle = this.$t('special_title4')
+                    ticketDescription = this.$t('special_description4')
                     break
                   default:
                     break

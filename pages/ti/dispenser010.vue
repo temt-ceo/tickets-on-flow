@@ -12,9 +12,9 @@ export default {
   },
   head () {
     return {
-      title: 'Tickets onFlow | testpage\'s Web Page',
+      title: 'Chain Work Tickets | dispenser010',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, social network, testpage' }
+        { hid: 'keywords', name: 'keywords', content: 'Chain Work, Tickets, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' }
       ]
     }
   }

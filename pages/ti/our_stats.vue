@@ -98,8 +98,7 @@
             <b-input
               v-model="statResult1Input"
               :placeholder="$t('operation_text61') + '(%)'"
-              type="number"
-              min="0"
+              maxlength="30"
               rounded
             />
           </b-field>
@@ -114,8 +113,7 @@
             <b-input
               v-model="statResult2Input"
               :placeholder="$t('operation_text61') + '(%)'"
-              type="number"
-              min="0"
+              maxlength="30"
               rounded
             />
           </b-field>
@@ -130,8 +128,7 @@
             <b-input
               v-model="statResult3Input"
               :placeholder="$t('operation_text61') + '(%)'"
-              type="number"
-              min="0"
+              maxlength="30"
               rounded
             />
           </b-field>
@@ -146,8 +143,7 @@
             <b-input
               v-model="statResult4Input"
               :placeholder="$t('operation_text61') + '(%)'"
-              type="number"
-              min="0"
+              maxlength="30"
               rounded
             />
           </b-field>
@@ -162,8 +158,7 @@
             <b-input
               v-model="statResult5Input"
               :placeholder="$t('operation_text61') + '(%)'"
-              type="number"
-              min="0"
+              maxlength="30"
               rounded
             />
           </b-field>
@@ -178,8 +173,7 @@
             <b-input
               v-model="statResult6Input"
               :placeholder="$t('operation_text61') + '(%)'"
-              type="number"
-              min="0"
+              maxlength="30"
               rounded
             />
           </b-field>
@@ -253,9 +247,6 @@
               {{ data.title }}
             </option>
           </b-select>
-          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 52px; z-index: 2;">
-            %
-          </div>
           <b-field :label="$t('operation_text61') + '(%)'">
             <b-input
               v-model="statItem1"
@@ -268,15 +259,12 @@
             <b-input
               v-model="statResult1"
               :placeholder="$t('operation_text61') + '(%)'"
-              type="number"
-              min="0"
+              maxlength="30"
               rounded
               disabled
+              style="min-width: 32vw;"
             />
           </b-field>
-          <div class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 13px; z-index: 2;">
-            %
-          </div>
           <b-field>
             <b-input
               v-model="statItem2"
@@ -289,15 +277,12 @@
             <b-input
               v-model="statResult2"
               :placeholder="$t('operation_text61') + '(%)'"
-              type="number"
-              min="0"
+              maxlength="30"
               rounded
               disabled
+              style="min-width: 32vw;"
             />
           </b-field>
-          <div v-if="itemCount >= 3" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 13px; z-index: 2;">
-            %
-          </div>
           <b-field v-if="itemCount >= 3">
             <b-input
               v-model="statItem3"
@@ -310,15 +295,12 @@
             <b-input
               v-model="statResult3"
               :placeholder="$t('operation_text61') + '(%)'"
-              type="number"
-              min="0"
+              maxlength="30"
               rounded
               disabled
+              style="min-width: 32vw;"
             />
           </b-field>
-          <div v-if="itemCount >= 4" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 13px; z-index: 2;">
-            %
-          </div>
           <b-field v-if="itemCount >= 4">
             <b-input
               v-model="statItem4"
@@ -331,15 +313,12 @@
             <b-input
               v-model="statResult4"
               :placeholder="$t('operation_text61') + '(%)'"
-              type="number"
-              min="0"
+              maxlength="30"
               rounded
               disabled
+              style="min-width: 32vw;"
             />
           </b-field>
-          <div v-if="itemCount >= 5" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 13px; z-index: 2;">
-            %
-          </div>
           <b-field v-if="itemCount >= 5">
             <b-input
               v-model="statItem4"
@@ -352,15 +331,12 @@
             <b-input
               v-model="statResult5"
               :placeholder="$t('operation_text61') + '(%)'"
-              type="number"
-              min="0"
+              maxlength="30"
               rounded
               disabled
+              style="min-width: 32vw;"
             />
           </b-field>
-          <div v-if="itemCount >= 6" class="stats-percent" style="color: #bbb; position: absolute; right: 25px; margin-top: 13px; z-index: 2;">
-            %
-          </div>
           <b-field v-if="itemCount >= 6">
             <b-input
               v-model="statItem6"
@@ -373,10 +349,10 @@
             <b-input
               v-model="statResult6"
               :placeholder="$t('operation_text61') + '(%)'"
-              type="number"
-              min="0"
+              maxlength="30"
               rounded
               disabled
+              style="min-width: 32vw;"
             />
           </b-field>
           <b-button class="download" type="is-info is-light" icon-right="download" style="position: absolute; top: 13px; right: 20px; height: 2.3rem; padding: 4px 12px;" @click="csvDownload">
@@ -409,12 +385,12 @@ export default {
       statItem4: '',
       statItem5: '',
       statItem6: '',
-      statResult1: null,
-      statResult2: null,
-      statResult3: null,
-      statResult4: null,
-      statResult5: null,
-      statResult6: null,
+      statResult1: '',
+      statResult2: '',
+      statResult3: '',
+      statResult4: '',
+      statResult5: '',
+      statResult6: '',
       nickname: '',
       itemCount: 2,
       statTitleInput: '',
@@ -424,12 +400,12 @@ export default {
       statItem4Input: '',
       statItem5Input: '',
       statItem6Input: '',
-      statResult1Input: null,
-      statResult2Input: null,
-      statResult3Input: null,
-      statResult4Input: null,
-      statResult5Input: null,
-      statResult6Input: null,
+      statResult1Input: '',
+      statResult2Input: '',
+      statResult3Input: '',
+      statResult4Input: '',
+      statResult5Input: '',
+      statResult6Input: '',
       nicknameInput: '',
       itemCountInput: 2,
       registeredContributors: [],
@@ -446,9 +422,9 @@ export default {
   },
   head () {
     return {
-      title: 'Tickets onFlow | Sharing Statistics',
+      title: 'Chain Work Tickets | Sharing Statistics',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, social network, Sharing' }
+        { hid: 'keywords', name: 'keywords', content: 'Chain Work, Tickets, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' }
       ]
     }
   },
@@ -497,12 +473,12 @@ export default {
           this.statItem4 = this.registeredPolls[index].answer4
           this.statItem5 = this.registeredPolls[index].answer5
           this.statItem6 = this.registeredPolls[index].answer6
-          this.statResult1 = parseFloat(this.registeredPolls[index].value1, 1)
-          this.statResult2 = parseFloat(this.registeredPolls[index].value2, 1)
-          this.statResult3 = this.itemCount >= 3 ? parseFloat(this.registeredPolls[index].value3, 1) : null
-          this.statResult4 = this.itemCount >= 4 ? parseFloat(this.registeredPolls[index].value4, 1) : null
-          this.statResult5 = this.itemCount >= 5 ? parseFloat(this.registeredPolls[index].value5, 1) : null
-          this.statResult6 = this.itemCount >= 6 ? parseFloat(this.registeredPolls[index].value6, 1) : null
+          this.statResult1 = this.registeredPolls[index].value1
+          this.statResult2 = this.registeredPolls[index].value2
+          this.statResult3 = this.itemCount >= 3 ? this.registeredPolls[index].value3 : ''
+          this.statResult4 = this.itemCount >= 4 ? this.registeredPolls[index].value4 : ''
+          this.statResult5 = this.itemCount >= 5 ? this.registeredPolls[index].value5 : ''
+          this.statResult6 = this.itemCount >= 6 ? this.registeredPolls[index].value6 : ''
           this.nickname = this.registeredPolls[index].nickname.replace(/\|\|link\|\|$/, '')
         }
       }
@@ -617,11 +593,19 @@ export default {
       if (this.bloctoWalletUser.addr) {
         if (!this.statItem3Input || !this.statResult3Input) {
           this.statItem3Input = ''
-          this.statResult3Input = 0
+          this.statResult3Input = ''
         }
         if (!this.statItem4Input || !this.statResult4Input) {
           this.statItem4Input = ''
-          this.statResult4Input = 0
+          this.statResult4Input = ''
+        }
+        if (!this.statItem5Input || !this.statResult5Input) {
+          this.statItem5Input = ''
+          this.statResult5Input = ''
+        }
+        if (!this.statItem6Input || !this.statResult6Input) {
+          this.statItem6Input = ''
+          this.statResult6Input = ''
         }
         let nickname = this.nicknameInput
         if (this.switchShare === this.$t('operation_text82') && nickname === nickname.replace(/\|\|link\|\|$/, '')) {
@@ -659,12 +643,12 @@ export default {
                   this.$fcl.arg(this.statItem4Input, this.$fclArgType.String),
                   this.$fcl.arg(this.statItem5Input, this.$fclArgType.String),
                   this.$fcl.arg(this.statItem6Input, this.$fclArgType.String),
-                  this.$fcl.arg(parseFloat(this.statResult1Input).toFixed(1), this.$fclArgType.UFix64),
-                  this.$fcl.arg(parseFloat(this.statResult2Input).toFixed(1), this.$fclArgType.UFix64),
-                  this.$fcl.arg(parseFloat(this.statResult3Input).toFixed(1), this.$fclArgType.UFix64),
-                  this.$fcl.arg(parseFloat(this.statResult4Input).toFixed(1), this.$fclArgType.UFix64),
-                  this.$fcl.arg(parseFloat(this.statResult5Input).toFixed(1), this.$fclArgType.UFix64),
-                  this.$fcl.arg(parseFloat(this.statResult6Input).toFixed(1), this.$fclArgType.UFix64)
+                  this.$fcl.arg(this.statResult1Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statResult2Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statResult3Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statResult4Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statResult5Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statResult6Input, this.$fclArgType.String)
                 ]),
                 this.$fcl.payer(this.$fcl.authz),
                 this.$fcl.proposer(this.$fcl.authz),
@@ -696,12 +680,12 @@ export default {
                   this.$fcl.arg(this.statItem4Input, this.$fclArgType.String),
                   this.$fcl.arg(this.statItem5Input, this.$fclArgType.String),
                   this.$fcl.arg(this.statItem6Input, this.$fclArgType.String),
-                  this.$fcl.arg(parseFloat(this.statResult1Input).toFixed(1), this.$fclArgType.UFix64),
-                  this.$fcl.arg(parseFloat(this.statResult2Input).toFixed(1), this.$fclArgType.UFix64),
-                  this.$fcl.arg(parseFloat(this.statResult3Input).toFixed(1), this.$fclArgType.UFix64),
-                  this.$fcl.arg(parseFloat(this.statResult4Input).toFixed(1), this.$fclArgType.UFix64),
-                  this.$fcl.arg(parseFloat(this.statResult5Input).toFixed(1), this.$fclArgType.UFix64),
-                  this.$fcl.arg(parseFloat(this.statResult6Input).toFixed(1), this.$fclArgType.UFix64)
+                  this.$fcl.arg(this.statResult1Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statResult2Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statResult3Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statResult4Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statResult5Input, this.$fclArgType.String),
+                  this.$fcl.arg(this.statResult6Input, this.$fclArgType.String)
                 ]),
                 this.$fcl.payer(this.$fcl.authz),
                 this.$fcl.proposer(this.$fcl.authz),
@@ -764,12 +748,12 @@ export default {
         const datetime = new Date(parseInt(row.time) * 1000).toLocaleDateString() + ' ' + new Date(parseInt(row.time) * 1000).toLocaleTimeString()
         const rowArray = [
           row.nickname.replace(/\|\|link\|\|$/, ''), datetime, row.title,
-          row.answer1, parseFloat(row.value1).toFixed(1).toString() + '%',
-          row.answer2, parseFloat(row.value2).toFixed(1).toString() + '%',
-          row.answer3, parseFloat(row.value3).toFixed(1).toString() + '%',
-          row.answer4, parseFloat(row.value4).toFixed(1).toString() + '%',
-          row.answer5, parseFloat(row.value5).toFixed(1).toString() + '%',
-          row.answer6, parseFloat(row.value6).toFixed(1).toString() + '%'
+          row.answer1, row.value1,
+          row.answer2, row.value2,
+          row.answer3, row.value3,
+          row.answer4, row.value4,
+          row.answer5, row.value5,
+          row.answer6, row.value6
         ]
         csvContent += rowArray.join(',') + '\r\n'
       })

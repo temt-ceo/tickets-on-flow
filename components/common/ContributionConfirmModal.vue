@@ -1,7 +1,7 @@
 <template>
   <div class="modal-card user-data">
     <section class="modal-card-body">
-      <div class="text-wrap" style="padding-left: 36px;">
+      <div class="text-wrap" style="padding-left: 28px;">
         {{ $t('operation_text74') }}
         <b-button class="download" type="is-light" icon-right="download" @click="csvDownload" />
       </div>
@@ -63,9 +63,9 @@
         </b-table>
         <hr>
         <b-pagination
-          v-if="ticketRequesterArray && ticketRequesterArray.length > this.perPage"
+          v-if="ticketRequesterArray && ticketRequesterArray.length > perPage"
           v-model="current"
-          :total="this.ticketRequesterArray.length"
+          :total="ticketRequesterArray.length"
           :range-before="rangeBefore"
           :range-after="rangeAfter"
           :simple="isSimple"
@@ -130,6 +130,13 @@ export default {
       events: []
     }
   },
+  computed: {
+    tickets: {
+      get () {
+        return this.$store.state.tickets
+      }
+    }
+  },
   watch: {
     date: {
       handler (val) {
@@ -159,13 +166,6 @@ export default {
       handler (val) {
         const position = this.perPage * (val - 1)
         this.displayTicketRequesters = this.ticketRequesterArray.slice(position, position + this.perPage)
-      }
-    }
-  },
-  computed: {
-    tickets: {
-      get () {
-        return this.$store.state.tickets
       }
     }
   },

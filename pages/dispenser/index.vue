@@ -119,14 +119,15 @@ export default {
       showConfirmPayModal: false,
       isApplied: false,
       waitTransactionComplete: false,
+      balance: null,
       isDemo: false
     }
   },
   head () {
     return {
-      title: 'Tickets onFlow | Tickets Setup',
+      title: 'Chain Work Tickets | Tickets Setup',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, social network, チケット設定' }
+        { hid: 'keywords', name: 'keywords', content: 'Chain Work, Tickets, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' }
       ]
     }
   },
@@ -246,7 +247,7 @@ export default {
       let toast1 = null
       let toast2 = null
       try {
-        const description = 'Fow Tickets'
+        const description = 'For Tickets'
         let domain = null
         this.$buefy.dialog.prompt({
           message: this.$t('ticket_text39'),
@@ -285,51 +286,59 @@ export default {
                 const loadingComponent = this.$buefy.loading.open({
                   container: null
                 })
-                setTimeout(() => loadingComponent.close(), 1000)
 
-                this.$buefy.snackbar.open({
-                  duration: 120000, // 2 minutes
-                  message: this.$t('operation_text30') + ` <a href="https://flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
-                  type: 'is-danger',
-                  position: 'is-bottom-left',
-                  actionText: null,
-                  queue: false,
-                  onAction: () => {
-                  }
-                })
+                // 残高確認
+                await this.getFlowBalance()
+                if (!this.balance || this.balance < 0.3) {
+                  loadingComponent.close()
+                  this.noticeTitle = this.$t('operation_text137') + ' ( Balance: ' + this.balance + 'FLOW )'
+                } else {
+                  setTimeout(() => loadingComponent.close(), 1000)
 
-                const transactionId = await this.$fcl.send(
-                  [
-                    this.$fcl.transaction(FlowTransactions.requestDispenser),
-                    this.$fcl.args([
-                      this.$fcl.arg(domain, this.$fclArgType.String),
-                      this.$fcl.arg(description, this.$fclArgType.String),
-                      this.$fcl.arg(0.3, this.$fclArgType.UFix64)
-                    ]),
-                    this.$fcl.payer(this.$fcl.authz),
-                    this.$fcl.proposer(this.$fcl.authz),
-                    this.$fcl.authorizations([this.$fcl.authz]),
-                    this.$fcl.limit(9999)
-                  ]
-                ).then(this.$fcl.decode)
-                toast2 = this.$buefy.toast.open({
-                  indefinite: true,
-                  message: this.$t('operation_text34')
-                })
-                this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
-                this.noticeTitle = this.$t('ticket_text48')
-                this.waitTransactionComplete = true
-                this.isApplied = true
+                  this.$buefy.snackbar.open({
+                    duration: 120000, // 2 minutes
+                    message: this.$t('operation_text30') + ` <a href="https://flowscan.org/account/${this.bloctoWalletUser?.addr}" target="_blank">${this.$t('operation_text31')}</a>`,
+                    type: 'is-danger',
+                    position: 'is-bottom-left',
+                    actionText: null,
+                    queue: false,
+                    onAction: () => {
+                    }
+                  })
 
-                const timerID = setInterval(async () => {
-                  const done = await this.hasTicketDispenserVault()
-                  if (done) {
-                    this.noticeTitle = this.$t('ticket_text49')
-                    this.waitTransactionComplete = false
-                    toast2.close()
-                    clearInterval(timerID)
-                  }
-                }, 4000)
+                  const transactionId = await this.$fcl.send(
+                    [
+                      this.$fcl.transaction(FlowTransactions.requestDispenser),
+                      this.$fcl.args([
+                        this.$fcl.arg(domain, this.$fclArgType.String),
+                        this.$fcl.arg(description, this.$fclArgType.String),
+                        this.$fcl.arg(0.3, this.$fclArgType.UFix64)
+                      ]),
+                      this.$fcl.payer(this.$fcl.authz),
+                      this.$fcl.proposer(this.$fcl.authz),
+                      this.$fcl.authorizations([this.$fcl.authz]),
+                      this.$fcl.limit(9999)
+                    ]
+                  ).then(this.$fcl.decode)
+                  toast2 = this.$buefy.toast.open({
+                    indefinite: true,
+                    message: this.$t('operation_text34')
+                  })
+                  this.transactionScanUrl = `https://flowscan.org/transaction/${transactionId}`
+                  this.noticeTitle = this.$t('ticket_text48')
+                  this.waitTransactionComplete = true
+                  this.isApplied = true
+
+                  const timerID = setInterval(async () => {
+                    const done = await this.hasTicketDispenserVault()
+                    if (done) {
+                      this.noticeTitle = this.$t('ticket_text49')
+                      this.waitTransactionComplete = false
+                      toast2.close()
+                      clearInterval(timerID)
+                    }
+                  }, 4000)
+                }
               },
               onCancel: () => {
                 toast1?.close()
@@ -454,6 +463,22 @@ export default {
           this.showInputModal = true
         }
       })
+    },
+    async getFlowBalance () {
+      try {
+        const balance = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getBalance),
+            this.$fcl.args([
+              this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        if (balance !== null) {
+          this.balance = parseFloat(balance)
+        }
+      } catch (e) {
+      }
     },
     async closeInputModal () {
       this.showInputModal = false

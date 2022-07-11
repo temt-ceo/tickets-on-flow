@@ -155,16 +155,16 @@ pub fun main(address: Address, idList: [UInt32]): {UInt32: {UInt32: Tickets.Requ
 }
   `,
   hasStatsVault: `
-import TicketStatsV13 from 0xT
-pub fun main(address: Address): &TicketStatsV13.StatsPublic? {
+import StatsString from 0xT
+pub fun main(address: Address): &StatsString.StatsPublic? {
     let account = getAccount(address)
-    return account.getCapability<&TicketStatsV13.StatsPublic>(TicketStatsV13.StatsVaultPublicPath).borrow()
+    return account.getCapability<&StatsString.StatsPublic>(StatsString.StatsVaultPublicPath).borrow()
 }
   `,
   getStats: `
-import TicketStatsV13 from 0xT
-pub fun main(): {Address: [TicketStatsV13.StatsStruct]} {
-    return TicketStatsV13.stats
+import StatsString from 0xT
+pub fun main(): {Address: [StatsString.StatsStruct]} {
+    return StatsString.stats
 }
   `,
   isSetRefundVault: `

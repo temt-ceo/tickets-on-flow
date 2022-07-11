@@ -121,9 +121,9 @@ export default {
   },
   head () {
     return {
-      title: 'Tickets onFlow | 管理者',
+      title: 'Chain Work Tickets | 管理者',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, crowdfunding, work, social network, 管理者' }
+        { hid: 'keywords', name: 'keywords', content: 'Chain Work, Tickets, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' }
       ]
     }
   },
