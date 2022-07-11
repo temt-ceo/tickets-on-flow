@@ -87,10 +87,6 @@ export default {
           pre: this.$t('special_additional2_input2_pre') + ': ',
           post: '(%)'
         },
-        'QQQ3.MI/3': {
-          pre: this.$t('special_additional2_input3_pre') + ': ',
-          post: '(%)'
-        },
         'NQ=F': {
           pre: this.$t('special_additional2_input4_pre') + ': ',
           post: '(%)'

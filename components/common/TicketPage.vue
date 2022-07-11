@@ -894,16 +894,76 @@ export default {
             this.code = this.additionalDescription[results[0]].pre
             this.code += '\r\n' + results[1]
             this.code += this.additionalDescription[results[0]].post
-            if (results.length >= 4 && this.additionalDescription[results[2]]) {
-              this.code += '\r\n' + this.additionalDescription[results[2]].pre
-              this.code += results[3]
-              this.code += this.additionalDescription[results[2]].post
-            }
-            if (results.length >= 6 && this.additionalDescription[results[4]]) {
-              this.code += '\r\n' + this.additionalDescription[results[4]].pre
-              this.code += results[5]
-              this.code += this.additionalDescription[results[4]].post
-            }
+          }
+          if (results.length >= 4 && this.additionalDescription[results[2]]) {
+            this.code += '\r\n' + this.additionalDescription[results[2]].pre
+            this.code += results[3]
+            this.code += this.additionalDescription[results[2]].post
+          }
+          if (results.length >= 6 && this.additionalDescription[results[4]]) {
+            this.code += '\r\n' + this.additionalDescription[results[4]].pre
+            this.code += results[5]
+            this.code += this.additionalDescription[results[4]].post
+          }
+          if (results.length >= 8 && this.additionalDescription[results[6]]) {
+            this.code += '\r\n' + this.additionalDescription[results[6]].pre
+            this.code += results[7]
+            this.code += this.additionalDescription[results[6]].post
+          }
+          if (results.length >= 10 && this.additionalDescription[results[8]]) {
+            this.code += '\r\n' + this.additionalDescription[results[8]].pre
+            this.code += results[9]
+            this.code += this.additionalDescription[results[8]].post
+          }
+          if (results.length >= 12 && this.additionalDescription[results[10]]) {
+            this.code += '\r\n' + this.additionalDescription[results[10]].pre
+            this.code += results[11]
+            this.code += this.additionalDescription[results[10]].post
+          }
+          if (results.length >= 14 && this.additionalDescription[results[12]]) {
+            this.code += '\r\n' + this.additionalDescription[results[12]].pre
+            this.code += results[13]
+            this.code += this.additionalDescription[results[12]].post
+          }
+          if (results.length >= 16 && this.additionalDescription[results[14]]) {
+            this.code += '\r\n' + this.additionalDescription[results[14]].pre
+            this.code += results[15]
+            this.code += this.additionalDescription[results[14]].post
+          }
+          if (results.length >= 18 && this.additionalDescription[results[16]]) {
+            this.code += '\r\n' + this.additionalDescription[results[16]].pre
+            this.code += results[17]
+            this.code += this.additionalDescription[results[16]].post
+          }
+          if (results.length >= 20 && this.additionalDescription[results[18]]) {
+            this.code += '\r\n' + this.additionalDescription[results[18]].pre
+            this.code += results[19]
+            this.code += this.additionalDescription[results[18]].post
+          }
+          if (results.length >= 22 && this.additionalDescription[results[20]]) {
+            this.code += '\r\n' + this.additionalDescription[results[20]].pre
+            this.code += results[21]
+            this.code += this.additionalDescription[results[20]].post
+          }
+          if (results.length >= 24 && this.additionalDescription[results[22]]) {
+            this.code += '\r\n' + this.additionalDescription[results[22]].pre
+            this.code += results[23]
+            this.code += this.additionalDescription[results[22]].post
+          }
+          if (results.length >= 26 && this.additionalDescription[results[24]]) {
+            this.code += '\r\n' + this.additionalDescription[results[24]].pre
+            this.code += results[25]
+            this.code += this.additionalDescription[results[24]].post
+          }
+          if (results.length >= 28 && this.additionalDescription[results[26]]) {
+            this.code += '\r\n' + this.additionalDescription[results[26]].pre
+            this.code += results[27]
+            this.code += this.additionalDescription[results[26]].post
+          }
+          if (results.length >= 30 && this.additionalDescription[results[28]]) {
+            this.code += '\r\n' + this.additionalDescription[results[28]].pre
+            this.code += results[29]
+            this.code += this.additionalDescription[results[28]].post
           }
         }
       }
