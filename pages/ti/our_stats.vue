@@ -321,7 +321,7 @@
           </b-field>
           <b-field v-if="itemCount >= 5">
             <b-input
-              v-model="statItem4"
+              v-model="statItem5"
               maxlength="60"
               :placeholder="$t('operation_text60') + '5.'"
               rounded
