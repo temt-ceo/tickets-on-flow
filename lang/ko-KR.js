@@ -449,7 +449,7 @@ export default {
   special_additional2_description2: '입력값 7~12',
   special_additional2_description3: '입력값 13~16',
   special_title3: '다국어 지원',
-  special_description3: '귀하의 웹사이트를 다국어로 만들어 드립니다. 귀하의 웹사이트는 URL을 변경하지 않고도 전 세계에서 볼 수 있습니다.',
+  special_description3: '귀하의 웹사이트는 URL을 변경하지 않고도 전 세계에서 볼 수 있습니다.',
   special_subtitle3: '티켓 또는 크라우드 펀딩 웹 페이지에 대한 다국어 지원을 제공합니다. 상세 화면의 개요도 다국어 지원합니다. 비용은 처음 5$FLOW, 최대 20$FLOW입니다. 작업이 일주일 이내에 완료되는 한 첫 번째 비용은 5$FLOW를 넘지 않습니다. 자세한 내용은 Twitter(@_official_asp), Discord 채널 또는 Telegram 앱 채널로 문의해 주세요.',
   special_title4: '자세한 이벤트 정보 생성',
   special_description4: 'HTML에서 자세한 이벤트 콘텐츠를 만들어 웹 페이지에 자세한 정보를 제공합니다.',

@@ -449,7 +449,7 @@ export default {
   special_additional2_description2: '输入值7~12',
   special_additional2_description3: '输入值13~16',
   special_title3: '多语言支持',
-  special_description3: '我们将使你的网站成为多语种的。你的网站将在全球范围内可见，而无需改变其URL。',
+  special_description3: '你的网站将在全球范围内可见，而无需改变其URL。',
   special_subtitle3: '我们将为您的票据或众筹网页提供多语言支持。我们还将为详细屏幕的概述提供多语言支持。第一次的费用为5$FLOW，最高为20$FLOW。只要在一周内完成工作，第一次的费用不会超过5$FLOW。欲了解更多信息，请在Twitter（@_official_asp）、我们的Discord频道或我们的Telegram应用程序频道与我们联系。',
   special_title4: '创建详细的事件信息',
   special_description4: '我们从HTML中创建详细的事件内容，用详细的信息丰富你的网页。',

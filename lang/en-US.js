@@ -449,7 +449,7 @@ export default {
   special_additional2_description2: 'Input value 7~12',
   special_additional2_description3: 'Input value 13~16',
   special_title3: 'Multilingual Support',
-  special_description3: 'We will make your website multilingual. Your website will be visible worldwide without changing its URL.',
+  special_description3: 'Your website will be visible worldwide without changing its URL.',
   special_subtitle3: 'We will provide multilingual support for your ticket or crowdfunding web page. We will also provide multilingual support for the overview of the detail screen. The cost is 5$FLOW for the first time and 20$FLOW for the maximum. The first time will not cost more than 5$FLOW as long as the work is done within a week. For more information, please contact us on Twitter (@_official_asp), our Discord channel, or our Telegram app channel.',
   special_title4: 'Create detailed event information',
   special_description4: 'We create detailed event content from HTML, enriching your web page with detailed information. ',

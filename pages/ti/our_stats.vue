@@ -443,6 +443,7 @@ export default {
               return obj.nickname === obj.nickname.replace(/\|\|link\|\|$/, '')
             }
           })
+          this.registeredPolls = this.registeredPolls.reverse()
           this.selectedPole = this.registeredPolls[0].time
         }
       }
@@ -522,6 +523,7 @@ export default {
               this.registeredContributors.push(data[data.length - 1].nickname.replace(/\|\|link\|\|$/, ''))
             }
           })
+          this.registeredContributors = this.registeredContributors.reverse()
           this.selectedContributor = this.registeredContributors[0]
           this.showModal = true
         } else {
@@ -560,6 +562,7 @@ export default {
               this.registeredContributors.push(arr[arr.length - 1].nickname.replace(/\|\|link\|\|$/, ''))
               this.linkedURLOnly = true
             }
+            this.registeredContributors = this.registeredContributors.reverse()
             this.selectedContributor = this.registeredContributors[0]
             this.showModal = true
           }
