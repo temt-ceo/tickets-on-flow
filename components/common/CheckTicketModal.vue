@@ -2,9 +2,9 @@
   <div class="modal-card ticket-detail">
     <section class="modal-card-body">
       <div class="text-wrap text-title">
-        <span v-if="parseInt(ticket.type) == 0">{{ $t('ticket_text14') }}</span>
+        <span v-if="parseInt(ticket.type) == 0" style="padding-right: 35px; font-size: 16px;">{{ $t('ticket_text14') }}</span>
         <span v-if="parseInt(ticket.type) == 1">{{ $t('ticket_text52') }}</span>
-        <span v-if="additionalDescription && additionalDescription.info === true" style="position: absolute; right: 25px; color: magenta;" @click="isCardModalActive = true">
+        <span v-if="additionalDescription && additionalDescription.info === true" style="position: absolute; right: 20px; color: magenta;" @click="isCardModalActive = true">
           <b-icon
             pack="fa-solid"
             icon="circle-info"
@@ -145,7 +145,31 @@
                 {{ additionalDescription.infoDetail.title }}
               </p>
               <p class="subtitle is-6">
-                {{ additionalDescription.infoDetail.subtitle }}
+                {{ subTitleText0 }}
+              </p>
+              <p v-if="subTitleText1" class="subtitle is-6">
+                {{ subTitleText1 }}
+              </p>
+              <p v-if="subTitleText2" class="subtitle is-6">
+                {{ subTitleText2 }}
+              </p>
+              <p v-if="subTitleText3" class="subtitle is-6">
+                {{ subTitleText3 }}
+              </p>
+              <p v-if="subTitleText4" class="subtitle is-6">
+                {{ subTitleText4 }}
+              </p>
+              <p v-if="subTitleText5" class="subtitle is-6">
+                {{ subTitleText5 }}
+              </p>
+              <p v-if="subTitleText6" class="subtitle is-6">
+                {{ subTitleText6 }}
+              </p>
+              <p v-if="subTitleText7" class="subtitle is-6">
+                {{ subTitleText7 }}
+              </p>
+              <p v-if="subTitleText8" class="subtitle is-6">
+                {{ subTitleText8 }}
               </p>
             </div>
           </div>
@@ -627,7 +651,16 @@ export default {
       isOpenCollapseFirst: false,
       isOpenCollapseSecond: false,
       isOpenCollapseThird: false,
-      isOpenCollapseFourth: false
+      isOpenCollapseFourth: false,
+      subTitleText0: null,
+      subTitleText1: null,
+      subTitleText2: null,
+      subTitleText3: null,
+      subTitleText4: null,
+      subTitleText5: null,
+      subTitleText6: null,
+      subTitleText7: null,
+      subTitleText8: null
     }
   },
   watch: {
@@ -718,6 +751,47 @@ export default {
     }
   },
   mounted () {
+    if (this.additionalDescription && this.additionalDescription.infoDetail && this.additionalDescription.infoDetail.subtitle && this.additionalDescription.infoDetail.subtitle.length) {
+      const texts = this.additionalDescription.infoDetail.subtitle.split('\r\n')
+      if (texts.length >= 2) {
+        for (let i = 0; i < texts.length; i++) {
+          switch (i) {
+            case 0:
+              this.subTitleText0 = texts[i]
+              break
+            case 1:
+              this.subTitleText1 = texts[i]
+              break
+            case 2:
+              this.subTitleText2 = texts[i]
+              break
+            case 3:
+              this.subTitleText3 = texts[i]
+              break
+            case 4:
+              this.subTitleText4 = texts[i]
+              break
+            case 5:
+              this.subTitleText5 = texts[i]
+              break
+            case 6:
+              this.subTitleText6 = texts[i]
+              break
+            case 7:
+              this.subTitleText7 = texts[i]
+              break
+            default:
+              if (this.subTitleText8 === null) {
+                this.subTitleText8 = ''
+              }
+              this.subTitleText8 = this.subTitleText8 + texts[i]
+          }
+        }
+      } else {
+        this.subTitleText0 = this.additionalDescription.infoDetail.subtitle
+      }
+    }
+
     const ticket = {}
     const ticketName = this.ticket.name.split('||@')
     ticket.ticketName = this.ticketTitle || ticketName[0] // 多言語対応
