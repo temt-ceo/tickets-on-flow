@@ -145,7 +145,7 @@ export default {
   ticket_text23: 'チケットを申し込む',
   ticket_text24: 'リクエスト状況の確認',
   ticket_text25: 'チケットの登録はまだ完了していません。少しお待ちください。',
-  ticket_text26: 'トップページに戻る',
+  ticket_text26: 'TOPに戻る',
   ticket_text27: 'チケットの受け取りが完了しました。今すぐチケットを利用できます。',
   ticket_text28: '約10秒かかります。',
   ticket_text29: 'Confirm Transactionをクリックし、SEALEDであることが確認された後。',

@@ -153,7 +153,7 @@
               </p>
             </div>
           </div>
-          <b-button type="is-primary" class="custom-btn btn-11" @click="backToTop">TOPに戻る</b-button>
+          <b-button type="is-primary" class="custom-btn btn-11" @click="backToTop">{{ $t('ticket_text26') }}</b-button>
         </div>
       </div>
     </section><!-- #about -->
@@ -1423,7 +1423,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .custom-btn {
-  width: 130px;
+  min-width: 130px;
   height: 40px;
   color: #fff;
   border-radius: 5px;
