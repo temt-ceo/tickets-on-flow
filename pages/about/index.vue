@@ -185,7 +185,9 @@
                 </div>
               </div>
             </div>
-            <b-button type="is-primary" class="custom-btn btn-11" @click="backToTop">{{ $t('ticket_text26') }}</b-button>
+            <b-button type="is-primary" class="custom-btn btn-11" @click="backToTop">
+              {{ $t('ticket_text26') }}
+            </b-button>
           </div>
         </div>
       </div>

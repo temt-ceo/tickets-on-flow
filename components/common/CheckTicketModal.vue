@@ -582,10 +582,26 @@
                 </b-tab-item>
               </b-tabs>
             </b-collapse>
-            <p class="link_frame">
-              <h5>{{ additionalDescription.infoDetail.linkTitle }}</h5>
-              <a :href="additionalDescription.infoDetail.linkUrl" target="_blank">{{ additionalDescription.infoDetail.linkUrl }}</a>
-            </p>
+            <hr>
+            <div v-if="linkTitle0" class="link_frame">
+              <h5>{{ linkTitle0 }}</h5>
+              <a :href="linkUrl0" target="_blank" style="overflow-wrap: anywhere;">{{ linkUrl0 }}</a>
+            </div>
+            <hr v-if="linkTitle1">
+            <div v-if="linkTitle1" class="link_frame">
+              <h5>{{ linkTitle1 }}</h5>
+              <a :href="linkUrl1" target="_blank" style="overflow-wrap: anywhere;">{{ linkUrl1 }}</a>
+            </div>
+            <hr v-if="linkTitle2">
+            <div v-if="linkTitle2" class="link_frame">
+              <h5>{{ linkTitle2 }}</h5>
+              <a :href="linkUrl2" target="_blank" style="overflow-wrap: anywhere;">{{ linkUrl2 }}</a>
+            </div>
+            <hr v-if="linkTitle3">
+            <div v-if="linkTitle3" class="link_frame">
+              <h5>{{ linkTitle3 }}</h5>
+              <a :href="linkUrl3" target="_blank" style="overflow-wrap: anywhere;">{{ linkUrl3 }}</a>
+            </div>
           </div>
         </div>
       </div>
@@ -660,7 +676,15 @@ export default {
       subTitleText5: null,
       subTitleText6: null,
       subTitleText7: null,
-      subTitleText8: null
+      subTitleText8: null,
+      linkTitle0: null,
+      linkUrl0: null,
+      linkTitle1: null,
+      linkUrl1: null,
+      linkTitle2: null,
+      linkUrl2: null,
+      linkTitle3: null,
+      linkUrl3: null
     }
   },
   watch: {
@@ -789,6 +813,35 @@ export default {
         }
       } else {
         this.subTitleText0 = this.additionalDescription.infoDetail.subtitle
+      }
+    }
+    if (this.additionalDescription && this.additionalDescription.infoDetail && this.additionalDescription.infoDetail.linkTitle && this.additionalDescription.infoDetail.linkTitle.length) {
+      const linkTitles = this.additionalDescription.infoDetail.linkTitle.split('\r\n')
+      const linkUrls = this.additionalDescription.infoDetail.linkUrl.split('\r\n')
+      if (linkTitles.length >= 2 && linkTitles.length === linkUrls.length) {
+        for (let i = 0; i < linkTitles.length; i++) {
+          switch (i) {
+            case 0:
+              this.linkTitle0 = linkTitles[i]
+              this.linkUrl0 = linkUrls[i]
+              break
+            case 1:
+              this.linkTitle1 = linkTitles[i]
+              this.linkUrl1 = linkUrls[i]
+              break
+            case 2:
+              this.linkTitle2 = linkTitles[i]
+              this.linkUrl2 = linkUrls[i]
+              break
+            case 3:
+              this.linkTitle3 = linkTitles[i]
+              this.linkUrl3 = linkUrls[i]
+              break
+          }
+        }
+      } else {
+        this.linkTitle0 = this.additionalDescription.infoDetail.linkTitle
+        this.linkUrl0 = this.additionalDescription.infoDetail.linkUrl
       }
     }
 
