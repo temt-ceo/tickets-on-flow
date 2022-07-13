@@ -358,7 +358,7 @@ export default {
   operation_text136: 'Beta version is now available on the main net.',
   operation_text137: 'The $FLOW balance appears to be insufficient.',
   operation_text138: 'After transaction processing is complete, please tap the Request Event Secret Code button.',
-  operation_text139: '',
+  operation_text139: 'The app has been officially released.(Press Release)',
   operation_text140: '',
   operation_text141: '',
   operation_text142: '',

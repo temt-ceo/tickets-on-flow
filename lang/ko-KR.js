@@ -358,7 +358,7 @@ export default {
   operation_text136: '베타 버전은 이제 메인넷에서 사용할 수 있습니다.',
   operation_text137: '$FLOW 잔액이 부족한 것 같습니다.',
   operation_text138: '거래 처리가 완료된 후 이벤트 비밀번호 요청 버튼을 눌러주세요.',
-  operation_text139: '',
+  operation_text139: '앱이 정식 출시되었습니다.(보도자료)',
   operation_text140: '',
   operation_text141: '',
   operation_text142: '',

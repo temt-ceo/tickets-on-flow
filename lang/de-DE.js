@@ -358,7 +358,7 @@ export default {
   operation_text136: 'Die Beta-Version ist jetzt im Hauptnetz verfügbar.',
   operation_text137: 'Der $FLOW-Saldo scheint nicht ausreichend zu sein.',
   operation_text138: 'Nachdem die Transaktion abgeschlossen ist, tippen Sie bitte auf die Schaltfläche Geheimcode für Veranstaltung anfordern.',
-  operation_text139: '',
+  operation_text139: 'Die App wurde offiziell veröffentlicht.(Pressemitteilung)',
   operation_text140: '',
   operation_text141: '',
   operation_text142: '',

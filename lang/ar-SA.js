@@ -358,7 +358,7 @@ export default {
   operation_text136: 'الإصدار التجريبي متاح الآن على الشبكة الرئيسية.',
   operation_text137: 'يبدو أن رصيد $ FLOW غير كافٍ.',
   operation_text138: 'بعد اكتمال معالجة المعاملة ، يرجى النقر فوق الزر "طلب الرمز السري للحدث".',
-  operation_text139: '',
+  operation_text139: 'تم إطلاق التطبيق رسميًا (بيان صحفي)',
   operation_text140: '',
   operation_text141: '',
   operation_text142: '',

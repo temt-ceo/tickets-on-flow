@@ -358,7 +358,7 @@ export default {
   operation_text136: '测试版现在可以在主网上使用。',
   operation_text137: '$FLOW的余额似乎不足。',
   operation_text138: '在交易处理完成后，请点击申请活动密码按钮。',
-  operation_text139: '',
+  operation_text139: '该应用程序已正式发布。（新闻稿）',
   operation_text140: '',
   operation_text141: '',
   operation_text142: '',

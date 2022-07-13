@@ -69,8 +69,25 @@
         </header>
 
         <div class="row portfolio-container">
-          <div class="col-lg-4 col-md-6 portfolio-item filter-app wow fadeInUp">
-            <div class="portfolio-wrap" style="max-width: 350px;">
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app wow fadeInUp" style="background-color: black; padding-top: 5px; margin: 15px 0;">
+            <div class="portfolio-wrap" style="max-width: 350px; margin: 0 auto;">
+              <figure>
+                <img src="/img/news-2.png" class="img-fluid" alt="">
+                <a href="https://prtimes.jp/main/html/rd/p/000000001.000104644.html" target="_blank" class="link-details" title="More Details">
+                  <i class="fa-solid fa-arrow-up-right-from-square" />
+                </a>
+              </figure>
+
+              <div class="portfolio-info" style="padding: 12px 30px 20px; height: 110px;">
+                <p>2022-07-13</p>
+                <h4 style="line-height: inherit;">
+                  {{ $t('operation_text139') }}
+                </h4>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app wow fadeInUp" style="background-color: black; padding-top: 5px; margin: 15px 0;">
+            <div class="portfolio-wrap" style="max-width: 350px; margin: 0 auto;">
               <figure>
                 <img src="/img/news-1.png" class="img-fluid" alt="">
                 <a href="https://flow-view-source.com/mainnet/account/0x24466f7fc36e3388/contract/Tickets" target="_blank" class="link-details" title="More Details">
@@ -88,8 +105,8 @@
           </div>
 
         <!--
-          <div class="col-lg-4 col-md-6 portfolio-item filter-app wow fadeInUp">
-            <div class="portfolio-wrap" style="max-width: 350px;">
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app wow fadeInUp" style="background-color: black; padding-top: 5px; margin: 15px 0;">
+            <div class="portfolio-wrap" style="max-width: 350px; margin: 0 auto;">
               <figure>
                 <img src="/img/news-1.png" class="img-fluid" alt="">
                 <a href="https://flow-view-source.com/mainnet/account/0x24466f7fc36e3388/contract/Tickets" target="_blank" class="link-details" title="More Details"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
@@ -225,7 +242,7 @@
 
       <div class="container">
         <div class="copyright">
-          &copy; Copyright <a href="https://tokyo-em-technology.org/">Tokyo EM Technology & Co.</a><br> All Rights Reserved
+          &copy; Copyright <a href="https://tokyo-em-technology.org/" target="_blank">Tokyo EM Technology & Co.</a><br> All Rights Reserved
         </div>
       </div>
     </footer><!-- #footer -->

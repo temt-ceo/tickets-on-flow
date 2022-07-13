@@ -358,7 +358,7 @@ export default {
   operation_text136: 'La versión beta ya está disponible en la red principal.',
   operation_text137: 'El saldo de $FLOW parece ser insuficiente.',
   operation_text138: 'Una vez finalizado el procesamiento de la transacción, pulse el botón Solicitar código secreto del evento.',
-  operation_text139: '',
+  operation_text139: 'La aplicación ha sido lanzada oficialmente.(Comunicado de prensa)',
   operation_text140: '',
   operation_text141: '',
   operation_text142: '',

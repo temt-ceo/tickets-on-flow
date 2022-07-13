@@ -358,7 +358,7 @@ export default {
   operation_text136: 'メインネットでベータ版を公開しました。',
   operation_text137: 'FLOWの残高が不足しているようです。',
   operation_text138: 'トランザクション処理が完了したら、「イベント用シークレットコードを発行」ボタンをタップしてください。',
-  operation_text139: '',
+  operation_text139: 'アプリを正式リリースしました（プレスリリース）',
   operation_text140: '',
   operation_text141: '',
   operation_text142: '',

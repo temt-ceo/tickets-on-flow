@@ -166,7 +166,7 @@
     <footer id="footer">
       <div class="container">
         <div class="copyright">
-          &copy; Copyright <a href="https://tokyo-em-technology.org/">Tokyo EM Technology & Co.</a><br> All Rights Reserved
+          &copy; Copyright <a href="https://tokyo-em-technology.org/" target="_blank">Tokyo EM Technology & Co.</a><br> All Rights Reserved
         </div>
       </div>
     </footer><!-- #footer -->
