@@ -508,6 +508,7 @@ export default {
           ).then(this.$fcl.decode)
           if (stats[this.bloctoWalletUser.addr] && stats[this.bloctoWalletUser.addr].length > 0) {
             this.registeredPolls = stats[this.bloctoWalletUser.addr]
+            this.registeredPolls = this.registeredPolls.reverse()
             this.selectedPole = this.registeredPolls[0].time
             this.showEditModal = true
           } else {
