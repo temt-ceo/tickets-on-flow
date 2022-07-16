@@ -27,7 +27,7 @@
         <b-dropdown
           aria-role="list"
           class="is-pulled-right telegram"
-          position="is-bottom-left"
+          position="is-bottom-right"
         >
           <template #trigger>
             <b-icon
@@ -1062,6 +1062,12 @@ export default {
 
   .navbar-burger {
     margin-top: 5px;
+  }
+
+  .telegram.is-bottom-right {
+    .dropdown-menu {
+      right: inherit;
+    }
   }
 
   .dropdown-menu {
