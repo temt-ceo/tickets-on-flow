@@ -433,8 +433,9 @@
 
     <b-modal v-model="isI18nActive" :width="640" scroll="keep">
       <div class="card">
-        <b-field>
+        <b-field class="i18n-radio">
           <b-radio-button
+            v-if="i18nPageCurrent === 1"
             v-model="i18nRadioButton"
             native-value="en"
             type="is-success"
@@ -443,6 +444,7 @@
           </b-radio-button>
 
           <b-radio-button
+            v-if="i18nPageCurrent === 1"
             v-model="i18nRadioButton"
             native-value="es"
             type="is-success"
@@ -451,6 +453,7 @@
           </b-radio-button>
 
           <b-radio-button
+            v-if="i18nPageCurrent === 1"
             v-model="i18nRadioButton"
             native-value="fr"
             type="is-success"
@@ -459,6 +462,7 @@
           </b-radio-button>
 
           <b-radio-button
+            v-if="i18nPageCurrent === 1"
             v-model="i18nRadioButton"
             native-value="zh"
             type="is-success"
@@ -467,6 +471,7 @@
           </b-radio-button>
 
           <b-radio-button
+            v-if="i18nPageCurrent === 1"
             v-model="i18nRadioButton"
             native-value="ar"
             type="is-success"
@@ -475,6 +480,7 @@
           </b-radio-button>
 
           <b-radio-button
+            v-if="i18nPageCurrent === 1"
             v-model="i18nRadioButton"
             native-value="pt"
             type="is-success"
@@ -483,6 +489,7 @@
           </b-radio-button>
 
           <b-radio-button
+            v-if="i18nPageCurrent === 1"
             v-model="i18nRadioButton"
             native-value="ja"
             type="is-success"
@@ -491,6 +498,7 @@
           </b-radio-button>
 
           <b-radio-button
+            v-if="i18nPageCurrent === 1"
             v-model="i18nRadioButton"
             native-value="de"
             type="is-success"
@@ -499,13 +507,112 @@
           </b-radio-button>
 
           <b-radio-button
+            v-if="i18nPageCurrent === 1"
+            v-model="i18nRadioButton"
+            native-value="uk"
+            type="is-success"
+          >
+            <span class="fi fi-ua" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-if="i18nPageCurrent === 2"
+            v-model="i18nRadioButton"
+            native-value="ru"
+            type="is-success"
+          >
+            <span class="fi fi-ru" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-if="i18nPageCurrent === 2"
+            v-model="i18nRadioButton"
+            native-value="tr"
+            type="is-success"
+          >
+            <span class="fi fi-tr" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-if="i18nPageCurrent === 2"
+            v-model="i18nRadioButton"
+            native-value="bn"
+            type="is-success"
+          >
+            <span class="fi fi-bd" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-if="i18nPageCurrent === 2"
+            v-model="i18nRadioButton"
+            native-value="id"
+            type="is-success"
+          >
+            <span class="fi fi-id" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-if="i18nPageCurrent === 2"
+            v-model="i18nRadioButton"
+            native-value="it"
+            type="is-success"
+          >
+            <span class="fi fi-it" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-if="i18nPageCurrent === 2"
+            v-model="i18nRadioButton"
+            native-value="vi"
+            type="is-success"
+          >
+            <span class="fi fi-vn" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-if="i18nPageCurrent === 2"
             v-model="i18nRadioButton"
             native-value="ko"
             type="is-success"
           >
             <span class="fi fi-kr" />
           </b-radio-button>
+
+          <b-radio-button
+            v-if="i18nPageCurrent === 2"
+            v-model="i18nRadioButton"
+            native-value="nl"
+            type="is-success"
+          >
+            <span class="fi fi-nl" />
+          </b-radio-button>
+
+          <b-radio-button
+            v-if="i18nPageCurrent === 2"
+            v-model="i18nRadioButton"
+            native-value="sv"
+            type="is-success"
+          >
+            <span class="fi fi-se" />
+          </b-radio-button>
         </b-field>
+        <b-pagination
+          class="i18n-pagenation"
+          :total="18"
+          v-model="i18nPageCurrent"
+          :range-before="1"
+          :range-after="1"
+          :simple="false"
+          :rounded="false"
+          :per-page="9"
+          icon-prev="chevron-left"
+          icon-next="chevron-right"
+          aria-next-label="Next page"
+          aria-previous-label="Previous page"
+          aria-page-label="Page"
+          aria-current-label="Current page"
+          :page-input="false"
+        />
       </div>
     </b-modal>
 
@@ -643,7 +750,8 @@ export default {
       showProgress3value: false,
       showProgress4value: false,
       settingRefundLoading: false,
-      transactionScanUrl: ''
+      transactionScanUrl: '',
+      i18nPageCurrent: 1
     }
   },
   head () {
@@ -1683,6 +1791,32 @@ tr {
 
 .modal-close {
   top: 10px;
+}
+
+.i18n-radio {
+  .button {
+    background-color: #777;
+
+    &.is-success {
+      background-color: #48c78e;
+    }
+  }
+}
+
+.i18n-pagenation {
+  padding-bottom: 10px;
+
+  .pagination-previous,
+  .pagination-next {
+    flex-grow: revert;
+    -webkit-box-ordinal-group: 4;
+    -ms-flex-order: 3;
+    order: 3;
+  }
+
+  ul.pagination-list .pagination-link.is-current {
+    background-color: #485fc7;
+  }
 }
 
 @keyframes typing {

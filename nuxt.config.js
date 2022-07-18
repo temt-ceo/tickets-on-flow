@@ -79,6 +79,51 @@ export default {
         code: 'ko',
         iso: 'en-US',
         file: 'ko-KR.js'
+      },
+      {
+        code: 'uk',
+        iso: 'uk-UA',
+        file: 'uk-UA.js'
+      },
+      {
+        code: 'it',
+        iso: 'it-IT',
+        file: 'it-IT.js'
+      },
+      {
+        code: 'tr',
+        iso: 'tr-TR',
+        file: 'tr-TR.js'
+      },
+      {
+        code: 'bn',
+        iso: 'bn-BD',
+        file: 'bn-BD.js'
+      },
+      {
+        code: 'nl',
+        iso: 'nl-NL',
+        file: 'nl-NL.js'
+      },
+      {
+        code: 'vi',
+        iso: 'vi-VN',
+        file: 'vi-VN.js'
+      },
+      {
+        code: 'sv',
+        iso: 'sv-SE',
+        file: 'sv-SE.js'
+      },
+      {
+        code: 'id',
+        iso: 'in-ID',
+        file: 'in-ID.js'
+      },
+      {
+        code: 'ru',
+        iso: 'ru-RU',
+        file: 'ru-RU.js'
       }
     ],
     baseUrl: 'https://chain-work.com/',
