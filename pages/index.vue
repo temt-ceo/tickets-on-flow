@@ -1288,7 +1288,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  background-image: radial-gradient(rgb(65,105,225), #1b1c50);
+  background-image: radial-gradient(rgb(104, 141, 252), #1b1c50);
   background-size: cover;
   z-index: 2;
 }
@@ -1309,18 +1309,18 @@ export default {
   width: 100%;
   height: 50vh;
   background-color: #1c1c1c;
-  background-image: radial-gradient(rgb(65,105,225), #1b1c50);
+  background-image: radial-gradient(rgb(104, 141, 252), #1b1c50);
 }
 
 .anime-image {
   position: absolute;
-  width: 79%;
-  top: 50%;
+  width: 90%;
+  top: 48%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   margin: 0 auto;
   z-index: 5;
-  animation: fadeOut2 1.6s linear forwards;
+  animation: fadeOut2 2.1s linear forwards;
 }
 
 .step-center {
@@ -1388,7 +1388,7 @@ export default {
   8% {
     opacity: 1;
   }
-  80% {
+  99% {
     opacity: 0.7;
   }
   100% {
