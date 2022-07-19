@@ -220,7 +220,7 @@ export default {
   ticket_text98: '众筹是一个好的开始。票务服务是给他们一个秘密代码的好方法。在使用门票的那一刻，你可以在存款的同时把它交给他们；它不一定是一个Zoom邀请码，它可以是任何东西!',
   ticket_text99: '只有一个问题... MoonPay不只在日本支持，所以只有日本人必须从海外交易所购买FLOW代币来使用它们进行支付...',
   ticket_text100: '......&#128531;',
-  operation_text1: '例如：英语会话课',
+  operation_text1: '例如：乌克兰烹饪课程',
   operation_text2: '选择...',
   operation_text3: '例如：在这个票务网页上发送邀请码。',
   operation_text4: '搜索...',

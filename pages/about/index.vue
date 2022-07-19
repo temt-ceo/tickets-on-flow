@@ -1490,6 +1490,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   min-width: 130px;
   height: 40px;
   color: #fff;
+  font-size: 0.8rem;
   border-radius: 5px;
   padding: 10px 25px;
   font-family: 'Lato', sans-serif;
