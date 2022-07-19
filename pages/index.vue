@@ -179,7 +179,7 @@
       <i
         class="fa-solid fa-heart fa-beat"
         style="color: #feecf0; --fa-beat-scale: 0.9; --fa-animation-duration: 1.2s;"
-        @click="startTutorial"
+        @click="imageModal"
       />
       <i
         v-if="showTutorial === true"
@@ -432,6 +432,18 @@
         </section>
       </div>
     </b-modal>
+    <b-modal
+      v-model="isImageModalActive"
+    >
+      <div class="image">
+        <img :src="modalImageSrc" style="height: 100%;" />
+        <div style="max-width: 760px; margin: 0 auto; text-align: center;">
+          <button class="custom-btn btn-11" style="bottom: 50px;" @click="nextMange">
+            {{ $t('ticket_text45') }}
+          </button>
+        </div>
+      </div>
+    </b-modal>
   </section>
 </template>
 
@@ -509,7 +521,10 @@ export default {
         messageTypeMan: 'is-info is-light',
         messageTypeWoman: '',
         showArrow: false
-      }
+      },
+      isImageModalActive: false,
+      mangaCount: 0,
+      modalImageSrc: ''
     }
   },
   computed: {
@@ -563,8 +578,37 @@ export default {
     await this.getTickets()
     clearInterval(timerID)
     await this.getStats()
+
+    // preload Images
+    const h = this.$createElement
+    h('img', { attrs: { src: 'https://chain-work.com/image/manga_01.png' } })
+    h('img', { attrs: { src: 'https://chain-work.com/image/manga_02.png' } })
+    h('img', { attrs: { src: 'https://chain-work.com/image/manga_03.png' } })
+    h('img', { attrs: { src: 'https://chain-work.com/image/manga_04.png' } })
   },
   methods: {
+    imageModal () {
+      this.isImageModalActive = true
+      this.mangaCount = 0
+      this.modalImageSrc = 'https://chain-work.com/image/manga_01.png'
+    },
+    nextMange () {
+      this.mangaCount++
+      switch (this.mangaCount) {
+        case 1:
+          this.modalImageSrc = 'https://chain-work.com/image/manga_02.png'
+          break
+        case 2:
+          this.modalImageSrc = 'https://chain-work.com/image/manga_03.png'
+          break
+        case 3:
+          this.modalImageSrc = 'https://chain-work.com/image/manga_04.png'
+          break
+        default:
+          this.isImageModalActive = false
+          this.modalImageSrc = 'https://chain-work.com/image/manga_01.png'
+      }
+    },
     sliderFormatter (val) {
       return this.languageList[val] || 'en'
     },
@@ -1446,6 +1490,62 @@ export default {
   .section {
     padding: 0.6rem 0.3rem 0 2.5rem;
   }
+}
+
+.custom-btn {
+  min-width: 130px;
+  height: 40px;
+  color: #fff;
+  font-size: 0.8rem;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+}
+
+.btn-11 {
+  border: none;
+  background: rgb(251,33,117);
+  background: linear-gradient(0deg, rgba(251,33,117,1) 0%, rgba(234,76,137,1) 100%);
+  color: #fff;
+  overflow: hidden;
+}
+.btn-11:hover {
+    text-decoration: none;
+    color: #fff;
+}
+.btn-11:before {
+    position: absolute;
+    content: '';
+    display: inline-block;
+    top: -180px;
+    left: 0;
+    width: 30px;
+    height: 100%;
+    background-color: #fff;
+    animation: shiny-btn 10s ease-in-out infinite;
+}
+.btn-11:hover{
+  opacity: .7;
+}
+.btn-11:active{
+  box-shadow:  4px 4px 6px 0 rgba(255,255,255,.3), -4px -4px 6px 0 rgba(116, 125, 136, .2), inset -4px -4px 6px 0 rgba(255,255,255,.2), inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
+}
+
+@keyframes shiny-btn {
+    0% { -webkit-transform: scale(0) rotate(45deg); opacity: 0; }
+    90% { -webkit-transform: scale(0) rotate(45deg); opacity: 0.5; }
+    91% { -webkit-transform: scale(4) rotate(45deg); opacity: 1; }
+    100% { -webkit-transform: scale(50) rotate(45deg); opacity: 0; }
 }
 
 </style>
