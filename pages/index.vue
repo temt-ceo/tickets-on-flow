@@ -1374,7 +1374,7 @@ export default {
   }
   100% {
     transform: translateY(-150vh);
-    opacity: 0.4;
+    opacity: 0.2;
   }
 }
 
