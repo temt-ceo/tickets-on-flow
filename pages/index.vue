@@ -581,32 +581,32 @@ export default {
 
     // preload Images
     const h = this.$createElement
-    h('img', { attrs: { src: 'https://chain-work.com/image/manga_01.png' } })
-    h('img', { attrs: { src: 'https://chain-work.com/image/manga_02.png' } })
     h('img', { attrs: { src: 'https://chain-work.com/image/manga_03.png' } })
     h('img', { attrs: { src: 'https://chain-work.com/image/manga_04.png' } })
+    h('img', { attrs: { src: 'https://chain-work.com/image/manga_01.png' } })
+    h('img', { attrs: { src: 'https://chain-work.com/image/manga_02.png' } })
   },
   methods: {
     imageModal () {
       this.isImageModalActive = true
       this.mangaCount = 0
-      this.modalImageSrc = 'https://chain-work.com/image/manga_01.png'
+      this.modalImageSrc = 'https://chain-work.com/image/manga_03.png'
     },
     nextMange () {
       this.mangaCount++
       switch (this.mangaCount) {
         case 1:
-          this.modalImageSrc = 'https://chain-work.com/image/manga_02.png'
+          this.modalImageSrc = 'https://chain-work.com/image/manga_04.png'
           break
         case 2:
-          this.modalImageSrc = 'https://chain-work.com/image/manga_03.png'
+          this.modalImageSrc = 'https://chain-work.com/image/manga_01.png'
           break
         case 3:
-          this.modalImageSrc = 'https://chain-work.com/image/manga_04.png'
+          this.modalImageSrc = 'https://chain-work.com/image/manga_02.png'
           break
         default:
           this.isImageModalActive = false
-          this.modalImageSrc = 'https://chain-work.com/image/manga_01.png'
+          this.modalImageSrc = 'https://chain-work.com/image/manga_03.png'
       }
     },
     sliderFormatter (val) {
