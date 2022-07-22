@@ -175,16 +175,74 @@
       <i class="uil uil-location-arrow" />
     </div>
 
+    <b-dropdown
+      style="position: absolute; bottom: 62px; left: 8px;"
+      aria-role="list"
+      class="is-pulled-right telegram"
+      position="is-bottom-right"
+    >
+      <template #trigger>
+        <div class="fa-2x">
+          <i
+            class="fa-solid fa-tree fa-beat"
+            style="color: #48c78e; --fa-beat-scale: 0.9; --fa-animation-duration: 1.2s;"
+          />
+        </div>
+      </template>
+      <p class="green-explanation">
+        {{ $t('operation_text140') }}
+      </p>
+      <b-dropdown-item aria-role="listitem">
+        <a
+          :href="url.eco"
+          target="_blank"
+        >
+          Results of Deloitte Canada's Assessment Survey
+        </a>
+      </b-dropdown-item>
+      <b-dropdown-item aria-role="listitem">
+        <a
+          :href="url.twitter"
+          target="_blank"
+        >
+          Official Mini Video
+        </a>
+      </b-dropdown-item>
+      <hr>
+      <p class="green-explanation">
+        {{ $t('operation_text141') }}
+      </p>
+      <b-dropdown-item aria-role="listitem">
+        <a
+          :href="url.environment"
+          target="_blank"
+        >
+          {{ $t('operation_text142') }}
+        </a>
+      </b-dropdown-item>
+      <b-dropdown-item aria-role="listitem">
+        <a
+          :href="url.press"
+          target="_blank"
+        >
+          {{ $t('operation_text143') }}
+        </a>
+      </b-dropdown-item>
+      <b-dropdown-item aria-role="listitem">
+        <a
+          :href="url.press2"
+          target="_blank"
+        >
+          {{ $t('operation_text144') }}
+        </a>
+      </b-dropdown-item>
+    </b-dropdown>
+
     <div class="fa-2x" style="position: absolute; bottom: 16px; left: 4px;">
       <i
         class="fa-solid fa-heart fa-beat"
         style="color: #feecf0; --fa-beat-scale: 0.9; --fa-animation-duration: 1.2s;"
         @click="imageModal"
-      />
-      <i
-        v-if="showTutorial === true"
-        class="uil uil-skip-forward turorial-next"
-        @click="forwardTutorial"
       />
     </div>
     <div v-if="!returnMode" class="hero2">
@@ -524,7 +582,14 @@ export default {
       },
       isImageModalActive: false,
       mangaCount: 0,
-      modalImageSrc: ''
+      modalImageSrc: '',
+      url: {
+        twitter: 'https://twitter.com/flow_blockchain/status/1517541363193065472',
+        eco: 'https://www.onflow.org/post/flow-blockchain-sustainability-energy-deloitte-report-nft',
+        environment: 'https://www.bloomberg.com/news/features/2022-07-14/heat-waves-in-europe-show-danger-of-turning-from-climate-goals-to-coal-power',
+        press: 'https://prtimes.jp/main/html/rd/p/000000001.000104644.html#p-iframe-image-48622-1',
+        press2: 'https://prtimes.jp/main/html/rd/p/000000001.000104644.html#p-iframe-image-48622-2'
+      }
     }
   },
   computed: {
@@ -1401,6 +1466,10 @@ export default {
   left: 65px;
   color: wheat;
   font-size: 8px;
+}
+
+.green-explanation {
+  margin: 0 15px;
 }
 
 @keyframes fadeOut {
