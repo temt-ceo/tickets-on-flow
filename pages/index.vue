@@ -561,8 +561,8 @@ export default {
         { text: `Step 3. ${this.$t('ticket_text71')}`, image: '/image/help_slide_14_en.png', color: 'warning' }
       ],
       carousels4: [
-        { text: `Step 1. ${this.$t('ticket_text73')}`, image: '/image/help_slide_16_en.png', color: 'primary' },
-        { text: `Step 2. ${this.$t('ticket_text74')}`, image: '/image/help_slide_17_en.png', color: 'info' },
+        { text: `Step 1. ${this.$t('ticket_text73')}`, image: '/image/help_slide_16_en.png', color: 'success' },
+        { text: `Step 2. ${this.$t('ticket_text74')}`, image: '/image/help_slide_17_en.png', color: 'success' },
         { text: `Step 3. ${this.$t('ticket_text75')}`, image: '/image/help_slide_18_en.png', color: 'success' }
       ],
       searchLists: [],
