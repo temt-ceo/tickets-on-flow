@@ -46,7 +46,7 @@
                 type="is-link is-light"
                 @click="requestDispenser"
               >
-                {{ $t('ticket_text33') }}
+                {{ $t('ticket_text33') }} (Only $1)
               </b-button>
               <!-- <b-button
                 v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
@@ -184,7 +184,7 @@ export default {
             this.noticeTitle = this.$t('ticket_text37')
           }
         } else {
-          this.noticeTitle = this.$t('ticket_text38')
+          this.noticeTitle = this.$t('ticket_text38') + '\nOnce activated, you can create a dedicated URL tied to your wallet address. You can then sell tickets and crowdfund for free for the rest of your life!'
         }
       } else {
         this.noticeTitle = ''
