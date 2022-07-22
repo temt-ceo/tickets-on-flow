@@ -135,7 +135,7 @@
                   icon="pen"
                   style="font-size: 13px; margin-top: 4px;"
                 />
-                <label>{{ $t('hamburger_menu1') }}</label>
+                <label>{{ $t('hamburger_menu1') }} <i style="font-size:7px;">(FREE except initial cost)</i></label>
               </b-dropdown-item>
             </nuxt-link>
             <nuxt-link to="/crowdfunding/">
@@ -145,7 +145,7 @@
                   icon="pen"
                   style="font-size: 13px; margin-top: 4px;"
                 />
-                <label>{{ $t('hamburger_menu4') }}</label>
+                <label>{{ $t('hamburger_menu4') }} <i style="font-size:7px;">(FREE except initial cost)</i></label>
               </b-dropdown-item>
             </nuxt-link>
             <nuxt-link to="/stats/">
@@ -155,7 +155,7 @@
                   icon="pen"
                   style="font-size: 13px; margin-top: 4px;"
                 />
-                <label style="padding-left: 24px;">{{ $t('operation_text55') }}</label>
+                <label style="padding-left: 24px;">{{ $t('operation_text55') }} <i style="font-size:7px;">(FREE)</i></label>
               </b-dropdown-item>
             </nuxt-link>
             <b-dropdown-item aria-role="listitem" class="i18n" @click="isI18nActive = !isI18nActive">
@@ -1170,6 +1170,11 @@ export default {
 
   .navbar-burger {
     margin-top: 5px;
+
+  }
+
+  .hamburger > span {
+    color: chartreuse;
   }
 
   .telegram.is-bottom-right {
