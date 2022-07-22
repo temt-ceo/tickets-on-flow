@@ -176,7 +176,7 @@
     </div>
 
     <b-dropdown
-      style="position: absolute; bottom: 62px; left: 8px;"
+      style="position: absolute; bottom: 80px; left: 8px;"
       aria-role="list"
       class="is-pulled-right telegram"
       position="is-bottom-right"
@@ -234,6 +234,14 @@
           target="_blank"
         >
           {{ $t('operation_text144') }}
+        </a>
+      </b-dropdown-item>
+      <b-dropdown-item aria-role="listitem">
+        <a
+          :href="url.press3"
+          target="_blank"
+        >
+          Tickets are free to create and sell for life!🌳🌳
         </a>
       </b-dropdown-item>
     </b-dropdown>
@@ -588,7 +596,8 @@ export default {
         eco: 'https://www.onflow.org/post/flow-blockchain-sustainability-energy-deloitte-report-nft',
         environment: 'https://www.bloomberg.com/news/features/2022-07-14/heat-waves-in-europe-show-danger-of-turning-from-climate-goals-to-coal-power',
         press: 'https://prtimes.jp/main/html/rd/p/000000001.000104644.html#p-iframe-image-48622-1',
-        press2: 'https://prtimes.jp/main/html/rd/p/000000001.000104644.html#p-iframe-image-52730-1'
+        press2: 'https://prtimes.jp/main/html/rd/p/000000001.000104644.html#p-iframe-image-52730-1',
+        press3: 'https://prtimes.jp/main/html/rd/p/000000001.000104644.html#p-iframe-image-21174-1'
       }
     }
   },
