@@ -190,7 +190,7 @@
         </div>
       </template>
       <p class="green-explanation">
-        {{ $t('operation_text140') }}
+        {{ $t('operation_text140') }}🌳🌳
       </p>
       <b-dropdown-item aria-role="listitem">
         <a
@@ -210,7 +210,7 @@
       </b-dropdown-item>
       <hr>
       <p class="green-explanation">
-        {{ $t('operation_text141') }}
+        {{ $t('operation_text141') }}🌳🌳
       </p>
       <b-dropdown-item aria-role="listitem">
         <a
@@ -588,7 +588,7 @@ export default {
         eco: 'https://www.onflow.org/post/flow-blockchain-sustainability-energy-deloitte-report-nft',
         environment: 'https://www.bloomberg.com/news/features/2022-07-14/heat-waves-in-europe-show-danger-of-turning-from-climate-goals-to-coal-power',
         press: 'https://prtimes.jp/main/html/rd/p/000000001.000104644.html#p-iframe-image-48622-1',
-        press2: 'https://prtimes.jp/main/html/rd/p/000000001.000104644.html#p-iframe-image-48622-2'
+        press2: 'https://prtimes.jp/main/html/rd/p/000000001.000104644.html#p-iframe-image-52730-1'
       }
     }
   },
@@ -1469,7 +1469,9 @@ export default {
 }
 
 .green-explanation {
-  margin: 0 15px;
+  margin: 10px 15px;
+  text-decoration: underline;
+  text-shadow: 0 0.2px 0.8px #257953;
 }
 
 @keyframes fadeOut {
