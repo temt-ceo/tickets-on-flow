@@ -179,7 +179,7 @@
       style="position: absolute; bottom: 80px; left: 8px;"
       aria-role="list"
       class="is-pulled-right telegram"
-      position="is-bottom-right"
+      position="is-top-right"
     >
       <template #trigger>
         <div class="fa-2x">
