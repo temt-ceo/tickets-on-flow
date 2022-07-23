@@ -848,11 +848,11 @@ export default {
                     break
                   case 'multi':
                     ticketTitle = this.$t('special_title3')
-                    ticketDescription = this.$t('special_description3')
+                    ticketDescription = this.$t('special_description3') + ' DM if you\'re interested.'
                     break
                   case 'detail':
                     ticketTitle = this.$t('special_title4')
-                    ticketDescription = this.$t('special_description4')
+                    ticketDescription = this.$t('special_description4') + ' DM if you\'re interested.'
                     break
                   default:
                     break
