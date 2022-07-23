@@ -383,6 +383,51 @@
                   <option value="0.05">
                     0.05 FLOW
                   </option>
+                  <option value="1.25">
+                    1.25 FLOW
+                  </option>
+                  <option value="1.5">
+                    1.5 FLOW
+                  </option>
+                  <option value="1.75">
+                    1.75 FLOW
+                  </option>
+                  <option value="2">
+                    2 FLOW
+                  </option>
+                  <option value="2.25">
+                    2.25 FLOW
+                  </option>
+                  <option value="2.5">
+                    2.5 FLOW
+                  </option>
+                  <option value="2.75">
+                    2.75 FLOW
+                  </option>
+                  <option value="3">
+                    3 FLOW
+                  </option>
+                  <option value="3.25">
+                    3.25 FLOW
+                  </option>
+                  <option value="3.5">
+                    3.5 FLOW
+                  </option>
+                  <option value="3.75">
+                    3.75 FLOW
+                  </option>
+                  <option value="4">
+                    4 FLOW
+                  </option>
+                  <option value="4.25">
+                    4.25 FLOW
+                  </option>
+                  <option value="4.5">
+                    4.5 FLOW
+                  </option>
+                  <option value="4.75">
+                    4.75 FLOW
+                  </option>
                   <option value="5">
                     5 FLOW
                   </option>
