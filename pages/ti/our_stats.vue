@@ -184,7 +184,6 @@
                 :label="$t('operation_text83')"
                 :active="switchShare == $t('operation_text82')"
                 type="is-primary is-light"
-                square
                 always
               >
                 <b-switch
@@ -198,14 +197,21 @@
                 </b-switch>
               </b-tooltip>
             </b-field>
-            <b-button
-              :disabled="!statItem1Input || !statResult1Input || !statItem2Input || !statResult2Input || !nicknameInput"
-              type="is-dark"
-              style="float: right; margin-right: 3px;"
-              @click="registerPoll"
+            <b-tooltip
+              :label="$t('operation_text90')"
+              type="is-primary is-light"
+              position="is-bottom"
+              style="float: right; margin-right: 3px; margin-bottom: 15px;"
+              always
             >
-              {{ $t('operation_text12') }}
-            </b-button>
+              <b-button
+                :disabled="!statItem1Input || !statResult1Input || !statItem2Input || !statResult2Input || !nicknameInput"
+                type="is-dark"
+                @click="registerPoll"
+              >
+                {{ $t('operation_text12') }}
+              </b-button>
+            </b-tooltip>
           </div>
         </section>
       </div>

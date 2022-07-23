@@ -74,7 +74,7 @@
             </span>
             <span
               v-if="ticket.type !== 'stats'"
-              style="position: absolute; right: 15px; bottom: -5px; font-size: 1.5em;"
+              style="position: absolute; right: 10px; bottom: -4px; font-size: 1.5em;"
               @click="clickTicketConfirmIcon(ticket)"
             >
               🇺🇦
@@ -557,7 +557,7 @@ export default {
       colors: { Finance: 'color1', Music: 'color3', Other: 'color7' },
       toolList: ['Zoom', 'Instagram', 'Discord', 'Teams', 'Google Meet', 'Ticket website', 'YouTube', 'Any tool', 'On-site'],
       language: 0,
-      languageList: ['en', 'es', 'fr', 'zh', 'ar', 'pt', 'ja', 'de', 'ko', 'all'],
+      languageList: ['en', 'es', 'fr', 'zh', 'ar', 'pt', 'ja', 'de', 'all', 'uk'],
       isTapped: false,
       isTappedReset: null,
       showCarousel: false,
