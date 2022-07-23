@@ -364,7 +364,7 @@ export default {
   operation_text142: '기후 변화는 우리 삶에 직접적인 영향을 미칩니다.',
   operation_text143: '전쟁 피해자는 스마트폰으로 수입을 올릴 수 있습니다.',
   operation_text144: '차나 비행기 없이 일하세요.',
-  operation_text145: '',
+  operation_text145: '티켓은 18개 언어로 번역될 수 있습니다.',
   operation_text146: '',
   operation_text147: '',
   operation_text148: '',

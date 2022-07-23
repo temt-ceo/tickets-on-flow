@@ -364,7 +364,7 @@ export default {
   operation_text142: '気候変動は、私たちの生活に直接影響を与えます。',
   operation_text143: '戦争被害者がスマートフォンで収入を得ることができる。',
   operation_text144: '車や飛行機がなくても仕事ができる',
-  operation_text145: '',
+  operation_text145: 'チケットは18ヶ国語に翻訳可能です',
   operation_text146: '',
   operation_text147: '',
   operation_text148: '',

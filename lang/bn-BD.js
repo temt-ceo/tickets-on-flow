@@ -364,7 +364,7 @@ export default {
   operation_text142: 'জলবায়ু পরিবর্তন সরাসরি আমাদের জীবনকে প্রভাবিত করে।',
   operation_text143: 'যুদ্ধের শিকাররা স্মার্টফোন দিয়ে আয় করতে পারেন।',
   operation_text144: 'একটি গাড়ী বা বিমান ছাড়া কাজ.',
-  operation_text145: '',
+  operation_text145: 'টিকিট 18টি ভাষায় অনুবাদ করা যেতে পারে।',
   operation_text146: '',
   operation_text147: '',
   operation_text148: '',

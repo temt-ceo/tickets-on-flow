@@ -264,6 +264,11 @@
           Tickets are free to create and sell for life!🌳🌳
         </a>
       </b-dropdown-item>
+      <b-dropdown-item aria-role="listitem">
+        <nuxt-link to="/ti/multi">
+          {{ $t('operation_text145') }}
+        </nuxt-link>
+      </b-dropdown-item>
     </b-dropdown>
 
     <div class="fa-2x" style="position: absolute; bottom: 16px; left: 4px;">

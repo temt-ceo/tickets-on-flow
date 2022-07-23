@@ -364,7 +364,7 @@ export default {
   operation_text142: 'Climate change directly affects our lives.',
   operation_text143: 'Krigsoffer kan tjäna pengar med sin smartphone.',
   operation_text144: 'Arbeta utan bil eller flyg.',
-  operation_text145: '',
+  operation_text145: 'Biljetterna kan översättas till 18 språk.',
   operation_text146: '',
   operation_text147: '',
   operation_text148: '',

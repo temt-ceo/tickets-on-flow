@@ -364,7 +364,7 @@ export default {
   operation_text142: 'Climate change directly affects our lives.',
   operation_text143: 'Victims of war can earn income with smartphone.',
   operation_text144: 'Làm việc mà không cần xe hơi.',
-  operation_text145: '',
+  operation_text145: 'Vé có thể được dịch sang 18 ngôn ngữ.',
   operation_text146: '',
   operation_text147: '',
   operation_text148: '',

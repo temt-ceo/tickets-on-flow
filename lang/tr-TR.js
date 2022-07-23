@@ -364,7 +364,7 @@ export default {
   operation_text142: 'İklim değişikliği hayatımızı doğrudan etkiliyor.',
   operation_text143: 'Savaş mağdurları akıllı telefon ile gelir elde edebilir.',
   operation_text144: 'Araba veya uçak olmadan çalışın.',
-  operation_text145: '',
+  operation_text145: 'Biletler 18 dile çevrilebilmektedir.',
   operation_text146: '',
   operation_text147: '',
   operation_text148: '',

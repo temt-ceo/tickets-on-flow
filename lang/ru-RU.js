@@ -364,7 +364,7 @@ export default {
   operation_text142: 'Climate change directly affects our lives.',
   operation_text143: 'Victims of war can earn income with smartphone.',
   operation_text144: 'Работа без машины и самолета.',
-  operation_text145: '',
+  operation_text145: 'Билеты можно перевести на 18 языков.',
   operation_text146: '',
   operation_text147: '',
   operation_text148: '',

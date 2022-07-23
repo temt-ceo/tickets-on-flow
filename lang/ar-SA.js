@@ -364,7 +364,7 @@ export default {
   operation_text142: 'يؤثر تغير المناخ بشكل مباشر على حياتنا.',
   operation_text143: 'يمكن لضحايا الحرب كسب الدخل باستخدام الهاتف الذكي.',
   operation_text144: 'العمل بدون سيارة أو طائرة.',
-  operation_text145: '',
+  operation_text145: 'يمكن ترجمة التذاكر إلى 18 لغة.',
   operation_text146: '',
   operation_text147: '',
   operation_text148: '',

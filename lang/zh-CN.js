@@ -364,7 +364,7 @@ export default {
   operation_text142: '气候变化直接影响到我们的生活。',
   operation_text143: '战争的受害者可以用智能手机赚取收入。',
   operation_text144: '在没有汽车或飞机的情况下工作。',
-  operation_text145: '',
+  operation_text145: '门票可以被翻译成18种语言。',
   operation_text146: '',
   operation_text147: '',
   operation_text148: '',
