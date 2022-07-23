@@ -2,7 +2,8 @@
   <div class="modal-card ticket-detail">
     <section class="modal-card-body">
       <div class="text-wrap text-title">
-        <span v-if="parseInt(ticket.type) == 0" style="padding-right: 35px; font-size: 16px;">{{ $t('ticket_text14') }}</span>
+        <span v-if="parseInt(ticket.type) == 0 && additionalDescription" style="padding-right: 35px; font-size: 16px;">{{ $t('ticket_text14') }}</span>
+        <span v-if="parseInt(ticket.type) == 0 && !additionalDescription">{{ $t('ticket_text14') }}</span>
         <span v-if="parseInt(ticket.type) == 1">{{ $t('ticket_text52') }}</span>
         <span v-if="additionalDescription && additionalDescription.info === true" style="position: absolute; right: 20px; color: magenta;" @click="isCardModalActive = true">
           <b-icon
@@ -96,7 +97,7 @@
       </b-table>
       <hr style="background-color: #fff;">
       <div class="buttons" style="display: block; margin-bottom: 0;">
-        <b-button type="is-warning" style="margin: 0 6%;" inverted @click="showSchedule">
+        <b-button v-if="!isTop" type="is-warning" style="margin: 0 6%;" inverted @click="showSchedule">
           {{ $t('operation_text69') }}
         </b-button>
         <b-button type="is-warning" style="margin: 0 6%;" inverted @click="nextEvent">
@@ -684,7 +685,8 @@ export default {
       linkTitle2: null,
       linkUrl2: null,
       linkTitle3: null,
-      linkUrl3: null
+      linkUrl3: null,
+      isTop: location.search === '?home'
     }
   },
   watch: {

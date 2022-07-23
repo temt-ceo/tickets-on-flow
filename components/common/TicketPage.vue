@@ -307,6 +307,9 @@ export default {
     if (!this.bloctoWalletUser.addr) {
       this.notLoginUser = true
     }
+    if (location.search === '?learn-more=true') {
+      this.isDemo = true
+    }
   },
   methods: {
     async getTicketInfo (pathname) {

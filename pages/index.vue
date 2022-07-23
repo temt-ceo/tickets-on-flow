@@ -54,11 +54,31 @@
               target="_blank"
               :class="{ long: ticket.twitter.length > 15, too_long: ticket.twitter.length > 19 }"
               class="twitter-label"
-              style="line-height: 0.9;"
+              style="line-height: 0.98;"
             >
               <span style="font-size: 9px;">{{ $t('ticket_text5') }}:</span><br>
               <span>@{{ ticket.twitter }}</span>
             </a>
+            <span
+              v-if="ticket.type !== 'stats'"
+              style="position: absolute; right: 30px; bottom: -7px;"
+              @click="clickTicketConfirmIcon(ticket)"
+            >
+              <b-icon
+                pack="fa-solid"
+                icon="circle-info"
+                type="is-success"
+                size="is-medium"
+                style="font-size: 1.2em;"
+              />
+            </span>
+            <span
+              v-if="ticket.type !== 'stats'"
+              style="position: absolute; right: 15px; bottom: -5px; font-size: 1.5em;"
+              @click="clickTicketConfirmIcon(ticket)"
+            >
+              🇺🇦
+            </span>
           </div>
         </div>
       </div>
@@ -510,14 +530,27 @@
         </div>
       </div>
     </b-modal>
+    <b-modal v-model="showConfirmModal">
+      <check-ticket-modal
+        :ticket="ticketModalInfo"
+        :ticketWhen0="ticketModalWhenWeek"
+        :no-login="false"
+        @closeModal="showConfirmModal=false"
+        @eventname="nextMove"
+      />
+    </b-modal>
   </section>
 </template>
 
 <script>
 import FlowScripts from '~/cadence/scripts'
+import CheckTicketModal from '~/components/common/CheckTicketModal'
 
 export default {
   name: 'IndexPage',
+  components: {
+    CheckTicketModal
+  },
   data () {
     return {
       tickets: [],
@@ -598,7 +631,10 @@ export default {
         press: 'https://prtimes.jp/main/html/rd/p/000000001.000104644.html#p-iframe-image-48622-1',
         press2: 'https://prtimes.jp/main/html/rd/p/000000001.000104644.html#p-iframe-image-52730-1',
         press3: 'https://prtimes.jp/main/html/rd/p/000000001.000104644.html#p-iframe-image-21174-1'
-      }
+      },
+      showConfirmModal: false,
+      ticketModalInfo: {},
+      ticketModalWhenWeek: ''
     }
   },
   computed: {
@@ -696,6 +732,15 @@ export default {
         this.isTapped = false
       }, 5000)
       await this.getTickets(true)
+    },
+    clickTicketConfirmIcon (ticket) {
+      const tickets = JSON.parse(JSON.stringify(this.$store.state.tickets))
+      this.ticketModalInfo = tickets.find(obj => obj.domain === ticket.path)
+      this.showConfirmModal = true
+    },
+    nextMove () {
+      this.showConfirmModal = false
+      location.href = '/ti/' + this.ticketModalInfo.domain + '?learn-more=true'
     },
     async getTickets (withoutApi) {
       try {
