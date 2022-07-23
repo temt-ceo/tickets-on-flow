@@ -1824,6 +1824,16 @@ tr {
   }
 }
 
+.support-refund-rate{
+  .control.is-medium {
+    flex-grow: initial !important;
+
+    input[type="number"] {
+      width: 130px;
+    }
+  }
+}
+
 @keyframes typing {
   0% {
     width: 0px;

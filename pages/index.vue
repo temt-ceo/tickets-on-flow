@@ -73,7 +73,7 @@
               />
             </span>
             <span
-              v-if="ticket.type !== 'stats'"
+              v-if="ticket.type !== 'stats' && ticket.doUkrainianSupport"
               style="position: absolute; right: 10px; bottom: -4px; font-size: 1.5em;"
               @click="clickTicketConfirmIcon(ticket)"
             >
@@ -805,12 +805,14 @@ export default {
             }
             const when = ticket.when_to_use.split('||')
             let datetime = ''
+            let doUkrainianSupport = false
             if (when.length >= 2) {
               if (parseInt(ticket.type) === 1) {
                 datetime = `${this.$t('ticket_text56')} ` + new Date(parseInt(when[1])).toLocaleString().replace(/(:\d{2}):00/, '$1')
               } else {
                 datetime = new Date(parseInt(when[1])).toLocaleString().replace(/(:\d{2}):00/, '$1') + ` ${this.$t('ticket_text6')} `
               }
+              doUkrainianSupport = when.length >= 5 && when[4].length > 0
             }
 
             const ticketName = ticket.name.split('||@')
@@ -867,7 +869,8 @@ export default {
                   price: ticket.price.replace(/\.?0+$/, ''),
                   datetime,
                   style: 'color' + (parseInt(tool) % 7 + 1).toString(),
-                  type
+                  type,
+                  doUkrainianSupport
                 }
                 const language = this.languageList[this.language]
                 if (language === when[2] || data.is_multilingual || language === 'all') {

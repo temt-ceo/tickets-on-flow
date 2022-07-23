@@ -89,6 +89,14 @@
           {{ props.row.ticketWhen }}
         </b-table-column>
 
+        <b-table-column
+          v-if="parseInt(ticket.type) == 1 && doUkrainianSupport"
+          field="hasSupport"
+          :label="$t('operation_text146')"
+        >
+          {{ doUkrainianSupport }}
+        </b-table-column>
+
         <template #empty>
           <div class="has-text-centered">
             {{ $t('ticket_text20') }}
@@ -686,7 +694,8 @@ export default {
       linkUrl2: null,
       linkTitle3: null,
       linkUrl3: null,
-      isTop: location.search === '?home'
+      isTop: location.search === '?home',
+      doUkrainianSupport: false
     }
   },
   watch: {
@@ -858,6 +867,7 @@ export default {
       ticket.ticketWhen = new Date(parseInt(when[1])).toLocaleString().replace(/(:\d{2}):00/, '$1') + (parseInt(this.ticket.type) === 1 ? '' : ` ${this.$t('ticket_text6')} `)
       this.startTime = new Date(parseInt(when[1])).toLocaleTimeString()
       this.isDiscloseSales = when.length >= 4 && when[3].length > 10
+      this.doUkrainianSupport = when.length >= 5 && when[4].length > 0 ? when[4] + '% ' + this.$t('operation_text150') : false
     }
     const where = this.ticket.where_to_use.split('||')
     let detail = ''

@@ -87,6 +87,7 @@
                   :placeholder="$t('operation_text2')"
                 />
               </b-field>
+
               <b-field :label="$t('operation_text87')">
                 <b-switch v-model="switchDiscloseSales"
                   :true-value="$t('operation_text88')"
@@ -95,6 +96,19 @@
                 >
                   {{ switchDiscloseSales }}
                 </b-switch>
+              </b-field>
+
+              <b-field :label="$t('operation_text147')">
+                <b-switch v-model="switchUkrainianSupport"
+                  :true-value="$t('operation_text149')"
+                  :false-value="$t('operation_text148')"
+                  type="is-info"
+                >
+                  {{ switchUkrainianSupport }}
+                </b-switch>
+                <div v-if="switchUkrainianSupport === $t('operation_text149')">
+                  <b-numberinput v-model="numberRefund" min="0" max="100" size="is-medium" class="support-refund-rate" /><span class="support-refund-unit">% Refund</span>
+                </div>
               </b-field>
 
               <div class="button-wrap">
@@ -171,6 +185,19 @@
                 >
                   {{ switchDiscloseSales }}
                 </b-switch>
+              </b-field>
+
+              <b-field :label="$t('operation_text147')">
+                <b-switch v-model="switchUkrainianSupport"
+                  :true-value="$t('operation_text149')"
+                  :false-value="$t('operation_text148')"
+                  type="is-info"
+                >
+                  {{ switchUkrainianSupport }}
+                </b-switch>
+                <div v-if="switchUkrainianSupport === $t('operation_text149')">
+                  <b-numberinput v-model="numberRefund" min="0" max="100" size="is-medium" class="support-refund-rate" /><span class="support-refund-unit">% Refund</span>
+                </div>
               </b-field>
 
               <b-field :label="$t('operation_text11')">
@@ -270,7 +297,9 @@ export default {
       ],
       indexOfTicket: null,
       tooltipActive: false,
-      switchDiscloseSales: this.$t('operation_text88')
+      switchDiscloseSales: this.$t('operation_text88'),
+      switchUkrainianSupport: this.$t('operation_text148'),
+      numberRefund: 0
     }
   },
   async mounted () {
@@ -366,6 +395,12 @@ export default {
               } else {
                 this.switchDiscloseSales = this.$t('operation_text88')
               }
+              if (when.length < 5 || when[4] === '') {
+                this.switchUkrainianSupport = this.$t('operation_text148')
+              } else {
+                this.switchUkrainianSupport = this.$t('operation_text149')
+                this.numberRefund = parseInt(when[4])
+              }
             }
             this.registerPrice = this.ticketInfo.price.replace(/\.?0+$/, '')
 
@@ -426,6 +461,10 @@ export default {
       if (this.switchDiscloseSales === this.$t('operation_text88')) {
         registerWhen = registerWhen + this.address
       }
+      registerWhen = registerWhen + '||'
+      if (this.switchUkrainianSupport === this.$t('operation_text149')) {
+        registerWhen = registerWhen + this.numberRefund
+      }
       try {
         // loading
         const loadingComponent = this.$buefy.loading.open({
@@ -474,6 +513,10 @@ export default {
       let registerWhen = registerWeekdays + '||' + this.registerWhen.getTime() + '||' + navigator.language + '||'
       if (this.switchDiscloseSales === this.$t('operation_text88')) {
         registerWhen = registerWhen + this.address
+      }
+      registerWhen = registerWhen + '||'
+      if (this.switchUkrainianSupport === this.$t('operation_text149')) {
+        registerWhen = registerWhen + this.numberRefund
       }
 
       try {
@@ -631,6 +674,10 @@ export default {
       a {
         text-decoration: underline;
       }
+    }
+
+    .support-refund-unit {
+      margin-left: 100px;
     }
   }
   .button.is-info.is-light {
