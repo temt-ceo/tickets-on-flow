@@ -2,7 +2,7 @@
   <div class="modal-card ticket-detail">
     <section class="modal-card-body">
       <div class="text-wrap text-title">
-        <span v-if="parseInt(ticket.type) == 0 && additionalDescription" style="padding-right: 35px; font-size: 16px;">{{ $t('ticket_text14') }}</span>
+        <span v-if="parseInt(ticket.type) == 0 && additionalDescription" style="padding-right: 15px; font-size: 16px;">{{ $t('ticket_text14') }}</span>
         <span v-if="parseInt(ticket.type) == 0 && !additionalDescription">{{ $t('ticket_text14') }}</span>
         <span v-if="parseInt(ticket.type) == 1">{{ $t('ticket_text52') }}</span>
         <span v-if="additionalDescription && additionalDescription.info === true" style="position: absolute; right: 20px; color: magenta;" @click="isCardModalActive = true">
@@ -10,9 +10,9 @@
             pack="fa-solid"
             icon="circle-info"
             size="is-medium"
-            style="width: 1.2rem;"
+            style="width: 1.5rem;"
           />
-          Detail↗︎
+          <i class="fas fa-expand-alt"></i>
         </span>
       </div>
       <b-table
