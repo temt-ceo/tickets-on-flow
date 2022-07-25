@@ -539,6 +539,8 @@
       <check-ticket-modal
         :ticket="ticketModalInfo"
         :ticketWhen0="ticketModalWhenWeek"
+        :ticket-title="ticketModalTitle"
+        :ticket-description="ticketModalDescription"
         :no-login="false"
         @closeModal="showConfirmModal=false"
         @eventname="nextMove"
@@ -639,7 +641,9 @@ export default {
       },
       showConfirmModal: false,
       ticketModalInfo: {},
-      ticketModalWhenWeek: ''
+      ticketModalWhenWeek: '',
+      ticketModalTitle: '',
+      ticketModalDescription: ''
     }
   },
   computed: {
@@ -741,6 +745,29 @@ export default {
     clickTicketConfirmIcon (ticket) {
       const tickets = JSON.parse(JSON.stringify(this.$store.state.tickets))
       this.ticketModalInfo = tickets.find(obj => obj.domain === ticket.path)
+      console.log(this.ticketModalInfo)
+      switch (this.ticketModalInfo.domain) {
+        case 'zm':
+          this.ticketModalTitle = this.$t('special_title1')
+          this.ticketModalDescription = this.$t('special_description1')
+          break
+        case 'zmi':
+          this.ticketModalTitle = this.$t('special_title2')
+          this.ticketModalDescription = this.$t('special_description2')
+          break
+        case 'multi':
+          this.ticketModalTitle = this.$t('special_title3')
+          this.ticketModalDescription = this.$t('special_description3') + ' DM if you\'re interested.'
+          break
+        case 'detail':
+          this.ticketModalTitle = this.$t('special_title4')
+          this.ticketModalDescription = this.$t('special_description4') + ' DM if you\'re interested.'
+          break
+        default:
+          this.ticketModalTitle = ''
+          this.ticketModalDescription = ''
+          break
+      }
       this.showConfirmModal = true
     },
     nextMove () {

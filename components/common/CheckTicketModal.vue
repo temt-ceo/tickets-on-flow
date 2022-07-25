@@ -10,9 +10,9 @@
             pack="fa-solid"
             icon="circle-info"
             size="is-medium"
-            style="width: 1.5rem;"
+            style="width: 1.2rem;"
           />
-          Detail
+          Detail↗︎
         </span>
       </div>
       <b-table

@@ -12,7 +12,7 @@ export default {
   },
   head () {
     return {
-      title: 'Chain Work Tickets | Dispenser005',
+      title: 'Chain Work Tickets | fdgfd6',
       meta: [
         { hid: 'keywords', name: 'keywords', content: 'Chain Work, Tickets, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' }
       ]
