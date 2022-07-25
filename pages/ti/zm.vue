@@ -24,8 +24,8 @@ export default {
         infoDetail: {
           title: this.$t('operation_text134'),
           subtitle: this.$t('special_subtitle2') + '\r\n' + this.$t('special_subtitle1'),
-          linkTitle: this.$t('special_link_title1') + '\r\n' + this.$t('special_link_title1_2') + '\r\n' + this.$t('special_link_title1_3'),
-          linkUrl: this.$t('special_link_url1') + '\r\n' + this.$t('special_link_url1_2') + '\r\n' + this.$t('special_link_url1_3'),
+          linkTitle: this.$t('special_link_title1_3') + '\r\n' + this.$t('special_link_title1'),
+          linkUrl: this.$t('special_link_url1_3') + '\r\n' + this.$t('special_link_url1'),
           radio1: this.$t('special_additional1_description1'),
           radio2: this.$t('special_additional1_description2'),
           radio3: 'Type',

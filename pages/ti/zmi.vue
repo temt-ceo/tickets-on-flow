@@ -24,6 +24,8 @@ export default {
         infoDetail: {
           title: this.$t('operation_text134'),
           subtitle: this.$t('special_subtitle2'),
+          linkTitle: this.$t('special_link_title1_2'),
+          linkUrl: this.$t('special_link_url1_2'),
           radio1: this.$t('special_additional2_description1'),
           radio2: this.$t('special_additional2_description2'),
           radio3: this.$t('special_additional2_description3'),

@@ -391,7 +391,7 @@ export default {
   special_link_title1_2: 'AIモデルの作成は、RandamForestの手法で行っています。どのように作成されているかは、こちらのKaggleサイトをご覧ください。',
   special_link_url1_2: 'https://www.kaggle.com/code/takashitahara/new-stock-expected-move-analysis',
   special_link_title1_3: '昨日までの全予測結果と、実際のデータを元にしたAIが予測すべきパターンの全結果は以下の通りです。',
-  special_link_url1_3: 'https://chain-work.com/ti/our_stats/?link=8f549c0e4d',
+  special_link_url1_3: 'https://chain-work.com/ti/our_stats/?link=c6809a3ad0',
   special_additional1_type1_pre: '本日の株価予想の結果は、タイプ1です。',
   special_additional1_type1_post: 'タイプ1では、株価は前日より低くなりますが、日中は少し高くなると予想されます。したがって、底値で買い、その高値で売れば利益が出ます。',
   special_additional1_type2_pre: '本日の株価予想の結果は、タイプ2です。',
