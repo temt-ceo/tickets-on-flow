@@ -1193,7 +1193,7 @@ export default {
     height: calc(100vh - 70px);
     margin: 0 auto;
     // background: #596470;
-    background: hsla(240, 100%, 50%, 0.1);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 30px;
     // border: 5px solid rgba(1, 1, 1, .2);
     border: 2px solid rgba(255, 255, 5, 0.7);
