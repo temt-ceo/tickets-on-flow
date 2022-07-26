@@ -1881,6 +1881,27 @@ tr {
   .stats-percent {
     display: none;
   }
+  .dropdown-item {
+    .media {
+      .media-left {
+        padding-right: 0.5rem;
+        padding-top: 0.5rem;
+        margin-right: 0.2px;
+        font-size: large;
+      }
+
+      .media-content {
+        color: #7957d5;
+        font-size: large;
+        // h3 {
+        //   text-shadow: 0 0.2px 0.8px #257953;
+        // }
+      }
+    }
+  }
+  .carousel-items h2 {
+    font-size: 120%;
+  }
 }
 
 @media screen and (min-height: 740px) {
