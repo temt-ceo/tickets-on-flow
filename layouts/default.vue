@@ -1854,10 +1854,6 @@ tr {
 }
 
 @media screen and (min-width: 1024px) {
-  #__layout {
-    background-image: linear-gradient(to bottom right, #973999, #f8598b, #f7bf00);
-  }
-
   .navbar,
   .navbar-burger {
     display: block;
@@ -1874,7 +1870,17 @@ tr {
     font-size: 16px;
   }
 }
+
 @media screen and (min-width: 700px) {
+  body {
+    background-image: url('https://i.pinimg.com/originals/45/3d/81/453d816d7d25d5a4aa075a8c64c79818.jpg');
+    animation: bg 45s linear infinite;
+  }
+
+  #__layout {
+    background-image: radial-gradient(rgba(151, 57, 153, 0.9), rgba(248, 89, 139, 0.8), rgba(247, 191, 0, 0.7));
+  }
+
   .navbar .dropdown-menu .dropdown-content .dropdown-item.menu-long {
     font-size: 17px;
   }
@@ -1943,6 +1949,18 @@ tr {
 @media screen and (max-width: 1023px) {
   .dropdown.is-mobile-modal > .dropdown-menu > .dropdown-content > .dropdown-item {
     padding: 1rem 0.5rem 1rem 1.2rem
+  }
+}
+
+@keyframes bg {
+  0% {
+    background-image: url('https://www.wallpaperup.com/uploads/wallpapers/2016/06/09/980778/198ff9cc76f5a86ad1de61447a01a57b.jpg');
+  }
+  40% {
+    background-image: url('https://widefuture.com/wp-content/uploads/2019/02/hearthands.jpg');
+  }
+  100% {
+    background-image: url('https://www.wallpaperup.com/uploads/wallpapers/2016/06/09/980778/198ff9cc76f5a86ad1de61447a01a57b.jpg');
   }
 }
 </style>
