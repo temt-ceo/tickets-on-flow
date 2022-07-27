@@ -133,11 +133,19 @@
             type="is-info"
           />
         </template>
+        <b-dropdown-item aria-role="listitem" @click="showCarousel5 = true">
+          <div class="media">
+            <b-icon class="media-left" size="is-small" pack="fad" icon="question" />
+            <div class="media-content">
+              <h3>{{ $t('ticket_text79') }} ⑴</h3>
+            </div>
+          </div>
+        </b-dropdown-item>
         <b-dropdown-item aria-role="listitem" @click="showCarousel4 = true">
           <div class="media">
             <b-icon class="media-left" size="is-small" pack="fad" icon="question" />
             <div class="media-content">
-              <h3>{{ $t('ticket_text79') }}</h3>
+              <h3>{{ $t('ticket_text79') }} ⑵</h3>
             </div>
           </div>
         </b-dropdown-item>
@@ -417,6 +425,40 @@
         </section>
       </b-carousel-item>
     </b-carousel>
+    <b-carousel
+      v-if="showCarousel5"
+      :arrow="carouselArrow"
+      :arrow-hover="carouselArrowHover"
+      :autoplay="carouselAutoPlay"
+      :repeat="carouselRepeat"
+      :interval="carouselInterval"
+      :indicator="carouselIndicator"
+      :indicator-inside="carouselInside"
+      :indicator-style="carouselIndicatorStyle"
+    >
+      <b-carousel-item v-for="(carousel, i) in carousels5" :key="i">
+        <section :class="`hero is-medium is-${carousel.color}`">
+          <div class="hero-body has-text-centered">
+            <h2 style="margin-bottom: 10px;">
+              {{ carousel.text1 }}
+            </h2>
+            <h2 v-if="carousel.text2" style="margin-bottom: 10px;">
+              {{ carousel.text2 }}
+            </h2>
+            <h2 v-if="carousel.text3">
+              {{ carousel.text3 }}
+            </h2>
+          </div>
+          <div class="close-icon" @click="showCarousel5 = false">
+            <b-icon
+              pack="fa-solid"
+              icon="xmark"
+              size="is-large"
+            />
+          </div>
+        </section>
+      </b-carousel-item>
+    </b-carousel>
 
     <b-modal
       v-model="isComponentModalActive"
@@ -527,7 +569,7 @@
       v-model="isImageModalActive"
     >
       <div class="image">
-        <img :src="modalImageSrc" style="height: 100%;" />
+        <img :src="modalImageSrc" style="height: 100%;">
         <div style="max-width: 760px; margin: 0 auto; text-align: center;">
           <button class="custom-btn btn-11" style="bottom: 50px;" @click="nextMange">
             {{ $t('ticket_text45') }}
@@ -571,6 +613,7 @@ export default {
       showCarousel2: false,
       showCarousel3: false,
       showCarousel4: false,
+      showCarousel5: false,
       carouselArrow: true,
       carouselArrowHover: false,
       carouselAutoPlay: true,
@@ -601,9 +644,15 @@ export default {
         { text: `Step 3. ${this.$t('ticket_text71')}`, image: '/image/help_slide_14_en.png', color: 'warning' }
       ],
       carousels4: [
-        { text: `Step 1. ${this.$t('ticket_text73')}`, image: '/image/help_slide_16_en.png', color: 'success' },
-        { text: `Step 2. ${this.$t('ticket_text74')}`, image: '/image/help_slide_17_en.png', color: 'success' },
-        { text: `Step 3. ${this.$t('ticket_text75')}`, image: '/image/help_slide_18_en.png', color: 'success' }
+        { text: this.$t('ticket_text73'), image: '/image/help_slide_16_en.png', color: 'success' },
+        { text: this.$t('ticket_text74'), image: '/image/help_slide_17_en.png', color: 'success' },
+        { text: this.$t('ticket_text75'), image: '/image/help_slide_18_en.png', color: 'success' }
+      ],
+      carousels5: [
+        { text1: this.$t('operation_text151'), text2: this.$t('operation_text152'), text3: this.$t('operation_text153'), color: 'success' },
+        { text1: this.$t('operation_text154'), text2: this.$t('operation_text155'), text3: this.$t('operation_text156'), color: 'success' },
+        { text1: this.$t('operation_text157'), text2: this.$t('operation_text158'), text3: null, color: 'success' },
+        { text1: this.$t('operation_text159'), text2: this.$t('operation_text160'), text3: null, color: 'success' }
       ],
       searchLists: [],
       searchValue: '',
@@ -745,7 +794,6 @@ export default {
     clickTicketConfirmIcon (ticket) {
       const tickets = JSON.parse(JSON.stringify(this.$store.state.tickets))
       this.ticketModalInfo = tickets.find(obj => obj.domain === ticket.path)
-      console.log(this.ticketModalInfo)
       switch (this.ticketModalInfo.domain) {
         case 'zm':
           this.ticketModalTitle = this.$t('special_title1')
