@@ -1342,10 +1342,6 @@ span.control-label {
   transform: translateX(-50%);
 }
 
-#__layout {
-  background-image: radial-gradient(#973999, #f8598b, #f7bf00);
-}
-
 .section.top-screen{
   .b-slider {
     .b-slider-track {
@@ -1871,6 +1867,17 @@ tr {
   }
 }
 
+@media screen and (max-width: 700px) {
+  body {
+    background-image: radial-gradient(#973999, #f8598b, #f7bf00);
+  }
+
+  #__layout {
+    background-image: url('/img/453d816d7d25d5a4aa075a8c64c79818.jpg');
+    animation: bg_sp 80s linear infinite;
+  }
+}
+
 @media screen and (min-width: 700px) {
   body {
     background-image: url('/img/453d816d7d25d5a4aa075a8c64c79818.jpg');
@@ -1961,6 +1968,18 @@ tr {
   }
   100% {
     background-image: url('/img/198ff9cc76f5a86ad1de61447a01a57b.jpg');
+  }
+}
+
+@keyframes bg_sp {
+  0% {
+    background-image: url('/img/hearthands.jpg');
+  }
+  50% {
+    background-image: url('/img/198ff9cc76f5a86ad1de61447a01a57b.jpg');
+  }
+  100% {
+    background-image: url('/img/hearthands.jpg');
   }
 }
 </style>
