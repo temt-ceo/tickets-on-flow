@@ -286,11 +286,11 @@
         @click="imageModal"
       />
     </div>
-    <div v-if="!returnMode" class="hero2">
-      <!-- <div class="hero--overlay">
+    <!-- <div v-if="!returnMode" class="hero2">
+      <div class="hero--overlay">
         <div class="hero--content" />
-      </div> -->
-    </div>
+      </div>
+    </div> -->
     <img v-if="!returnMode" class="anime-image" src="/chainwork-top.png" :style="{display: offIcon}">
     <small class="bottom-copyright">&copy; Tokyo EM Technology & Co.</small>
     <b-carousel
