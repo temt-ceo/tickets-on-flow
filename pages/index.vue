@@ -1614,19 +1614,12 @@ export default {
 @keyframes fadeOut {
   0% {
     transform: translateY(0px);
-    opacity: 1;
-  }
-  50% {
-    transform: translateY(0px);
-    opacity: 1;
   }
   92% {
     transform: translateY(0px);
-    opacity: 0.93;
   }
   100% {
     transform: translateY(-150vh);
-    opacity: 0.2;
   }
 }
 
