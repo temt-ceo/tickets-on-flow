@@ -1714,6 +1714,10 @@ tr {
 }
 
 .ticket-page {
+  .message.is-small {
+    font-size: 0.85rem;
+  }
+
   .content p:not(:last-child) {
     margin-bottom: 0;
   }
