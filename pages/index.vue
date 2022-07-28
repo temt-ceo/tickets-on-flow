@@ -737,7 +737,7 @@ export default {
     if (!this.returnMode) {
       setTimeout(() => {
         this.isComponentModalActive = true
-      }, 2800)
+      }, 3900)
     }
 
     const timerID = setInterval(() => {
