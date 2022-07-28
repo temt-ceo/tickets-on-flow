@@ -287,9 +287,9 @@
       />
     </div>
     <div v-if="!returnMode" class="hero2">
-      <div class="hero--overlay">
+      <!-- <div class="hero--overlay">
         <div class="hero--content" />
-      </div>
+      </div> -->
     </div>
     <img v-if="!returnMode" class="anime-image" src="/chainwork-top.png" :style="{display: offIcon}">
     <small class="bottom-copyright">&copy; Tokyo EM Technology & Co.</small>
@@ -1560,9 +1560,9 @@ export default {
 
 .anime-image {
   position: absolute;
-  width: 90%;
+  width: 80%;
   top: 48%;
-  left: 50%;
+  left: 54%;
   transform: translateX(-50%) translateY(-50%);
   margin: 0 auto;
   z-index: 5;
