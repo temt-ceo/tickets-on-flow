@@ -14,7 +14,7 @@
               {{ ticketUsedMessage }}
             </b-notification>
             <h1 class="page-title">
-              {{ $t('ticket_text31') }}
+              {{ $t('hamburger_menu1') }}
             </h1>
             <hr style="background-color: inherit; margin: 1rem 0;">
             <div class="content">
