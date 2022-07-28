@@ -1474,13 +1474,10 @@ span.control-label {
 .dropdown-item {
   .media {
     .media-left {
-      padding-right: 1rem;
-      margin-right: 0.5px;
+      margin-right: 0;
     }
 
     .media-content {
-      color: #48c78e;
-      font-size: large;
       font-size: 11px;
       // h3 {
       //   text-shadow: 0 0.2px 0.8px #257953;
@@ -1805,7 +1802,7 @@ tr {
 }
 
 .i18n-pagenation {
-  padding-bottom: 10px;
+  padding: 0 5px 10px 5px;
 
   .pagination-previous,
   .pagination-next {
@@ -1955,7 +1952,7 @@ tr {
 
 @media screen and (max-width: 1023px) {
   .dropdown.is-mobile-modal > .dropdown-menu > .dropdown-content > .dropdown-item {
-    padding: 1rem 0.5rem 1rem 1.2rem
+    padding: 1rem 0.5rem 1rem 0.8rem
   }
 }
 
