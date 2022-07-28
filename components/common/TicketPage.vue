@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="hero ticket-page">
-      <video class="hero--video" src="/img/particles_3_60s_2kres_1.mp4" muted autoplay playsinline />
+      <!-- <video class="hero--video" src="/img/particles_3_60s_2kres_1.mp4" muted autoplay playsinline /> -->
       <div class="hero--overlay">
         <div class="hero--content">
           <b-breadcrumb>
