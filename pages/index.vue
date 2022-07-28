@@ -1534,7 +1534,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  background-image: radial-gradient(rgb(104, 141, 252), #1b1c50);
+  background-image: radial-gradient(#3e9, #1b1c50);
   background-size: cover;
   z-index: 2;
 }
