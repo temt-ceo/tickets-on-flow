@@ -1,6 +1,23 @@
 # tickets-on-flow
 
-## Install Rust
+## App
+
+Tickets is a payment support service for individuals who actively use social media. You can earn $FLOW with a dedicated web page tied to your wallet address. 🌳
+
+Tickets (Chain Work) is
+1. friendly to climate change
+2. friendly to victims of war
+3. help those suffering from heat waves to earn cash income.
+
+🌳 Eco at home Apps: https://chain-work.com/
+
+Tickets (Chain Work) was inspired by the need for an app that would allow the economically disadvantaged in Ukraine to start a business.
+
+🌳 Eco at home Apps: https://chain-work.com
+
+## Build Setup
+
+### Install Rust
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -12,13 +29,13 @@ rustup --version
 cargo --version
 ```
 
-## Install wasm-pack
+### Install wasm-pack
 
 ```bash
 cargo install wasm-pack
 ```
 
-## Setting up and build a package using wasm-pack for Rust project
+### Setting up and build a package using wasm-pack for Rust project
 
 ```bash
 # Setting up a package
@@ -33,8 +50,7 @@ wasm-pack build --target web
 > Your wasm pkg is ready to publish at /Users/taharatakashi/AI/tickets-on-flow/rust/encrypt-phrase/pkg.
 ```
 
-## Build Setup
-
+### Start Nuxt project
 ```bash
 # install dependencies
 $ yarn install
