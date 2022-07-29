@@ -286,11 +286,11 @@
         @click="imageModal"
       />
     </div>
-    <!-- <div v-if="!returnMode" class="hero2">
+    <div v-if="!returnMode && isPc" class="hero2">
       <div class="hero--overlay">
         <div class="hero--content" />
       </div>
-    </div> -->
+    </div>
     <img v-if="!returnMode" class="anime-image" src="/chainwork-top.png" :style="{display: offIcon}">
     <small class="bottom-copyright">&copy; Tokyo EM Technology & Co.</small>
     <b-carousel
@@ -660,6 +660,7 @@ export default {
       selected: null,
       loadingTime: 0,
       returnMode: location.search === '?home',
+      isPc: window.innerWidth > 1240,
       offIcon: null,
       isComponentModalActive: false,
       activeStep: 0,
@@ -1534,7 +1535,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  background-image: radial-gradient(#3e9, #1b1c50);
+  background-image: radial-gradient(rgb(65,105,225), #1b1c50);
   background-size: cover;
   z-index: 2;
 }
