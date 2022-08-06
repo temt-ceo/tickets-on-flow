@@ -54,14 +54,33 @@
               target="_blank"
               :class="{ long: ticket.twitter.length > 15, too_long: ticket.twitter.length > 19 }"
               class="twitter-label"
-              style="line-height: 0.98;"
+              style="line-height: 1.0;"
             >
-              <span style="font-size: 9px;">{{ $t('ticket_text5') }}:</span><br>
+              <span style="font-size: 10px;">{{ $t('ticket_text5') }}:</span><br>
               <span>@{{ ticket.twitter }}</span>
             </a>
+            <div
+              v-if="ticket.type !== 'stats'"
+              style="position: absolute; right: 46px; bottom: 13px; color: #c8c8c8;"
+            >
+              0 upvotes
+            </div>
+            <div
+              v-if="ticket.type !== 'stats'"
+              style="position: absolute; right: 12px; bottom: 5px; color: #c8c8c8;"
+              @click="clickTicketConfirmIcon(ticket)"
+            >
+              <b-icon
+                pack="fa-regular"
+                icon="comment"
+                size="is-medium"
+                style="font-size: 0.8em; max-width: 8px;"
+              />
+              0
+            </div>
             <span
               v-if="ticket.type !== 'stats'"
-              style="position: absolute; right: 30px; bottom: -7px;"
+              style="position: absolute; right: 36px; bottom: -10px;"
               @click="clickTicketConfirmIcon(ticket)"
             >
               <b-icon
@@ -74,7 +93,7 @@
             </span>
             <span
               v-if="ticket.type !== 'stats' && ticket.doUkrainianSupport"
-              style="position: absolute; right: 10px; bottom: -4px; font-size: 1.5em;"
+              style="position: absolute; right: 15px; bottom: -7px; font-size: 1.5em;"
               @click="clickTicketConfirmIcon(ticket)"
             >
               🇺🇦

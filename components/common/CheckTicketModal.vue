@@ -104,6 +104,28 @@
         </template>
       </b-table>
       <hr style="background-color: #fff;">
+      <div
+        style="position: absolute; right: 70px; bottom: 82.5px; color: #999;"
+      >
+        <b-icon
+          pack="fa-regular"
+          icon="heart"
+          style="font-size: 0.9em; max-width: 15px;"
+        />
+        0
+      </div>
+      <div
+        style="position: absolute; right: 25px; bottom: 79px; color: #999;"
+        @click="showMessage = true"
+      >
+        <b-icon
+          pack="fa-regular"
+          icon="comment"
+          size="is-medium"
+          style="font-size: 0.8em; max-width: 15px;"
+        />
+        0
+      </div>
       <div class="buttons" style="display: block; margin-bottom: 0;">
         <b-button v-if="!isTop" type="is-warning" style="margin: 0 6%;" inverted @click="showSchedule">
           {{ $t('operation_text69') }}
@@ -140,6 +162,71 @@
     <b-button v-if="showCalendar" type="is-danger" @click="hideSchedule">
       Close
     </b-button>
+    <b-modal v-model="showMessage" :width="640" scroll="keep" style="z-index: 50">
+      <div style="padding: 50px 10px;">
+        <!-- <b-message
+          type="is-info"
+          has-icon
+          icon="account"
+          aria-close-label="Close message">
+          Lorem ipsum dolor sit amet,
+          <a href="https://twitter.com/_official_asp" target="_blank" style="color: #7957d5;">https://twitter.com/_official_asp</a>
+          consectetur warning elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
+        </b-message>
+        <b-message
+          type="is-info"
+          has-icon
+          icon="account"
+          aria-close-label="Close message">
+          Lorem ipsum dolor sit amet, consectetur warning elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
+        </b-message>
+        <b-message
+          type="is-info"
+          has-icon
+          icon="account"
+          aria-close-label="Close message">
+          Lorem ipsum dolor sit amet, consectetur warning elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
+        </b-message>
+        <b-message
+          type="is-info"
+          has-icon
+          icon="account"
+          aria-close-label="Close message">
+          Lorem ipsum dolor sit amet, consectetur warning elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
+        </b-message>
+        <b-message
+          type="is-dark"
+          has-icon
+          icon="account"
+          aria-close-label="Close message">
+          Lorem ipsum dolor sit amet, consectetur warning elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
+        </b-message>
+        <b-message
+          type="is-dark"
+          has-icon
+          icon="account"
+          aria-close-label="Close message">
+          Lorem ipsum dolor sit amet, consectetur warning elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
+        </b-message>
+        <b-message
+          type="is-dark"
+          has-icon
+          icon="account"
+          aria-close-label="Close message">
+          <a href="https://twitter.com/_official_asp" target="_blank" style="color: #7957d5;">https://twitter.com/_official_asp</a>
+        </b-message> -->
+        <div style="background-color: white; padding: 10px; border-radius: 10px;">
+          <b-field label="Add a comment..." style="margin-bottom: 0;">
+            <b-input maxlength="200" type="textarea"></b-input>
+          </b-field>
+          <div style="text-align: center;">
+            <b-button type="is-info" @click="$emit('closeModal')">
+              Post
+            </b-button>
+          </div>
+        </div>
+      </div>
+    </b-modal>
     <b-modal v-if="additionalDescription" v-model="isCardModalActive" :width="640" scroll="keep" style="z-index: 50">
       <div class="card">
         <div class="card-image">
@@ -665,6 +752,7 @@ export default {
       isLoading: false,
       hasMobileCards: true,
       showCalendar: false,
+      showMessage: false,
       showTooltip: false,
       date: new Date(),
       startTime: null,
