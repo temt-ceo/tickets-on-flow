@@ -123,7 +123,7 @@ flow version # Version: v0.37.2
 
 flow keys generate --network=mainnet
 
-1. access to prot flow : port.onflow.org
+1. access to port flow : port.onflow.org
 2. click "Advanced"
 3. click "Create New Account"
 4. Copy your public key, paste public key.
@@ -136,6 +136,9 @@ flow init # Configuration initialized
 
 
 flow project deploy --network=mainnet
+
+# Re-deploy command
+flow accounts update-contract Tickets ./cadence/Tickets.cdc --signer=mainnet-account --network=mainnet
 
 # add capability receiver to an account
 node addCap.js
