@@ -194,8 +194,10 @@
         :ticket-description="ticketDescription"
         :additional-description="additionalDescription"
         :no-login="notLoginUser"
+        :key="commentUpdateKey"
         @closeModal="showConfirmModal=false"
         @eventname="nextMove"
+        @updateComment="resetModal"
       />
     </b-modal>
     <b-modal v-model="showSalesModal">
@@ -282,7 +284,8 @@ export default {
       termExpired: false,
       isDemo: false,
       currentPaidAmound: 0,
-      notLoginUser: false
+      notLoginUser: false,
+      commentUpdateKey: 0
     }
   },
   computed: {
@@ -336,6 +339,9 @@ export default {
           this.dispenserAddress = when[3]
         }
       }
+    },
+    resetModal () {
+      this.commentUpdateKey += 1
     },
     nextMove () {
       this.isDemo = true

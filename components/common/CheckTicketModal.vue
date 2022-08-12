@@ -106,13 +106,15 @@
       <hr style="background-color: #fff;">
       <div
         style="position: absolute; right: 70px; bottom: 82.5px; color: #999;"
+        @click="addComment(false, false)"
       >
         <b-icon
           pack="fa-regular"
           icon="heart"
+          :type="isUpvoted ? 'is-danger': ''"
           style="font-size: 0.9em; max-width: 15px;"
         />
-        0
+        {{ upvoteCount }}
       </div>
       <div
         style="position: absolute; right: 25px; bottom: 79px; color: #999;"
@@ -124,7 +126,7 @@
           size="is-medium"
           style="font-size: 0.8em; max-width: 15px;"
         />
-        0
+        {{ commentCount }}
       </div>
       <div class="buttons" style="display: block; margin-bottom: 0;">
         <b-button v-if="!isTop" type="is-warning" style="margin: 0 6%;" inverted @click="showSchedule">
@@ -164,64 +166,60 @@
     </b-button>
     <b-modal v-model="showMessage" :width="640" scroll="keep" style="z-index: 50">
       <div style="padding: 50px 10px;">
-        <!-- <b-message
+       <b-message
+          v-for="(obj, index) in comments"
+          v-show="obj.comment"
+          :key="index"
           type="is-info"
           has-icon
           icon="account"
           aria-close-label="Close message">
-          Lorem ipsum dolor sit amet,
-          <a href="https://twitter.com/_official_asp" target="_blank" style="color: #7957d5;">https://twitter.com/_official_asp</a>
-          consectetur warning elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
+          <span v-if="!obj.url">{{ obj.comment }}</span><br>
+          <span v-if="obj.url">{{ obj.commentPre }}</span><br>
+          <a v-if="obj.url" :href="obj.url" target="_blank" style="color: #7957d5;">{{ obj.url }}</a><br>
+          <span v-if="obj.url">{{ obj.commentPost }}</span><br>
+
+          <span style="font-size: 12px;">({{ new Date(parseInt(obj.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(obj.time) * 1000).toLocaleTimeString() }})</span>
+          <b-button
+            v-if="commented_ids.includes(obj.message_id)"
+            type="is-text"
+            @click="commentEditInput = obj.comment; updateMessageIndex = comments.length - (index + 1); showMessageEditor = true"
+            style="color: #7957d5; font-size: 14px;"
+          >
+            [Edit]
+          </b-button>
         </b-message>
-        <b-message
-          type="is-info"
-          has-icon
-          icon="account"
-          aria-close-label="Close message">
-          Lorem ipsum dolor sit amet, consectetur warning elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
-        </b-message>
-        <b-message
-          type="is-info"
-          has-icon
-          icon="account"
-          aria-close-label="Close message">
-          Lorem ipsum dolor sit amet, consectetur warning elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
-        </b-message>
-        <b-message
-          type="is-info"
-          has-icon
-          icon="account"
-          aria-close-label="Close message">
-          Lorem ipsum dolor sit amet, consectetur warning elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
-        </b-message>
-        <b-message
-          type="is-dark"
-          has-icon
-          icon="account"
-          aria-close-label="Close message">
-          Lorem ipsum dolor sit amet, consectetur warning elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
-        </b-message>
-        <b-message
-          type="is-dark"
-          has-icon
-          icon="account"
-          aria-close-label="Close message">
-          Lorem ipsum dolor sit amet, consectetur warning elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
-        </b-message>
-        <b-message
-          type="is-dark"
-          has-icon
-          icon="account"
-          aria-close-label="Close message">
-          <a href="https://twitter.com/_official_asp" target="_blank" style="color: #7957d5;">https://twitter.com/_official_asp</a>
-        </b-message> -->
         <div style="background-color: white; padding: 10px; border-radius: 10px;">
           <b-field label="Add a comment..." style="margin-bottom: 0;">
-            <b-input maxlength="200" type="textarea"></b-input>
+            <b-input
+              v-model="commentInput"
+              maxlength="200"
+              type="textarea"
+            >
+            </b-input>
           </b-field>
           <div style="text-align: center;">
-            <b-button type="is-info" @click="$emit('closeModal')">
+            <b-button type="is-info" @click="addComment(true, false)">
               Post
+            </b-button>
+          </div>
+        </div>
+      </div>
+    </b-modal>
+    <b-modal v-model="showMessageEditor" :width="640" scroll="keep" style="z-index: 60">
+      <div style="padding: 50px 10px;">
+        <div style="background-color: white; padding: 10px; border-radius: 10px;">
+          <b-field label="Add a comment..." style="margin-bottom: 0;">
+            <b-input
+              v-model="commentEditInput"
+              maxlength="200"
+              type="textarea"
+            >
+            </b-input>
+          </b-field>
+          <div style="text-align: center;">
+            <b-button type="is-info" @click="addComment(true, true)">
+              Edit
             </b-button>
           </div>
         </div>
@@ -706,6 +704,8 @@
 </template>
 
 <script>
+import FlowScripts from '~/cadence/scripts'
+import FlowTransactions from '~/cadence/transactions'
 
 export default {
   name: 'OwnedTicketsConfirmModal',
@@ -742,6 +742,9 @@ export default {
   },
   data () {
     return {
+      bloctoWalletUser: {},
+      address: null,
+      ticketAddress: null,
       tickets: [],
       toolList: ['Zoom', 'Instagram', 'Discord', 'Teams', 'Google Meet', 'Ticket website', 'YouTube', 'Any tool', 'On-site'],
       isBordered: false,
@@ -783,7 +786,20 @@ export default {
       linkTitle3: null,
       linkUrl3: null,
       isTop: location.search === '?home',
-      doUkrainianSupport: false
+      doUkrainianSupport: false,
+      commentInput: '',
+      commentEditInput: '',
+      commentCount: 0,
+      upvoteCount: 0,
+      isUpvoted: false,
+      commentUpdatable: true,
+      upvoteUpdatable: true,
+      allMessage: {},
+      comments: [],
+      commented_ids: [],
+      updateMessageIndex: null,
+      showMessageEditor: false,
+      isUpdateComment: false
     }
   },
   watch: {
@@ -874,6 +890,8 @@ export default {
     }
   },
   mounted () {
+    this.$fcl.currentUser.subscribe(this.setupWalletInfo)
+    this.showComments()
     if (this.additionalDescription && this.additionalDescription.infoDetail && this.additionalDescription.infoDetail.subtitle && this.additionalDescription.infoDetail.subtitle.length) {
       const texts = this.additionalDescription.infoDetail.subtitle.split('\r\n')
       if (texts.length >= 2) {
@@ -955,7 +973,8 @@ export default {
       ticket.ticketWhen = new Date(parseInt(when[1])).toLocaleString().replace(/(:\d{2}):00/, '$1') + (parseInt(this.ticket.type) === 1 ? '' : ` ${this.$t('ticket_text6')} `)
       this.startTime = new Date(parseInt(when[1])).toLocaleTimeString()
       this.isDiscloseSales = when.length >= 4 && when[3].length > 10
-      this.doUkrainianSupport = when.length >= 5 && when[4].length > 0 ? when[4] + '% ' + this.$t('operation_text150') : false
+      this.ticketAddress = when.length >= 5 ? when[4] : ''
+      this.doUkrainianSupport = when.length >= 6 && when[5].length > 0 ? when[5] + '% ' + this.$t('operation_text150') : false
     }
     const where = this.ticket.where_to_use.split('||')
     let detail = ''
@@ -999,6 +1018,239 @@ export default {
     }
   },
   methods: {
+    async flowWalletLogin () {
+      this.$buefy.snackbar.open({
+        duration: 5000,
+        message: this.$t('help_text18'),
+        type: 'is-danger',
+        position: 'is-bottom-left',
+        actionText: null,
+        queue: false,
+        onAction: () => {
+        }
+      })
+      await this.$fcl.authenticate()
+    },
+    async flowWalletLogout () {
+      await this.$fcl.unauthenticate()
+    },
+    setupWalletInfo (user) {
+      this.bloctoWalletUser = user
+
+      if (this.bloctoWalletUser?.addr) {
+        this.address = this.bloctoWalletUser?.addr
+      }
+    },
+    async showComments () {
+      try {
+        const messages = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getMessages),
+            this.$fcl.args([
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        this.allMessage = messages
+        if (this.allMessage?.[this.bloctoWalletUser?.addr]) {
+          this.commented_ids = this.allMessage?.[this.bloctoWalletUser?.addr].commented_ids || []
+        }
+        if (this.allMessage?.[this.ticketAddress]) {
+          this.upvoteCount = parseInt(this.allMessage?.[this.ticketAddress].got_upvote)
+          this.commentCount = this.allMessage?.[this.ticketAddress].got_comments.length
+          this.comments = this.allMessage?.[this.ticketAddress].got_comments
+          const upvoteTickets = this.allMessage?.[this.bloctoWalletUser?.addr].upvote_tickets || []
+          if (upvoteTickets.includes(this.ticketAddress)) {
+            this.isUpvoted = true
+          } else {
+            this.isUpvoted = false
+          }
+          this.comments.reverse()
+          let commentCnt = 0
+          this.comments.forEach((obj) => {
+            let i = 0
+            let url = ''
+            if (obj.comment) {
+              commentCnt++
+              this.commentCount = commentCnt
+            }
+            obj.comment = obj.comment.split('\n').map((data) => {
+              if (data.indexOf('http') === 0 && i === 0) {
+                url = data
+                i++
+                return '¥¥break¥¥'
+              } else {
+                return data
+              }
+            }).join('\n')
+            if (url) {
+              obj.url = url
+              const text = obj.comment.split('¥¥break¥¥')
+              obj.commentPre = text[0]
+              obj.commentPost = text[1]
+              obj.comment = obj.comment.replace('¥¥break¥¥', url)
+            }
+          })
+        }
+      } catch (e) {
+      }
+    },
+    async addComment (isComment, isEdit) {
+      if ((this.commentUpdatable && isComment) || (this.upvoteUpdatable && !isComment)) {
+        let comment = ''
+        let isDownvote = false
+        if (isComment) {
+          if (isEdit) {
+            comment = this.commentEditInput
+          } else {
+            comment = this.commentInput
+          }
+        }
+        if (!this.bloctoWalletUser.addr) {
+          await this.flowWalletLogin()
+        } else {
+          this.$buefy.snackbar.open({
+            duration: 5000, // 5 seconds
+            message: this.$t('operation_text85') + '<br>' + this.$t('operation_text29'),
+            type: 'is-danger',
+            position: 'is-bottom-left',
+            actionText: null,
+            queue: false,
+            onAction: () => {
+            }
+          })
+        }
+        if (this.bloctoWalletUser.addr) {
+          // loading
+          const loadingComponent = this.$buefy.loading.open({
+            container: null
+          })
+          setTimeout(() => loadingComponent.close(), 3 * 1000)
+
+          try {
+            const hasMessageVault = await this.$fcl.send(
+              [
+                this.$fcl.script(FlowScripts.hasMessagesVault),
+                this.$fcl.args([
+                  this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address)
+                ])
+              ]
+            ).then(this.$fcl.decode)
+            if (!hasMessageVault) {
+              await this.$fcl.send(
+                [
+                  this.$fcl.transaction(FlowTransactions.createMessage),
+                  this.$fcl.args([
+                    this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
+                    this.$fcl.arg(this.ticketAddress, this.$fclArgType.Address),
+                    this.$fcl.arg(comment, this.$fclArgType.String),
+                    this.$fcl.arg(isComment, this.$fclArgType.Bool)
+                  ]),
+                  this.$fcl.payer(this.$fcl.authz),
+                  this.$fcl.proposer(this.$fcl.authz),
+                  this.$fcl.authorizations([this.$fcl.authz]),
+                  this.$fcl.limit(9999)
+                ]
+              ).then(this.$fcl.decode)
+            } else {
+              const message = this.allMessage[this.bloctoWalletUser?.addr]
+              if (!isComment && message && message.upvote_tickets.includes(this.ticketAddress)) {
+                isDownvote = true
+                const index = message.upvote_tickets.indexOf(this.ticketAddress)
+                await this.$fcl.send(
+                  [
+                    this.$fcl.transaction(FlowTransactions.updateMessage),
+                    this.$fcl.args([
+                      this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
+                      this.$fcl.arg(this.ticketAddress, this.$fclArgType.Address),
+                      this.$fcl.arg(index, this.$fclArgType.UInt32),
+                      this.$fcl.arg(comment, this.$fclArgType.String),
+                      this.$fcl.arg(isComment, this.$fclArgType.Bool)
+                    ]),
+                    this.$fcl.payer(this.$fcl.authz),
+                    this.$fcl.proposer(this.$fcl.authz),
+                    this.$fcl.authorizations([this.$fcl.authz]),
+                    this.$fcl.limit(9999)
+                  ]
+                ).then(this.$fcl.decode)
+              } else if (!isEdit) {
+                await this.$fcl.send(
+                  [
+                    this.$fcl.transaction(FlowTransactions.addMessage),
+                    this.$fcl.args([
+                      this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
+                      this.$fcl.arg(this.ticketAddress, this.$fclArgType.Address),
+                      this.$fcl.arg(comment, this.$fclArgType.String),
+                      this.$fcl.arg(isComment, this.$fclArgType.Bool)
+                    ]),
+                    this.$fcl.payer(this.$fcl.authz),
+                    this.$fcl.proposer(this.$fcl.authz),
+                    this.$fcl.authorizations([this.$fcl.authz]),
+                    this.$fcl.limit(9999)
+                  ]
+                ).then(this.$fcl.decode)
+              } else {
+                const index = this.updateMessageIndex
+                await this.$fcl.send(
+                  [
+                    this.$fcl.transaction(FlowTransactions.updateMessage),
+                    this.$fcl.args([
+                      this.$fcl.arg(this.bloctoWalletUser?.addr, this.$fclArgType.Address),
+                      this.$fcl.arg(this.ticketAddress, this.$fclArgType.Address),
+                      this.$fcl.arg(index, this.$fclArgType.UInt32),
+                      this.$fcl.arg(comment, this.$fclArgType.String),
+                      this.$fcl.arg(isComment, this.$fclArgType.Bool)
+                    ]),
+                    this.$fcl.payer(this.$fcl.authz),
+                    this.$fcl.proposer(this.$fcl.authz),
+                    this.$fcl.authorizations([this.$fcl.authz]),
+                    this.$fcl.limit(9999)
+                  ]
+                ).then(this.$fcl.decode)
+              }
+            }
+            this.isUpdateComment = isComment
+            // loading
+            const loadingComponent2 = this.$buefy.loading.open({
+              container: null
+            })
+            setTimeout(() => loadingComponent2.close(), 5 * 1000)
+            if (isComment) {
+              this.showMessage = false
+              this.showMessageEditor = false
+            }
+            if (this.upvoteUpdatable) {
+              if (isDownvote) {
+                this.upvoteCount = this.upvoteCount - 1
+                this.isUpvoted = false
+              } else if (!isComment) {
+                this.upvoteCount = this.upvoteCount + 1
+                this.isUpvoted = true
+              }
+            }
+            if (this.isUpdateComment) {
+              this.commentUpdatable = false
+            } else {
+              this.upvoteUpdatable = false
+            }
+          } catch (e) {
+          }
+        } else {
+          setTimeout(() => {
+            // 2秒後しれっと最新情報を読みに行く
+            this.showComments()
+          }, 2000)
+        }
+        setTimeout(async () => {
+          // 15秒後しれっと最新情報を読みに行く
+          await this.showComments()
+          this.commentUpdatable = true
+          this.upvoteUpdatable = true
+          if (this.isUpdateComment) {
+            this.$emit('updateComment')
+          }
+        }, 15000)
+      }
+    },
     nextEvent () {
       this.$emit('eventname')
     },

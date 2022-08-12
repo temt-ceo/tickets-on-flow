@@ -167,6 +167,19 @@ pub fun main(): {Address: [StatsString.StatsStruct]} {
     return StatsString.stats
 }
   `,
+  hasMessagesVault: `
+import Messages from 0xT
+pub fun main(address: Address): &Messages.MessagesPublic? {
+  let account = getAccount(address)
+  return account.getCapability<&Messages.MessagesPublic>(Messages.TicketsCommentVaultPublicPath).borrow()
+}
+  `,
+  getMessages: `
+import Messages from 0xT
+pub fun main(): {Address: Messages.MessagesStruct} {
+  return Messages.messages
+}
+`,
   isSetRefundVault: `
 import Tickets from 0xT
 pub fun main(addr: Address): Bool {

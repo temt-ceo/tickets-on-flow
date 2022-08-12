@@ -562,6 +562,7 @@ export default {
       border-radius: 20px;
       margin: 18px 0;
       max-width: 400px;
+      min-width: 265px;
 
       &.to-top {
         margin-top: 34px;

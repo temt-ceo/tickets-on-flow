@@ -61,12 +61,15 @@
             </a>
             <div
               v-if="ticket.type !== 'stats'"
+              class="upvote-div"
               style="position: absolute; right: 46px; bottom: 13px; color: #c8c8c8;"
+              @click="clickTicketConfirmIcon(ticket)"
             >
               0 upvotes
             </div>
             <div
               v-if="ticket.type !== 'stats'"
+              class="comment-div"
               style="position: absolute; right: 12px; bottom: 5px; color: #c8c8c8;"
               @click="clickTicketConfirmIcon(ticket)"
             >
@@ -603,8 +606,10 @@
         :ticket-title="ticketModalTitle"
         :ticket-description="ticketModalDescription"
         :no-login="false"
+        :key="commentUpdateKey"
         @closeModal="showConfirmModal=false"
         @eventname="nextMove"
+        @updateComment="resetModal"
       />
     </b-modal>
   </section>
@@ -712,7 +717,9 @@ export default {
       ticketModalInfo: {},
       ticketModalWhenWeek: '',
       ticketModalTitle: '',
-      ticketModalDescription: ''
+      ticketModalDescription: '',
+      commentUpdateKey: 0,
+      allMessage: {}
     }
   },
   computed: {
@@ -760,6 +767,7 @@ export default {
       }, 3900)
     }
 
+    this.showComments()
     const timerID = setInterval(() => {
       this.loadingTime += 200
     }, 200)
@@ -838,6 +846,22 @@ export default {
       }
       this.showConfirmModal = true
     },
+    async showComments () {
+      try {
+        const messages = await this.$fcl.send(
+          [
+            this.$fcl.script(FlowScripts.getMessages),
+            this.$fcl.args([
+            ])
+          ]
+        ).then(this.$fcl.decode)
+        this.allMessage = messages
+      } catch (e) {
+      }
+    },
+    resetModal () {
+      this.commentUpdateKey += 1
+    },
     nextMove () {
       this.showConfirmModal = false
       location.href = '/ti/' + this.ticketModalInfo.domain + '?learn-more=true'
@@ -907,7 +931,7 @@ export default {
               } else {
                 datetime = new Date(parseInt(when[1])).toLocaleString().replace(/(:\d{2}):00/, '$1') + ` ${this.$t('ticket_text6')} `
               }
-              doUkrainianSupport = when.length >= 5 && when[4].length > 0
+              doUkrainianSupport = when.length >= 6 && when[5].length > 0
             }
 
             const ticketName = ticket.name.split('||@')
@@ -1413,7 +1437,7 @@ export default {
       margin-left: 3px;
       position: absolute;
       min-width: 170px;
-      bottom: 24px;
+      bottom: 25px;
       left: 127px;
     }
 
@@ -1698,6 +1722,16 @@ export default {
 
     .tutorial-arrow {
       left: 63vw;
+    }
+
+    .upvote-div {
+      right: 146px !important;
+      bottom: 0px !important;
+    }
+
+    .comment-div {
+      right: 112px !important;
+      bottom: -7px !important;
     }
   }
 }

@@ -395,11 +395,11 @@ export default {
               } else {
                 this.switchDiscloseSales = this.$t('operation_text88')
               }
-              if (when.length < 5 || when[4] === '') {
+              if (when.length < 6 || when[5] === '') {
                 this.switchUkrainianSupport = this.$t('operation_text148')
               } else {
                 this.switchUkrainianSupport = this.$t('operation_text149')
-                this.numberRefund = parseInt(when[4])
+                this.numberRefund = parseInt(when[5])
               }
             }
             this.registerPrice = this.ticketInfo.price.replace(/\.?0+$/, '')
@@ -459,12 +459,13 @@ export default {
       const registerWeekdays = this.registerWhenWeekdays.map(obj => obj.id).join('')
       let registerWhen = registerWeekdays + '||' + this.registerWhen.getTime() + '||' + navigator.language + '||'
       if (this.switchDiscloseSales === this.$t('operation_text88')) {
-        registerWhen = registerWhen + this.address
+        registerWhen = registerWhen + 'Yes'
       }
-      registerWhen = registerWhen + '||'
+      registerWhen = registerWhen + '||' + this.address + '||'
       if (this.switchUkrainianSupport === this.$t('operation_text149')) {
         registerWhen = registerWhen + this.numberRefund
       }
+
       try {
         // loading
         const loadingComponent = this.$buefy.loading.open({
@@ -512,9 +513,9 @@ export default {
       const registerWeekdays = this.registerWhenWeekdays.map(obj => obj.id).join('')
       let registerWhen = registerWeekdays + '||' + this.registerWhen.getTime() + '||' + navigator.language + '||'
       if (this.switchDiscloseSales === this.$t('operation_text88')) {
-        registerWhen = registerWhen + this.address
+        registerWhen = registerWhen + 'Yes'
       }
-      registerWhen = registerWhen + '||'
+      registerWhen = registerWhen + '||' + this.address + '||'
       if (this.switchUkrainianSupport === this.$t('operation_text149')) {
         registerWhen = registerWhen + this.numberRefund
       }

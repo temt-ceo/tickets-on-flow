@@ -300,8 +300,50 @@ transaction(addr: Address, index: UInt32, nickname: String, title: String, answe
   }
 
   execute {
-      log("ticket info is updated.")
+      log("stats is updated.")
   }
 }
+  `,
+  createMessage: `
+import Messages from 0xT
+transaction(addr: Address, ticket_addr: Address, comment: String, is_comment: Bool) {
+    prepare(signer: AuthAccount) {
+        signer.save<@Messages.MessagesVault>(<- Messages.createMessagesVault(addr: addr, ticket_addr: ticket_addr, comment: comment, is_comment:is_comment), to: /storage/MessagesStringVault)
+        signer.save<@Messages.MessagesPublic>(<- Messages.createMessagesPublic(), to: /storage/TicketsCommentVault)
+        signer.link<&Messages.MessagesPublic>(Messages.TicketsCommentVaultPublicPath, target:/storage/TicketsCommentVault)
+    }
+
+    execute {
+        log("Setting up messages vault is complete.")
+    }
+}
+  `,
+  addMessage: `
+import Messages from 0xT
+transaction(addr: Address, ticket_addr: Address, comment: String, is_comment: Bool) {
+    prepare(signer: AuthAccount) {
+        let messageVault = signer.borrow<&Messages.MessagesVault>(from: /storage/MessagesStringVault)
+            ?? panic("Could not borrow reference to the Owner's MessagesStringVault.")
+        messageVault.addMessages(addr: signer.address, ticket_addr: ticket_addr, comment: comment, is_comment: is_comment)
+    }
+
+    execute {
+        log("message is added.")
+    }
+}
+  `,
+  updateMessage: `
+import Messages from 0xT
+transaction(addr: Address, ticket_addr: Address, index: UInt32, comment: String, is_comment: Bool) {
+    prepare(signer: AuthAccount) {
+        let messageVault = signer.borrow<&Messages.MessagesVault>(from: /storage/MessagesStringVault)
+            ?? panic("Could not borrow reference to the Owner's MessagesStringVault.")
+        messageVault.updateMessages(addr: signer.address, ticket_addr: ticket_addr, index: index, comment: comment, is_comment: is_comment)
+    }
+
+    execute {
+        log("message is updated.")
+    }
+  }
   `
 }

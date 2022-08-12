@@ -694,8 +694,9 @@ export default {
       const registerWeekdays = this.registerWhenWeekdays.map(obj => obj.id).join('')
       let registerWhen = registerWeekdays + '||' + this.registerWhen.getTime() + '||' + navigator.language + '||'
       if (this.switchDiscloseSales === this.$t('operation_text88')) {
-        registerWhen = registerWhen + this.address
+        registerWhen = registerWhen + 'Yes'
       }
+      registerWhen = registerWhen + '||' + this.address
 
       try {
         // loading
@@ -744,8 +745,9 @@ export default {
       const registerWeekdays = this.registerWhenWeekdays.map(obj => obj.id).join('')
       let registerWhen = registerWeekdays + '||' + this.registerWhen.getTime() + '||' + navigator.language + '||'
       if (this.switchDiscloseSales === this.$t('operation_text88')) {
-        registerWhen = registerWhen + this.address
+        registerWhen = registerWhen + 'Yes'
       }
+      registerWhen = registerWhen + '||' + this.address
 
       try {
         // loading
