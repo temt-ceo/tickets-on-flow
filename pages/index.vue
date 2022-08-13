@@ -65,7 +65,7 @@
               style="position: absolute; right: 46px; bottom: 13px; color: #c8c8c8;"
               @click="clickTicketConfirmIcon(ticket)"
             >
-              0 upvotes
+              {{ upvoteCounts ? upvoteCounts[ticket.addr] : 0 }} upvotes
             </div>
             <div
               v-if="ticket.type !== 'stats'"
@@ -79,7 +79,7 @@
                 size="is-medium"
                 style="font-size: 0.8em; max-width: 8px;"
               />
-              0
+              {{ commentCounts ? commentCounts[ticket.addr] : 0 }}
             </div>
             <span
               v-if="ticket.type !== 'stats'"
@@ -719,7 +719,10 @@ export default {
       ticketModalTitle: '',
       ticketModalDescription: '',
       commentUpdateKey: 0,
-      allMessage: {}
+      allMessages: null,
+      commentCounts: null,
+      upvoteCounts: null,
+      totalTicketCount: 0
     }
   },
   computed: {
@@ -767,10 +770,10 @@ export default {
       }, 3900)
     }
 
-    this.showComments()
     const timerID = setInterval(() => {
       this.loadingTime += 200
     }, 200)
+    this.readCommentCounts()
     await this.getTickets()
     clearInterval(timerID)
     await this.getStats()
@@ -846,7 +849,7 @@ export default {
       }
       this.showConfirmModal = true
     },
-    async showComments () {
+    async readCommentCounts () {
       try {
         const messages = await this.$fcl.send(
           [
@@ -855,8 +858,23 @@ export default {
             ])
           ]
         ).then(this.$fcl.decode)
-        this.allMessage = messages
+        this.allMessages = messages
       } catch (e) {
+      }
+    },
+    showCommentCounts (tickets) {
+      if (this.allMessages) {
+        this.commentCounts = {}
+        this.upvoteCounts = {}
+        tickets.forEach((ticket) => {
+          const when = ticket.when_to_use.split('||')
+          this.commentCounts[when[4]] = this.allMessages[when[4]] ? this.allMessages[when[4]].got_comments?.filter(obj => obj.comment !== '').length : '0'
+          this.upvoteCounts[when[4]] = this.allMessages[when[4]] ? this.allMessages[when[4]].got_upvote : '0'
+        })
+      } else {
+        setTimeout(() => {
+          this.showCommentCounts(tickets)
+        }, 1000)
       }
     },
     resetModal () {
@@ -904,6 +922,8 @@ export default {
             }
             return Math.random() - 0.5
           })
+          this.totalTicketCount = tickets.length
+          this.showCommentCounts(tickets)
           this.$store.commit('updateTickets', tickets) // save tickets
         }
         for (let i = 0; i < tickets.length; i++) {
@@ -989,7 +1009,8 @@ export default {
                   datetime,
                   style: 'color' + (parseInt(tool) % 7 + 1).toString(),
                   type,
-                  doUkrainianSupport
+                  doUkrainianSupport,
+                  addr: when[4]
                 }
                 const language = this.languageList[this.language]
                 if (language === when[2] || data.is_multilingual || language === 'all') {

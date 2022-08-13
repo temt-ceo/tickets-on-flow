@@ -109,7 +109,7 @@
         @click="addComment(false, false)"
       >
         <b-icon
-          pack="fa-regular"
+          :pack="isUpvoted ? 'fa-solid': 'fa-regular'"
           icon="heart"
           :type="isUpvoted ? 'is-danger': ''"
           style="font-size: 0.9em; max-width: 15px;"
@@ -118,7 +118,7 @@
       </div>
       <div
         style="position: absolute; right: 25px; bottom: 79px; color: #999;"
-        @click="showMessage = true"
+        @click="showMessage = commentUpdatable ? true : false"
       >
         <b-icon
           pack="fa-regular"
@@ -170,14 +170,14 @@
           v-for="(obj, index) in comments"
           v-show="obj.comment"
           :key="index"
-          type="is-info"
+          :type="organizer_commented_ids.includes(obj.message_id) ? 'is-info' : ''"
           has-icon
           icon="account"
           aria-close-label="Close message">
-          <span v-if="!obj.url">{{ obj.comment }}</span><br>
-          <span v-if="obj.url">{{ obj.commentPre }}</span><br>
-          <a v-if="obj.url" :href="obj.url" target="_blank" style="color: #7957d5;">{{ obj.url }}</a><br>
-          <span v-if="obj.url">{{ obj.commentPost }}</span><br>
+          <span v-if="!obj.url">{{ obj.comment }}<br></span>
+          <span v-if="obj.url">{{ obj.commentPre }}<br></span>
+          <a v-if="obj.url" :href="obj.url" target="_blank" style="color: #7957d5;">{{ obj.url }}<br></a>
+          <span v-if="obj.url">{{ obj.commentPost }}<br></span>
 
           <span style="font-size: 12px;">({{ new Date(parseInt(obj.time) * 1000).toLocaleDateString() }} {{ new Date(parseInt(obj.time) * 1000).toLocaleTimeString() }})</span>
           <b-button
@@ -797,6 +797,7 @@ export default {
       allMessage: {},
       comments: [],
       commented_ids: [],
+      organizer_commented_ids: [],
       updateMessageIndex: null,
       showMessageEditor: false,
       isUpdateComment: false
@@ -1054,25 +1055,15 @@ export default {
         if (this.allMessage?.[this.bloctoWalletUser?.addr]) {
           this.commented_ids = this.allMessage?.[this.bloctoWalletUser?.addr].commented_ids || []
         }
+        this.organizer_commented_ids = this.allMessage?.[this.ticketAddress].commented_ids || []
         if (this.allMessage?.[this.ticketAddress]) {
           this.upvoteCount = parseInt(this.allMessage?.[this.ticketAddress].got_upvote)
-          this.commentCount = this.allMessage?.[this.ticketAddress].got_comments.length
+          this.commentCount = this.allMessage?.[this.ticketAddress].got_comments.filter(obj => obj.comment !== '').length
           this.comments = this.allMessage?.[this.ticketAddress].got_comments
-          const upvoteTickets = this.allMessage?.[this.bloctoWalletUser?.addr].upvote_tickets || []
-          if (upvoteTickets.includes(this.ticketAddress)) {
-            this.isUpvoted = true
-          } else {
-            this.isUpvoted = false
-          }
           this.comments.reverse()
-          let commentCnt = 0
           this.comments.forEach((obj) => {
             let i = 0
             let url = ''
-            if (obj.comment) {
-              commentCnt++
-              this.commentCount = commentCnt
-            }
             obj.comment = obj.comment.split('\n').map((data) => {
               if (data.indexOf('http') === 0 && i === 0) {
                 url = data
@@ -1090,12 +1081,25 @@ export default {
               obj.comment = obj.comment.replace('¥¥break¥¥', url)
             }
           })
+          if (this.bloctoWalletUser?.addr) {
+            const upvoteTickets = this.allMessage?.[this.bloctoWalletUser?.addr].upvote_tickets || []
+            if (upvoteTickets.includes(this.ticketAddress)) {
+              this.isUpvoted = true
+            } else {
+              this.isUpvoted = false
+            }
+          }
         }
       } catch (e) {
       }
     },
     async addComment (isComment, isEdit) {
       if ((this.commentUpdatable && isComment) || (this.upvoteUpdatable && !isComment)) {
+        if (isComment) {
+          this.commentUpdatable = false
+        } else {
+          this.upvoteUpdatable = false
+        }
         let comment = ''
         let isDownvote = false
         if (isComment) {
@@ -1226,11 +1230,6 @@ export default {
                 this.upvoteCount = this.upvoteCount + 1
                 this.isUpvoted = true
               }
-            }
-            if (this.isUpdateComment) {
-              this.commentUpdatable = false
-            } else {
-              this.upvoteUpdatable = false
             }
           } catch (e) {
           }
