@@ -54,7 +54,6 @@
               target="_blank"
               :class="{ long: ticket.twitter.length > 15, too_long: ticket.twitter.length > 19 }"
               class="twitter-label"
-              style="line-height: 1.0;"
             >
               <span style="font-size: 10px;">{{ $t('ticket_text5') }}:</span><br>
               <span>@{{ ticket.twitter }}</span>
@@ -83,7 +82,7 @@
             </div>
             <span
               v-if="ticket.type !== 'stats'"
-              style="position: absolute; right: 36px; bottom: -10px;"
+              style="position: absolute; right: 36px; bottom: -12px;"
               @click="clickTicketConfirmIcon(ticket)"
             >
               <b-icon
@@ -91,12 +90,12 @@
                 icon="circle-info"
                 type="is-success"
                 size="is-medium"
-                style="font-size: 1.2em;"
+                style="font-size: 1.1em;"
               />
             </span>
             <span
               v-if="ticket.type !== 'stats' && ticket.doUkrainianSupport"
-              style="position: absolute; right: 15px; bottom: -7px; font-size: 1.5em;"
+              style="position: absolute; right: 15px; bottom: -9px; font-size: 1.2em;"
               @click="clickTicketConfirmIcon(ticket)"
             >
               🇺🇦
@@ -947,7 +946,7 @@ export default {
             let doUkrainianSupport = false
             if (when.length >= 2) {
               if (parseInt(ticket.type) === 1) {
-                datetime = `${this.$t('ticket_text56')} ` + new Date(parseInt(when[1])).toLocaleString().replace(/(:\d{2}):00/, '$1')
+                datetime = `${this.$t('ticket_text56')} ` + new Date(parseInt(when[1])).toLocaleDateString().replace(/(:\d{2}):00/, '$1')
               } else {
                 datetime = new Date(parseInt(when[1])).toLocaleString().replace(/(:\d{2}):00/, '$1') + ` ${this.$t('ticket_text6')} `
               }
@@ -1452,6 +1451,7 @@ export default {
 
     .datetime2 {
       color: #7957d5;
+      font-size: 10.5px;
     }
 
     .price {
@@ -1465,7 +1465,8 @@ export default {
     .twitter-label {
       color: #48c78e!important;
       position: absolute;
-      bottom: 2px;
+      bottom: 0px;
+      line-height: 1.1;
       left: 130px;
       font-weight: bold;
       text-decoration: underline;
