@@ -125,9 +125,9 @@ export default {
   },
   head () {
     return {
-      title: 'Chain Work Tickets | Tickets Setup',
+      title: 'Tickets Onchain | Tickets Setup',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Chain Work, Tickets, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' }
+        { hid: 'keywords', name: 'keywords', content: 'Tickets Onchain, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' }
       ]
     }
   },
@@ -221,7 +221,7 @@ export default {
         ).then(this.$fcl.decode)
         if (dispenserInfo) {
           this.dispenserId = parseInt(Object.keys(dispenserInfo)[0])
-          this.dispenserPage = 'https://chain-work.com/ti/' + dispenserInfo[this.dispenserId]
+          this.dispenserPage = 'https://tickets-onchain.com/ti/' + dispenserInfo[this.dispenserId]
         } else {
           this.dispenserPage = ''
         }
@@ -273,7 +273,7 @@ export default {
             }
             toast1 = this.$buefy.toast.open({
               indefinite: true,
-              message: `${this.$t('ticket_text43')} https://chain-work.com/ti/${domain}`
+              message: `${this.$t('ticket_text43')} https://tickets-onchain.com/ti/${domain}`
             })
             this.$buefy.dialog.confirm({
               message: this.$t('ticket_text46'),

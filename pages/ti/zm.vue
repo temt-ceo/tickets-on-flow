@@ -136,9 +136,9 @@ export default {
   },
   head () {
     return {
-      title: 'Chain Work Tickets | zm',
+      title: 'Tickets Onchain | zm',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Chain Work, Tickets, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' }
+        { hid: 'keywords', name: 'keywords', content: 'Tickets Onchain, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' }
       ]
     }
   }

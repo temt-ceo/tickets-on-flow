@@ -126,7 +126,7 @@ export default {
         file: 'ru-RU.js'
       }
     ],
-    baseUrl: 'https://chain-work.com/',
+    baseUrl: 'https://tickets-onchain.com/',
     defaultLocale: 'en',
     langDir: 'lang/',
     lazy: true,

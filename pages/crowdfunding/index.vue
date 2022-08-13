@@ -108,7 +108,7 @@ export default {
   },
   head () {
     return {
-      title: 'Chain Work Tickets | Crowdfunding Setup',
+      title: 'Tickets Onchain | Crowdfunding Setup',
       meta: [
         { hid: 'keywords', name: 'keywords', content: 'Tickets, onFlow, Flow Blockchain, web3, Crowdfunding, work, social network, クラウドファンディング設定' }
       ]
@@ -204,7 +204,7 @@ export default {
         ).then(this.$fcl.decode)
         if (dispenserInfo) {
           this.dispenserId = parseInt(Object.keys(dispenserInfo)[0])
-          this.dispenserPage = 'https://chain-work.com/ti/' + dispenserInfo[this.dispenserId]
+          this.dispenserPage = 'https://tickets-onchain.com/ti/' + dispenserInfo[this.dispenserId]
         } else {
           this.dispenserPage = ''
         }
@@ -256,7 +256,7 @@ export default {
             }
             toast1 = this.$buefy.toast.open({
               indefinite: true,
-              message: `${this.$t('ticket_text43')} https://chain-work.com/ti/${domain}`
+              message: `${this.$t('ticket_text43')} https://tickets-onchain.com/ti/${domain}`
             })
             this.$buefy.dialog.confirm({
               message: this.$t('ticket_text46'),

@@ -615,7 +615,7 @@
       <div class="p-1">
         <img
           src="~assets/image/TicketsOnchain.png"
-          alt="Chain Work"
+          alt="Tickets Onchain"
           style="height: 37px;"
         >
         <b-menu>
@@ -736,7 +736,7 @@ export default {
   head () {
     const i18nHead = this.$nuxtI18nHead({ addSeoAttributes: true })
     return {
-      title: 'Chain Work Tickets',
+      title: 'Tickets Onchain',
       htmlAttrs: {
         author: 'tokyo em technology',
         ...i18nHead.htmlAttrs
@@ -744,8 +744,8 @@ export default {
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1' },
-        { hid: 'description', name: 'description', content: "Tickets (Chain Work) is a payment management service that makes it easy to make payments using social media.Flow Blckchain's $FLOW can be earned without QR codes." },
-        { hid: 'keywords', name: 'keywords', content: 'Chain Work, Tickets, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' },
+        { hid: 'description', name: 'description', content: "Tickets Onchain is a payment management service that makes it easy to make payments using social media.Flow Blckchain's $FLOW can be earned without QR codes." },
+        { hid: 'keywords', name: 'keywords', content: 'Tickets Onchain, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' },
         { name: 'format-detection', content: 'telephone=no' },
         ...i18nHead.meta
       ],
@@ -1135,8 +1135,8 @@ export default {
       color: #3e8ed0;
       font-size: 11px;
       position: absolute;
-      left: 268px;
-      top: 11px;
+      left: 270px;
+      top: 9px;
       &:before {
         font-size: 11px;
       }

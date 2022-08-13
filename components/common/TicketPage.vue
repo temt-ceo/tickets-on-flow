@@ -892,7 +892,7 @@ export default {
       if (result && Object.keys(result).length > 0) {
         const ticketTokenId = parseInt(Object.keys(result)[0])
         if (result[ticketTokenId] !== '') {
-          this.code = result[ticketTokenId].replace(/^elffab/, '').replace(/@chain-work.com$/, '').split('').reverse().join('')
+          this.code = result[ticketTokenId].replace(/^elffab/, '').replace(/@tickets-onchain.com$/, '').split('').reverse().join('')
         }
         const results = this.code.split(';')
         if (results.length >= 2 && Object.keys(this.additionalDescription).length > 0) {

@@ -150,7 +150,7 @@
               <i class="ion-ios-bookmarks-outline" />
             </div>
             <h4 class="title">
-              <a href="https://chain-work.com/?m=developer">Tickets</a>
+              <a href="https://tickets-onchain.com/?m=developer">Tickets</a>
             </h4>
             <p class="description">
               The bussiness application built on Flow Blockchain.
@@ -262,9 +262,9 @@ export default {
       link: [
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Montserrat:300,400,500,700' }
       ],
-      title: 'Chain Work Tickets | About Us',
+      title: 'Tickets Onchain | About Us',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Chain Work, Tickets, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' }
+        { hid: 'keywords', name: 'keywords', content: 'Tickets Onchain, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' }
       ]
     }
   },

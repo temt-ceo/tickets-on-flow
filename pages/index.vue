@@ -491,7 +491,7 @@
         <section class="modal-card-body">
           <img
             src="~assets/image/TicketsOnchain.png"
-            alt="Chain Work"
+            alt="Tickets Onchain"
             style="width: 165px;"
           >
           <b-steps
@@ -773,32 +773,32 @@ export default {
 
     // preload Images
     const h = this.$createElement
-    h('img', { attrs: { src: 'https://chain-work.com/image/manga_03.png' } })
-    h('img', { attrs: { src: 'https://chain-work.com/image/manga_04.png' } })
-    h('img', { attrs: { src: 'https://chain-work.com/image/manga_01.png' } })
-    h('img', { attrs: { src: 'https://chain-work.com/image/manga_02.png' } })
+    h('img', { attrs: { src: 'https://tickets-onchain.com/image/manga_03.png' } })
+    h('img', { attrs: { src: 'https://tickets-onchain.com/image/manga_04.png' } })
+    h('img', { attrs: { src: 'https://tickets-onchain.com/image/manga_01.png' } })
+    h('img', { attrs: { src: 'https://tickets-onchain.com/image/manga_02.png' } })
   },
   methods: {
     imageModal () {
       this.isImageModalActive = true
       this.mangaCount = 0
-      this.modalImageSrc = 'https://chain-work.com/image/manga_03.png'
+      this.modalImageSrc = 'https://tickets-onchain.com/image/manga_03.png'
     },
     nextMange () {
       this.mangaCount++
       switch (this.mangaCount) {
         case 1:
-          this.modalImageSrc = 'https://chain-work.com/image/manga_04.png'
+          this.modalImageSrc = 'https://tickets-onchain.com/image/manga_04.png'
           break
         case 2:
-          this.modalImageSrc = 'https://chain-work.com/image/manga_01.png'
+          this.modalImageSrc = 'https://tickets-onchain.com/image/manga_01.png'
           break
         case 3:
-          this.modalImageSrc = 'https://chain-work.com/image/manga_02.png'
+          this.modalImageSrc = 'https://tickets-onchain.com/image/manga_02.png'
           break
         default:
           this.isImageModalActive = false
-          this.modalImageSrc = 'https://chain-work.com/image/manga_03.png'
+          this.modalImageSrc = 'https://tickets-onchain.com/image/manga_03.png'
       }
     },
     sliderFormatter (val) {
@@ -1201,7 +1201,7 @@ export default {
 }
 
 .section {
-  height: calc(100vh - 60px);
+  height: calc(100vh - 53px);
   padding: 1.0rem 0.3rem 0 2.5rem;
   max-width: 750px;
   margin: 0 auto;
@@ -1620,7 +1620,7 @@ export default {
 
 .anime-image {
   position: absolute;
-  width: 78%;
+  width: 53%;
   top: 48%;
   left: 55%;
   transform: translateX(-50%) translateY(-50%);
@@ -1742,12 +1742,12 @@ export default {
 
     .upvote-div {
       right: 146px !important;
-      bottom: 0px !important;
+      bottom: -3px !important;
     }
 
     .comment-div {
       right: 112px !important;
-      bottom: -7px !important;
+      bottom: -10px !important;
     }
   }
 }

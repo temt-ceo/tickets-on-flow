@@ -41,7 +41,7 @@
           <p class="explanation-content">
             {{ $t('terms_of_use31') }}<br>
             {{ $t('terms_of_use32') }}<br>
-            <b>https://chain-work.com/ti/XXXXX/</b><br>
+            <b>https://tickets-onchain.com/ti/XXXXX/</b><br>
             {{ $t('terms_of_use33') }}<br>
             {{ $t('terms_of_use34') }}<br>
             {{ $t('terms_of_use30') }}<br>
@@ -186,9 +186,9 @@ export default {
       link: [
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Montserrat:300,400,500,700' }
       ],
-      title: 'Chain Work Tickets | About Us',
+      title: 'Tickets Onchain | About Us',
       meta: [
-        { hid: 'keywords', name: 'keywords', content: 'Chain Work, Tickets, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' }
+        { hid: 'keywords', name: 'keywords', content: 'Tickets Onchain, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' }
       ]
     }
   },

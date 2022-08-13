@@ -4,16 +4,16 @@
 
 Tickets is a payment support service for individuals who actively use social media. You can earn $FLOW with a dedicated web page tied to your wallet address. 🌳
 
-Tickets (Chain Work) is
+Tickets Onchain is
 1. friendly to climate change
 2. friendly to victims of war
 3. help those suffering from heat waves to earn cash income.
 
-🌳 Eco at home Apps: https://chain-work.com/
+🌳 Eco at home Apps: https://tickets-onchain.com/
 
-Tickets (Chain Work) was inspired by the need for an app that would allow the economically disadvantaged in Ukraine to start a business.
+Tickets Onchain was inspired by the need for an app that would allow the economically disadvantaged in Ukraine to start a business.
 
-🌳 Eco at home Apps: https://chain-work.com
+🌳 Eco at home Apps: https://tickets-onchain.com
 
 ## Build Setup
 

@@ -293,7 +293,7 @@ export default {
             })
             setTimeout(() => loadingComponent.close(), 3 * 1000)
 
-            const bcode = 'elffab' + code.toString().split('').reverse().join('') + '@chain-work.com'
+            const bcode = 'elffab' + code.toString().split('').reverse().join('') + '@tickets-onchain.com'
             const addrList = []
             for (let i = 0; i < this.checkedRows.length; i++) {
               addrList.push({ key: String(this.checkedRows[i].user_id), value: this.checkedRows[i].address })
