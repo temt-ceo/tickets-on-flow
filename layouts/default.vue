@@ -9,19 +9,10 @@
         <a
           class="navbar-item"
           href="/?home"
-          style="display: block; line-height: 0;"
         >
           <img
-            src="~assets/image/chainwork.png"
-            alt="Chain Work"
-            height="28"
-          >
-          <br>
-          <img
-            src="~assets/image/tickets.png"
-            alt="Tickets"
-            height="28"
-            style="padding-left: 20px;"
+            src="~assets/image/TicketsOnchain.png"
+            alt="Tickets Onchain"
           >
         </a>
         <b-dropdown
@@ -214,15 +205,9 @@
       <div class="modal-card" style="width: auto; background-image: radial-gradient(rgb(65,105,225), #1b1c50);">
         <a href="/?home">
           <img
-            src="~assets/image/chainwork.png"
-            alt="Chain Work"
-            style="width: 130px; padding-left: 10px; line-height: 0; padding-top: 9px;"
-          >
-          <br>
-          <img
-            src="~assets/image/tickets.png"
-            alt="Tickets"
-            style="width: 85px; line-height: 0; top: 28px; position: absolute; left: 33px;"
+            src="~assets/image/TicketsOnchain.png"
+            alt="Tickets Onchain"
+            style="height: 25px; margin-top: 13px; padding-left: 20px;"
           >
         </a>
         <section class="modal-card-body modal-notifications">
@@ -629,15 +614,9 @@
     >
       <div class="p-1">
         <img
-          src="~assets/image/chainwork.png"
+          src="~assets/image/TicketsOnchain.png"
           alt="Chain Work"
-          style="height: 25px;"
-        >
-        <br>
-        <img
-          src="~assets/image/tickets.png"
-          alt="Tickets"
-          style="height: 25px;"
+          style="height: 37px;"
         >
         <b-menu>
           <b-menu-list label="Help">
@@ -1139,10 +1118,10 @@ export default {
   }
 
   .navbar-item {
-    padding: 0.60rem 0.25rem 0 0.75rem;
+    padding: 0.3rem 0.15rem 0 0.5rem;
 
     &.icon {
-      height: 3.75rem;
+      height: 3.25rem;
       padding: 2px 1.25rem 0;
     }
   }
@@ -1156,8 +1135,8 @@ export default {
       color: #3e8ed0;
       font-size: 11px;
       position: absolute;
-      left: 229px;
-      top: 14px;
+      left: 268px;
+      top: 11px;
       &:before {
         font-size: 11px;
       }
@@ -1165,11 +1144,11 @@ export default {
   }
 
   .navbar-item img {
-      max-height: 1.15rem;
+      max-height: 1.7rem;
   }
 
   .navbar-burger {
-    margin-top: 5px;
+    margin-top: 1px;
 
   }
 
@@ -1336,7 +1315,7 @@ span.control-label {
 .modal-notifications {
   width: 100%;
   max-width: 500px;
-  top: 10%;
+  top: 6%;
   left: 50%;
   position: absolute;
   transform: translateX(-50%);

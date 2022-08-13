@@ -61,7 +61,7 @@
             <div
               v-if="ticket.type !== 'stats'"
               class="upvote-div"
-              style="position: absolute; right: 46px; bottom: 13px; color: #c8c8c8;"
+              style="position: absolute; right: 40px; bottom: 13px; color: #c8c8c8;"
               @click="clickTicketConfirmIcon(ticket)"
             >
               {{ upvoteCounts ? upvoteCounts[ticket.addr] : 0 }} upvotes
@@ -69,7 +69,7 @@
             <div
               v-if="ticket.type !== 'stats'"
               class="comment-div"
-              style="position: absolute; right: 12px; bottom: 5px; color: #c8c8c8;"
+              style="position: absolute; right: 12px; bottom: 5.5px; color: #c8c8c8;"
               @click="clickTicketConfirmIcon(ticket)"
             >
               <b-icon
@@ -95,7 +95,7 @@
             </span>
             <span
               v-if="ticket.type !== 'stats' && ticket.doUkrainianSupport"
-              style="position: absolute; right: 15px; bottom: -9px; font-size: 1.2em;"
+              style="position: absolute; right: 15px; bottom: -7px; font-size: 1.15em;"
               @click="clickTicketConfirmIcon(ticket)"
             >
               🇺🇦
@@ -312,7 +312,7 @@
         <div class="hero--content" />
       </div>
     </div>
-    <img v-if="!returnMode" class="anime-image" src="/chainwork-top.png" :style="{display: offIcon}">
+    <img v-if="!returnMode" class="anime-image" src="/TicketsOnchain.png" :style="{display: offIcon}">
     <small class="bottom-copyright">&copy; Tokyo EM Technology & Co.</small>
     <b-carousel
       v-if="showCarousel"
@@ -490,15 +490,9 @@
       <div class="modal-card" style="width: auto">
         <section class="modal-card-body">
           <img
-            src="~assets/image/chainwork.png"
+            src="~assets/image/TicketsOnchain.png"
             alt="Chain Work"
-            style="width: 100px;"
-          >
-          <br>
-          <img
-            src="~assets/image/tickets.png"
-            alt="Tickets"
-            style="width: 70px; margin-left: 20px;"
+            style="width: 165px;"
           >
           <b-steps
             v-model="activeStep"
@@ -1626,9 +1620,9 @@ export default {
 
 .anime-image {
   position: absolute;
-  width: 80%;
+  width: 78%;
   top: 48%;
-  left: 54%;
+  left: 55%;
   transform: translateX(-50%) translateY(-50%);
   margin: 0 auto;
   z-index: 5;

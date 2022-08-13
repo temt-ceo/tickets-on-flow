@@ -135,7 +135,7 @@
           </p>
         </div>
         <div class="row about-cols" style="max-width: 760px; margin: 0 auto; text-align: center;">
-          <div class="col-md-4 wow fadeInUp">
+          <!-- <div class="col-md-4 wow fadeInUp">
             <div class="about-col">
               <div class="img">
                 <a href="https://www.youtube.com/watch?v=-kqmTFCrPtE" target="_blank">
@@ -152,7 +152,7 @@
                 Thank you for reading! We look forward to seeing the variety of work that will be set up using this website.
               </p>
             </div>
-          </div>
+          </div> -->
           <b-button type="is-primary" class="custom-btn btn-11" @click="backToTop">
             {{ $t('ticket_text26') }}
           </b-button>
