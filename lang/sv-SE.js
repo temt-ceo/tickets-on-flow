@@ -167,7 +167,7 @@ export default {
   ticket_text45: 'Nästa',
   ticket_text46: 'Det finns en 0,3 FLOW-avgift för denna process.<br>Tryck på "Approve" (godkänna) i nästa popup-fönster för plånboken.',
   ticket_text47: 'Håller med',
-  ticket_text48: 'Om du har 0,3 FLOW eller mer kommer transaktionen att slutföras.',
+  ticket_text48: 'Tack, webbadressen kommer att vara klar om 24 timmar.',
   ticket_text49: 'Aktiveringsförfarandet har slutförts. Vänta upp till 24 timmar.',
   ticket_text50: 'Tryck på "Godkänn" i nästa popup-fönster för plånboken.<br>Detta förfarande är gratis.',
   ticket_text51: 'Förvaltning av crowdfunding',

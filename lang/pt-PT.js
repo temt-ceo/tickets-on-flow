@@ -167,7 +167,7 @@ export default {
   ticket_text45: 'Próximo',
   ticket_text46: 'Há uma taxa de 0,3 FLOW para este processo.<br>Toque em "Aprovar" na próxima janela pop-up da carteira.',
   ticket_text47: 'Concorde',
-  ticket_text48: 'Se você tiver 0,3 FLOW ou mais, a transação será concluída.',
+  ticket_text48: 'Obrigado, a URL estará pronta em 24 horas a partir de agora.',
   ticket_text49: 'O procedimento de ativação foi concluído. Por favor, aguarde até 24 horas.',
   ticket_text50: 'Toque em "Aprovar" na próxima janela pop-up da carteira.<br>Este procedimento é gratuito.',
   ticket_text51: 'Crowdfunding Management',

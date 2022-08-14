@@ -167,7 +167,7 @@ export default {
   ticket_text45: 'Volgende',
   ticket_text46: 'Voor dit proces wordt 0,3 FLOW in rekening gebracht.<br>Tik op "Goedkeuren" in de volgende portefeuille pop-up.',
   ticket_text47: 'Mee eens',
-  ticket_text48: 'Als u 0,3 FLOW of meer heeft, zal de transactie voltooid worden.',
+  ticket_text48: 'Dank u, de URL zal over 24 uur klaar zijn.',
   ticket_text49: 'Activeringsprocedure is voltooid. Gelieve tot 24 uur te wachten.',
   ticket_text50: 'Tik op "Goedkeuren" in de volgende portefeuille pop-up. <br>Deze procedure is gratis.',
   ticket_text51: 'Beheer van crowdfunding',

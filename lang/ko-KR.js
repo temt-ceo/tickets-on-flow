@@ -167,7 +167,7 @@ export default {
   ticket_text45: '다음',
   ticket_text46: '이 프로세스에는 0.3 FLOW 수수료가 있습니다.<br>다음 지갑 팝업에서 "승인"을 탭하세요.',
   ticket_text47: '동의하다',
-  ticket_text48: '0.3 FLOW 이상이면 거래가 완료됩니다.',
+  ticket_text48: '감사합니다. URL은 지금부터 24시간 이내에 준비됩니다.',
   ticket_text49: '활성화 절차가 완료되었습니다. 최대 24시간 동안 기다려 주십시오.',
   ticket_text50: '다음 지갑 팝업에서 "승인"을 탭하세요.<br>이 절차는 무료입니다.',
   ticket_text51: '크라우드펀딩 관리',

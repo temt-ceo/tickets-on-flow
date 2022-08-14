@@ -167,7 +167,7 @@ export default {
   ticket_text45: 'Berikutnya',
   ticket_text46: 'Ada biaya 0,3 FLOW untuk proses ini.<br>Ketuk "Setujui" pada pop-up dompet berikutnya.',
   ticket_text47: 'Setuju',
-  ticket_text48: 'Jika Anda memiliki 0,3 FLOW atau lebih, transaksi akan selesai.',
+  ticket_text48: 'Terima kasih, URL akan siap dalam 24 jam dari sekarang.',
   ticket_text49: 'Prosedur aktivasi telah selesai. Harap tunggu hingga 24 jam.',
   ticket_text50: 'Ketuk "Menyetujui" pada pop-up dompet berikutnya.',
   ticket_text51: 'Manajemen Urun Dana',

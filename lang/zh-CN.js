@@ -167,7 +167,7 @@ export default {
   ticket_text45: '下一页',
   ticket_text46: '这个过程有0.3FLOW的费用。<br>在下一个弹出的钱包上点击 "同意"。',
   ticket_text47: '同意',
-  ticket_text48: '如果你有0.3个FLOW或更多，交易将被完成。',
+  ticket_text48: '谢谢你，该网址将在24小时内准备好。',
   ticket_text49: '激活程序已经完成。请最多等待24小时。',
   ticket_text50: '在下一个弹出的钱包上点击 "同意"。<br>这个程序是免费的。',
   ticket_text51: '众筹管理',

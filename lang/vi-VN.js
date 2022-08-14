@@ -167,7 +167,7 @@ export default {
   ticket_text45: 'Tiếp theo',
   ticket_text46: 'Có một khoản phí FLOW 0,3 cho quá trình này. <br> Nhấn vào "Phê duyệt" trên cửa sổ bật lên của ví tiếp theo.',
   ticket_text47: 'Đồng ý',
-  ticket_text48: 'Nếu bạn có 0,3 FLOW trở lên, giao dịch sẽ được hoàn tất.',
+  ticket_text48: 'Cảm ơn bạn, URL sẽ sẵn sàng sau 24 giờ kể từ bây giờ.',
   ticket_text49: 'Thủ tục kích hoạt đã được hoàn thành. Vui lòng đợi tối đa 24 giờ.',
   ticket_text50: 'Nhấn vào "Phê duyệt" trên cửa sổ bật lên của ví tiếp theo. <br> Quy trình này miễn phí.',
   ticket_text51: 'Quản lý huy động vốn cộng đồng',

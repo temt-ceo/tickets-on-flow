@@ -167,7 +167,7 @@ export default {
   ticket_text45: 'Avanti',
   ticket_text46: 'Per questa procedura è prevista una tassa di 0,3 FLOW.<br>Toccare "Approva" nel successivo pop-up del portafoglio.',
   ticket_text47: 'Accordati',
-  ticket_text48: 'Se si dispone di 0,3 FLOW o più, la transazione sarà completata.',
+  ticket_text48: "Grazie, l'URL sarà pronto entro 24 ore.",
   ticket_text49: 'La procedura di attivazione è stata completata. Attendere fino a 24 ore.',
   ticket_text50: 'Toccare "Approva" nel successivo pop-up del portafoglio.<br>Questa procedura è gratuita.',
   ticket_text51: 'Gestione del crowdfunding',

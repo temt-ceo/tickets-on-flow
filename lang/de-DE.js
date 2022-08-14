@@ -167,7 +167,7 @@ export default {
   ticket_text45: 'Weiter',
   ticket_text46: 'Für diesen Vorgang wird eine 0,3 FLOW-Gebühr erhoben.<br>Tippen Sie auf "Genehmigen" auf dem nächsten Pop-up-Fenster der Brieftasche.',
   ticket_text47: 'Zustimmen',
-  ticket_text48: 'Wenn Sie 0,3 FLOW oder mehr haben, wird die Transaktion abgeschlossen.',
+  ticket_text48: 'Danke, die URL wird in 24 Stunden zur Verfügung stehen.',
   ticket_text49: 'Der Aktivierungsvorgang wurde abgeschlossen. Bitte warten Sie bis zu 24 Stunden.',
   ticket_text50: 'Tippen Sie auf "Genehmigen" auf dem nächsten Pop-up-Fenster der Brieftasche.<br>Dieses Verfahren ist kostenlos.',
   ticket_text51: 'Crowdfunding Management',

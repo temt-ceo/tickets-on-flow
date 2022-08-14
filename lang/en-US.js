@@ -167,7 +167,7 @@ export default {
   ticket_text45: 'Next',
   ticket_text46: 'There is a 0.3 FLOW fee for this process.<br>Tap "Approve" on the next wallet pop-up.',
   ticket_text47: 'Agree',
-  ticket_text48: 'If you have 0.3 FLOW or more, the transaction will be completed.',
+  ticket_text48: 'Thank you, the URL will be ready by 24 hours from now.',
   ticket_text49: 'Activation procedure has been completed. Please wait up to 24 hours.',
   ticket_text50: 'Tap "Approve" on the next wallet pop-up.<br>This procedure is free.',
   ticket_text51: 'Crowdfunding Management',

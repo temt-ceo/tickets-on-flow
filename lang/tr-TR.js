@@ -167,7 +167,7 @@ export default {
   ticket_text45: 'Sonraki',
   ticket_text46: 'Bu işlem için 0,3 FLOW ücreti vardır.<br>Bir sonraki cüzdan açılır penceresinde "Onayla "ya dokunun.',
   ticket_text47: 'Katılıyorum',
-  ticket_text48: '0,3 FLOW veya daha fazlasına sahipseniz, işlem tamamlanacaktır.',
+  ticket_text48: 'Teşekkürler, URL şu andan itibaren 24 saat içinde hazır olacaktır.',
   ticket_text49: 'Etkinleştirme prosedürü tamamlandı. Lütfen 24 saate kadar bekleyiniz.',
   ticket_text50: 'Bir sonraki cüzdan açılır penceresinde "Onayla "ya dokunun.<br>Bu prosedür ücretsizdir.',
   ticket_text51: 'Kitlesel Fonlama Yönetimi',

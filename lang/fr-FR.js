@@ -167,7 +167,7 @@ export default {
   ticket_text45: 'Next',
   ticket_text46: 'Il y a des frais de 0,3 FLOW pour ce processus.<br>Tapez "Approuver" sur la prochaine fenêtre du portefeuille.',
   ticket_text47: 'D\'accord',
-  ticket_text48: 'Si vous avez 0,3 FLOW ou plus, la transaction sera complétée.',
+  ticket_text48: "Merci, l'URL sera prête dans 24 heures.",
   ticket_text49: 'La procédure d\'activation est terminée. Veuillez patienter jusqu\'à 24 heures.',
   ticket_text50: 'Tapez "Approuver" sur la prochaine fenêtre du portefeuille.<br>Cette procédure est gratuite.',
   ticket_text51: 'Crowdfunding Management',

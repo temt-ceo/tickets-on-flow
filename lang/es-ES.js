@@ -167,7 +167,7 @@ export default {
   ticket_text45: 'Siguiente',
   ticket_text46: 'Este proceso tiene un coste de 0,3 FLOW.<br>Pulse "Aprobar" en la siguiente ventana emergente de la cartera.',
   ticket_text47: 'De acuerdo',
-  ticket_text48: 'Si tiene 0,3 FLOW o más, la transacción se completará.',
+  ticket_text48: 'Gracias, la URL estará lista dentro de 24 horas.',
   ticket_text49: 'El procedimiento de activación se ha completado. Por favor, espere hasta 24 horas.',
   ticket_text50: 'Pulse "Aprobar" en la siguiente ventana emergente de la cartera.<br>Este procedimiento es gratuito.',
   ticket_text51: 'Crowdfunding Management',
