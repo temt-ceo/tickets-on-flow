@@ -1552,7 +1552,7 @@ export default {
 
 .modal-card-body {
   .title {
-    font-size: 1.8rem;
+    font-size: 1.75rem;
   }
 }
 

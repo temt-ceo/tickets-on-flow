@@ -1,5 +1,5 @@
 export default {
-  hamburger_menu1: 'Create Ticket',
+  hamburger_menu1: 'Register Ticket',
   hamburger_menu2: 'Terms of Service',
   hamburger_menu3: 'Hi, need Help?',
   hamburger_menu4: 'Crowdfunding',
@@ -178,7 +178,7 @@ export default {
   ticket_text56: 'Ending Date: ',
   ticket_text57: 'The website is currently in operation.',
   ticket_text58: 'Deposit FLOW coins into Blocto, Flow\'s wallet, or purchase FLOW coins from within the Blocto app with MoonPay.',
-  ticket_text59: 'First, create a ticket. Choose Create Ticket from the menu in the upper right corner.',
+  ticket_text59: 'First, create a ticket. Choose Register Ticket from the menu in the upper right corner.',
   ticket_text60: 'Determine a web address and link one web address to one wallet. This URL will be the website where the ticket will be purchased.',
   ticket_text61: 'You pay 0.3 FLOW here, but don\'t worry. This is the only place to pay. You can then use that web address to issue an unlimited number of tickets. (Crowdfunding is also included)',
   ticket_text62: 'After one day has passed, tickets can be issued. At the same time, crowdfunding can be set up.',

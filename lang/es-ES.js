@@ -1,5 +1,5 @@
 export default {
-  hamburger_menu1: 'Crear billete',
+  hamburger_menu1: 'Registrar billete',
   hamburger_menu2: 'Condiciones de servicio',
   hamburger_menu3: 'Hola, ¿necesitas ayuda?',
   hamburger_menu4: 'Crowdfunding',

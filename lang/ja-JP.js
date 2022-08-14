@@ -1,5 +1,5 @@
 export default {
-  hamburger_menu1: 'チケットの作成',
+  hamburger_menu1: 'チケットの登録',
   hamburger_menu2: 'サービス利用規約',
   hamburger_menu3: 'こんにちは、ヘルプが必要ですか？',
   hamburger_menu4: 'クラウドファンディング',

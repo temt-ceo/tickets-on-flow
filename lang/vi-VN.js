@@ -1,5 +1,5 @@
 export default {
-  hamburger_menu1: 'Tạo vé',
+  hamburger_menu1: 'Đăng ký vé',
   hamburger_menu2: 'Điều khoản dịch vụ',
   hamburger_menu3: 'Xin chào, cần trợ giúp?',
   hamburger_menu4: 'Huy động vốn từ cộng đồng',

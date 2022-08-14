@@ -1,5 +1,5 @@
 export default {
-  hamburger_menu1: 'Створити квиток',
+  hamburger_menu1: 'Зареєструвати квиток',
   hamburger_menu2: 'Умови обслуговування',
   hamburger_menu3: 'Привіт, потрібна допомога?',
   hamburger_menu4: 'Краудфандинг',

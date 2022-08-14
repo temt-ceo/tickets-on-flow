@@ -1,5 +1,5 @@
 export default {
-  hamburger_menu1: 'Crea biglietto',
+  hamburger_menu1: 'Registrazione biglietto',
   hamburger_menu2: 'Termini di servizio',
   hamburger_menu3: 'Ciao, hai bisogno di aiuto?',
   hamburger_menu4: 'Crowdfunding',

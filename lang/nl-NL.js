@@ -1,5 +1,5 @@
 export default {
-  hamburger_menu1: 'Ticket aanmaken',
+  hamburger_menu1: 'Registreer Ticket',
   hamburger_menu2: 'Voorwaarden van Service',
   hamburger_menu3: 'Hallo, hulp nodig?',
   hamburger_menu4: 'Crowdfunding',

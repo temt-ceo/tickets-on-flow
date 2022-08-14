@@ -1,5 +1,5 @@
 export default {
-  hamburger_menu1: '创建票据',
+  hamburger_menu1: '注册门票',
   hamburger_menu2: '服务条款',
   hamburger_menu3: '嗨，需要帮助吗？',
   hamburger_menu4: '众筹',

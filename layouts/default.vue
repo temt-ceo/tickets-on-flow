@@ -126,7 +126,7 @@
                   icon="pen"
                   style="font-size: 13px; margin-top: 4px;"
                 />
-                <label>{{ $t('hamburger_menu1') }} <i style="font-size:7px;">(FREE except initial cost(Only 0.5$(USD)))</i></label>
+                <label>{{ $t('hamburger_menu1') }} <i style="font-size:7px;">(FREE except initial cost)</i></label>
               </b-dropdown-item>
             </nuxt-link>
             <nuxt-link to="/crowdfunding/">

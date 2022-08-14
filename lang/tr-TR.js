@@ -1,5 +1,5 @@
 export default {
-  hamburger_menu1: 'Bilet Oluştur',
+  hamburger_menu1: 'Bilet Kaydı',
   hamburger_menu2: 'Hizmet Koşulları',
   hamburger_menu3: 'Merhaba, yardım lazım mı?',
   hamburger_menu4: 'Kitlesel Fonlama',

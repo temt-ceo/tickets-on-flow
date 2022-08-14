@@ -1,5 +1,5 @@
 export default {
-  hamburger_menu1: 'Buat Tiket',
+  hamburger_menu1: 'Daftarkan Tiket',
   hamburger_menu2: 'Ketentuan Layanan',
   hamburger_menu3: 'Hai, butuh bantuan?',
   hamburger_menu4: 'Crowdfunding',
@@ -178,7 +178,7 @@ export default {
   ticket_text56: 'Tanggal Akhir: ',
   ticket_text57: 'Situs web saat ini sedang beroperasi.',
   ticket_text58: 'Setor koin "FLOW" ke Blocto, dompet Flow, atau beli koin "FLOW" dari dalam aplikasi Blocto dengan MoonPay.',
-  ticket_text59: 'Pertama, buat tiket. Pilih Create Ticket (Buat Tiket) dari menu di sudut kanan atas.',
+  ticket_text59: 'Pertama, buat tiket. Pilih Register Ticket (Daftarkan Tiket) dari menu di sudut kanan atas.',
   ticket_text60: 'Tentukan alamat web dan tautkan satu alamat web ke satu dompet. URL ini akan menjadi situs web tempat tiket akan dibeli.',
   ticket_text61: 'Anda membayar 0,3 "FLOW" di sini, tetapi jangan khawatir. Ini adalah satu-satunya tempat untuk membayar. Anda kemudian dapat menggunakan alamat web itu untuk menerbitkan tiket dalam jumlah yang tidak terbatas. (Crowdfunding juga termasuk)',
   ticket_text62: 'Setelah satu hari berlalu, tiket bisa diterbitkan. Pada saat yang sama, crowdfunding bisa disiapkan.',

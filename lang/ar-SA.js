@@ -1,5 +1,5 @@
 export default {
-  hamburger_menu1: 'عمل تذكرة',
+  hamburger_menu1: 'تسجيل التذكرة',
   hamburger_menu2: 'شروط الخدمة',
   hamburger_menu3: 'مرحبًا ، هل تحتاج إلى مساعدة؟',
   hamburger_menu4: 'التمويل الجماعي',

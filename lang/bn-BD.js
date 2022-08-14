@@ -1,5 +1,5 @@
 export default {
-  hamburger_menu1: 'টিকেট তৈরি',
+  hamburger_menu1: 'টিকিট নিবন্ধন করুন',
   hamburger_menu2: 'সেবা পাবার শর্ত',
   hamburger_menu3: 'হাই, সাহায্য প্রয়োজন?',
   hamburger_menu4: 'গণ - অর্থায়ন',

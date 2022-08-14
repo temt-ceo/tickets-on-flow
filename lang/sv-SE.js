@@ -1,5 +1,5 @@
 export default {
-  hamburger_menu1: 'Skapa biljett',
+  hamburger_menu1: 'Registrera biljett',
   hamburger_menu2: 'Villkor för tjänsten',
   hamburger_menu3: 'Hej, behöver du hjälp?',
   hamburger_menu4: 'Crowdfunding',
