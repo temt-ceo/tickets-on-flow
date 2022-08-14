@@ -126,7 +126,7 @@
                   icon="pen"
                   style="font-size: 13px; margin-top: 4px;"
                 />
-                <label>{{ $t('hamburger_menu1') }} <i style="font-size:7px;">(FREE except initial cost)</i></label>
+                <label>{{ $t('hamburger_menu1') }} <i style="font-size:7px;">(FREE)</i></label>
               </b-dropdown-item>
             </nuxt-link>
             <nuxt-link to="/crowdfunding/">
@@ -136,7 +136,7 @@
                   icon="pen"
                   style="font-size: 13px; margin-top: 4px;"
                 />
-                <label>{{ $t('hamburger_menu4') }} <i style="font-size:7px;">(FREE except initial cost)</i></label>
+                <label>{{ $t('hamburger_menu4') }} <i style="font-size:7px;">(FREE)</i></label>
               </b-dropdown-item>
             </nuxt-link>
             <nuxt-link to="/stats/">
@@ -1191,7 +1191,7 @@ export default {
         }
 
         &.menu-long {
-          font-size: 14px;
+          font-size: 17px;
         }
 
         label {
@@ -1843,7 +1843,7 @@ tr {
 
 @media screen and (min-width: 400px) {
   .navbar .dropdown-menu .dropdown-content .dropdown-item.menu-long {
-    font-size: 16px;
+    font-size: 17px;
   }
 }
 
