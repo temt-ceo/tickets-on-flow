@@ -785,7 +785,7 @@ export default {
       linkUrl2: null,
       linkTitle3: null,
       linkUrl3: null,
-      isTop: !location.href?.includes('/ti'),
+      isTop: !location.href?.includes('/ti/'),
       doUkrainianSupport: false,
       commentInput: '',
       commentEditInput: '',
