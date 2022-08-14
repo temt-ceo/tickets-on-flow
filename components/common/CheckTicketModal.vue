@@ -1217,7 +1217,18 @@ export default {
             const loadingComponent2 = this.$buefy.loading.open({
               container: null
             })
-            setTimeout(() => loadingComponent2.close(), 5 * 1000)
+            setTimeout(() => {
+              loadingComponent2.close()
+              this.$buefy.dialog.confirm({
+                message: '<b>' + this.$t('operation_text161') + '</b><br>' + this.$t('operation_text162'),
+                confirmText: this.$t('operation_text108'),
+                type: 'is-info',
+                hasIcon: true,
+                onConfirm: () => {
+                  location.href = '/dispenser/'
+                }
+              })
+            }, 5 * 1000)
             if (isComment) {
               this.showMessage = false
               this.showMessageEditor = false

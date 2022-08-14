@@ -46,7 +46,7 @@
                 type="is-link is-light"
                 @click="requestDispenser"
               >
-                {{ $t('ticket_text33') }} (Only 0.5$)
+                {{ $t('ticket_text33') }} (Only 0.3 $FLOW)
               </b-button>
               <!-- <b-button
                 v-if="bloctoWalletUser.addr && hasDispenserVault && hasDispenser"
