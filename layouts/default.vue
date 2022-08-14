@@ -46,6 +46,14 @@
             </a>
           </b-dropdown-item>
           <b-dropdown-item aria-role="listitem">
+            <a
+              :href="url.twitter"
+              target="_blank"
+            >
+              {{ $t('operation_text163') }}
+            </a>
+          </b-dropdown-item>
+          <b-dropdown-item aria-role="listitem">
             {{ $t('ticket_text80') }}
           </b-dropdown-item>
           <b-dropdown-item aria-role="listitem">

@@ -460,15 +460,18 @@
       <b-carousel-item v-for="(carousel, i) in carousels5" :key="i">
         <section :class="`hero is-medium is-${carousel.color}`">
           <div class="hero-body has-text-centered">
-            <h2 style="margin-bottom: 10px;">
+            <h2 style="margin: 50px 12px 10px 12px;">
               {{ carousel.text1 }}
             </h2>
-            <h2 v-if="carousel.text2" style="margin-bottom: 10px;">
+            <h2 v-if="carousel.text2" style="margin: 5px 12px 10px 12px;">
               {{ carousel.text2 }}
             </h2>
-            <h2 v-if="carousel.text3">
+            <h2 v-if="carousel.text3" style="margin: 5px 12px 10px 12px;">
               {{ carousel.text3 }}
             </h2>
+            <nuxt-link to="/privacy-policy/" v-if="carousel.tos_link" style="margin: 5px 12px 10px 12px;">
+              <span style="color: #7957d5">({{ carousel.tos_link }})</span>
+            </nuxt-link>
           </div>
           <div class="close-icon" @click="showCarousel5 = false">
             <b-icon
@@ -669,7 +672,7 @@ export default {
         { text1: this.$t('operation_text151'), text2: this.$t('operation_text152'), text3: this.$t('operation_text153'), color: 'success' },
         { text1: this.$t('operation_text154'), text2: this.$t('operation_text155'), text3: this.$t('operation_text156'), color: 'success' },
         { text1: this.$t('operation_text157'), text2: this.$t('operation_text158'), text3: null, color: 'success' },
-        { text1: this.$t('operation_text159'), text2: this.$t('operation_text160'), text3: null, color: 'success' }
+        { text1: this.$t('operation_text159'), text2: this.$t('operation_text160'), text3: null, tos_link: this.$t('operation_text164'), color: 'success' }
       ],
       searchLists: [],
       searchValue: '',
