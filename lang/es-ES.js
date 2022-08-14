@@ -465,7 +465,7 @@ export default {
   special_title3: 'Soporte multilingüe',
   special_description3: 'Su sitio web será visible en todo el mundo sin cambiar su URL.',
   special_subtitle3: 'Proporcionaremos soporte multilingüe para su ticket o página web de crowdfunding. También proporcionaremos soporte multilingüe para la vista general de la pantalla de detalles. El coste es de 5$FLOW para la primera vez y de 20$FLOW para el máximo. La primera vez no costará más de 5$FLOW siempre que el trabajo se realice en una semana. Para obtener más información, ponte en contacto con nosotros en Twitter (@_official_asp), en nuestro canal de Discord o en nuestro canal de la aplicación de Telegram.',
-  special_title4: 'Crear información detallada del evento',
+  special_title4: 'Asistencia en la producción del sitio web',
   special_description4: 'Creamos contenidos detallados de eventos a partir de HTML, enriqueciendo su página web con información detallada. ',
   special_subtitle4: 'Creamos contenido detallado de eventos a partir de HTML, enriqueciendo su página web con información detallada. Podemos crear información más detallada como botones de radio y pestañas. También haremos SEO para el título de la página web y las palabras clave. 5 FLOW para el SEO y el resumen detallado, 20 FLOW~99 FLOW para la creación detallada. No importa cuántos pedidos adicionales realice, nunca serán más de 99 FLOW.',
   special_title5: '',

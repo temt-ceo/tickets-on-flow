@@ -465,7 +465,7 @@ export default {
   special_title3: 'Meertalige ondersteuning',
   special_description3: 'Uw website zal wereldwijd zichtbaar zijn zonder de URL te wijzigen.',
   special_subtitle3: 'Wij bieden meertalige ondersteuning voor uw ticket of crowdfunding webpagina. We zullen ook zorgen voor meertalige ondersteuning voor het overzicht van het detailscherm. De kosten zijn 5$FLOW voor de eerste keer en 20$FLOW voor het maximum. De eerste keer kost niet meer dan 5$FLOW zolang het werk binnen een week wordt gedaan. Voor meer informatie, neem contact met ons op via Twitter (@_official_asp), ons Discord kanaal, of ons Telegram app kanaal.',
-  special_title4: 'Gedetailleerde informatie over een evenement',
+  special_title4: 'Hulp bij de productie van websites',
   special_description4: 'Wij maken gedetailleerde inhoud voor evenementen van HTML, waardoor uw webpagina wordt verrijkt met gedetailleerde informatie. ',
   special_subtitle4: 'Wij maken gedetailleerde event-inhoud van HTML, waardoor uw webpagina wordt verrijkt met gedetailleerde informatie. We kunnen meer gedetailleerde informatie maken zoals radio buttons en tabs. We zullen ook SEO doen voor webpagina titel en trefwoorden. 5 FLOW voor SEO en gedetailleerde samenvatting, 20 FLOW~99 FLOW voor gedetailleerde opbouw. Het maakt niet uit hoeveel extra bestellingen u plaatst, het zal nooit meer dan 99 FLOW zijn.',
   special_title5: '',

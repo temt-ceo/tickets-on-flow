@@ -635,7 +635,7 @@ export default {
       carouselArrowHover: false,
       carouselAutoPlay: true,
       carouselRepeat: false,
-      carouselInterval: 15000,
+      carouselInterval: 30000,
       carouselIndicator: true,
       carouselInside: true,
       carouselIndicatorStyle: 'is-lines',

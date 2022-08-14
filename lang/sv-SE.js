@@ -465,7 +465,7 @@ export default {
   special_title3: 'Flerspråkigt stöd',
   special_description3: 'Din webbplats kommer att vara synlig över hela världen utan att du behöver ändra URL-adressen.',
   special_subtitle3: 'Vi tillhandahåller flerspråkig support för din biljett- eller crowdfunding-webbplats. Vi tillhandahåller också flerspråkigt stöd för översikten av detaljskärmen. Kostnaden är 5 $FLOW för första gången och 20 $FLOW för den högsta kostnaden. Första gången kostar inte mer än 5$FLOW så länge arbetet utförs inom en vecka. För mer information kan du kontakta oss på Twitter (@_official_asp), vår Discord-kanal eller vår Telegram-app-kanal.',
-  special_title4: 'Skapa detaljerad information om evenemanget',
+  special_title4: 'Hjälp med produktion av webbplatser',
   special_description4: 'Vi skapar detaljerat innehåll för evenemang från HTML och berikar din webbsida med detaljerad information. ',
   special_subtitle4: 'Vi skapar detaljerat innehåll för evenemang från HTML och berikar din webbsida med detaljerad information. Vi kan skapa mer detaljerad information, t.ex. radioknappar och flikar. Vi gör även SEO för webbsidans titel och nyckelord. 5 FLOW för SEO och detaljerad sammanfattning, 20 FLOW~99 FLOW för detaljerad uppbyggnad. Oavsett hur många ytterligare beställningar du gör blir det aldrig mer än 99 FLOW.',
   special_title5: '',

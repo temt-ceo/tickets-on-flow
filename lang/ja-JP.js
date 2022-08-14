@@ -465,7 +465,7 @@ export default {
   special_title3: '多言語対応',
   special_description3: 'URLを変更することなく、世界中であなたのウェブサイトを見ることができるようになります。',
   special_subtitle3: 'チケットやクラウドファンディングのウェブページを多言語対応します。また、詳細画面の概要についても多言語対応いたします。費用は初回5＄FLOW、最大20＄FLOWです。初回は1週間以内の作業であれば、5$FLOW以上の費用はかかりません。詳しくは、Twitter（@_official_asp）、Discordチャンネル、Telegramアプリチャンネルでお問い合わせください。',
-  special_title4: 'イベント詳細情報の作成',
+  special_title4: 'ウェブサイト制作の支援',
   special_description4: 'HTMLから詳細なイベントコンテンツを作成し、Webページを詳細な情報で充実させます。',
   special_subtitle4: 'HTMLから詳細なイベントコンテンツを作成し、Webページを詳細な情報で充実させます。ラジオボタンやタブなど、より詳細な情報の作成が可能です。WebページのタイトルやキーワードのSEO対策も行います。SEO対策と詳細な要約は5FLOW、詳細な作り込みは20FLOW~99FLOWです。何度追加発注しても、99FLOW以上になることはありません。',
   special_title5: '',

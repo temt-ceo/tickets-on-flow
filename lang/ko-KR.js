@@ -465,7 +465,7 @@ export default {
   special_title3: '다국어 지원',
   special_description3: '귀하의 웹사이트는 URL을 변경하지 않고도 전 세계에서 볼 수 있습니다.',
   special_subtitle3: '티켓 또는 크라우드 펀딩 웹 페이지에 대한 다국어 지원을 제공합니다. 상세 화면의 개요도 다국어 지원합니다. 비용은 처음 5$FLOW, 최대 20$FLOW입니다. 작업이 일주일 이내에 완료되는 한 첫 번째 비용은 5$FLOW를 넘지 않습니다. 자세한 내용은 Twitter(@_official_asp), Discord 채널 또는 Telegram 앱 채널로 문의해 주세요.',
-  special_title4: '자세한 이벤트 정보 생성',
+  special_title4: '웹사이트 제작 지원',
   special_description4: 'HTML에서 자세한 이벤트 콘텐츠를 만들어 웹 페이지에 자세한 정보를 제공합니다.',
   special_subtitle4: 'HTML에서 자세한 이벤트 콘텐츠를 만들어 웹 페이지에 자세한 정보를 제공합니다. 라디오 버튼 및 탭과 같은 보다 자세한 정보를 생성할 수 있습니다. 우리는 또한 웹 페이지 제목과 키워드에 대한 SEO를 할 것입니다. SEO 및 세부 요약을 위한 5 FLOW, 자세한 구축을 위한 20 FLOW~99 FLOW. 추가 주문을 아무리 많이 해도 99 FLOW를 넘지 않습니다.',
   special_title5: '',

@@ -465,7 +465,7 @@ export default {
   special_title3: '多语言支持',
   special_description3: '你的网站将在全球范围内可见，而无需改变其URL。',
   special_subtitle3: '我们将为您的票据或众筹网页提供多语言支持。我们还将为详细屏幕的概述提供多语言支持。第一次的费用为5$FLOW，最高为20$FLOW。只要在一周内完成工作，第一次的费用不会超过5$FLOW。欲了解更多信息，请在Twitter（@_official_asp）、我们的Discord频道或我们的Telegram应用程序频道与我们联系。',
-  special_title4: '创建详细的事件信息',
+  special_title4: '协助网站制作',
   special_description4: '我们从HTML中创建详细的事件内容，用详细的信息丰富你的网页。',
   special_subtitle4: '我们从HTML中创建详细的事件内容，用详细的信息充实你的网页。我们可以创建更详细的信息，如单选按钮和标签。我们还将为网页标题和关键词做SEO。5FLOW用于SEO和详细摘要，20FLOW~99FLOW用于详细建立。无论你再下多少订单，都不会超过99FLOW。',
   special_title5: '',

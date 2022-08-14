@@ -465,7 +465,7 @@ export default {
   special_title3: 'Çok Dilli Destek',
   special_description3: "Web siteniz URL'sini değiştirmeden dünya çapında görünür olacaktır.",
   special_subtitle3: "Bilet veya kitlesel fonlama web sayfanız için çok dilli destek sağlayacağız. Ayrıca detay ekranının genel görünümü için çok dilli destek sağlayacağız. Ücret ilk sefer için 5$FLOW ve maksimum 20$FLOW'dur. Çalışma bir hafta içinde yapıldığı sürece ilk seferin maliyeti 5$FLOW'dan fazla olmayacaktır. Daha fazla bilgi için lütfen Twitter (@_official_asp), Discord kanalımız veya Telegram uygulama kanalımızdan bizimle iletişime geçin.",
-  special_title4: 'Ayrıntılı etkinlik bilgileri oluşturun',
+  special_title4: 'Web sitesi üretimi konusunda yardım',
   special_description4: "HTML'den detaylı etkinlik içeriği oluşturarak web sayfanızı detaylı bilgilerle zenginleştiriyoruz. ",
   special_subtitle4: "HTML'den detaylı etkinlik içeriği oluşturarak web sayfanızı detaylı bilgilerle zenginleştiriyoruz. Radyo butonları ve sekmeler gibi daha detaylı bilgiler oluşturabiliriz. Web sayfası başlığı ve anahtar kelimeler için SEO da yapacağız. SEO ve detaylı özet için 5 FLOW, detaylı yapı için 20 FLOW~99 FLOW. Ne kadar ek sipariş verirseniz verin, asla 99 FLOW'dan fazla olmayacaktır.",
   special_title5: '',

@@ -465,7 +465,7 @@ export default {
   special_title3: 'Hỗ trợ đa ngôn ngữ',
   special_description3: 'Trang web của bạn sẽ hiển thị trên toàn thế giới mà không cần thay đổi URL của nó.',
   special_subtitle3: 'Chúng tôi sẽ cung cấp hỗ trợ đa ngôn ngữ cho trang web bán vé hoặc huy động vốn cộng đồng của bạn. Chúng tôi cũng sẽ cung cấp hỗ trợ đa ngôn ngữ để xem tổng quan của màn hình chi tiết. Chi phí là 5 $ FLOW cho lần đầu tiên và 20 $ FLOW cho mức tối đa. Lần đầu tiên sẽ không tốn quá 5 $ FLOW miễn là công việc được hoàn thành trong vòng một tuần. Để biết thêm thông tin, vui lòng liên hệ với chúng tôi trên Twitter (@_official_asp), kênh Discord hoặc kênh ứng dụng Telegram của chúng tôi.',
-  special_title4: 'Tạo thông tin sự kiện chi tiết',
+  special_title4: 'Hỗ trợ sản xuất trang web',
   special_description4: 'Chúng tôi tạo nội dung sự kiện chi tiết từ HTML, làm phong phú thêm trang web của bạn với thông tin chi tiết.',
   special_subtitle4: 'Chúng tôi tạo nội dung sự kiện chi tiết từ HTML, làm phong phú thêm trang web của bạn với thông tin chi tiết. Chúng tôi có thể tạo thông tin chi tiết hơn như các nút radio và tab. Chúng tôi cũng sẽ làm SEO cho tiêu đề và từ khóa của trang web. 5 FLOW cho SEO và tóm tắt chi tiết, 20 FLOW ~ 99 FLOW để xây dựng chi tiết. Bất kể bạn đặt thêm bao nhiêu đơn hàng, nó sẽ không bao giờ nhiều hơn 99 FLOW.',
   special_title5: '',

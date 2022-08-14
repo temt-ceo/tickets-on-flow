@@ -465,7 +465,7 @@ export default {
   special_title3: 'Dukungan Multibahasa',
   special_description3: 'Situs web Anda akan terlihat di seluruh dunia tanpa mengubah URL-nya.',
   special_subtitle3: 'Kami akan memberikan dukungan multibahasa untuk halaman web tiket atau crowdfunding Anda. Kami juga akan memberikan dukungan multibahasa untuk gambaran umum layar detail. Biayanya adalah 5$FLOW untuk pertama kali dan 20$FLOW untuk maksimum. Biaya pertama kali tidak akan lebih dari 5$FLOW selama pekerjaan dilakukan dalam waktu seminggu. Untuk informasi lebih lanjut, silakan hubungi kami di Twitter (@_official_asp), saluran Discord kami, atau saluran aplikasi Telegram kami.',
-  special_title4: 'Membuat informasi acara yang terperinci',
+  special_title4: 'Bantuan dengan produksi situs web',
   special_description4: 'Kami membuat konten acara yang terperinci dari HTML, memperkaya halaman web Anda dengan informasi yang terperinci. ',
   special_subtitle4: 'Kami membuat konten acara yang terperinci dari HTML, memperkaya halaman web Anda dengan informasi yang terperinci. Kami dapat membuat informasi yang lebih detail seperti tombol radio dan tab. Kami juga akan melakukan SEO untuk judul halaman web dan kata kunci. 5 FLOW untuk SEO dan rangkuman detail, 20 FLOW ~ 99 FLOW untuk detail build out. Tidak peduli berapa banyak pesanan tambahan yang Anda lakukan, tidak akan pernah lebih dari 99 FLOW.',
   special_title5: '',

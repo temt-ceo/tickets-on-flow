@@ -465,7 +465,7 @@ export default {
   special_title3: 'Mehrsprachige Unterstützung',
   special_description3: 'Ihre Website wird weltweit sichtbar sein, ohne ihre URL zu ändern.',
   special_subtitle3: 'Wir bieten mehrsprachigen Support für Ihre Ticket- oder Crowdfunding-Webseite. Wir werden auch mehrsprachige Unterstützung für die Übersicht des Detailbildschirms bieten. Die Kosten betragen 5$FLOW für das erste Mal und 20$FLOW für das Maximum. Das erste Mal wird nicht mehr als 5$FLOW kosten, solange die Arbeit innerhalb einer Woche erledigt wird. Für weitere Informationen kontaktieren Sie uns bitte über Twitter (@_official_asp), unseren Discord-Kanal oder unseren Telegram-App-Kanal.',
-  special_title4: 'Detaillierte Veranstaltungsinformationen erstellen',
+  special_title4: 'Unterstützung bei der Erstellung der Website',
   special_description4: 'Wir erstellen detaillierte Veranstaltungsinhalte aus HTML, die Ihre Webseite mit detaillierten Informationen anreichern. ',
   special_subtitle4: 'Wir erstellen detaillierte Ereignisinhalte aus HTML, die Ihre Webseite mit detaillierten Informationen anreichern. Wir können detailliertere Informationen wie Optionsfelder und Registerkarten erstellen. Wir werden auch SEO für Webseitentitel und Schlüsselwörter machen. 5 FLOW für SEO und eine ausführliche Zusammenfassung, 20 FLOW~99 FLOW für eine detaillierte Ausarbeitung. Egal wie viele zusätzliche Aufträge Sie erteilen, es werden nie mehr als 99 FLOW sein.',
   special_title5: '',
