@@ -55,7 +55,7 @@ export default {
   terms_of_use44: 'Mekanizma Hakkında',
   terms_of_use45: 'Blok zincirinin avantajı, verilerin sonsuza kadar saklanmasıdır. Herkes tarafından elde edilebilir.',
   terms_of_use46: 'Bu, satış verilerinizi depolamak için de kullanabileceğiniz anlamına gelir. Bu veriler hiç kimse tarafından değiştirilemez.',
-  terms_of_use47: 'Banka işin dışında olduğu için neredeyse hiç ücret alınmıyor. (Biz küçük bir ücret alıyoruz.)',
+  terms_of_use47: 'Banka işin dışında olduğu için neredeyse hiç ücret alınmıyor.',
   terms_of_use48: 'Diyelim ki internette bir mağaza açmak istiyorsunuz.',
   terms_of_use49: 'İnternette çok sayıda web sitesi var ve insanların sizi aramalar yoluyla bulması son derece zor.',
   terms_of_use50: 'Ancak sosyal medyada iyi olan pek çok insan var.',

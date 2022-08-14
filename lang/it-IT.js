@@ -55,7 +55,7 @@ export default {
   terms_of_use44: 'Informazioni sul meccanismo',
   terms_of_use45: 'Il vantaggio della blockchain è che i dati sono conservati per sempre. Può essere acquisito da chiunque.',
   terms_of_use46: 'Ciò significa che è possibile utilizzarlo anche per archiviare i dati di vendita. Questi dati non possono essere manomessi da nessuno.',
-  terms_of_use47: 'La banca è fuori dal quadro, quindi non ci sono quasi commissioni. (Noi applichiamo una piccola commissione).',
+  terms_of_use47: 'La banca è fuori dal quadro, quindi non ci sono quasi commissioni.',
   terms_of_use48: 'Supponiamo che vogliate aprire un negozio su Internet.',
   terms_of_use49: 'Su Internet ci sono numerosi siti web ed è estremamente difficile per le persone trovarvi attraverso le ricerche.',
   terms_of_use50: 'Tuttavia, ci sono molte persone che sono brave nei social media.',

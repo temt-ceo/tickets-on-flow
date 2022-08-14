@@ -55,7 +55,7 @@ export default {
   terms_of_use44: 'About the Mechanism',
   terms_of_use45: 'The advantage of blockchain is that the data is stored forever. It can be acquired by anyone.',
   terms_of_use46: 'That means you can also use it to store your sales data. This data cannot be tampered with by anyone.',
-  terms_of_use47: 'The bank is out of the picture, so there are almost no fees. (We charge a small fee.)',
+  terms_of_use47: 'The bank is out of the picture, so there are almost no fees.',
   terms_of_use48: 'Suppose you want to open a store on the Internet.',
   terms_of_use49: 'There are numerous websites on the Internet, and it is extremely difficult for people to find you through searches.',
   terms_of_use50: 'However, there are many people who are good at social media.',

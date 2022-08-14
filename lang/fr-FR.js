@@ -55,7 +55,7 @@ export default {
   terms_of_use44: 'À propos du mécanisme',
   terms_of_use45: 'L\'avantage de la blockchain est que les données sont stockées pour toujours. Elle peut être acquise par n\'importe qui.',
   terms_of_use46: 'Cela signifie que vous pouvez également l\'utiliser pour stocker vos données de vente. Ces données ne peuvent pas être trafiquées par qui que ce soit.',
-  terms_of_use47: 'La banque est hors jeu, il n\'y a donc presque pas de frais. (Nous facturons une petite commission).',
+  terms_of_use47: 'La banque est hors jeu, il n\'y a donc presque pas de frais.',
   terms_of_use48: 'Supposons que vous souhaitiez ouvrir un magasin sur Internet.',
   terms_of_use49: 'Il existe de nombreux sites Web sur Internet, et il est extrêmement difficile pour les gens de vous trouver par le biais de recherches.',
   terms_of_use50: 'Cependant, de nombreuses personnes sont douées pour les médias sociaux.',

@@ -55,7 +55,7 @@ export default {
   terms_of_use44: 'Sobre el mecanismo',
   terms_of_use45: 'La ventaja de blockchain es que los datos se almacenan para siempre. Puede ser adquirido por cualquiera.',
   terms_of_use46: 'Eso significa que también puede utilizarlo para almacenar sus datos de ventas. Estos datos no pueden ser manipulados por nadie.',
-  terms_of_use47: 'El banco está fuera de juego, por lo que casi no hay comisiones. (Nosotros cobramos una pequeña comisión).',
+  terms_of_use47: 'El banco está fuera de juego, por lo que casi no hay comisiones.',
   terms_of_use48: 'Supongamos que quiere abrir una tienda en Internet.',
   terms_of_use49: 'Hay numerosos sitios web en Internet, y es muy difícil que la gente te encuentre a través de las búsquedas.',
   terms_of_use50: 'Sin embargo, hay muchas personas que son buenas en los medios sociales.',

@@ -55,7 +55,7 @@ export default {
   terms_of_use44: 'Over het mechanisme',
   terms_of_use45: 'Het voordeel van blockchain is dat de gegevens voor altijd worden opgeslagen. Het kan door iedereen worden verkregen.',
   terms_of_use46: 'Dat betekent dat u het ook kunt gebruiken om uw verkoopgegevens op te slaan. Met deze gegevens kan door niemand worden geknoeid.',
-  terms_of_use47: 'De bank is uit beeld, dus er zijn bijna geen kosten. (Wij vragen een kleine vergoeding.)',
+  terms_of_use47: 'De bank is uit beeld, dus er zijn bijna geen kosten.',
   terms_of_use48: 'Stel dat u een winkel op het internet wilt openen.',
   terms_of_use49: 'Er zijn talloze websites op het internet, en het is uiterst moeilijk voor mensen om u via zoekopdrachten te vinden.',
   terms_of_use50: 'Er zijn echter veel mensen die goed zijn in sociale media.',

@@ -55,7 +55,7 @@ export default {
   terms_of_use44: 'Om mekanismen',
   terms_of_use45: 'Fördelen med blockchain är att uppgifterna lagras för alltid. Den kan förvärvas av vem som helst.',
   terms_of_use46: 'Det betyder att du också kan använda den för att lagra dina försäljningsuppgifter. Dessa uppgifter kan inte manipuleras av någon.',
-  terms_of_use47: 'Banken är inte inblandad, så det finns nästan inga avgifter. (Vi tar ut en liten avgift.)',
+  terms_of_use47: 'Banken är inte inblandad, så det finns nästan inga avgifter.',
   terms_of_use48: 'Anta att du vill öppna en butik på Internet.',
   terms_of_use49: 'Det finns många webbplatser på Internet och det är mycket svårt för människor att hitta dig genom sökningar.',
   terms_of_use50: 'Det finns dock många som är bra på sociala medier.',

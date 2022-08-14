@@ -55,7 +55,7 @@ export default {
   terms_of_use44: 'Sobre o Mecanismo',
   terms_of_use45: 'A vantagem da cadeia de bloqueio é que os dados são armazenados para sempre. Eles podem ser adquiridos por qualquer pessoa.',
   terms_of_use46: 'Isso significa que você também pode usá-los para armazenar seus dados de vendas. Estes dados não podem ser adulterados por ninguém.',
-  terms_of_use47: 'O banco está fora de cogitação, portanto, quase não há taxas. (Cobramos uma pequena taxa).',
+  terms_of_use47: 'O banco está fora de cogitação, portanto, quase não há taxas.',
   terms_of_use48: 'Suponha que você queira abrir uma loja na Internet.',
   terms_of_use49: 'Existem inúmeros sites na Internet e é extremamente difícil para as pessoas encontrá-lo através de buscas.',
   terms_of_use50: 'No entanto, há muitas pessoas que são boas em mídia social.',

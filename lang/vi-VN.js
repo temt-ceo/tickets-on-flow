@@ -55,7 +55,7 @@ export default {
   terms_of_use44: 'Về cơ chế',
   terms_of_use45: 'Ưu điểm của blockchain là dữ liệu được lưu trữ mãi mãi. Nó có thể được mua bởi bất kỳ ai.',
   terms_of_use46: 'Điều đó có nghĩa là bạn cũng có thể sử dụng nó để lưu trữ dữ liệu bán hàng của mình. Dữ liệu này không thể bị giả mạo bởi bất kỳ ai.',
-  terms_of_use47: 'Ngân hàng ở ngoài hình nên hầu như không phải trả phí. (Chúng tôi tính một khoản phí nhỏ.)',
+  terms_of_use47: 'Ngân hàng ở ngoài hình nên hầu như không phải trả phí.',
   terms_of_use48: 'Giả sử bạn muốn mở một cửa hàng trên Internet.',
   terms_of_use49: 'Có rất nhiều trang web trên Internet và rất khó để mọi người tìm thấy bạn thông qua tìm kiếm.',
   terms_of_use50: 'Tuy nhiên, có rất nhiều người giỏi mạng xã hội.',

@@ -55,7 +55,7 @@ export default {
   terms_of_use44: 'Über den Mechanismus',
   terms_of_use45: 'Der Vorteil der Blockchain ist, dass die Daten für immer gespeichert werden. Sie können von jedem erworben werden.',
   terms_of_use46: 'Das heißt, Sie können sie auch für die Speicherung Ihrer Verkaufsdaten verwenden. Diese Daten können von niemandem verfälscht werden.',
-  terms_of_use47: 'Die Bank ist nicht involviert, es fallen also fast keine Gebühren an. (Wir erheben eine kleine Gebühr.)',
+  terms_of_use47: 'Die Bank ist nicht involviert, es fallen also fast keine Gebühren an.',
   terms_of_use48: 'Nehmen wir an, Sie möchten ein Geschäft im Internet eröffnen.',
   terms_of_use49: 'Es gibt zahlreiche Websites im Internet, und es ist äußerst schwierig für die Leute, Sie über die Suche zu finden.',
   terms_of_use50: 'Es gibt jedoch viele Menschen, die gut in den sozialen Medien sind.',

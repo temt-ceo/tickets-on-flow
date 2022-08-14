@@ -55,7 +55,7 @@ export default {
   terms_of_use44: 'Tentang Mekanisme',
   terms_of_use45: 'Keuntungan dari blockchain adalah bahwa data disimpan selamanya. Itu bisa diperoleh oleh siapa saja.',
   terms_of_use46: 'Itu berarti Anda juga dapat menggunakannya untuk menyimpan data penjualan Anda. Data ini tidak dapat dirusak oleh siapa pun.',
-  terms_of_use47: 'Bank tidak ada dalam gambar, jadi hampir tidak ada biaya. (Kami mengenakan sedikit biaya).',
+  terms_of_use47: 'Bank tidak ada dalam gambar, jadi hampir tidak ada biaya.',
   terms_of_use48: 'Misalkan Anda ingin membuka toko di Internet.',
   terms_of_use49: 'Ada banyak situs web di Internet, dan sangat sulit bagi orang untuk menemukan Anda melalui pencarian.',
   terms_of_use50: 'Namun, ada banyak orang yang pandai dalam media sosial.',
