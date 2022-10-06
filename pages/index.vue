@@ -194,6 +194,17 @@
             </div>
           </div>
         </b-dropdown-item>
+        <b-dropdown-item aria-role="listitem">
+          <div class="media">
+            <b-icon class="media-left" size="is-small" pack="fad" icon="question" />
+            <div class="media-content">
+              <h3><a
+              href="https://www.youtube.com/watch?v=m6_uJ7-ayOw"
+              target="_blank"
+            >{{ $t('ticket_text101') }}(TouTube)</a></h3>
+            </div>
+          </div>
+        </b-dropdown-item>
       </b-dropdown>
     </div>
     <div v-if="showTutorial === true" class="fa-3x tutorial-man">

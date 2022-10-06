@@ -97,6 +97,14 @@
             </a>
             (*{{ $t('develop_menu4') }})
           </b-dropdown-item>
+          <b-dropdown-item aria-role="listitem">
+            <a
+              :href="url.github.blog"
+              target="_blank"
+            >
+              {{ $t('develop_menu5') }}
+            </a>
+          </b-dropdown-item>
         </b-dropdown>
         <nuxt-link to="/youtube-contents/">
           <b-icon
@@ -703,7 +711,8 @@ export default {
           script: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/scripts.js',
           contract1: 'https://flow-view-source.com/mainnet/account/0x24466f7fc36e3388/contract/Tickets',
           contract2: 'https://github.com/temt-ceo/tickets-on-flow/blob/main/cadence/Tickets.cdc',
-          playground: 'https://play.onflow.org/d9b1cb97-b54c-4d49-8187-258d6c2eab41?type=account&id=0e075014-fb30-4594-96d5-d13d94383399&storage=none'
+          playground: 'https://play.onflow.org/d9b1cb97-b54c-4d49-8187-258d6c2eab41?type=account&id=0e075014-fb30-4594-96d5-d13d94383399&storage=none',
+          blog: 'https://medium.com/@tickets.on.flow/flow-blockchain%E3%82%92%E3%82%B2%E3%83%BC%E3%83%A0%E3%81%AB%E6%B4%BB%E7%94%A8%E3%81%99%E3%82%8B%E3%83%A1%E3%83%AA%E3%83%83%E3%83%88%E3%81%AF%E4%BD%95-what-is-the-benefit-of-using-flow-blockchain-for-games-95cb31e770a6'
         },
         youtube: 'https://www.youtube.com/channel/UC2ebXnn3Gab5qPrfKtGN6hA'
       },

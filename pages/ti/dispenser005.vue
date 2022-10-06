@@ -6,13 +6,13 @@
 import TicketPage from '~/components/common/TicketPage'
 
 export default {
-  name: 'TicketDispenser0',
+  name: 'TicketDispenser8',
   components: {
     TicketPage
   },
   head () {
     return {
-      title: 'Tickets Onchain | dispenser010',
+      title: 'Tickets Onchain | Dispenser008',
       meta: [
         { hid: 'keywords', name: 'keywords', content: 'Tickets Onchain, チケッツ, チェインワーク, フロー, onFlow, Flow Blockchain, $FLOW, wallet address, earn FLOW, crowdfunding' }
       ]
