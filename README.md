@@ -1,4 +1,8 @@
 # tickets-on-flow
+このプロジェクトではNuxt.jsを使用しています。Nuxt.jsはフランスのボルドーでプロジェクトが立ち上がった、Vueのファンによるライブラリです。
+今では世界中にファンがおり、Flowチームの中にもファンがいます。そして誰でもNuxtを使用してFlow BlockchainのDappが開発できるようになっています。
+詳しくは以下:
+https://github.com/brunogonzales/fcl-nuxt-starter
 
 ## App
 
