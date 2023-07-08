@@ -1,6 +1,14 @@
 import FlowToken from 0x1654653399040a61
 import FungibleToken from 0xf233dcee88fe0abe
 
+/*
+  [Note.]
+  This CodeOfFlow contract is the game logic contract for the game, Code Of Flow.
+  And Code Of Flow is absolutely paying homage to the SEGA's arcade game, Code Of Joker.
+  The idea of game which Code Of Flow is using is belonging to SEGA.
+  This smart contract has been created for the Flow Hackathon 1st and Flow Hackathon season 2.
+  So let's enjoy the game Code Of Flow and wait the revival of Code Of Joker which run on the Flow!
+ */
 pub contract CodeOfFlow {
 
   // Events
