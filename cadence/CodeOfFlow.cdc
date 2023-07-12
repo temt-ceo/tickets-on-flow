@@ -2051,50 +2051,60 @@ pub contract CodeOfFlow {
     pub fun rankingTotalling(playerid: UInt) {
       CodeOfFlow.rankingBattleCount = CodeOfFlow.rankingBattleCount + 1;
       if let cyberScore = CodeOfFlow.playerList[playerid] {
+        // When this game only started
+        if (CodeOfFlow.ranking3rdWinningPlayerId == 0 || CodeOfFlow.ranking2ndWinningPlayerId == 0 || CodeOfFlow.ranking1stWinningPlayerId == 0) {
+          if (CodeOfFlow.ranking1stWinningPlayerId == 0) {
+            CodeOfFlow.ranking1stWinningPlayerId = playerid;
+          } else if(CodeOfFlow.ranking2ndWinningPlayerId == 0) {
+            CodeOfFlow.ranking2ndWinningPlayerId = playerid;
+          } else {
+            CodeOfFlow.ranking3rdWinningPlayerId = playerid;
+          }
+        } else {
+          if (playerid != CodeOfFlow.ranking3rdWinningPlayerId && playerid != CodeOfFlow.ranking2ndWinningPlayerId && playerid != CodeOfFlow.ranking1stWinningPlayerId) {
+            if let rank3rdScore = CodeOfFlow.playerList[CodeOfFlow.ranking3rdWinningPlayerId] {
+              if (CodeOfFlow.calcPoint(win_count: rank3rdScore.period_win_count, loss_count: rank3rdScore.period_loss_count) < CodeOfFlow.calcPoint(win_count: cyberScore.period_win_count, loss_count: cyberScore.period_loss_count)) { // If it's equal, first come first served.
+                if let rank2ndScore = CodeOfFlow.playerList[CodeOfFlow.ranking2ndWinningPlayerId] {
+                  if (CodeOfFlow.calcPoint(win_count: rank2ndScore.period_win_count, loss_count: rank2ndScore.period_loss_count) < CodeOfFlow.calcPoint(win_count: cyberScore.period_win_count, loss_count: cyberScore.period_loss_count)) {
+                    if let rank1stScore = CodeOfFlow.playerList[CodeOfFlow.ranking1stWinningPlayerId] {
+                      if (CodeOfFlow.calcPoint(win_count: rank1stScore.period_win_count, loss_count: rank1stScore.period_loss_count) < CodeOfFlow.calcPoint(win_count: cyberScore.period_win_count, loss_count: cyberScore.period_loss_count)) {
+                        CodeOfFlow.ranking1stWinningPlayerId = playerid;
+                        CodeOfFlow.ranking2ndWinningPlayerId = CodeOfFlow.ranking1stWinningPlayerId;
+                        CodeOfFlow.ranking3rdWinningPlayerId = CodeOfFlow.ranking2ndWinningPlayerId;
 
-        if (playerid != CodeOfFlow.ranking3rdWinningPlayerId && playerid != CodeOfFlow.ranking2ndWinningPlayerId && playerid != CodeOfFlow.ranking1stWinningPlayerId) {
-          if let rank3rdScore = CodeOfFlow.playerList[CodeOfFlow.ranking3rdWinningPlayerId] {
-            if (CodeOfFlow.calcPoint(win_count: rank3rdScore.period_win_count, loss_count: rank3rdScore.period_loss_count) < CodeOfFlow.calcPoint(win_count: cyberScore.period_win_count, loss_count: cyberScore.period_loss_count)) { // If it's equal, first come first served.
-              if let rank2ndScore = CodeOfFlow.playerList[CodeOfFlow.ranking2ndWinningPlayerId] {
-                if (CodeOfFlow.calcPoint(win_count: rank2ndScore.period_win_count, loss_count: rank2ndScore.period_loss_count) < CodeOfFlow.calcPoint(win_count: cyberScore.period_win_count, loss_count: cyberScore.period_loss_count)) {
-                  if let rank1stScore = CodeOfFlow.playerList[CodeOfFlow.ranking1stWinningPlayerId] {
-                    if (CodeOfFlow.calcPoint(win_count: rank1stScore.period_win_count, loss_count: rank1stScore.period_loss_count) < CodeOfFlow.calcPoint(win_count: cyberScore.period_win_count, loss_count: cyberScore.period_loss_count)) {
-                      CodeOfFlow.ranking1stWinningPlayerId = playerid;
-                      CodeOfFlow.ranking2ndWinningPlayerId = CodeOfFlow.ranking1stWinningPlayerId;
-                      CodeOfFlow.ranking3rdWinningPlayerId = CodeOfFlow.ranking2ndWinningPlayerId;
-
-                    } else {
-                      CodeOfFlow.ranking2ndWinningPlayerId = playerid;
-                      CodeOfFlow.ranking3rdWinningPlayerId = CodeOfFlow.ranking2ndWinningPlayerId;
+                      } else {
+                        CodeOfFlow.ranking2ndWinningPlayerId = playerid;
+                        CodeOfFlow.ranking3rdWinningPlayerId = CodeOfFlow.ranking2ndWinningPlayerId;
+                      }
                     }
+                  } else {
+                    CodeOfFlow.ranking3rdWinningPlayerId = playerid;
                   }
-                } else {
-                  CodeOfFlow.ranking3rdWinningPlayerId = playerid;
                 }
               }
             }
-          }
-        } else if (playerid != CodeOfFlow.ranking2ndWinningPlayerId && playerid != CodeOfFlow.ranking1stWinningPlayerId) {
-          if let rank2ndScore = CodeOfFlow.playerList[CodeOfFlow.ranking2ndWinningPlayerId] { // If it's equal, first come first served.
-            if (CodeOfFlow.calcPoint(win_count: rank2ndScore.period_win_count, loss_count: rank2ndScore.period_loss_count) < CodeOfFlow.calcPoint(win_count: cyberScore.period_win_count, loss_count: cyberScore.period_loss_count)) {
-              if let rank1stScore = CodeOfFlow.playerList[CodeOfFlow.ranking1stWinningPlayerId] {
-                if (CodeOfFlow.calcPoint(win_count: rank1stScore.period_win_count, loss_count: rank1stScore.period_loss_count) < CodeOfFlow.calcPoint(win_count: cyberScore.period_win_count, loss_count: cyberScore.period_loss_count)) {
-                  CodeOfFlow.ranking1stWinningPlayerId = playerid;
-                  CodeOfFlow.ranking2ndWinningPlayerId = CodeOfFlow.ranking1stWinningPlayerId;
-                  CodeOfFlow.ranking3rdWinningPlayerId = CodeOfFlow.ranking2ndWinningPlayerId;
+          } else if (playerid != CodeOfFlow.ranking2ndWinningPlayerId && playerid != CodeOfFlow.ranking1stWinningPlayerId) {
+            if let rank2ndScore = CodeOfFlow.playerList[CodeOfFlow.ranking2ndWinningPlayerId] { // If it's equal, first come first served.
+              if (CodeOfFlow.calcPoint(win_count: rank2ndScore.period_win_count, loss_count: rank2ndScore.period_loss_count) < CodeOfFlow.calcPoint(win_count: cyberScore.period_win_count, loss_count: cyberScore.period_loss_count)) {
+                if let rank1stScore = CodeOfFlow.playerList[CodeOfFlow.ranking1stWinningPlayerId] {
+                  if (CodeOfFlow.calcPoint(win_count: rank1stScore.period_win_count, loss_count: rank1stScore.period_loss_count) < CodeOfFlow.calcPoint(win_count: cyberScore.period_win_count, loss_count: cyberScore.period_loss_count)) {
+                    CodeOfFlow.ranking1stWinningPlayerId = playerid;
+                    CodeOfFlow.ranking2ndWinningPlayerId = CodeOfFlow.ranking1stWinningPlayerId;
+                    CodeOfFlow.ranking3rdWinningPlayerId = CodeOfFlow.ranking2ndWinningPlayerId;
 
-                } else {
-                  CodeOfFlow.ranking2ndWinningPlayerId = playerid;
-                  CodeOfFlow.ranking3rdWinningPlayerId = CodeOfFlow.ranking2ndWinningPlayerId;
+                  } else {
+                    CodeOfFlow.ranking2ndWinningPlayerId = playerid;
+                    CodeOfFlow.ranking3rdWinningPlayerId = CodeOfFlow.ranking2ndWinningPlayerId;
+                  }
                 }
               }
             }
-          }
-        } else if (playerid != CodeOfFlow.ranking1stWinningPlayerId) {
-          if let rank1stScore = CodeOfFlow.playerList[CodeOfFlow.ranking1stWinningPlayerId] {
-            if (CodeOfFlow.calcPoint(win_count: rank1stScore.period_win_count, loss_count: rank1stScore.period_loss_count) < CodeOfFlow.calcPoint(win_count: cyberScore.period_win_count, loss_count: cyberScore.period_loss_count)) { // If it's equal, first come first served.
-              CodeOfFlow.ranking1stWinningPlayerId = playerid;
-              CodeOfFlow.ranking2ndWinningPlayerId = CodeOfFlow.ranking1stWinningPlayerId;
+          } else if (playerid != CodeOfFlow.ranking1stWinningPlayerId) {
+            if let rank1stScore = CodeOfFlow.playerList[CodeOfFlow.ranking1stWinningPlayerId] {
+              if (CodeOfFlow.calcPoint(win_count: rank1stScore.period_win_count, loss_count: rank1stScore.period_loss_count) < CodeOfFlow.calcPoint(win_count: cyberScore.period_win_count, loss_count: cyberScore.period_loss_count)) { // If it's equal, first come first served.
+                CodeOfFlow.ranking1stWinningPlayerId = playerid;
+                CodeOfFlow.ranking2ndWinningPlayerId = CodeOfFlow.ranking1stWinningPlayerId;
+              }
             }
           }
         }
