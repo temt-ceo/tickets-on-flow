@@ -355,8 +355,20 @@ pub contract CodeOfFlow {
     return self.rankingBattleCount;
   }
 
-  pub fun getCurrentRunkingWinners(): [UInt] {
-    return [self.ranking1stWinningPlayerId, self.ranking2ndWinningPlayerId, self.ranking3rdWinningPlayerId];
+  pub fun getCurrentRunkingWinners(): [String] {
+    var rank1stName = "";
+    var rank2ndName = "";
+    var rank3rdName = "";
+    if let rank1stScore = self.playerList[self.ranking1stWinningPlayerId] {
+      rank1stName = rank1stScore.player_name;
+    }
+    if let rank2ndScore = self.playerList[self.ranking2ndWinningPlayerId] {
+      rank2ndName = rank2ndScore.player_name;
+    }
+    if let rank3rdScore = self.playerList[self.ranking3rdWinningPlayerId] {
+      rank3rdName = rank3rdScore.player_name;
+    }
+    return [rank1stName, rank2ndName, rank3rdName];
   }
 
   /*
