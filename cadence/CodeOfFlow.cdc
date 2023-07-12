@@ -7,7 +7,7 @@ import FungibleToken from 0xf233dcee88fe0abe
   And Code Of Flow is absolutely paying homage to the SEGA's arcade game, Code Of Joker.
   The idea of game which Code Of Flow is using is belonging to SEGA.
   This smart contract has been created for the Flow Hackathon 1st and Flow Hackathon season 2.
-  So let's enjoy the game Code Of Flow and wait the revival of Code Of Joker which run on the Flow!
+  So let's enjoy the game Code Of Flow and wait the revival of Code Of Joker which runs on the Flow!
  */
 pub contract CodeOfFlow {
 
@@ -353,6 +353,10 @@ pub contract CodeOfFlow {
 
   pub fun getRewardRaceBattleCount(): UInt {
     return self.rankingBattleCount;
+  }
+
+  pub fun getCurrentRunkingWinners(): [UInt] {
+    return [self.ranking1stWinningPlayerId, self.ranking2ndWinningPlayerId, self.ranking3rdWinningPlayerId];
   }
 
   /*
@@ -2261,7 +2265,7 @@ pub contract CodeOfFlow {
       18: CardStruct(card_id: 18, name: "Canon", bp: 0, cost: 0, type: 4, category: 1, skill: Skill(description: "When your unit enters the field, choose one of your opponent's units. Deal 1000 damage to it.", triggers: [1], asks: [1], types: [1], amounts: [1000], skills: [])),
       19: CardStruct(card_id: 19, name: "Merchant", bp: 0, cost: 0, type: 4, category: 1, skill: Skill(description: "When your unit enters the field, you draw a card.", triggers: [1], asks: [0], types: [7], amounts: [1], skills: [])),
       20: CardStruct(card_id: 20, name: "Breaker", bp: 0, cost: 1, type: 0, category: 2, skill: Skill(description: "When your unit enters the field, choose one of your opponent's units. Deal 3000 damage to it.", triggers: [1], asks: [1], types: [1], amounts: [3000], skills: [])),
-      21: CardStruct(card_id: 21, name: "Imperiale", bp: 0, cost: 0, type: 0, category: 2, skill: Skill(description: "When your unit enters the field, grant that unit the ability to be unaffected by action restrictions for the turn it enters the field.(unless it's first turn)", triggers: [1], asks: [0], types: [11], amounts: [0], skills: [])),
+      21: CardStruct(card_id: 21, name: "Imperiale", bp: 0, cost: 0, type: 0, category: 2, skill: Skill(description: "When your unit enters the field, grant that unit the ability to be unaffected by action restrictions for the turn it enters the field.", triggers: [1], asks: [0], types: [11], amounts: [0], skills: [])),
       22: CardStruct(card_id: 22, name: "Dainsleif", bp: 0, cost: 1, type: 0, category: 2, skill: Skill(description: "When your unit attacks, destroy a card in your opponent's trigger zone at random.", triggers: [2], asks: [0], types: [3], amounts: [1], skills: [])),
       23: CardStruct(card_id: 23, name: "Photon", bp: 0, cost: 0, type: 1, category: 2, skill: Skill(description: "When your unit enters the field, choose one of your opponent's acted-up units. Deal 3000 damage to it.", triggers: [1], asks: [2], types: [1], amounts: [3000], skills: [])),
       24: CardStruct(card_id: 24, name: "Titan's Lock", bp: 0, cost: 0, type: 1, category: 2, skill: Skill(description: "When your unit attacks, choose one of your opponent's units. Consume it's right of action.", triggers: [2], asks: [1], types: [5], amounts: [1], skills: [])),
