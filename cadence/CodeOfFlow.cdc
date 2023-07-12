@@ -1883,6 +1883,7 @@ pub contract CodeOfFlow {
         // Game Reward
         let reward <- CodeOfFlow.account.borrow<&{FungibleToken.Provider}>(from: /storage/flowTokenVault)!.withdraw(amount: 0.5) as! @FlowToken.Vault
         CodeOfFlow.PlayerFlowTokenVault[opponent]!.borrow()!.deposit(from: <- reward)
+        self.rankingTotalling(playerid: opponent);
       }
     }
 
@@ -2038,7 +2039,6 @@ pub contract CodeOfFlow {
           emit BattleSequence(sequence: 3, player_id: opponent, opponent: player_id)
           // Game Reward
           let reward <- CodeOfFlow.account.borrow<&{FungibleToken.Provider}>(from: /storage/flowTokenVault)!.withdraw(amount: 0.5) as! @FlowToken.Vault
-
           CodeOfFlow.PlayerFlowTokenVault[opponent]!.borrow()!.deposit(from: <- reward)
           self.rankingTotalling(playerid: opponent);
           return true
