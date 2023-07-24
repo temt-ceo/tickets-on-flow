@@ -835,7 +835,7 @@ pub contract CodeOfFlow {
                       }
                       // assess is this damage enough to beat the unit.
                       if let unit = info.your_field_unit[your_position] {
-                        let card_id: UInt16 = info.yourt_field_unit[your_position]!
+                        let card_id: UInt16 = info.your_field_unit[your_position]!
                         let yourUnit = CodeOfFlow.cardInfo[card_id]!
                         if Int(yourUnit.bp) <= info.your_field_unit_bp_amount_of_change[your_position]! * -1 {
                           // the unit is beaten
@@ -975,6 +975,7 @@ pub contract CodeOfFlow {
           infoOpponent.opponent_field_unit_action = info.your_field_unit_action
           infoOpponent.your_field_unit_action = info.opponent_field_unit_action
           infoOpponent.your_field_unit_bp_amount_of_change = info.opponent_field_unit_bp_amount_of_change
+          infoOpponent.opponent_field_unit_bp_amount_of_change = info.your_field_unit_bp_amount_of_change
           infoOpponent.your_field_unit = info.opponent_field_unit
           infoOpponent.your_dead_count = info.opponent_dead_count
           infoOpponent.opponent_dead_count = info.your_dead_count
@@ -2100,7 +2101,7 @@ pub contract CodeOfFlow {
             return true
           }
         }
-        if (info.your_life == 0) {
+        if (info.opponent_life == 0) {
           let opponent = info.opponent
           CodeOfFlow.battleInfo.remove(key: player_id)
           CodeOfFlow.battleInfo.remove(key: opponent)
@@ -2124,7 +2125,7 @@ pub contract CodeOfFlow {
           CodeOfFlow.PlayerFlowTokenVault[player_id]!.borrow()!.deposit(from: <- reward)
           self.rankingTotalling(playerid: player_id);
           return true
-        } else if (info.opponent_life == 0) {
+        } else if (info.your_life == 0) {
           let opponent = info.opponent
           CodeOfFlow.battleInfo.remove(key: player_id)
           CodeOfFlow.battleInfo.remove(key: opponent)
@@ -2245,6 +2246,13 @@ pub contract CodeOfFlow {
           CodeOfFlow.PlayerFlowTokenVault[CodeOfFlow.ranking3rdWinningPlayerId]!.borrow()!.deposit(from: <- reward1st)
         }
       }
+    }
+    /*
+    ** Add new card line-up / revise card info.
+    */
+    pub fun edit_card_info() {
+      CodeOfFlow.cardInfo[28] = CodeOfFlow.CardStruct(card_id: 28, name: "RainyFlame", bp: 0, cost: 1, type: 0, category: 2, skill: Skill(description: "When your unit enters the field, it deals 2000 damage to all units on the field.", triggers: [1], asks: [3], types: [1], amounts: [2000], skills: []));
+      CodeOfFlow.cardInfo[29] = CodeOfFlow.CardStruct(card_id: 29, name: "Yggdrasill", bp: 0, cost: 0, type: 4, category: 1, skill: Skill(description: "When you are hit by a player attack, if you have 1 life or less, destroy all units.", triggers: [6], asks: [3], types: [9], amounts: [0], skills: []));
     }
     init() {
     }
@@ -2386,9 +2394,7 @@ pub contract CodeOfFlow {
       24: CardStruct(card_id: 24, name: "Titan's Lock", bp: 0, cost: 0, type: 1, category: 2, skill: Skill(description: "When your unit attacks, choose one of your opponent's units. Consume it's right of action.", triggers: [2], asks: [1], types: [5], amounts: [1], skills: [])),
       25: CardStruct(card_id: 25, name: "Judgement", bp: 0, cost: 6, type: 1, category: 2, skill: Skill(description: "When your unit attacks, consumes the right of action of all opposing units.", triggers: [2], asks: [0], types: [5], amounts: [5], skills: [])),
       26: CardStruct(card_id: 26, name: "Hero's Sword", bp: 0, cost: 0, type: 4, category: 2, skill: Skill(description: "When your unit fights, it gets +2000 BP until end of turn.", triggers: [5], asks: [0], types: [2], amounts: [2000], skills: [])),
-      27: CardStruct(card_id: 27, name: "Signal for assault", bp: 0, cost: 3, type: 4, category: 2, skill: Skill(description: "When your unit enters the field, it gives all your units [Speed Move] (this unit is not affected by action restrictions for the turn it enters the field) until end of turn.", triggers: [1], asks: [3], types: [11], amounts: [0], skills: [])),
-      28: CardStruct(card_id: 28, name: "RainyFlame", bp: 0, cost: 1, type: 0, category: 2, skill: Skill(description: "When your unit enters the field, it deals 2000 damage to all units on the field.", triggers: [1], asks: [3], types: [1], amounts: [2000], skills: [])),
-      29: CardStruct(card_id: 29, name: "Yggdrasill", bp: 0, cost: 0, type: 4, category: 1, skill: Skill(description: "When you are hit by a player attack, if you have 1 life or less, destroy all units.", triggers: [6], asks: [3], types: [9], amounts: [0], skills: []))
+      27: CardStruct(card_id: 27, name: "Signal for assault", bp: 0, cost: 3, type: 4, category: 2, skill: Skill(description: "When your unit enters the field, it gives all your units [Speed Move] (this unit is not affected by action restrictions for the turn it enters the field) until end of turn.", triggers: [1], asks: [3], types: [11], amounts: [0], skills: []))
       /* MEMO
        trigger 1: trigger when the card is put on the field (フィールド上にカードを置いた時)  -- trigger: 18,19 intercept: 20,21,23,27 unit: 4,5,7,8,11,13,16
        trigger 2: trigger when the unit is attacking(攻撃時)
